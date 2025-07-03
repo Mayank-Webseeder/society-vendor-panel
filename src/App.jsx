@@ -20,6 +20,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
+import AuthPage from './pages/auth/AuthPage';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import OtpVerification from './pages/auth/OtpVerification';
+import ResetPassword from './pages/auth/ResetPassword';
 
 
 
