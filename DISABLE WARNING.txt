@@ -1,0 +1,11 @@
+To disable warnings in index.css for current project, Open Command Palette(Ctrl+Shift+P) => Type "Preferences: Open Workspace Settings (JSON)" 	=> Paste below lines in it:
+
+	{
+    	   "css.validate": false,
+    	   "scss.validate": false,
+    	   "less.validate": false,
+    	   "files.associations": {
+      		"*.css": "tailwindcss"
+    	   },
+    	   "css.lint.unknownAtRules": "ignore"
+	}
