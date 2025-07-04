@@ -40,6 +40,14 @@ function App() {
       <Route path="/payment/success" element={<PaymentSuccess />} />
       <Route path="/payment/failure" element={<PaymentFailure />} />
 
+
+      {/* Auth flow - full page, no layout */}
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+      <Route path="/auth/verify-otp" element={<OtpVerification />} />
+      <Route path="/auth/reset-password" element={<ResetPassword />} />
+
+
       {/* Main app layout */}
       <Route
         path="*"
