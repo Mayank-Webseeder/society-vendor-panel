@@ -11,7 +11,7 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="fixed inset-0 flex">
+    <div className="fixed inset-0 flex overflow-y-hidden">
       {/* Left: Form */}
       <div className="flex flex-col justify-center items-center w-1/2 bg-white p-4 sm:p-8">
         {/* VELRA logo & Title */}
@@ -42,10 +42,17 @@ const AuthPage = () => {
         </div>
       </div>
 
-
-
       {/* Right: Image */}
-      <div className="relative w-1/2 h-full">
+      <div className="relative w-1/2 h-full flex items-center justify-center">
+        <div 
+          className='absolute inset-0 flex items-center justify-center z-20' 
+          style={{ top: '30%', bottom: 'auto', height: 'auto' }}
+        >
+          <span className="font-medium text-5xl text-white/50 text-center">
+            You bring the expertise.<br/> Velra brings the exposure.
+          </span>
+        </div>
+
         <img src={groupMenBlueUniforms} className="absolute inset-0 w-full h-full object-cover" alt="Group Men Blue Uniforms" />
         <img src={authImgUpper} className="absolute inset-0 w-full h-full object-cover pointer-events-none" alt="Auth Upper Overlay" />
         <img src={authImgLower} className='absolute -bottom-40 left-0 right-0 w-full' alt="Auth Lower Overlay" />

@@ -13,8 +13,7 @@ const SignUp = ({ onSwitch }) => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    // Handle signup logic here
-    navigate('/auth/onboarding');
+    navigate('/auth/onboarding', { replace: true });
   };
 
 

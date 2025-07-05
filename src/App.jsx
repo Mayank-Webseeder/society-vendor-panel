@@ -22,8 +22,16 @@ import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
 import AuthPage from './pages/auth/AuthPage';
 import ForgotPassword from './pages/auth/ForgotPassword';
-import OtpVerification from './pages/auth/OtpVerification';
 import ResetPassword from './pages/auth/ResetPassword';
+import OnboardingLayout from './pages/onboarding/OnboardingLayout';
+import Step1_Loading from './pages/onboarding/Step1_Loading';
+import Step2_WhatYouOffer from './pages/onboarding/Step2_WhatYouOffer';
+import Step3_WorkingDays from './pages/onboarding/Step3_WorkingDays';
+import Step4_Profile1 from './pages/onboarding/Step4_Profile1';
+import Step5_Profile2 from './pages/onboarding/Step5_Profile2';
+import Step6_Location from './pages/onboarding/Step6_Location';
+import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
+import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
 
 
 
@@ -44,8 +52,21 @@ function App() {
       {/* Auth flow - full page, no layout */}
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-      <Route path="/auth/verify-otp" element={<OtpVerification />} />
       <Route path="/auth/reset-password" element={<ResetPassword />} />
+
+
+      {/* New User Onboarding */}
+      <Route path="/auth/onboarding" element={<OnboardingLayout />}>
+        <Route index element={<Step1_Loading />} />
+        <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
+        <Route path="working-days" element={<Step3_WorkingDays />} />
+        <Route path="profile-1" element={<Step4_Profile1 />} />
+        <Route path="profile-2" element={<Step5_Profile2 />} />
+        <Route path="location" element={<Step6_Location />} />
+        <Route path="verify-number" element={<Step7_VerifyNumber />} />
+        <Route path="verify-otp" element={<Step8_VerifyOtp />} />
+      </Route>
+
 
 
       {/* Main app layout */}

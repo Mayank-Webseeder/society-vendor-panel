@@ -59,7 +59,7 @@ const ForgotPassword = () => {
 
 
   return (
-    <div className="fixed inset-0 flex">
+    <div className="fixed inset-0 flex overflow-y-hidden">
 
       {/* Left: Form */}
       <div className="flex flex-col justify-center items-center w-1/2 bg-white p-4 sm:p-8">
@@ -119,8 +119,8 @@ const ForgotPassword = () => {
           {/* Send/Resend Link Button */}
           <button
             type="submit" // Always type="submit"
-            className={`w-full text-lg border-none font-bold py-2 rounded-md shadow-xl transition-colors cursor-pointer
-              ${(isTiming || email.trim() === '') ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-[#56A9D9] text-white hover:bg-blue-500'}
+            className={`w-full text-lg border-none font-bold py-2 rounded-md shadow-xl transition-colors
+              ${(isTiming || email.trim() === '') ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-[#56A9D9] text-white hover:bg-blue-500 cursor-pointer'}
             `}
             disabled={isTiming || email.trim() === ''} // Button disabled if timing or email is empty
             // Removed direct onClick to allow HTML5 validation to work
@@ -133,7 +133,16 @@ const ForgotPassword = () => {
 
 
       {/* Right: Image */}
-      <div className="relative w-1/2 h-full">
+      <div className="relative w-1/2 h-full flex items-center justify-center">
+        <div 
+          className='absolute inset-0 flex items-center justify-center z-20' 
+          style={{ top: '30%', bottom: 'auto', height: 'auto' }}
+        >
+          <span className="font-medium text-5xl text-white/50 text-center">
+            You bring the expertise.<br/> Velra brings the exposure.
+          </span>
+        </div>
+
         <img src={groupMenBlueUniforms} className="absolute inset-0 w-full h-full object-cover" alt="Group Men Blue Uniforms" />
         <img src={authImgUpper} className="absolute inset-0 w-full h-full object-cover pointer-events-none" alt="Auth Upper Overlay" />
         <img src={authImgLower} className='absolute -bottom-40 left-0 right-0 w-full' alt="Auth Lower Overlay" />
