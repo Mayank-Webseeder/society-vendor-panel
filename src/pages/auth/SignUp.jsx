@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { CircularProgress } from '@mui/material';
 
 
 const SignUp = ({ onSwitch }) => {
@@ -9,13 +9,25 @@ const SignUp = ({ onSwitch }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    navigate('/auth/onboarding', { replace: true });
+    setLoading(true);
+    setTimeout(() => {
+      navigate('/auth/onboarding', { replace: true });
+    }, 2000);
   };
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <CircularProgress sx={{ color: '#56A9D9', mb: 3 }} size={48} thickness={4} />
+        <p className="text-[#56A9D9] font-semibold mt-4 text-lg">Creating your account...</p>
+      </div>
+    );
+  }
 
 
 
@@ -74,6 +86,8 @@ const SignUp = ({ onSwitch }) => {
         </label>
       </div>
 
+
+
       {/* Sign up Button */}
       <button
         type="submit"
@@ -97,6 +111,5 @@ const SignUp = ({ onSwitch }) => {
     </form>
   );
 };
-
 
 export default SignUp;

@@ -1,23 +1,31 @@
 import { useState } from 'react';
 import { Box, Typography, Button, Modal, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 
 const Logout = () => {
 
+  const { logout } = useAuth();    // Get logout function
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
 
   const handleYes = () => {
     setLoading(true);
     setTimeout(() => {
-      window.location.href = '/auth'; // Forces a full reload and clears history
+      logout();    // Clear auth state and localStorage
+      navigate('/auth', { replace: true });    // Use navigate for SPA redirect
     }, 2000);
   };
 
   const handleNo = () => {
-    navigate('/', { replace: true }); // Redirect to home/dashboard, not back
+    navigate('/', { replace: true });    // Redirect to home/dashboard
   };
+
+
+
 
   return (
     <Modal open={true} onClose={handleNo}>

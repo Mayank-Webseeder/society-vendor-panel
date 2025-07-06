@@ -3,12 +3,29 @@ import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import authImgLower from '../../assets/authImgLower.png';
 import authImgUpper from '../../assets/authImgUpper.png';
 import velraSymbol from '../../assets/velraSymbol.png';
-import { Typography } from '@mui/material';
+import { Typography, CircularProgress } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
+import { useAuth } from '../../AuthContext';
+
 
 const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+
+  const { login } = useAuth();
+
+  const [isLogin, setIsLogin] = useState(true);    // By default, login page will be shown
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = () => {
+    // You can add form validation here
+    setLoading(true);
+    setTimeout(() => {
+      login(); // This sets isLoggedIn to true and saves it in localStorage
+      window.location.href = "/dashboard";
+    }, 2000);
+  };
+
 
   return (
     <div
@@ -49,10 +66,18 @@ const AuthPage = () => {
           </Typography>
         </div>
 
+
         {/* Login / SignUp */}
         <div className="w-full max-w-md px-4">
-          {isLogin ? (
-            <Login onSwitch={() => setIsLogin(false)} />
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <CircularProgress sx={{ color: '#56A9D9', mb: 3 }} size={48} thickness={4} />
+              <Typography variant="h6" sx={{ color: '#56A9D9', fontWeight: 600, mt: 2 }}>
+                Logging you in...
+              </Typography>
+            </div>
+          ) : isLogin ? (
+            <Login onSwitch={() => setIsLogin(false)} onLogin={handleLogin} />
           ) : (
             <SignUp onSwitch={() => setIsLogin(true)} />
           )}

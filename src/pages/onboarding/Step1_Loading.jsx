@@ -1,37 +1,31 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loadingPage from '../../assets/loadingPage.png';
 import loadingPageTop from '../../assets/loadingPageTop.png';
 import loadingPageBottom from '../../assets/loadingPageBottom.png';
 
-
 const Step1_Loading = () => {
-
   const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
   const [dotCount, setDotCount] = useState(1);
 
-  // Animate dots when spinner is shown
+  // Animate dots always
   useEffect(() => {
-    let interval;
+    const interval = setInterval(() => {
+      setDotCount((prev) => (prev === 3 ? 1 : prev + 1));
+    }, 400);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Redirect after 3 seconds if spinner is shown
+  useEffect(() => {
     if (showSpinner) {
-      interval = setInterval(() => {
-        setDotCount((prev) => (prev === 3 ? 1 : prev + 1));
-      }, 400);
-      // Redirect after 3 seconds
       const timeout = setTimeout(() => {
         navigate('/auth/onboarding/what-you-offer', { replace: true });
       }, 3000);
-      return () => {
-        clearInterval(interval);
-        clearTimeout(timeout);
-      };
+      return () => clearTimeout(timeout);
     }
   }, [showSpinner, navigate]);
-
-
-
 
   return (
     <div className='relative h-screen w-screen flex items-center justify-center bg-white overflow-hidden'>
@@ -42,12 +36,9 @@ const Step1_Loading = () => {
           <p className='font-extrabold text-4xl text-black/[0.69] mb-5'>
             Let's Get You Set Up
             <span className="inline-block w-8">
-              {showSpinner && (
-                <span className="inline-block animate-dots">
-                  {'.'.repeat(dotCount)}
-                </span>
-              )}
-              {!showSpinner && '...'}
+              <span className="inline-block animate-dots">
+                {'.'.repeat(dotCount)}
+              </span>
             </span>
           </p>
           <p className='font-medium text-lg text-black/[0.59] mb-12'>Build Your Business Presence</p>
@@ -101,6 +92,5 @@ const Step1_Loading = () => {
     </div>
   );
 };
-
 
 export default Step1_Loading;

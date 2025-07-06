@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const Login = ({ onSwitch }) => {
+const Login = ({ onSwitch, onLogin }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  
   const handleLogin = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    navigate('/dashboard', { replace: true });
+    // Validation can be added if needed
+    if(onLogin)  onLogin();
   };
 
 
@@ -69,6 +70,8 @@ const Login = ({ onSwitch }) => {
           Forgot Password?
         </button>
       </div>
+
+
       {/* Login Button */}
       <button
         type="submit"
@@ -76,6 +79,7 @@ const Login = ({ onSwitch }) => {
       >
         Log in
       </button>
+
       {/* Create New Account Button */}
       <button
         type="button"
