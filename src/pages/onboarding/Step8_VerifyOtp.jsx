@@ -3,13 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, TextField, Box, CircularProgress } from '@mui/material';
 import verifyNumber from '../../assets/verifyNumber.png';
 import { useAuth } from '../../AuthContext';
+import { useOnBoarding } from './OnboardingContext';
+import { useUser } from '../../UserContext';
+
 
 const RESEND_TIME = 30; // seconds
 
 
 const Step7_VerifyNumber = () => {
 
-  const { login } = useAuth();
+  const { login } = useAuth();    // The login function to set the local storage
+  const { setUser } = useUser();    // get setUser
+
+  const { onboardingData } = useOnBoarding();    // Get onboarding data
 
   const navigate = useNavigate();
 
@@ -32,6 +38,7 @@ const Step7_VerifyNumber = () => {
     return () => clearInterval(timerRef.current);
   }, [isTiming, timer]);
 
+
   const handleOtpChange = (element, index) => {
     const value = element.value.replace(/[^0-9]/g, '');
     if (value.length === 0) {
@@ -44,11 +51,13 @@ const Step7_VerifyNumber = () => {
     }
   };
 
+
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && otp[index] === '' && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
+
 
   const handleResendCode = () => {
     setTimer(RESEND_TIME);
@@ -57,14 +66,21 @@ const Step7_VerifyNumber = () => {
     console.log("Resending OTP...");
   };
 
+
   const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
 
-  // NEW: Handle Continue with animation
+
+
   const handleContinue = () => {
     setVerifying(true);
     setTimeout(() => {
       setVerifying(false);
       login();    // set auth state & local storage
+
+      /***** Save onboarding data to localStorage for global use *****/
+      localStorage.setItem('velra_user', JSON.stringify(onboardingData));
+      setUser(onboardingData);    //<-- update context immediately
+
       navigate('/dashboard');
     }, 2200); // 2.2 seconds for a smooth effect
   };
@@ -84,6 +100,10 @@ const Step7_VerifyNumber = () => {
         fontFamily: 'Inter, sans-serif',
       }}
     >
+
+      {/* Debugging Purposes */}
+      {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
       {/* Left Half: Form Content */}
       <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center bg-white'>
         <Typography
@@ -238,6 +258,7 @@ const Step7_VerifyNumber = () => {
         )}
       </div>
 
+
       {/* Right Half: Image (Static) */}
       <div className='flex-1 hidden md:flex flex-col items-center justify-center'>
         <img
@@ -249,5 +270,6 @@ const Step7_VerifyNumber = () => {
     </Paper>
   );
 };
+
 
 export default Step7_VerifyNumber;

@@ -1,4 +1,5 @@
-import { IoIosArrowBack } from "react-icons/io";
+import { IconButton } from '@mui/material';
+import { ChevronLeft } from 'lucide-react';
 import LeadCard from '../components/LeadCard';
 import dummyData from '../static/dummyData_Leads';
 
@@ -11,8 +12,10 @@ const NewLeads = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className="flex items-center gap-3 pb-8">
-        <IoIosArrowBack size={24} color="#1C1B1F" />
+      <div className="flex items-center -ml-3 gap-1 pb-8">
+        <IconButton onClick={() => navigate('/new-leads')}>
+          <ChevronLeft size={25} strokeWidth={3} color="black" />
+        </IconButton>
         <h2>New Leads</h2>
       </div>
 

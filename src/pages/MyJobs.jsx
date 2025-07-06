@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import { IconButton } from '@mui/material';
+import { ChevronLeft } from 'lucide-react';
 import dummyData from "../static/dummyData_Leads";
 import LeadCard from "../components/LeadCard";
 
@@ -26,8 +27,10 @@ const MyJobs = () => {
     <div className="flex flex-col">
       <div className="fixed top-16 right-8 left-60 pl-4 z-20 pt-4 pb-5 bg-white">
         {/* Title */}
-        <div className="flex items-center gap-3 pb-8">
-          <IoIosArrowBack size={24} color="#1C1B1F" />
+        <div className="flex items-center -ml-3 gap-1 pb-8">
+          <IconButton onClick={() => setSelectedStatus("All")}>
+            <ChevronLeft size={25} strokeWidth={3} color="black" />
+          </IconButton>
           <h2>My Jobs</h2>
         </div>
       
@@ -51,7 +54,7 @@ const MyJobs = () => {
 
 
       {/* Lead Cards */}
-      <div className="grid grid-cols-2 gap-x-14 gap-y-5 mt-28 mr-10">
+      <div className="grid grid-cols-2 gap-x-14 gap-y-5 mt-32 mr-10">
         {
           filteredLeads.length > 0 ? (
             filteredLeads.map((lead, idx) => (

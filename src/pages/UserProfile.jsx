@@ -1,9 +1,13 @@
-import { IoIosArrowBack } from "react-icons/io";
+import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import { ChevronLeft } from 'lucide-react';
 import { Outlet } from 'react-router-dom';
 
 
 
 const UserProfile = () => {
+
+  const navigate = useNavigate();
 
 
   return (
@@ -12,9 +16,11 @@ const UserProfile = () => {
         <div className='w-[90%] z-20'>
 
             {/* Page title */}
-            <div className="flex items-center pl-4 pt-6 gap-3 pb-8">
-                <IoIosArrowBack size={24} color="#1C1B1F" />
-                <h2>Your Profile</h2>
+            <div className="flex items-center ml-3 mt-3 gap-1 pb-8">
+              <IconButton onClick={() => navigate('/my-profile')}>
+                <ChevronLeft size={25} strokeWidth={3} color="black" />
+              </IconButton>
+              <h2>Your Profile</h2>
             </div>
 
             {/* Nested route content --> 'Outlet' tag is allowing further nested routes from this parent route */}

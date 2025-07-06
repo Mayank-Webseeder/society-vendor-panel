@@ -84,7 +84,7 @@ const Step5_Profile2 = () => {
           </Typography>
 
 
-          {/* /* Grid for Address Fields */}
+          {/* Grid for Address Fields */}
           <Box
             sx={{
               display: 'grid',

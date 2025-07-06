@@ -1,21 +1,29 @@
+import { IconButton } from '@mui/material';
+import { ChevronLeft } from 'lucide-react';
 import CircularLinearRatings from "../components/CircularLinearRatings";
-import { IoIosArrowBack } from "react-icons/io";
-import MyStatsCard1 from "../assets/MyStats_Card1.png";
-import MyStatsCard2 from "../assets/MyStats_Card2.png";
+import Card1_Stats from "../components/cards/Card1_Stats";
+import Card2_Stats from "../components/cards/Card2_Stats";
+import { useNavigate } from 'react-router-dom';
+
 
 
 const MyStats = () => {
 
+  const navigate = useNavigate();
+  
+
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-3 pb-8">
-        <IoIosArrowBack size={24} color="#1C1B1F" />
+      <div className="flex items-center -ml-3 gap-1 pb-8">
+        <IconButton onClick={() => navigate('/new-leads')}>
+          <ChevronLeft size={25} strokeWidth={3} color="black" />
+        </IconButton>
         <h2>Your Rating</h2>
       </div>
 
-      <div>
-        <img src={MyStatsCard1} alt="MyStats-Card1" />
-        <img src={MyStatsCard2} alt="MyStats-Card2" />
+      <div className="flex items-center gap-5">
+        <Card1_Stats />
+        <Card2_Stats />
       </div>
 
       <CircularLinearRatings />

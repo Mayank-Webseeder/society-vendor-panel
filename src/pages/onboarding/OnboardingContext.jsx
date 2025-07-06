@@ -3,8 +3,8 @@ import { createContext, useContext, useState, useCallback } from "react";
 
 const OnboardingContext = createContext();
 
-export const useOnBoarding = () => useContext(OnboardingContext);    //context-hook
 
+export const useOnBoarding = () => useContext(OnboardingContext);    // context-hook --> Imported in components & used for context
 
 
 export const OnboardingProvider = ({ children }) => {
@@ -27,6 +27,11 @@ export const OnboardingProvider = ({ children }) => {
         wokingHours: [],    //startTime, endTime
         phone: '',
         otp: '',
+        avgResponseTime: 9,
+        jobsCompleted: 142,
+        rating: 4,
+        appliedJobs: 160,
+        notifications: false,
     });
 
     // Memoize this function!

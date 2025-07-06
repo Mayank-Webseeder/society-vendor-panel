@@ -1,26 +1,27 @@
 import { Box, Typography, Paper, Button } from '@mui/material';
-import { CalendarDaysIcon, ClockIcon } from '@heroicons/react/24/outline'; // Using Heroicons for icons
+import { CalendarDaysIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { useUser } from '../UserContext'; // <-- Import your global context
 
 
 function AvailabilityCard() {
 
-  const workDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const workingHours = '8AM - 5PM';
+  const { user } = useUser(); // <-- Get user data from context
+
+  // Fallbacks in case user data is not yet loaded
+  const workDays = user?.workingDays || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const workingHours = user?.workingHours || '8AM - 5PM';
 
   const handleEditClick = () => {
-    console.log("Edit button clicked for Available card");
+    console.log("Edit button clicked for Availability card");
     // Add logic for editing availability here
   };
 
 
+
   return (
-    // Ensure this outermost div takes full width and height of its parent
     <div className="font-inter w-full h-full">
-      {/* Paper component now takes full height and acts as a flex column container */}
       <Paper elevation={3} sx={{borderRadius: '0.5rem'}} className="rounded-lg shadow-lg px-3 pt-1 bg-white border border-solid border-[#C5C5C5] w-full h-full flex flex-col mb-7">
-        {/* Header Section - flex-shrink-0 prevents it from shrinking */}
         <Box className="flex justify-between items-center mb-4 flex-shrink-0">
-          {/* Removed negative margin-top */}
           <Typography variant="h6" sx={{fontWeight: '600'}} className="text-gray-800 font-semibold text-lg">
             Available
           </Typography>
@@ -34,9 +35,8 @@ function AvailabilityCard() {
           </Button>
         </Box>
 
-        {/* Content Wrapper - flex-grow to take available vertical space, overflow-y-auto for scrolling */}
         <Box className="flex-grow overflow-y-auto pr-2">
-          {/* Work Days Section - Removed negative margin-top and margin-left */}
+          {/* Work Days Section */}
           <Box className="mb-4">
             <Box sx={{display: 'flex', justifyContent: 'start', alignItems: 'center'}} className="flex items-center text-gray-600 text-sm mb-2">
               <CalendarDaysIcon className="h-5 w-5 mr-2 text-[#56A9D9]" />
@@ -73,5 +73,6 @@ function AvailabilityCard() {
     </div>
   );
 }
+
 
 export default AvailabilityCard;
