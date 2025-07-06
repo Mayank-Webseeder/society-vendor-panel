@@ -29,7 +29,7 @@ const sidebarMenu = [
     {
         icon: availabilityIcon,
         title: "Availability",
-        redirect: "/availability"
+        redirect: "/my-profile/work-details"
     },
 
     {
@@ -41,7 +41,7 @@ const sidebarMenu = [
     {
         icon: helpIcon,
         title: "Help",
-        redirect: "/help"
+        redirect: "/my-profile/account-support/help-support"
     },
 
     {

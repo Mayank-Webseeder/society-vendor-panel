@@ -135,7 +135,7 @@ const PaymentMethod = ({ onUpiClick }) => {
       </Box>
 
       {/* Payment Method Cards */}
-      <Box sx={{ flexGrow: 1, zIndex:50, display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
+      <Box sx={{ flexGrow: 1, zIndex:40, display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
         {/* Credit or Debit Card */}
         <Box
           onClick={() => handlePaymentMethodClick('Credit or Debit Card')}

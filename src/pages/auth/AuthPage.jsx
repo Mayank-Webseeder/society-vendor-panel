@@ -11,12 +11,29 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="fixed inset-0 flex overflow-y-hidden">
+    <div
+      className="fixed inset-0 flex overflow-y-hidden"
+      style={{
+        flexDirection: 'row',
+      }}
+    >
       {/* Left: Form */}
-      <div className="flex flex-col justify-center items-center w-1/2 bg-white p-4 sm:p-8">
+      <div
+        className="
+          flex flex-col justify-center items-center
+          bg-white p-4 sm:p-8
+          w-full
+          md:w-1/2
+          transition-all
+          duration-300
+        "
+        style={{
+          minHeight: '100vh',
+        }}
+      >
         {/* VELRA logo & Title */}
-        <div className='flex gap-2 mb-16'>
-          <img src={velraSymbol} alt="velra-symbol" />
+        <div className='flex gap-2 items-center mb-16'>
+          <img src={velraSymbol} className='h-20 sm:h-24' alt="velra-symbol" />
           <Typography
             variant="h3"
             sx={{
@@ -42,14 +59,24 @@ const AuthPage = () => {
         </div>
       </div>
 
-      {/* Right: Image */}
-      <div className="relative w-1/2 h-full flex items-center justify-center">
-        <div 
-          className='absolute inset-0 flex items-center justify-center z-20' 
+      {/* Right: Image (hidden on screens smaller than md) */}
+      <div
+        className="
+          relative
+          hidden
+          md:flex
+          w-1/2
+          h-full
+          items-center
+          justify-center
+        "
+      >
+        <div
+          className='absolute inset-0 flex items-center justify-center z-20'
           style={{ top: '30%', bottom: 'auto', height: 'auto' }}
         >
           <span className="font-medium text-5xl text-white/50 text-center">
-            You bring the expertise.<br/> Velra brings the exposure.
+            You bring the expertise.<br /> Velra brings the exposure.
           </span>
         </div>
 
@@ -60,6 +87,5 @@ const AuthPage = () => {
     </div>
   );
 };
-
 
 export default AuthPage;

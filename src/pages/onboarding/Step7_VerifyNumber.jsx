@@ -2,22 +2,37 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, TextField, Box } from '@mui/material';
 import verifyNumber from '../../assets/verifyNumber.png';
+import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
-
 
 
 const Step7_VerifyNumber = () => {
 
   const navigate = useNavigate();
-
   const { onboardingData, updateOnboardingData } = useOnBoarding();
   const [phoneNumber, setPhoneNumber] = useState(onboardingData.phone || '');
+  const [error, setError] = useState('');
+
+  const handlePhoneChange = (e) => {
+    // Allow only numbers and max 10 digits
+    const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    setPhoneNumber(val);
+    if (error) setError('');
+  };
 
   const handleVerifyNumber = () => {
+    if (phoneNumber.length !== 10) {
+      setError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    setError('');
     updateOnboardingData({ phone: phoneNumber });
     navigate('/auth/onboarding/verify-otp');
   };
 
+
+
+  
   return (
     <Paper
       elevation={7}
@@ -29,17 +44,13 @@ const Step7_VerifyNumber = () => {
         overflow: 'hidden',
       }}
     >
-
-      {/* Debugging Purposes */}
-      <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
-
       {/* Left Half: Form Content */}
-      <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center bg-white'>
+      <div className='flex-1 flex flex-col p-8 mb-28 sm:p-12 justify-center items-center bg-white'>
         <Typography
           variant="h4"
           sx={{
             fontWeight: 'bold',
-            color: '#212121',
+            color: 'rgba(0,0,0,0.79)',
             mb: { xs: 4, sm: 6 },
             fontSize: { xs: '1.75rem', sm: '2.25rem' },
             textAlign: 'center',
@@ -55,8 +66,13 @@ const Step7_VerifyNumber = () => {
             fullWidth
             placeholder="Enter your number"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={handlePhoneChange}
             type="tel"
+            inputProps={{
+              maxLength: 10,
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
             InputProps={{
               startAdornment: (
                 <Typography
@@ -92,6 +108,13 @@ const Step7_VerifyNumber = () => {
           />
         </Box>
 
+        {/* Error Message */}
+        {error && (
+          <Typography variant="body2" sx={{ color: 'red', mb: 2, fontWeight: 500, textAlign: 'center' }}>
+            {error}
+          </Typography>
+        )}
+
         {/* Verify Number Button */}
         <Button
           variant="outlined"
@@ -115,10 +138,8 @@ const Step7_VerifyNumber = () => {
         </Button>
       </div>
 
-
-
       {/* Right Half: Image (Static) */}
-      <div className='flex-1 flex flex-col items-center justify-center'>
+      <div className='flex-1 flex-col items-center justify-center hidden sm:flex '>
         <img
           src={verifyNumber}
           alt="Verify-Number-Illustration"

@@ -55,9 +55,17 @@ const customStyles = {
   }),
 };
 
+
+
+
 const UpiModal = ({ onProceed, onClose }) => {
+
   const [selectedUpiApp, setSelectedUpiApp] = useState(null);
   const [upiId, setUpiId] = useState('');
+
+  // Disable proceed if either field is empty
+  const isProceedDisabled = !selectedUpiApp || !upiId.trim();
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[rgba(134,198,234,0.27)] bg-opacity-30 z-50 font-inter">
@@ -128,6 +136,7 @@ const UpiModal = ({ onProceed, onClose }) => {
 
           {/* UPI ID Input */}
           <input
+            required
             type="text"
             placeholder="UPI ID"
             style={{ borderColor: '#C5C5C5' }}
@@ -139,17 +148,20 @@ const UpiModal = ({ onProceed, onClose }) => {
 
         {/* Proceed Button */}
         <button
-          className="w-[30%] bg-[#56A9D9] border-none text-lg text-white font-bold py-2 mx-auto my-20 self-center rounded-md shadow-md hover:bg-blue-500 transition-colors cursor-pointer"
+          className={`w-[30%] bg-[#56A9D9] border-none text-lg text-white font-bold py-2 mx-auto my-20 self-center rounded-md shadow-md transition-colors
+            ${isProceedDisabled ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-500 cursor-pointer'}
+          `}
           onClick={onProceed}
+          disabled={isProceedDisabled}
         >
           Proceed
         </button>
 
-        <style>{`
+        {/* <style>{`
           .font-inter {
             font-family: 'Inter', sans-serif;
           }
-        `}</style>
+        `}</style> */}
       </div>
     </div>
   );

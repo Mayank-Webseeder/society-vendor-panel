@@ -1,31 +1,57 @@
-import React from 'react';
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, Box, IconButton } from '@mui/material';
-import { ChevronLeft, Plus, Trash2 } from 'lucide-react'; // Using Lucide icons for consistency
+import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
+
+
 
 const DocumentAndVerification = ({ title = "Document and Verification", route }) => {
-    // Dummy document data for demonstration
-    const uploadedDocuments = [
-        {
-            id: 'aadhar',
-            name: 'Aadhar Card',
-            imageUrl: 'https://placehold.co/180x110/E0E0E0/FFFFFF?text=Aadhar+Card', // Placeholder image
-        },
-        // Add more dummy documents if needed
-    ];
+
+    const navigate = useNavigate();
+
+    const [uploadedDocuments, setUploadedDocuments] = useState([
+        // Example initial document
+        // {
+        //     id: 'aadhar',
+        //     name: 'Aadhar Card',
+        //     fileUrl: 'https://placehold.co/180x110/E0E0E0/FFFFFF?text=Aadhar+Card',
+        //     fileType: 'image',
+        // }
+    ]);
+    const fileInputRef = useRef();
 
     const handleAddNew = () => {
-        console.log("Add New Document clicked");
-        // Implement logic to open file uploader or navigate
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.type !== "application/pdf") {
+            alert("Only PDF files are allowed.");
+            return;
+        }
+        const fileUrl = URL.createObjectURL(file);
+        setUploadedDocuments(prev => [
+            ...prev,
+            {
+                id: Date.now().toString(),
+                name: file.name,
+                fileUrl,
+                fileType: 'pdf',
+            }
+        ]);
+        // Optionally, upload to backend here
     };
 
     const handleDeleteDocument = (docId) => {
-        console.log(`Delete document with ID: ${docId}`);
-        // Implement logic to remove document
+        setUploadedDocuments(prev => prev.filter(doc => doc.id !== docId));
     };
 
     const handleSave = () => {
-        console.log("Save button clicked");
-        // Implement save logic
+        // Implement save logic (e.g., send to backend)
+        // alert("Save button clicked");
+        setTimeout(() => navigate('/my-profile'), 2000);
     };
 
     return (
@@ -35,24 +61,23 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                 backgroundColor: "white",
                 boxShadow: 3,
                 border: '1px solid #E0E0E0',
-                borderRadius: '12px', // Ensure rounded corners are applied
-                width: '100%', // Responsive width
-                maxWidth: { xs: '100%', sm: '500px', md: '600px' }, // Example max-width for larger screens
-                p: { xs: 2, sm: 3 }, // Responsive padding
+                borderRadius: '12px',
+                width: '80%',
+                height: '80%',
+                p: { xs: 2, sm: 3 },
                 display: 'flex',
                 flexDirection: 'column',
-                gap: { xs: 2, sm: 3 }, // Responsive spacing between sections
-                // mx: 'auto', // Center the card
+                gap: { xs: 2, sm: 3 },
                 ml: 4,
                 mb: 5
             }}
         >
             {/* Header */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 2 } }}>
-                <IconButton sx={{ mr: 1, p: 0 }}>
-                    <ChevronLeft size={20} color="#424242" />
+                <IconButton onClick={() => navigate('/my-profile')} sx={{ mr: 1, p: 0 }}>
+                    <ChevronLeft size={27} strokeWidth={3} color="rgba(0,0,0,0.59)" />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'semibold', color: '#424242' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgba(0,0,0,0.59)' }}>
                     {title}
                 </Typography>
             </Box>
@@ -62,24 +87,31 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                 variant="outlined"
                 onClick={handleAddNew}
                 sx={{
-                    alignSelf: 'flex-start', // Align to start
-                    textTransform: 'none', // Prevent uppercase
-                    borderColor: '#E0E0E0', // Border color
-                    color: '#424242', // Text color
+                    alignSelf: 'flex-start',
+                    textTransform: 'none',
+                    borderColor: '#E0E0E0',
+                    color: '#424242',
                     borderRadius: '8px',
                     px: 2,
                     py: 1,
                     fontSize: '0.875rem',
                     fontWeight: 'medium',
                     '&:hover': {
-                        borderColor: '#C5C5C5', // Darker border on hover
-                        bgcolor: '#f5f5f5', // Light background on hover
+                        borderColor: '#C5C5C5',
+                        bgcolor: '#f5f5f5',
                     },
                 }}
                 startIcon={<Plus size={16} />}
             >
                 Add New
             </Button>
+            <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/pdf"
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+            />
 
             {/* Your Uploaded Documents Section */}
             <Box>
@@ -103,8 +135,8 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                     position: 'relative',
-                                    width: { xs: '100%', sm: 'auto' }, // Full width on small screens, auto on larger
-                                    minWidth: '150px', // Minimum width for the document card
+                                    width: { xs: '100%', sm: 'auto' },
+                                    minWidth: '150px',
                                 }}
                             >
                                 <IconButton
@@ -121,44 +153,67 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                                 >
                                     <Trash2 size={16} color="#757575" />
                                 </IconButton>
-                                <Typography variant="body2" sx={{ fontWeight: 'medium', mb: 1 }}>
+                                <Typography variant="body2" sx={{ fontWeight: 'medium', mb: 1, textAlign: 'center' }}>
                                     {doc.name}
                                 </Typography>
-                                <img
-                                    src={doc.imageUrl}
-                                    alt={doc.name}
-                                    style={{
-                                        width: '100%', // Make image responsive within its container
-                                        maxWidth: '150px', // Max width for the image
-                                        height: 'auto',
-                                        borderRadius: '4px',
-                                        objectFit: 'contain',
-                                    }}
-                                    onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/150x100/E0E0E0/FFFFFF?text=Image+Error"; }} // Fallback
-                                />
+                                {doc.fileType === 'pdf' ? (
+                                    <Box
+                                        sx={{
+                                            width: '100%',
+                                            maxWidth: '150px',
+                                            height: '110px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            bgcolor: '#F5F5F5',
+                                            borderRadius: '4px',
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        <embed
+                                            src={doc.fileUrl}
+                                            type="application/pdf"
+                                            width="100%"
+                                            height="100%"
+                                        />
+                                    </Box>
+                                ) : (
+                                    <img
+                                        src={doc.fileUrl}
+                                        alt={doc.name}
+                                        style={{
+                                            width: '100%',
+                                            maxWidth: '150px',
+                                            height: 'auto',
+                                            borderRadius: '4px',
+                                            objectFit: 'contain',
+                                        }}
+                                    />
+                                )}
                             </Box>
                         ))}
                     </Box>
                 )}
             </Box>
 
-            {/* Save Button */}
+            {/* Save Button at the bottom */}
+            <Box sx={{ flexGrow: 1 }} />
             <Button
                 variant="contained"
                 onClick={handleSave}
                 sx={{
-                    mt: { xs: 2, sm: 3 }, // Responsive margin top
+                    mt: { xs: 2, sm: 3 },
                     py: '10px',
-                    bgcolor: '#1976D2', // Blue background
-                    color: 'white',
+                    bgcolor: '#56A9D9',
+                    // color: 'white',
                     fontWeight: 'semibold',
                     borderRadius: '8px',
                     boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
                     '&:hover': {
-                        bgcolor: '#1565C0', // Darker blue on hover
+                        bgcolor: '#1565C0',
                     },
-                    width: '120px', // Fixed width for the button
-                    alignSelf: 'center', // Center the button
+                    width: '120px',
+                    alignSelf: 'center',
                 }}
             >
                 Save
@@ -166,6 +221,5 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
         </Paper>
     );
 };
-
 
 export default DocumentAndVerification;

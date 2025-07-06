@@ -1,32 +1,48 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, Box, TextField } from '@mui/material';
+import { Paper, Typography, Button, Box, TextField, MenuItem, Select } from '@mui/material';
 import onboardingImage from '../../assets/onboardingImage.png';
+import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
-
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-
-
 const Step3_WorkingDays = () => {
-
   const navigate = useNavigate();
-
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
   const [selectedDays, setSelectedDays] = useState(onboardingData.workingDays || []);
-  const [startTime, setStartTime] = useState(onboardingData.wokingHours?.[0] || '');
-  const [endTime, setEndTime] = useState(onboardingData.wokingHours?.[1] || '');
+  const [startTime, setStartTime] = useState(onboardingData.wokingHours?.[0]?.split(' ')[0] || '');
+  const [startPeriod, setStartPeriod] = useState(onboardingData.wokingHours?.[0]?.split(' ')[1] || 'AM');
+  const [endTime, setEndTime] = useState(onboardingData.wokingHours?.[1]?.split(' ')[0] || '');
+  const [endPeriod, setEndPeriod] = useState(onboardingData.wokingHours?.[1]?.split(' ')[1] || 'PM');
+  const [error, setError] = useState('');
 
+  // Only allow 0-12 and colon for time input
+  const handleTimeChange = (value, setter) => {
+    if (!/^[0-9:]*$/.test(value)) return;
+    const [hour] = value.split(':');
+    if (hour && (isNaN(hour) || Number(hour) < 0 || Number(hour) > 12)) return;
+    setter(value);
+  };
+
+  const handleStartTimeChange = (e) => {
+    handleTimeChange(e.target.value, setStartTime);
+  };
+
+  const handleEndTimeChange = (e) => {
+    handleTimeChange(e.target.value, setEndTime);
+  };
 
   useEffect(() => {
     updateOnboardingData({
       workingDays: selectedDays,
-      wokingHours: [startTime, endTime],
+      wokingHours: [
+        startTime ? `${startTime} ${startPeriod}` : '',
+        endTime ? `${endTime} ${endPeriod}` : '',
+      ],
     });
-  }, [selectedDays, startTime, endTime, updateOnboardingData]);
-
+  }, [selectedDays, startTime, startPeriod, endTime, endPeriod, updateOnboardingData]);
 
   const handleDayToggle = (day) => {
     setSelectedDays((prevSelectedDays) =>
@@ -37,225 +53,319 @@ const Step3_WorkingDays = () => {
   };
 
   const handleContinue = () => {
-    navigate('/auth/onboarding/profile-1')
+    if (selectedDays.length === 0) {
+      setError('Please select at least one working day.');
+      return;
+    }
+    if (!startTime || !endTime) {
+      setError('Please enter both opening and closing hours.');
+      return;
+    }
+    const [startHour] = startTime.split(':');
+    const [endHour] = endTime.split(':');
+    if (
+      isNaN(startHour) ||
+      isNaN(endHour) ||
+      Number(startHour) < 0 ||
+      Number(startHour) > 12 ||
+      Number(endHour) < 0 ||
+      Number(endHour) > 12
+    ) {
+      setError('Hours must be between 0 and 12.');
+      return;
+    }
+    setError('');
+    navigate('/auth/onboarding/profile-1');
   };
 
-
-
-  
   return (
-    <Paper
-      elevation={7}
-      sx={{
-        width: '80%',
-        height: '80%',
-        display: 'flex',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        //fontFamily: 'Inter, sans-serif', // Ensure Inter font is used
-      }}
-    >
+    <div style={{ position: 'relative', width: '80%', height: '82%' }}>
+      {/* Velra logo absolutely positioned relative to this wrapper */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-4rem',
+          left: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          zIndex: 2,
+        }}
+      >
+        <img src={logoWhite} alt="velra-logo" />
+        <h3 className="font-semibold text-5xl text-white">VELRA</h3>
+      </div>
 
-      {/* Debugging Purposes */}
-      <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+      <Paper
+        elevation={7}
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          borderRadius: '12px',
+          overflowY: 'auto',
+          // Responsive: center content when image is hidden
+          '@media (max-width:1150px)': {
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column', // stack children vertically
+          },
+        }}
+      >
+        {/* Left Half: Form Content */}
+        <Box
+          sx={{
+            //border: '2px solid green',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            minWidth: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: 'white',
+            px: { xs: 2, sm: 3 },
+            py: { xs: 2, sm: 3 },
+            borderRadius: '12px',
+            height: '100%',
+            '@media (max-width:1150px)': {
+              width: '100%',
+              flex: 'unset', // remove flex:1 so it doesn't reserve space for the image
+              minWidth: 0,
+            },
+            '@media (min-width:1151px)': {
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+            },
+          }}
+        >
+          <div
+            style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', minWidth: 0 }}
+            className='w-full h-full rounded-xl px-8 sm:px-16 sm:py-8 flex flex-col justify-between bg-white'
+          >
+            <div className="flex flex-col">
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'rgba(0,0,0,0.79)',
+                  mb: { xs: 2.5, sm: 4 },
+                  fontSize: { xs: '1.75rem', sm: '2.0rem' },
+                }}
+              >
+                Select Your Working Days
+              </Typography>
 
-
-      {/* Left Half: Form Content */}
-      <div 
-        style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }} 
-        className='w-full h-full rounded-xl px-8 sm:px-12 sm:py-8 flex flex-col justify-between bg-white'>
-          <div className="flex flex-col">
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: 'bold',
-                color: 'rgba(0,0,0,0.79)', // Changed color to text-black/[0.79]
-                mb: { xs: 2.5, sm: 2.5 }, // Margin bottom
-                fontSize: { xs: '1.75rem', sm: '2.25rem' }, // Responsive font size
-              }}
-            >
-              Select Your Working Days
-            </Typography>
-
-            {/* Working Days Buttons */}
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: {
-                  xs: 'repeat(auto-fit, minmax(80px, 1fr))', // Responsive columns
-                  sm: 'repeat(4, 1fr)', // 4 columns on small screens and up
-                },
-                gap: { xs: 1, sm: 2 }, // Responsive gap
-                mb: { xs: 6, sm: 8 }, // Margin bottom
-                maxWidth: '450px', // Constrain width as per image
-              }}
-            >
-              {daysOfWeek.map((day) => (
-                <Button
-                  key={day}
-                  // Variant is now always 'contained' visually, but we use state for selection
-                  // The background and text color will change based on selection
-                  variant="contained" // Use contained to control background color directly
-                  onClick={() => handleDayToggle(day)}
-                  sx={{
-                    minWidth: 'auto',
-                    px: { xs: 1, sm: 2 },
-                    py: { xs: 0.5, sm: 0.8 }, // Decreased y-padding here
-                    borderRadius: '8px',
-                    fontSize: { xs: '0.9rem', sm: '1rem' }, // Increased font size here
-                    fontWeight: 'bold', // Changed font weight to bold
-                    textTransform: 'none',
-                    // No border
-                    color: '#4487AE', // Text color for all weekdays
-                    bgcolor: 'rgba(86, 169, 217, 0.17)', // Background color for all weekdays
-                    '&:hover': {
-                      bgcolor: 'rgba(86, 169, 217, 0.25)', // Slightly darker on hover
-                    },
-                    // Style for selected state
-                    ...(selectedDays.includes(day) && {
-                      bgcolor: '#56A9D9', // Solid blue for selected
-                      color: 'white', // White text for selected
+              {/* Working Days Buttons */}
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: 'repeat(auto-fit, minmax(80px, 1fr))',
+                    sm: 'repeat(4, 1fr)',
+                  },
+                  gap: { xs: 1, sm: 2 },
+                  mb: { xs: 6, sm: 8 },
+                  maxWidth: '450px',
+                }}
+              >
+                {daysOfWeek.map((day) => (
+                  <Button
+                    key={day}
+                    variant="contained"
+                    onClick={() => handleDayToggle(day)}
+                    sx={{
+                      minWidth: 'auto',
+                      px: { xs: 1, sm: 2 },
+                      py: { xs: 0.3, sm: 0.3 },
+                      borderRadius: '8px',
+                      fontSize: { xs: '0.9rem', sm: '1.1rem' },
+                      fontWeight: 'bold',
+                      textTransform: 'none',
+                      color: '#4487AE',
+                      bgcolor: 'rgba(86, 169, 217, 0.17)',
                       '&:hover': {
-                        bgcolor: '#42A5F5', // Darker blue on hover for selected
+                        bgcolor: 'rgba(86, 169, 217, 0.25)',
                       },
-                    }),
+                      ...(selectedDays.includes(day) && {
+                        bgcolor: '#56A9D9',
+                        color: 'white',
+                        '&:hover': {
+                          bgcolor: '#42A5F5',
+                        },
+                      }),
+                    }}
+                  >
+                    {day}
+                  </Button>
+                ))}
+              </Box>
+
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'rgba(0,0,0,0.79)',
+                  mb: { xs: 2.5, sm: 4 },
+                  fontSize: { xs: '1.75rem', sm: '2.0rem' },
+                }}
+              >
+                Select Your Working Hours
+              </Typography>
+
+              {/* Opening Hours */}
+              <Box sx={{ mb: { xs: 3, sm: 4 }, maxWidth: '450px', display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body1" sx={{ color: '#56A9D9', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' }, minWidth: 110 }}>
+                  Opening Hours
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  placeholder="hh:mm"
+                  value={startTime}
+                  onChange={handleStartTimeChange}
+                  inputProps={{ inputMode: 'text', pattern: '[0-9:]*', maxLength: 5 }}
+                  sx={{
+                    width: 110,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '8px',
+                      bgcolor: '#ffffff',
+                      '& fieldset': { borderColor: '#e0e0e0' },
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#424242',
+                      fontSize: '0.875rem',
+                      py: '10px',
+                      textAlign: 'center',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '0.875rem',
+                      color: '#757575',
+                    },
+                  }}
+                />
+                <Select
+                  value={startPeriod}
+                  onChange={(e) => setStartPeriod(e.target.value)}
+                  sx={{
+                    height: 40,
+                    minWidth: 70,
+                    ml: 1,
+                    bgcolor: '#f5f5f5',
+                    borderRadius: '8px',
+                    fontWeight: 'bold',
+                    color: '#1976D2',
+                    '& .MuiSelect-select': { padding: '8px 16px' },
                   }}
                 >
-                  {day}
-                </Button>
-              ))}
-            </Box>
+                  <MenuItem value="AM">AM</MenuItem>
+                  <MenuItem value="PM">PM</MenuItem>
+                </Select>
+              </Box>
 
-            <Typography
-              variant="h4"
+              {/* Closing Hours */}
+              <Box sx={{ mb: { xs: 6, sm: 8 }, maxWidth: '450px', display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body1" sx={{ color: '#56A9D9', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' }, minWidth: 110 }}>
+                  Closing Hours
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  placeholder="hh:mm"
+                  value={endTime}
+                  onChange={handleEndTimeChange}
+                  inputProps={{ inputMode: 'text', pattern: '[0-9:]*', maxLength: 5 }}
+                  sx={{
+                    width: 110,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '8px',
+                      bgcolor: '#ffffff',
+                      '& fieldset': { borderColor: '#e0e0e0' },
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#424242',
+                      fontSize: '0.875rem',
+                      py: '10px',
+                      textAlign: 'center',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '0.875rem',
+                      color: '#757575',
+                    },
+                  }}
+                />
+                <Select
+                  value={endPeriod}
+                  onChange={(e) => setEndPeriod(e.target.value)}
+                  sx={{
+                    height: 40,
+                    minWidth: 70,
+                    ml: 1,
+                    bgcolor: '#f5f5f5',
+                    borderRadius: '8px',
+                    fontWeight: 'bold',
+                    color: '#1976D2',
+                    '& .MuiSelect-select': { padding: '8px 16px' },
+                  }}
+                >
+                  <MenuItem value="AM">AM</MenuItem>
+                  <MenuItem value="PM">PM</MenuItem>
+                </Select>
+              </Box>
+
+              {/* Error Message */}
+              {error && (
+                <Typography variant="body2" sx={{ color: 'red', mb: 2, fontWeight: 500 }}>
+                  {error}
+                </Typography>
+              )}
+            </div>
+
+            {/* Continue Button */}
+            <Button
+              variant="outlined"
+              onClick={handleContinue}
               sx={{
+                py: '10px',
+                bgcolor: 'white',
+                color: '#56A9D9',
+                borderColor: '#56A9D9',
                 fontWeight: 'bold',
-                color: 'rgba(0,0,0,0.79)', // Changed color to text-black/[0.79]
-                mb: { xs: 2.5, sm: 2.5 }, // Margin bottom
-                fontSize: { xs: '1.75rem', sm: '2.25rem' }, // Responsive font size
+                borderRadius: '8px',
+                boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+                '&:hover': {
+                  bgcolor: '#E0F2FF',
+                  borderColor: '#56A9D9',
+                },
+                width: '150px',
+                alignSelf: 'center',
+                mt: 2,
               }}
             >
-              Select Your Working Hours
-            </Typography>
-
-            {/* Opening Hours */}
-            <Box sx={{ mb: { xs: 3, sm: 4 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: '#56A9D9', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Opening Hours
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                placeholder="Select Start Time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                InputProps={{
-                  sx: {
-                    '& .MuiInputBase-input::placeholder': {
-                      textAlign: 'center', // Align placeholder to center
-                      opacity: 1, // Ensure placeholder is not faded by default
-                      color: '#A1A0A0', // Set placeholder color to #A1A0A0
-                    },
-                  },
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                    textAlign: 'center', // Ensure input text is also aligned to center
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontSize: '0.875rem',
-                    color: '#757575',
-                  },
-                }}
-              />
-            </Box>
-
-            {/* Closing Hours */}
-            <Box sx={{ mb: { xs: 6, sm: 8 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: '#56A9D9', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Closing Hours
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                placeholder="Select End Time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                InputProps={{
-                  sx: {
-                    '& .MuiInputBase-input::placeholder': {
-                      textAlign: 'center', // Align placeholder to center
-                      opacity: 1, // Ensure placeholder is not faded by default
-                      color: '#A1A0A0', // Set placeholder color to #A1A0A0
-                    },
-                  },
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                    textAlign: 'center', // Ensure input text is also aligned to center
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontSize: '0.875rem',
-                    color: '#757575',
-                  },
-                }}
-              />
-            </Box>
+              Continue
+            </Button>
           </div>
+        </Box>
 
-          {/* Continue Button */}
-          <Button
-            variant="outlined" // Changed to outlined to easily control border and background
-            onClick={handleContinue}
-            sx={{
-              py: '10px',
-              bgcolor: 'white', // Background color white
-              color: '#56A9D9', // Text color #56A9D9
-              borderColor: '#56A9D9', // Border color #56A9D9
-              fontWeight: 'bold',
-              borderRadius: '8px',
-              boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-              '&:hover': {
-                bgcolor: '#E0F2FF', // Light blue on hover
-                borderColor: '#56A9D9', // Keep border color on hover
-              },
-              width: '150px', // Fixed width for the button
-              alignSelf: 'center', // Center the button
-            }}
-          >
-            Continue
-          </Button>
-      </div>
-    
-
-      {/* Right Half: Image */}
-      <div className='flex-1 flex items-center justify-center'> {/* Placeholder for the image background */}
-        <img
-          src={onboardingImage}
-          alt="Illustration"
-          className="max-w-full h-auto object-contain"
-        />
-      </div>
-      
-    </Paper>
+        {/* Right Half: Image */}
+        <Box
+    sx={{
+      flex: 1,
+      display: { xs: 'none', lg: 'flex' }, // hide on small screens, show on large
+      alignItems: 'center',
+      justifyContent: 'center',
+      '@media (max-width:1150px)': {
+        display: 'none',
+      },
+    }}
+  >
+    <img
+      src={onboardingImage}
+      alt="Illustration"
+      className="max-w-full h-auto object-contain"
+    />
+  </Box>
+      </Paper>
+    </div>
   );
 };
-
 
 export default Step3_WorkingDays;

@@ -5,67 +5,61 @@ import authImgUpper from '../../assets/authImgUpper.png';
 import velraSymbol from '../../assets/velraSymbol.png';
 import { Typography } from '@mui/material';
 
-
 const RESEND_TIME = 59; // seconds
 
-
-
 const ForgotPassword = () => {
-  
   const [email, setEmail] = useState('');
   const [showResend, setShowResend] = useState(false);
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isTiming, setIsTiming] = useState(false);
   const timerRef = useRef();
 
-  // Start timer when isTiming is true
   useEffect(() => {
     if (isTiming) {
       timerRef.current = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
-            setIsTiming(false); // Stop timing
+            setIsTiming(false);
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
     }
-    // Cleanup interval on component unmount or if isTiming becomes false
     return () => clearInterval(timerRef.current);
-  }, [isTiming]); // Depend on isTiming
+  }, [isTiming]);
 
-  // Single handler for form submission (both "Send Link" and "Resend Link")
   const handleFormSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission. HTML5 'required' will handle initial empty check.
-
-    // If email is empty, the 'required' attribute on the input should prevent this function from being called.
-    // So, if we reach here, email is not empty.
-
-    setShowResend(true); // Show the "Didn't receive?" message
-    setTimer(RESEND_TIME); // Reset timer
-    setIsTiming(true); // Start timing
-
-    // Here you would implement your actual API call to send/resend the password reset link
+    e.preventDefault();
+    setShowResend(true);
+    setTimer(RESEND_TIME);
+    setIsTiming(true);
+    // API call here
     console.log("Password reset link requested for:", email);
   };
 
-
-  // Format timer as mm:ss
   const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
 
-
-
-
   return (
-    <div className="fixed inset-0 flex overflow-y-hidden">
-
+    <div className="fixed inset-0 flex overflow-y-hidden" style={{ flexDirection: 'row' }}>
       {/* Left: Form */}
-      <div className="flex flex-col justify-center items-center w-1/2 bg-white p-4 sm:p-8">
+      <div
+        className="
+          flex flex-col justify-center items-center
+          bg-white p-4 sm:p-8
+          w-full
+          md:w-1/2
+          transition-all
+          duration-300
+        "
+        style={{
+          minHeight: '100vh',
+        }}
+      >
         {/* VELRA logo & Title */}
-        <div className='flex gap-2 mb-16'>
-          <img src={velraSymbol} alt="velra-symbol" />
+        <div className='flex items-center gap-2 mb-16'>
+          <img src={velraSymbol} className='h-20 sm:h-24' alt="velra-symbol" />
           <Typography
             variant="h3"
             sx={{
@@ -82,8 +76,7 @@ const ForgotPassword = () => {
         </div>
 
         {/* Form */}
-        <form className="w-full max-w-md px-4" onSubmit={handleFormSubmit}> {/* Use single handler */}
-          {/* Email Field */}
+        <form className="w-full max-w-md px-4" onSubmit={handleFormSubmit}>
           <div className="mb-8">
             <label htmlFor="email" className="block text-[#1C1B1F]/[0.69] text-base font-semibold mb-1">Enter Your Email</label>
             <input
@@ -95,16 +88,14 @@ const ForgotPassword = () => {
               `}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required // Keep required for HTML5 validation
-              disabled={isTiming} // Disable input while timing
+              required
+              disabled={isTiming}
             />
           </div>
-          {/* Info Text */}
           <p className="text-left font-medium text-base text-[#4487AE] mb-10">
             Enter your registered email address. We'll send you a link to reset your password.
           </p>
 
-          {/* Didn't Receive? + Timer */}
           {showResend && (
             <div className="flex items-center justify-between mt-16 mb-8">
               <span className="text-base font-medium text-gray-500">
@@ -116,30 +107,36 @@ const ForgotPassword = () => {
             </div>
           )}
 
-          {/* Send/Resend Link Button */}
           <button
-            type="submit" // Always type="submit"
+            type="submit"
             className={`w-full text-lg border-none font-bold py-2 rounded-md shadow-xl transition-colors
               ${(isTiming || email.trim() === '') ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-[#56A9D9] text-white hover:bg-blue-500 cursor-pointer'}
             `}
-            disabled={isTiming || email.trim() === ''} // Button disabled if timing or email is empty
-            // Removed direct onClick to allow HTML5 validation to work
+            disabled={isTiming || email.trim() === ''}
           >
-            {showResend && !isTiming ? 'Resend Link' : 'Send Link'} {/* Dynamic button text */}
+            {showResend && !isTiming ? 'Resend Link' : 'Send Link'}
           </button>
         </form>
       </div>
 
-
-
-      {/* Right: Image */}
-      <div className="relative w-1/2 h-full flex items-center justify-center">
-        <div 
-          className='absolute inset-0 flex items-center justify-center z-20' 
+      {/* Right: Image (hidden on screens smaller than md) */}
+      <div
+        className="
+          relative
+          hidden
+          md:flex
+          w-1/2
+          h-full
+          items-center
+          justify-center
+        "
+      >
+        <div
+          className='absolute inset-0 flex items-center justify-center z-20'
           style={{ top: '30%', bottom: 'auto', height: 'auto' }}
         >
           <span className="font-medium text-5xl text-white/50 text-center">
-            You bring the expertise.<br/> Velra brings the exposure.
+            You bring the expertise.<br /> Velra brings the exposure.
           </span>
         </div>
 
@@ -150,7 +147,5 @@ const ForgotPassword = () => {
     </div>
   );
 };
-
-
 
 export default ForgotPassword;

@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { ChevronLeft } from 'lucide-react';
 import termsData from '../static/dummyData_TermsConditions';
 
 
+
 const TermsAndConditions = () => {
+
+    const navigate = useNavigate();
 
     const [agreed, setAgreed] = useState(false);
 
     const handleCheckboxChange = (event) => {
         setAgreed(event.target.checked);
+        setTimeout(() => navigate('/my-profile'), 1000);
     };
 
 
@@ -22,8 +27,8 @@ const TermsAndConditions = () => {
                 boxShadow: 3,
                 border: '1px solid #E0E0E0',
                 borderRadius: '12px', // Ensure rounded corners are applied
-                width: '100%', // Responsive width
-                maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
+                width: '80%', // Responsive width
+                //maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
                 p: { xs: 2, sm: 3 }, // Responsive padding
                 display: 'flex',
                 flexDirection: 'column',
@@ -39,10 +44,10 @@ const TermsAndConditions = () => {
         >
             {/* Header */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 2 } }}>
-                <IconButton sx={{ mr: 1, p: 0 }}>
-                    <ChevronLeft size={20} color="#424242" />
+                <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
+                    <ChevronLeft size={27} strokeWidth={3} color="rgb(0,0,0,0.59)" />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'semibold', color: '#424242' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgb(0,0,0,0.59)' }}>
                     Terms and Condition
                 </Typography>
             </Box>
@@ -53,7 +58,7 @@ const TermsAndConditions = () => {
                     Last Updated: 14-06-2025
                 </Typography>
 
-                <Typography variant="body1" sx={{ mb: { xs: 1, sm: 2 } }}>
+                <Typography variant="body1" sx={{ mb: { xs: 1, sm: 2 }, color: 'rgb(0,0,0,0.65)' }}>
                     By using this app, you agree to the following:
                 </Typography>
 
@@ -61,10 +66,10 @@ const TermsAndConditions = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
                     {termsData.map((term) => (
                         <Box key={term.id}>
-                            <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                            <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 0.5, color: 'rgb(0,0,0,0.65)' }}>
                                 {term.id}. {term.heading}
                             </Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ pl: 2, lineHeight: 1.6 }}>
+                            <Typography variant="body2" color="text.secondary" sx={{ pl: 2, lineHeight: 1.6, color:'rgb(0,0,0,0.59)' }}>
                                 {term.content}
                             </Typography>
                         </Box>

@@ -13,13 +13,13 @@ const Dashboard = () => {
   return (
     <div className="tracking-wide w-full h-full flex flex-col">
       {/* Heading */}
-      <div className="flex flex-col gap-1 flex-shrink-0 px-4 pb-1">
+      <div className="flex flex-col gap-1 flex-shrink-0 px-4 mb-5">
         <h2 className="text-2xl font-medium">Hi {dummyData.name}!</h2>
         <p className="text-[#818181] text-lg">Welcome to your Dashboard!</p>
       </div>
 
       {/* Cards */}
-      <div className="flex gap-0 my-2 flex-shrink-0 px-4">
+      <div className="flex gap-0 mb flex-shrink-0 px-4 mb-7">
         <div className="relative -ml-4 cursor-pointer">
           <img src={dashboard_Resp_Frame} className="h-44 w-60 cursor-pointer" alt="dashboard-Resp-Frame-img" />
           <img src={chevron_right_arrow} className="absolute bottom-10 right-8 cursor-pointer" alt="chevron-right-arrow-img" />

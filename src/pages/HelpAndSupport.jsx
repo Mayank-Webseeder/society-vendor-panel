@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, TextField, Button, Box, IconButton } from '@mui/material';
 import { ChevronLeft, Headphones, Phone, Mail } from 'lucide-react'; // Using Lucide icons
 
 
+
 const HelpAndSupport = () => {
+
+    const navigate = useNavigate();
 
     const [issueDescription, setIssueDescription] = useState('');
 
@@ -14,21 +18,18 @@ const HelpAndSupport = () => {
 
 
 
-
     return (
         <Paper
             elevation={3}
             sx={{
                 backgroundColor: "white",
                 boxShadow: 3,
-                border: '1px solid #E0E0E0',
-                borderRadius: '12px', // Ensure rounded corners are applied
-                width: '100%', // Responsive width
-                maxWidth: { xs: '100%', sm: '500px', md: '600px' }, // Example max-width for larger screens
-                p: 0, // Remove default padding from Paper, sections will add their own
+                border: '3px solid white',
+                borderRadius: '12px',
+                width: '70%',
+                p: 0,
                 display: 'flex',
                 flexDirection: 'column',
-                //mx: 'auto', // Center the card
                 ml: 4,
                 mb: 5
             }}
@@ -36,10 +37,10 @@ const HelpAndSupport = () => {
             {/* Top Blue Header Section */}
             <Box
                 sx={{
-                    bgcolor: '#387091', // Darker bluish background color
+                    bgcolor: '#387091',
                     borderTopLeftRadius: '12px',
                     borderTopRightRadius: '12px',
-                    p: { xs: 2, sm: 3 }, // Responsive padding
+                    p: { xs: 2, sm: 3 },
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -47,24 +48,23 @@ const HelpAndSupport = () => {
                 }}
             >
                 {/* Back Arrow */}
-                <IconButton sx={{ position: 'absolute', top: { xs: 8, sm: 16 }, left: { xs: 8, sm: 16 }, p: 0 }}>
-                    <ChevronLeft size={20} color="white" />
+                <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ position: 'absolute', top: { xs: 8, sm: 16 }, left: { xs: 8, sm: 16 }, p: 0 }}>
+                    <ChevronLeft size={27} strokeWidth={3} color="white" />
                 </IconButton>
-                <Headphones size={32} color="white" sx={{ mb: 0.5 }} /> {/* Changed icon color back to white */}
-                <Typography variant="h6" sx={{ fontWeight: 'semibold', color: 'white', mb: 0.25, textAlign: 'center' }}>
+                <Headphones size={32} color="white" sx={{ mb: 0.5, mt: 1 }} />
+                <Typography variant="h5" sx={{ fontWeight: 'bold', mt: 2, color: 'white', mb: 0.5, textAlign: 'center' }}>
                     Help and Support
                 </Typography>
-                {/* Made subtitle text smaller and ensured two lines with text-center */}
                 <Typography
                     variant="body2"
                     sx={{
                         color: 'white',
                         opacity: 0.8,
                         textAlign: 'center',
-                        fontSize: { xs: '0.7rem', sm: '0.8rem' }, // Made font size smaller
-                        lineHeight: 1.3, // Adjust line height for better two-line flow
-                        maxWidth: '80%', // Constrain width to encourage two lines on smaller screens
-                        mx: 'auto', // Center the text if maxWidth is applied
+                        fontSize: { xs: '0.6rem', sm: '0.7rem' },
+                        lineHeight: 1.3,
+                        maxWidth: '80%',
+                        mx: 'auto',
                     }}
                 >
                     We're here to assist you with any questions or concerns.
@@ -74,23 +74,22 @@ const HelpAndSupport = () => {
             {/* Main Content Area */}
             <Box sx={{ p: { xs: 2, sm: 3 }, display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 3 } }}>
                 {/* Services Offered - Label only as per image */}
-                <Box sx={{ mb: { xs: 2, sm: 3 } }}> {/* Increased margin-bottom for more spacing */}
-                    <Typography variant="body1" sx={{ fontWeight: 'medium', color: '#424242' }}>
+                <Box sx={{ mb: { xs: 2, sm: 3 } }}>
+                    <Typography variant="h6" sx={{ fontWeight: '600', color: 'rgb(28,27,31,0.69)' }}>
                         Services Offered
                     </Typography>
-                    {/* If this needs to be an actual input/select, you'd add it here */}
                 </Box>
 
                 {/* What's the issue you're facing? */}
                 <Box>
-                    <Typography variant="body1" sx={{ fontWeight: 'medium', color: '#424242', mb: 1 }}>
+                    <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'rgb(28,27,31,0.69)', mb: 1 }}>
                         What's the issue you're facing?
                     </Typography>
                     <TextField
                         variant="outlined"
                         fullWidth
                         multiline
-                        rows={10} // Increased rows for more height (from 8 to 10)
+                        rows={15}
                         placeholder="Describe your issue here..."
                         value={issueDescription}
                         onChange={(e) => setIssueDescription(e.target.value)}
@@ -118,18 +117,18 @@ const HelpAndSupport = () => {
                     variant="contained"
                     onClick={handleSave}
                     sx={{
-                        mt: { xs: 1, sm: 2 }, // Responsive margin top
+                        mt: { xs: 1, sm: 2 },
                         py: '10px',
-                        bgcolor: '#1976D2', // Blue background
+                        bgcolor: '#56A9D9',
                         color: 'white',
                         fontWeight: 'semibold',
-                        borderRadius: '8px',
+                        borderRadius: '6px',
                         boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
                         '&:hover': {
-                            bgcolor: '#1565C0', // Darker blue on hover
+                            bgcolor: '#1565C0',
                         },
-                        width: '120px', // Fixed width for the button
-                        alignSelf: 'center', // Center the button
+                        width: '120px',
+                        alignSelf: 'center',
                     }}
                 >
                     Save
@@ -140,29 +139,34 @@ const HelpAndSupport = () => {
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' }, // Stack on small, row on larger
+                    flexDirection: { xs: 'column', sm: 'row' },
                     justifyContent: 'center',
                     alignItems: 'center',
-                    gap: { xs: 2, sm: 4 }, // Responsive gap
-                    py: { xs: 2, sm: 3 }, // Padding top/bottom
-                    mt: { xs: 2, sm: 3 }, // Margin top
+                    gap: { xs: 2, sm: 4 },
+                    py: { xs: 2, sm: 2 },
+                    mt: { xs: 1, sm: 1 },
+                    mb: { xs: 1, sm: 2 },
                 }}
             >
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Phone size={20} color="#757575" sx={{ mb: 0.5 }} />
-                    <Typography variant="body2" sx={{ color: '#424242', fontSize: '0.875rem' }}>
-                        Call us
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.875rem' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Phone size={20} color="#757575" />
+                        <Typography variant="body2" sx={{ color: 'rgb(0,0,0,0.49)', fontSize: '0.875rem' }}>
+                            Call us
+                        </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: 'rgb(68,135,174,0.79)', fontSize: '0.875rem' }}>
                         +91 999 999 9999
                     </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Mail size={20} color="#757575" sx={{ mb: 0.5 }} />
-                    <Typography variant="body2" sx={{ color: '#424242', fontSize: '0.875rem' }}>
-                        Email
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.875rem' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Mail size={20} color="#757575" sx={{ mb: 0.5 }} />
+                        <Typography variant="body2" sx={{ color: 'rgb(0,0,0,0.49)', fontSize: '0.875rem' }}>
+                            Email
+                        </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: 'rgb(68,135,174,0.79)', fontSize: '0.875rem' }}>
                         abc99@gmail.com
                     </Typography>
                 </Box>

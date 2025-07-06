@@ -2,10 +2,10 @@ import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import dummyData from "../static/dummyData_Leads";
 import LeadCard from "../components/LeadCard";
-import { CgOptions } from "react-icons/cg";
 
 
 const statusOptions = [
+  { label: "All", color: "bg-[rgba(72,118,161,0.8)]" },
   { label: "New", color: "bg-[#4A6E7A]" },
   { label: "Completed", color: "bg-[rgba(74,87,122,0.8)]" },
   { label: "Ongoing", color: "bg-[rgba(101,74,122,0.8)]" },
@@ -15,10 +15,10 @@ const statusOptions = [
 
 const MyJobs = () => {
 
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("All");
 
-  // Filter leads only if a status is selected, otherwise show all
-  const filteredLeads = selectedStatus?  dummyData.filter(lead => lead.status === selectedStatus) : dummyData;
+  // Show all leads if "All" is selected, otherwise filter
+  const filteredLeads = (selectedStatus === "All")?  dummyData : dummyData.filter((lead) => lead.status === selectedStatus);
 
 
 
@@ -38,7 +38,7 @@ const MyJobs = () => {
               <button
                 key={option.label}
                 onClick={() => setSelectedStatus(option.label)}
-                className={`flex justify-center items-center px-4 py-2 w-28 rounded-full text-white font-semibold border-none cursor-pointer transition
+                className={`flex justify-center items-center px-4 py-1 text-base w-28 rounded-full text-white font-semibold border-none cursor-pointer transition
                   ${option.color}
                   ${selectedStatus === option.label ?  'ring-2 ring-blue-400 scale-105' : ''}`}
               >

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, Snackbar, Alert } from '@mui/material';
 import { useOnBoarding } from './OnboardingContext';
+import logoWhite from '../../assets/logoWhite.png';
 import findLocation from '../../assets/findLocation.png';
 
 
@@ -50,8 +51,8 @@ const Step6_Location = () => {
       }}
     >
       {/* Debugging Purposes */}
-      <pre>{JSON.stringify(onboardingData, null, 2)}</pre><br/><br/>
-      <pre>{JSON.stringify(useOnBoarding().onboardingData.currentLocation, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre><br/><br/>
+      <pre>{JSON.stringify(useOnBoarding().onboardingData.currentLocation, null, 2)}</pre> */}
 
       {/* Page-Content */}
       <div className='w-full h-full rounded-xl p-8 sm:p-12 flex flex-col items-center justify-center bg-white'>
@@ -59,7 +60,7 @@ const Step6_Location = () => {
           variant="h4"
           sx={{
             fontWeight: 'bold',
-            color: '#212121',
+            color: 'rgba(0,0,0,0.69)',
             mb: { xs: 4, sm: 6 },
             fontSize: { xs: '1.75rem', sm: '2.25rem' },
             textAlign: 'center',

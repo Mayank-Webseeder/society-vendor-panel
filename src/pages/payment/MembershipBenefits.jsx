@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { Check } from 'lucide-react'; // Using Lucide icon for checkmark
 
@@ -24,9 +23,9 @@ const MembershipBenefits = () => {
   return (
     <Box
       sx={{
-        // width: '100%', // Occupy full width of parent
+        width: '58%',
         height: '100%',
-        // border: '2px solid red',
+        //border: '2px solid red',
         // minHeight: '100vh', // Occupy full height of the viewport
         display: 'flex',
         flexDirection: 'column',
@@ -65,7 +64,7 @@ const MembershipBenefits = () => {
           lineHeight: 1.5,
         }}
       >
-        Just ₹999/year. One payment. Full<br/> access. No hassle.
+        Just ₹999/year. One payment. Full access. No hassle.
       </Typography>
 
       {/* Get Started Section */}
@@ -74,7 +73,7 @@ const MembershipBenefits = () => {
           variant="h5"
           sx={{
             fontWeight: 'bold',
-            color: '#212121', // Dark gray/black
+            color: 'rgba(0,0,0,0.80)',
             mb: 1,
             textAlign: 'left', // Already left-aligned, kept for clarity
           }}
@@ -98,7 +97,7 @@ const MembershipBenefits = () => {
           variant="body1"
           sx={{
             fontWeight: 'bold',
-            color: '#212121',
+            color: 'rgba(0,0,0,0.80)',
             mb: { xs: 1, sm: 1.5 },
             textAlign: 'left', // Already left-aligned, kept for clarity
           }}
@@ -123,7 +122,7 @@ const MembershipBenefits = () => {
         sx={{
           color: 'rgba(0, 0, 0, 0.69)', // Changed color to rgba(0, 0, 0, 0.69)
           textDecoration: 'underline',
-          cursor: 'pointer',
+          // cursor: 'auto',
           mb: { xs: 4, sm: 6, md: 5 },
           textAlign: 'left', // Changed to left alignment
         }}
@@ -138,11 +137,11 @@ const MembershipBenefits = () => {
         onClick={handleSubscribe}
         sx={{
           py: { xs: 1.5, sm: 1 },
-          px: { xs: 4, sm: 6 },
+          px: { xs: 4, sm: 5 },
           bgcolor: '#56A9D9', // A light blue color for the button
           color: 'white',
           fontWeight: 'bold',
-          borderRadius: '8px',
+          borderRadius: '5px',
           boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
           textTransform: 'none', // Prevent uppercase
           fontSize: { xs: '1rem', sm: '1.2rem' },

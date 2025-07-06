@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box } from '@mui/material';
+import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton } from '@mui/material';
 import { Paperclip } from 'lucide-react';
 import onboardingImage from '../../assets/onboardingImage.png';
+import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
 
 
-const Step4_Profile1 = () => {
 
+const Step4_Profile1 = () => {
   const navigate = useNavigate();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
@@ -16,6 +17,10 @@ const Step4_Profile1 = () => {
   const [businessName, setBusinessName] = useState(onboardingData.businessName || '');
   const [yourExperience, setYourExperience] = useState(onboardingData.experience || '');
   const [idProof, setIdProof] = useState(onboardingData.idProof || '');
+  const [idProofFile, setIdProofFile] = useState(null);
+
+  const [error, setError] = useState('');
+  const fileInputRef = useRef();
 
   // Sync local state to context on change
   useEffect(() => {
@@ -24,12 +29,32 @@ const Step4_Profile1 = () => {
       businessName,
       experience: yourExperience,
       idProof,
+      idProofFile,
     });
-  }, [yourName, businessName, yourExperience, idProof, updateOnboardingData]);
+  }, [yourName, businessName, yourExperience, idProof, idProofFile, updateOnboardingData]);
 
   const handleContinue = () => {
-    // Data is already synced to context
+    if (!yourName.trim() || !businessName.trim() || !yourExperience.trim() || !idProofFile) {
+      setError('All fields are required.');
+      return;
+    }
+    setError('');
     navigate('/auth/onboarding/profile-2');
+  };
+
+  const handlePaperclipClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // Reset so same file can be selected again
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setIdProof(file.name);    // (optional) just for display
+      setIdProofFile(file);     // <-- this is the actual File object
+    }
   };
 
 
@@ -44,22 +69,22 @@ const Step4_Profile1 = () => {
         display: 'flex',
         borderRadius: '12px',
         overflow: 'hidden',
-        fontFamily: 'Inter, sans-serif',
+        flexDirection: { xs: 'column', md: 'row' }, // Stack on small screens
       }}
     >
-
-      {/* Debugging Purposes */}
-      <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
-
       {/* Left Half: Form Content */}
-      <div className='flex-1 flex flex-col p-8 sm:p-12 justify-between bg-white'>
-        <div className="flex flex-col">
+      <div
+        className="flex-1 flex flex-col p-8 sm:p-12 bg-white"
+        style={{ minHeight: 0, height: '100%' }}
+      >
+        <div className="flex flex-col flex-1">
           <Typography
             variant="h4"
             sx={{
+              mt: -3,
               fontWeight: 'bold',
               color: '#212121',
-              mb: { xs: 4, sm: 6 },
+              mb: { xs: 4, sm: 5 },
               fontSize: { xs: '1.75rem', sm: '2.25rem' },
             }}
           >
@@ -67,8 +92,8 @@ const Step4_Profile1 = () => {
           </Typography>
 
           {/* Your Name */}
-          <Box sx={{ mb: { xs: 3, sm: 4 }, maxWidth: '450px' }}>
-            <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
+            <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
               Your Name
             </Typography>
             <TextField
@@ -76,6 +101,7 @@ const Step4_Profile1 = () => {
               fullWidth
               value={yourName}
               onChange={(e) => setYourName(e.target.value)}
+              required
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
@@ -96,8 +122,8 @@ const Step4_Profile1 = () => {
           </Box>
 
           {/* Business Name */}
-          <Box sx={{ mb: { xs: 3, sm: 4 }, maxWidth: '450px' }}>
-            <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
+            <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
               Business Name
             </Typography>
             <TextField
@@ -105,6 +131,7 @@ const Step4_Profile1 = () => {
               fullWidth
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
+              required
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
@@ -121,8 +148,8 @@ const Step4_Profile1 = () => {
           </Box>
 
           {/* Your Experience */}
-          <Box sx={{ mb: { xs: 3, sm: 4 }, maxWidth: '450px' }}>
-            <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
+            <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
               Your Experience
             </Typography>
             <TextField
@@ -130,6 +157,7 @@ const Step4_Profile1 = () => {
               fullWidth
               value={yourExperience}
               onChange={(e) => setYourExperience(e.target.value)}
+              required
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
@@ -146,19 +174,32 @@ const Step4_Profile1 = () => {
           </Box>
 
           {/* Upload ID Proof */}
-          <Box sx={{ mb: { xs: 6, sm: 8 }, maxWidth: '450px' }}>
-            <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          <Box sx={{ mb: { xs: 6, sm: 5 }, maxWidth: '450px' }}>
+            <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
               Upload ID Proof
             </Typography>
             <TextField
               variant="outlined"
               fullWidth
               placeholder="Aadhaar Card, PAN Card, Driving License, Voter ID"
-              value={idProof}
-              onChange={(e) => setIdProof(e.target.value)}
+              value={idProofFile ? idProofFile.name : ''}
+              onClick={handlePaperclipClick}
+              inputProps={{ readOnly: true, style: { cursor: 'pointer' } }}
+              required
               InputProps={{
                 endAdornment: (
-                  <Paperclip size={20} style={{ color: '#757575', cursor: 'pointer', transform: 'rotate(90deg)' }} />
+                  <InputAdornment position="end">
+                    <IconButton onClick={handlePaperclipClick} edge="end">
+                      <Paperclip size={20} style={{ color: '#757575', cursor: 'pointer', transform: 'rotate(-45deg)' }} />
+                    </IconButton>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      style={{ display: 'none' }}
+                      onChange={handleFileChange}
+                    />
+                  </InputAdornment>
                 ),
                 sx: {
                   '& .MuiInputBase-input::placeholder': {
@@ -178,47 +219,83 @@ const Step4_Profile1 = () => {
                   color: '#424242',
                   fontSize: '0.875rem',
                   py: '10px',
+                  cursor: 'pointer'
                 },
               }}
             />
+            {idProofFile && (
+              <Typography variant="caption" sx={{ color: '#1976D2', mt: 1, display: 'block' }}>
+                Selected file: {idProofFile.name}
+              </Typography>
+            )}
           </Box>
+          {error && (
+            <Typography variant="body2" sx={{ color: 'red', mb: 2, fontWeight: 500 }}>
+              {error}
+            </Typography>
+          )}
         </div>
 
-        {/* Continue Button */}
-        <Button
-          variant="outlined"
-          onClick={handleContinue}
-          sx={{
-            py: '10px',
-            bgcolor: 'white',
-            color: '#56A9D9',
-            borderColor: '#56A9D9',
-            fontWeight: 'bold',
-            borderRadius: '8px',
-            boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-            '&:hover': {
-              bgcolor: '#E0F2FF',
+        {/* Continue Button (hidden on xs/sm, visible on md+) */}
+        <div style={{ display: 'flex', justifyContent: 'center' }} className="hidden md:flex">
+          <Button
+            variant="outlined"
+            onClick={handleContinue}
+            sx={{
+              py: '10px',
+              bgcolor: 'white',
+              color: '#56A9D9',
               borderColor: '#56A9D9',
-            },
-            width: '150px',
-            alignSelf: 'center',
-          }}
-        >
-          Continue
-        </Button>
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+              '&:hover': {
+                bgcolor: '#E0F2FF',
+                borderColor: '#56A9D9',
+              },
+              width: '150px',
+              alignSelf: 'center'
+            }}
+          >
+            Continue
+          </Button>
+        </div>
       </div>
 
       {/* Right Half: Image (Static) */}
-      <div className='flex-1 flex items-center justify-center'>
+      <div className="flex-1 lg:flex flex-col items-center hidden justify-center relative">
         <img
           src={onboardingImage}
           alt="Illustration"
           className="max-w-full h-auto object-contain"
         />
+        {/* Continue Button (visible only on xs/sm, hidden on md+) */}
+        {/* <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }} className="flex md:hidden">
+          <Button
+            variant="outlined"
+            onClick={handleContinue}
+            sx={{
+              py: '10px',
+              bgcolor: 'white',
+              color: '#56A9D9',
+              borderColor: '#56A9D9',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+              '&:hover': {
+                bgcolor: '#E0F2FF',
+                borderColor: '#56A9D9',
+              },
+              width: '150px',
+              alignSelf: 'center'
+            }}
+          >
+            Continue
+          </Button>
+        </div> */}
       </div>
     </Paper>
   );
 };
-
 
 export default Step4_Profile1;

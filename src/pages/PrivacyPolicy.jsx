@@ -1,15 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { ChevronLeft } from 'lucide-react';
 import policyData from '../static/dummyData_PrivacyPolicy';
 
 
 const PrivacyPolicy = () => {
+
+    const navigate = useNavigate();
   
     const [agreed, setAgreed] = useState(false);
 
     const handleCheckboxChange = (event) => {
         setAgreed(event.target.checked);
+        setTimeout(() => navigate('/my-profile'), 1000);
     };
 
 
@@ -23,8 +27,8 @@ const PrivacyPolicy = () => {
                 boxShadow: 3,
                 border: '1px solid #E0E0E0',
                 borderRadius: '12px', // Ensure rounded corners are applied
-                width: '100%', // Responsive width
-                maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
+                width: '80%', // Responsive width
+                //maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
                 p: { xs: 2, sm: 3 }, // Responsive padding
                 display: 'flex',
                 flexDirection: 'column',
@@ -40,10 +44,10 @@ const PrivacyPolicy = () => {
         >
             {/* Header */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 2 } }}>
-                <IconButton sx={{ mr: 1, p: 0 }}>
-                    <ChevronLeft size={20} color="#424242" />
+                <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
+                    <ChevronLeft size={27} strokeWidth={3} color="rgba(0,0,0,0.59)" />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'semibold', color: '#424242' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgba(0,0,0,0.59)' }}>
                     Privacy Policy
                 </Typography>
             </Box>
@@ -54,7 +58,7 @@ const PrivacyPolicy = () => {
                     Last Updated: 14-06-2025
                 </Typography>
 
-                <Typography variant="body1" sx={{ mb: { xs: 1, sm: 2 } }}>
+                <Typography variant="body1" sx={{ mb: { xs: 1, sm: 2 }, color: 'rgb(0,0,0,0.65)' }}>
                     We respect your privacy. By using this app, you agree to how we collect and use your information.
                 </Typography>
 
@@ -62,13 +66,13 @@ const PrivacyPolicy = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
                     {policyData.map((section) => (
                         <Box key={section.id}>
-                            <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                            <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 0.5, color: 'rgb(0,0,0,0.65)' }}>
                                 {section.id}. {section.heading}
                             </Typography>
                             {section.type === 'list' && (
                                 <Box component="ul" sx={{ pl: 4, mt: 0, mb: 0 }}> {/* List styling */}
                                     {section.items.map((item, index) => (
-                                        <Typography component="li" key={index} variant="body2" color="text.secondary" sx={{ lineHeight: 1.6, mb: 0.5 }}>
+                                        <Typography component="li" key={index} variant="body2" color="text.secondary" sx={{ lineHeight: 1.6, mb: 0.5, color: 'rgb(0,0,0,0.55)' }}>
                                             {item}
                                         </Typography>
                                     ))}

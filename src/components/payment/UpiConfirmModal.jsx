@@ -1,18 +1,25 @@
 import { useState } from 'react';
-import { X, Clock, ChevronDown } from 'lucide-react'; // Using Lucide icons for close, clock, and dropdown arrow
-
-
+import { X, Clock, ChevronDown } from 'lucide-react';
+import Button from '@mui/material/Button';
 
 const UpiConfirmModal = ({ onProceed, onClose }) => {
-  // State for the "Approve Autopay" dropdown (if it were interactive)
-  const [autopayOption, setAutopayOption] = useState('Expire on 11:30 AM');
+  const [expanded, setExpanded] = useState(false);
+  const [approved, setApproved] = useState(false);
+  const [proceeding, setProceeding] = useState(false);
 
-  // Dummy data for the dates
+  // Dummy data
   const startDate = 'Jun 18, 2025';
   const endDate = 'Jun 18, 2026';
+  const expiresOn = "4:30 PM";
 
-
-
+  // Handler for animated proceed
+  const handleProceed = () => {
+    setProceeding(true);
+    setTimeout(() => {
+      setProceeding(false);
+      onProceed();
+    }, 2000); // Animation duration (ms)
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[rgba(134,198,234,0.27)] bg-opacity-30 z-50 font-inter">
@@ -31,15 +38,16 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
           paddingLeft: 120,
           paddingRight: 120,
           justifyContent: 'flex-start',
-          paddingTop: 60, // Keep original padding top
+          paddingTop: 60,
         }}
       >
         {/* Close Button */}
         <button
           className="rounded-full flex justify-center items-center border-none absolute top-4 right-4 text-blue-300 hover:text-black cursor-pointer transition-colors"
           onClick={onClose}
+          disabled={proceeding}
         >
-          <X size={22} /> {/* Replaced IoClose with Lucide X icon */}
+          <X size={22} />
         </button>
 
         {/* Heading */}
@@ -47,7 +55,7 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
           Confirm Your Payment
         </h1>
 
-        {/* Inner div with a greater glassmorphism effect */}
+        {/* Glassmorphic effect inner div */}
         <div
           style={{
             background: 'rgba(86, 169, 217, 0.04)',
@@ -57,66 +65,140 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
             WebkitBackdropFilter: 'blur(3px)',
             border: '1px solid rgba(86, 169, 217, 0.25)',
             width: '100%',
-            padding: '1.5rem', // optional: for spacing inside
-            marginBottom: '2rem', // optional: for spacing below
+            padding: '1.5rem',
+            marginBottom: '2rem',
           }}
         >
           {/* Approve/Decline Buttons */}
-          <div className="flex justify-between w-full mb-8 px-4"> {/* Added horizontal padding */}
-            <button className="flex-1 bg-white text-[#56A9D9] border-solid border-[#56A9D9] px-4 py-2 rounded-md font-bold text-base shadow-md hover:bg-blue-300 hover:text-white transition-colors mr-2 cursor-pointer">
+          <div className="flex justify-center gap-16 w-full mb-8 px-4">
+            <Button
+              variant={approved ? "outlined" : "contained"}
+              color="primary"
+              onClick={() => setApproved(true)}
+              sx={{
+                backgroundColor: approved ? 'white' : '#56A9D9',
+                color: approved ? '#56A9D9' : 'white',
+                border: approved ? '2px solid #56A9D9' : 'none',
+                fontWeight: '700',
+                minWidth: { xs: 120, sm: 170 },
+                flex: 1,
+                maxWidth: 240,
+                textTransform: "none",
+                boxShadow: approved ? 'none' : undefined,
+                transition: 'all 0.2s',
+              }}
+              disabled={proceeding}
+            >
               Approve Autopay
-            </button>
-            <button onClick={onClose} className="flex-1 bg-[#56A9D9] border-none text-white px-4 py-2 rounded-md font-semibold text-lg shadow-md hover:bg-gray-400 transition-colors ml-2 cursor-pointer">
-              Decline
-            </button>
-          </div>
-          
+            </Button>
 
-          {/* Approve Autopay Section */}
+            <Button
+              onClick={onClose}
+              variant={approved ? "contained" : "outlined"}
+              color="primary"
+              sx={{
+                color: approved ? 'white' : '#56A9D9',
+                backgroundColor: approved ? '#56A9D9' : 'white',
+                border: approved ? 'none' : '2px solid rgba(0,0,0,0.12)',
+                fontWeight: '700',
+                minWidth: { xs: 120, sm: 170 },
+                flex: 1,
+                maxWidth: 220,
+                textTransform: "none",
+                boxShadow: approved ? undefined : 'none',
+                transition: 'all 0.2s',
+              }}
+              disabled={proceeding}
+            >
+              Decline
+            </Button>
+          </div>
+
+          {/* Approve Payment Section */}
           <hr className='w-full border-t-1 border-gray-300' />
 
-          <div className="flex items-center justify-between cursor-pointer">
+          <div
+            className="overflow-hidden transition-all duration-300"
+            style={{
+              cursor: 'pointer',
+              maxHeight: expanded ? 100 : 56,
+            }}
+            onClick={() => setExpanded((prev) => !prev)}
+          >
+            <div className="flex items-center pt-2 pb-1 justify-between">
               <div className="flex items-center">
-                <Clock size={20} className="text-gray-500 mr-3" /> {/* Replaced fas fa-clock with Lucide Clock icon */}
-                <span className="text-lg font-medium text-gray-800">Approve Autopay</span>
+                <Clock size={22} strokeWidth={3} color='rgba(0,0,0,0.69)' className="mr-3" />
+                <span className="text-lg font-semibold text-gray-800">Approve Payment</span>
               </div>
-              <ChevronDown size={20} className="text-gray-500" /> {/* Replaced fas fa-chevron-down with Lucide ChevronDown icon */}
+              <ChevronDown
+                size={24}
+                strokeWidth={3}
+                color='rgba(0,0,0,0.59)'
+                style={{
+                  transition: 'transform 0.3s',
+                  transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              />
             </div>
+            <div
+              className="transition-all duration-300 px-4"
+              style={{
+                opacity: expanded ? 1 : 0,
+                maxHeight: expanded ? 40 : 0,
+                pointerEvents: expanded ? 'auto' : 'none',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <span className="block text-base font-medium text-[#4487AE] py-2">
+                Expires On: {expiresOn}
+              </span>
+            </div>
+          </div>
 
-            <hr className='w-full border-t-1 border-gray-300' />
-            
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div>
-                <p className="text-base font-medium text-gray-600">Start date</p>
-                <p className="text-base text-gray-500">{startDate}</p>
-              </div>
-              <div>
-                <p className="text-base font-medium text-gray-600">End date</p>
-                <p className="text-base text-gray-500">{endDate}</p>
-              </div>
+          <hr className='w-full border-t-1 border-gray-300 mt-2' />
+
+          <div className="grid grid-cols-2 gap-4 my-4">
+            <div>
+              <p className="text-base text-black">Start date</p>
+              <p className="text-base font-medium text-black">{startDate}</p>
             </div>
+            <div>
+              <p className="text-base text-black">End date</p>
+              <p className="text-base font-medium text-black">{endDate}</p>
+            </div>
+          </div>
         </div>
-        
 
         {/* Payment reflection message */}
         <p className="text-center text-sm text-gray-600 mb-8 px-4">
           Payment may take up to 3 working days to be reflected in your account
         </p>
 
-        {/* Proceed Button */}
+        {/* Proceed Button with animation */}
         <button
-          className="w-[30%] bg-[#56A9D9] border-none text-lg text-white font-bold py-2 rounded-md shadow-md hover:bg-blue-500 transition-colors cursor-pointer"
-          onClick={onProceed}
+          className={`w-[30%] bg-[#56A9D9] border-none text-lg text-white font-bold py-2 rounded-md shadow-md transition-colors cursor-pointer flex items-center justify-center
+            ${!approved || proceeding ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-500'}
+          `}
+          onClick={handleProceed}
+          disabled={!approved || proceeding}
         >
-          Proceed
+          {proceeding ? (
+            <span className="flex items-center gap-2 animate-pulse">
+              <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+              </svg>
+              Processing...
+            </span>
+          ) : (
+            "Proceed"
+          )}
         </button>
 
-        {/* Custom styles for font and select arrow (if needed for future use) */}
         <style>{`
           .font-inter {
             font-family: 'Inter', sans-serif;
           }
-          /* Removed custom-select styles as Select component is not directly used */
         `}</style>
       </div>
     </div>

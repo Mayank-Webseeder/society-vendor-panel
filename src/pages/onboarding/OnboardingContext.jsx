@@ -14,6 +14,7 @@ export const OnboardingProvider = ({ children }) => {
         businessName: '',
         experience: '',
         idProof: '',
+        idProofFile: null,
         building: '',
         locality: '',
         landmark: '',

@@ -105,7 +105,7 @@ function CircularLinearRatings() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          mb: 4, // margin-bottom
+          mb: 1, // margin-bottom
           p: 5, // padding
           backgroundColor: 'white',
           borderRadius: '12px',
@@ -183,25 +183,26 @@ function CircularLinearRatings() {
           {renderStars(parseFloat(overallRating), 36)}
         </Box>
 
-        <Typography variant="body1" sx={{ color: '#555', mb: 0.5 }}>
+        <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.49)', mb: 0.5, fontWeight: '600', fontSize: '24px' }}>
           Based on {totalRatingsCount} Ratings
         </Typography>
-        <Typography variant="body2" sx={{ color: '#777', mb: 2 }}>
+        <Typography variant="body2" sx={{ color: 'rgba(0,0,0,0.49)', mb: 2, fontWeight: '400', fontSize: '17px' }}>
           You did a good job!
         </Typography>
 
         <Button
           variant="contained"
           sx={{
-            backgroundColor: '#60A5FA', // Blue color
+            fontSize: '18px',
+            backgroundColor: '#66A9D9', // Blue color
             '&:hover': {
               backgroundColor: '#3B82F6', // Darker blue on hover
             },
             color: 'white',
             textTransform: 'none', // Prevent uppercase
-            px: 6, // horizontal padding
-            py: 2.5, // vertical padding
-            borderRadius: '10px',
+            px: 1, // horizontal padding
+            py: 1, // vertical padding
+            borderRadius: '6px',
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
           }}
           onClick={() => console.log("View Job Rating clicked")}
@@ -213,7 +214,7 @@ function CircularLinearRatings() {
       {/* Rating and Distribution Section */}
       <Box
         sx={{
-          mt: 4, // margin-top
+          mt: 2, // margin-top
           p: 5, // padding
           backgroundColor: 'white',
           borderRadius: '12px',

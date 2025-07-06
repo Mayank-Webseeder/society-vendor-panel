@@ -1,25 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box } from '@mui/material';
+import { Paper, Typography, Button, TextField, Box, CircularProgress } from '@mui/material';
 import verifyNumber from '../../assets/verifyNumber.png';
+import logoWhite from '../../assets/logoWhite.png';
 
 
 const RESEND_TIME = 30; // seconds
-
 
 
 const Step7_VerifyNumber = () => {
 
   const navigate = useNavigate();
 
-  const [otp, setOtp] = useState(['', '', '', '']); // State for 4 OTP digits
+  const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(RESEND_TIME);
-  const [isTiming, setIsTiming] = useState(true); // Start timer automatically
+  const [isTiming, setIsTiming] = useState(true);
+  const [verifying, setVerifying] = useState(false); // <-- NEW
   const timerRef = useRef(null);
-  const inputRefs = useRef([]); // Refs for OTP input fields
+  const inputRefs = useRef([]);
 
-
-  // Effect for the resend timer
   useEffect(() => {
     if (isTiming && timer > 0) {
       timerRef.current = setInterval(() => {
@@ -32,23 +31,19 @@ const Step7_VerifyNumber = () => {
     return () => clearInterval(timerRef.current);
   }, [isTiming, timer]);
 
-
   const handleOtpChange = (element, index) => {
-    const value = element.value.replace(/[^0-9]/g, ''); // Only allow digits
+    const value = element.value.replace(/[^0-9]/g, '');
     if (value.length === 0) {
       setOtp([...otp.map((d, idx) => (idx === index ? '' : d))]);
       return;
     }
-    // Only take the first digit if user pastes or types more than one
     setOtp(prev => prev.map((d, idx) => (idx === index ? value[0] : d)));
-    // Focus next input if available
     if (value && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1].focus();
     }
   };
 
   const handleKeyDown = (e, index) => {
-    // Move to previous input on backspace if current is empty
     if (e.key === 'Backspace' && otp[index] === '' && index > 0) {
       inputRefs.current[index - 1].focus();
     }
@@ -63,10 +58,18 @@ const Step7_VerifyNumber = () => {
 
   const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
 
+  // NEW: Handle Continue with animation
+  const handleContinue = () => {
+    setVerifying(true);
+    setTimeout(() => {
+      setVerifying(false);
+      navigate('/dashboard');
+    }, 2200); // 2.2 seconds for a smooth effect
+  };
 
 
 
-
+  
   return (
     <Paper
       elevation={7}
@@ -76,12 +79,9 @@ const Step7_VerifyNumber = () => {
         display: 'flex',
         borderRadius: '12px',
         overflow: 'hidden',
-        fontFamily: 'Inter, sans-serif', // Ensure Inter font is used
+        fontFamily: 'Inter, sans-serif',
       }}
     >
-
-      
-
       {/* Left Half: Form Content */}
       <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center bg-white'>
         <Typography
@@ -89,7 +89,7 @@ const Step7_VerifyNumber = () => {
           sx={{
             fontWeight: 'bold',
             color: '#212121',
-            mb: { xs: 2, sm: 3 }, // Adjusted margin bottom
+            mb: { xs: 2, sm: 3 },
             fontSize: { xs: '1.75rem', sm: '2.25rem' },
             textAlign: 'center',
           }}
@@ -101,7 +101,7 @@ const Step7_VerifyNumber = () => {
           variant="body1"
           sx={{
             color: '#616161',
-            mb: { xs: 4, sm: 6 }, // Adjusted margin bottom
+            mb: { xs: 4, sm: 6 },
             fontSize: { xs: '0.9rem', sm: '1rem' },
             textAlign: 'center',
             lineHeight: 1.5,
@@ -114,11 +114,11 @@ const Step7_VerifyNumber = () => {
         <Box
           sx={{
             display: 'flex',
-            gap: { xs: 1, sm: 2 }, // Responsive gap between boxes
-            mb: { xs: 4, sm: 6 }, // Margin bottom for OTP inputs
-            maxWidth: '300px', // Constrain width of OTP inputs
+            gap: { xs: 1, sm: 2 },
+            mb: { xs: 4, sm: 6 },
+            maxWidth: '300px',
             width: '100%',
-            justifyContent: 'center', // Center the OTP boxes
+            justifyContent: 'center',
           }}
         >
           {otp.map((data, index) => (
@@ -128,10 +128,9 @@ const Step7_VerifyNumber = () => {
               type="text"
               inputMode="numeric"
               pattern="[0-9]"
-              // maxLength="1" // Ensures only one character can be entered
               value={data}
               onChange={(e) => handleOtpChange(e.target, index)}
-              onFocus={(e) => e.target.select()} // Select all text on focus
+              onFocus={(e) => e.target.select()}
               onKeyDown={(e) => handleKeyDown(e, index)}
               variant="outlined"
               inputProps={{
@@ -139,19 +138,19 @@ const Step7_VerifyNumber = () => {
                 style: { textAlign: 'center' }
               }}
               sx={{
-                width: { xs: '45px', sm: '50px' }, // Responsive width for each box
-                height: { xs: '45px', sm: '50px' }, // Responsive height (same as width for square)
+                width: { xs: '45px', sm: '50px' },
+                height: { xs: '45px', sm: '50px' },
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
                   bgcolor: '#ffffff',
                   '& fieldset': { borderColor: '#e0e0e0' },
-                  '&.Mui-focused fieldset': { borderColor: '#56A9D9' }, // Focus border color
+                  '&.Mui-focused fieldset': { borderColor: '#56A9D9' },
                 },
                 '& .MuiInputBase-input': {
                   textAlign: 'center',
                   color: '#212121',
                   fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                  p: 0, // Remove default padding to make it a perfect square visually
+                  py: 1,
                 },
               }}
             />
@@ -163,9 +162,9 @@ const Step7_VerifyNumber = () => {
           <Typography
             variant="body1"
             sx={{
-              color: 'rgba(0,0,0,0.59)', // Changed color to text-black/[0.59]
+              color: 'rgba(0,0,0,0.59)',
               mb: 1,
-              fontWeight: 'bold', // Changed font weight to bold
+              fontWeight: 'bold',
             }}
           >
             Resend in
@@ -173,9 +172,9 @@ const Step7_VerifyNumber = () => {
           <Typography
             variant="h6"
             sx={{
-              fontWeight: '400', // Changed font weight to 400
-              color: 'rgba(0,0,0,0.59)', // Changed color to text-black/[0.59]
-              fontSize: '0.875rem', // Changed size to sm (0.875rem)
+              fontWeight: '400',
+              color: 'rgba(0,0,0,0.59)',
+              fontSize: '0.875rem',
             }}
           >
             {formatTimer(timer)}
@@ -200,49 +199,53 @@ const Step7_VerifyNumber = () => {
           )}
         </Box>
 
-
-        {/* Continue button */}
-        <Button
-          variant="outlined"
-          onClick={() => navigate('/dashboard')}
-          disabled={otp.some((digit) => digit === '')}
-          sx={{
-            py: '10px',
-            bgcolor: otp.some((digit) => digit === '') ? '#f5f5f5' : 'white',
-            color: otp.some((digit) => digit === '') ? '#bdbdbd' : '#56A9D9',
-            borderColor: '#56A9D9',
-            fontWeight: 'bold',
-            borderRadius: '8px',
-            boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-            '&:hover': {
-              bgcolor: '#E0F2FF',
+        {/* Continue button or animation */}
+        {verifying ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+            <CircularProgress size={32} sx={{ color: '#56A9D9', mb: 1 }} />
+            <Typography variant="body2" sx={{ color: '#56A9D9', fontWeight: 500 }}>
+              Verifying...
+            </Typography>
+          </Box>
+        ) : (
+          <Button
+            variant="outlined"
+            onClick={handleContinue}
+            disabled={otp.some((digit) => digit === '')}
+            sx={{
+              py: '10px',
+              bgcolor: otp.some((digit) => digit === '') ? '#f5f5f5' : 'white',
+              color: otp.some((digit) => digit === '') ? '#bdbdbd' : '#56A9D9',
               borderColor: '#56A9D9',
-              color: '#56A9D9',
-            },
-            width: '150px',
-            alignSelf: 'center',
-            opacity: otp.some((digit) => digit === '') ? 0.7 : 1,
-            pointerEvents: otp.some((digit) => digit === '') ? 'none' : 'auto',
-          }}
-        >
-          Continue
-        </Button>
-       
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+              '&:hover': {
+                bgcolor: '#E0F2FF',
+                borderColor: '#56A9D9',
+                color: '#56A9D9',
+              },
+              width: '150px',
+              alignSelf: 'center',
+              opacity: otp.some((digit) => digit === '') ? 0.7 : 1,
+              pointerEvents: otp.some((digit) => digit === '') ? 'none' : 'auto',
+            }}
+          >
+            Continue
+          </Button>
+        )}
       </div>
 
-
-
       {/* Right Half: Image (Static) */}
-            <div className='flex-1 flex flex-col items-center justify-center'>
-              <img
-                src={verifyNumber}
-                alt="Verify-Number-Illustration"
-                className="max-w-full h-auto object-contain"
-              />
-            </div>
+      <div className='flex-1 hidden md:flex flex-col items-center justify-center'>
+        <img
+          src={verifyNumber}
+          alt="Verify-Number-Illustration"
+          className="max-w-full h-auto object-contain"
+        />
+      </div>
     </Paper>
   );
 };
-
 
 export default Step7_VerifyNumber;

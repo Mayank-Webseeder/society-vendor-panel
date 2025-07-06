@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, TextField, Box, Select, MenuItem, FormControl } from '@mui/material';
+import logoWhite from '../../assets/logoWhite.png';
+import indianStates from '../../static/dummyData_IndianStates';
 import { useOnBoarding } from './OnboardingContext';
 
 
@@ -8,7 +10,6 @@ import { useOnBoarding } from './OnboardingContext';
 const Step5_Profile2 = () => {
 
   const navigate = useNavigate();
-
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
   // Initialize state from context
@@ -18,19 +19,7 @@ const Step5_Profile2 = () => {
   const [state, setState] = useState(onboardingData.state || '');
   const [city, setCity] = useState(onboardingData.city || '');
   const [pincode, setPincode] = useState(onboardingData.pincode || '');
-
-  // Dummy data for State and City dropdowns
-  const dummyStates = [
-    { label: 'Maharashtra', value: 'maharashtra' },
-    { label: 'Delhi', value: 'delhi' },
-    { label: 'Karnataka', value: 'karnataka' },
-  ];
-
-  const dummyCities = [
-    { label: 'Mumbai', value: 'mumbai' },
-    { label: 'Delhi', value: 'delhi' },
-    { label: 'Bangalore', value: 'bangalore' },
-  ];
+  const [error, setError] = useState('');
 
   // Sync local state to context on change
   useEffect(() => {
@@ -45,11 +34,24 @@ const Step5_Profile2 = () => {
   }, [buildingFlatShopNo, localityTown, landmark, state, city, pincode, updateOnboardingData]);
 
   const handleContinue = () => {
+    if (
+      !buildingFlatShopNo.trim() ||
+      !localityTown.trim() ||
+      !landmark.trim() ||
+      !state ||
+      !city.trim() ||
+      pincode.length !== 6
+    ) {
+      setError('All fields are required and pincode must be 6 digits.');
+      return;
+    }
+    setError('');
     navigate('/auth/onboarding/location');
   };
 
 
 
+  
   return (
     <Paper
       elevation={7}
@@ -59,15 +61,15 @@ const Step5_Profile2 = () => {
         display: 'flex',
         borderRadius: '12px',
         overflow: 'hidden',
-        fontFamily: 'Inter, sans-serif',
       }}
     >
-
-      {/* Debugging Purposes */}
-      <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
-
-      {/* Page-Content */}
-      <div className='w-full h-full rounded-xl p-8 sm:p-12 flex flex-col justify-between bg-white'>
+      <div
+        className="w-full h-full rounded-xl p-8 sm:p-12 flex flex-col justify-between bg-white"
+        style={{
+          overflowY: 'auto',
+          scrollbarGutter: 'stable',    // Prevent layout shift when scrollbar appears (optional, modern browsers)
+        }}
+      >
         <div className="flex flex-col">
           <Typography
             variant="h4"
@@ -81,7 +83,8 @@ const Step5_Profile2 = () => {
             Let's Complete your profile
           </Typography>
 
-          {/* Grid for Address Fields */}
+
+          {/* /* Grid for Address Fields */}
           <Box
             sx={{
               display: 'grid',
@@ -89,18 +92,20 @@ const Step5_Profile2 = () => {
                 xs: '1fr',
                 sm: 'repeat(2, 1fr)',
               },
-              gap: { xs: 3, sm: 4 },
+              columnGap: { xs: 0, sm: 7 }, // Increase this value for more column gap (e.g., sm: 6 or sm: 8)
+              rowGap: { xs: 3, sm: 4 },    // Use rowGap for vertical spacing
               mb: { xs: 6, sm: 8 },
             }}
           >
             {/* Building/Flat/Shop No. */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 Building/Flat/Shop No.
               </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
+                required
                 value={buildingFlatShopNo}
                 onChange={(e) => setBuildingFlatShopNo(e.target.value)}
                 sx={{
@@ -120,12 +125,13 @@ const Step5_Profile2 = () => {
 
             {/* Locality/Town */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 Locality/Town
               </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
+                required
                 value={localityTown}
                 onChange={(e) => setLocalityTown(e.target.value)}
                 sx={{
@@ -145,12 +151,13 @@ const Step5_Profile2 = () => {
 
             {/* Landmark */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 Landmark
               </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
+                required
                 value={landmark}
                 onChange={(e) => setLandmark(e.target.value)}
                 sx={{
@@ -170,15 +177,30 @@ const Step5_Profile2 = () => {
 
             {/* State Dropdown */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 State
               </Typography>
-              <FormControl fullWidth variant="outlined">
+              <FormControl fullWidth variant="outlined" required>
                 <Select
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                   displayEmpty
                   inputProps={{ 'aria-label': 'Without label' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 250,
+                      },
+                    },
+                    anchorOrigin: {
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    },
+                    transformOrigin: {
+                      vertical: 'top',
+                      horizontal: 'left',
+                    },
+                  }}
                   sx={{
                     borderRadius: '8px',
                     bgcolor: '#ffffff',
@@ -195,7 +217,7 @@ const Step5_Profile2 = () => {
                   <MenuItem value="" disabled>
                     Select State
                   </MenuItem>
-                  {dummyStates.map((option) => (
+                  {indianStates.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -204,50 +226,41 @@ const Step5_Profile2 = () => {
               </FormControl>
             </Box>
 
-            {/* City Dropdown */}
+            {/* City Input */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 City
               </Typography>
-              <FormControl fullWidth variant="outlined">
-                <Select
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                  sx={{
+              <TextField
+                variant="outlined"
+                fullWidth
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
                     borderRadius: '8px',
                     bgcolor: '#ffffff',
-                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
-                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
-                    '& .MuiSelect-select': {
-                      color: '#424242',
-                      fontSize: '0.875rem',
-                      py: '10px',
-                    },
-                  }}
-                >
-                  <MenuItem value="" disabled>
-                    Select City
-                  </MenuItem>
-                  {dummyCities.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                    '& fieldset': { borderColor: '#e0e0e0' },
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#424242',
+                    fontSize: '0.875rem',
+                    py: '10px',
+                  },
+                }}
+              />
             </Box>
 
             {/* Pincode */}
             <Box>
-              <Typography variant="body1" sx={{ color: '#212121', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+              <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 Pincode
               </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
+                required
                 value={pincode}
                 onChange={(e) => {
                   // Only allow numbers and max 6 digits
@@ -276,11 +289,17 @@ const Step5_Profile2 = () => {
           </Box>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <Typography variant="body2" sx={{ color: 'red', mb: 2, fontWeight: 500 }}>
+            {error}
+          </Typography>
+        )}
+
         {/* Continue Button */}
         <Button
           variant="outlined"
           onClick={handleContinue}
-          disabled={pincode.length !== 6}
           sx={{
             py: '10px',
             bgcolor: 'white',

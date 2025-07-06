@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box, IconButton, TextField, Collapse, Button } from '@mui/material';
 import { ChevronLeft, Search, Plus, Minus } from 'lucide-react';
 import dummyData from '../static/dummyData_FAQ';
@@ -8,6 +9,8 @@ const FAQS_PER_LOAD = 5; // Number of FAQs to load initially and per 'Load More'
 
 
 const FAQ = () => {
+
+    const navigate = useNavigate();
 
     const [expandedId, setExpandedId] = useState(null); // State to manage which FAQ is expanded
     const [visibleFaqCount, setVisibleFaqCount] = useState(FAQS_PER_LOAD); // State for 'Load More' / 'View Less'
@@ -51,8 +54,8 @@ const FAQ = () => {
                 boxShadow: 3,
                 border: '1px solid #E0E0E0',
                 borderRadius: '12px', // Ensure rounded corners are applied
-                width: '100%', // Responsive width
-                maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
+                width: '70%', // Responsive width
+                // maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
                 p: { xs: 2, sm: 3 }, // Responsive padding
                 display: 'flex',
                 flexDirection: 'column',
@@ -64,10 +67,10 @@ const FAQ = () => {
         >
             {/* Header */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 2 } }}>
-                <IconButton sx={{ mr: 1, p: 0 }}>
-                    <ChevronLeft size={20} color="#424242" />
+                <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
+                    <ChevronLeft size={27} strokeWidth={3} color="rgb(0,0,0,0.59)" />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'semibold', color: '#424242' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgb(0,0,0,0.59)' }}>
                     FAQ
                 </Typography>
             </Box>

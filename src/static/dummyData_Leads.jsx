@@ -5,10 +5,14 @@ const dummyData = [
     work: 'Plumbing Work', 
     date: '24th Jun', 
     status: "Completed", 
-    postedOn: '2024-06-24', 
+    postedOn: '24th June, 25', 
     time: '10:00 AM', 
     address: 'Green Wood Society, Tower A, Flat No. 101, Sector 45, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201303', 
-    issueDescription: 'Leakage in kitchen sink tap. Society has reported consistent dripping and low water pressure. Inspection and minor repair expected.' 
+    issueDescription: 'Leakage in kitchen sink tap. Society has reported consistent dripping and low water pressure. Inspection and minor repair expected.',
+    rating: 4.5,
+    completeDate: '24th June', // 0 day gap
+    feedback: 'Very professional. The issue was resolved quickly and cleanly. Would request again.',
+    completeTime: '5:00 PM'
   },
   { 
     id: 2, 
@@ -16,10 +20,11 @@ const dummyData = [
     work: 'Electrical Repair', 
     date: '25th Jun', 
     status: "Ongoing", 
-    postedOn: '2024-06-25', 
+    postedOn: '25th June, 25', 
     time: '11:00 AM', 
     address: 'Blue Sky Apartments, Tower C, Flat No. 502, Sector 62, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201309', 
-    issueDescription: 'Power outage in block B affecting multiple flats. Residents have experienced intermittent supply since last night. Urgent diagnosis and restoration required.' 
+    issueDescription: 'Power outage in block B affecting multiple flats. Residents have experienced intermittent supply since last night. Urgent diagnosis and restoration required.',
+    dueTime: '4:00 PM'
   },
   { 
     id: 3, 
@@ -27,10 +32,11 @@ const dummyData = [
     work: 'Painting Service', 
     date: '26th Jun', 
     status: "Applied", 
-    postedOn: '2024-06-26', 
-    time: '09:30 AM', 
+    postedOn: '26th June, 25', 
+    time: '9:30 AM', 
     address: 'Red Brick Homes, Block D, Flat No. 305, Sector 77, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Peeling paint in lobby area. The affected section covers both walls and ceiling. Requesting repainting and surface treatment to prevent recurrence.' 
+    issueDescription: 'Peeling paint in lobby area. The affected section covers both walls and ceiling. Requesting repainting and surface treatment to prevent recurrence.',
+    pendingStatus: 'Approval Pending'
   },
   { 
     id: 4, 
@@ -38,8 +44,8 @@ const dummyData = [
     work: 'Roofing Inspection', 
     date: '27th Jun', 
     status: "New", 
-    postedOn: '2024-06-27', 
-    time: '02:00 PM', 
+    postedOn: '27th June, 25', 
+    time: '2:00 PM', 
     address: 'Yellow Stone Co., Tower B, Flat No. 1202, Sector 50, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201301', 
     issueDescription: 'Suspected roof leakage after recent rains. Water stains visible on top floor ceilings. Full inspection and report needed before monsoon.' 
   },
@@ -49,10 +55,11 @@ const dummyData = [
     work: 'HVAC Maintenance', 
     date: '28th Jun', 
     status: "Ongoing", 
-    postedOn: '2024-06-28', 
-    time: '03:00 PM', 
+    postedOn: '28th June, 25', 
+    time: '3:00 PM', 
     address: 'Purple Haze Estates, Tower D, Flat No. 808, Sector 61, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201307', 
-    issueDescription: 'AC not cooling properly in common areas. Residents have complained about rising temperatures. Requesting filter cleaning and gas refill if necessary.' 
+    issueDescription: 'AC not cooling properly in common areas. Residents have complained about rising temperatures. Requesting filter cleaning and gas refill if necessary.',
+    dueTime: '7:00 PM'
   },
   { 
     id: 6, 
@@ -60,10 +67,14 @@ const dummyData = [
     work: 'Garden Landscaping', 
     date: '29th Jun', 
     status: "Completed", 
-    postedOn: '2024-06-29', 
-    time: '08:00 AM', 
+    postedOn: '29th June, 25', 
+    time: '8:00 AM', 
     address: 'Orange Blossom Villa, Villa No. 12, Sector 93A, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Overgrown bushes and weeds in garden. Society requests trimming, removal of dead plants, and fresh landscaping for the upcoming festival.' 
+    issueDescription: 'Overgrown bushes and weeds in garden. Society requests trimming, removal of dead plants, and fresh landscaping for the upcoming festival.',
+    rating: 3.7,
+    completeDate: '30th June', // 1 day gap (unchanged, but randomized below)
+    feedback: '',
+    completeTime: '12:00 PM'
   },
   { 
     id: 7, 
@@ -71,10 +82,11 @@ const dummyData = [
     work: 'Window Cleaning', 
     date: '30th Jun', 
     status: "Applied", 
-    postedOn: '2024-06-30', 
-    time: '01:00 PM', 
+    postedOn: '30th June, 25', 
+    time: '1:00 PM', 
     address: 'Silver Stream Towers, Tower E, Flat No. 1503, Sector 137, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201305', 
-    issueDescription: 'Dirty windows on 5th floor. Residents have reported reduced sunlight and visibility. Deep cleaning required for all exterior glass panels.' 
+    issueDescription: 'Dirty windows on 5th floor. Residents have reported reduced sunlight and visibility. Deep cleaning required for all exterior glass panels.',
+    pendingStatus: 'Approved'
   },
   { 
     id: 8, 
@@ -82,7 +94,7 @@ const dummyData = [
     work: 'Pest Control', 
     date: '1st Jul', 
     status: "New", 
-    postedOn: '2024-07-01', 
+    postedOn: '1st July, 25', 
     time: '10:30 AM', 
     address: 'Golden Gate Complex, Tower F, Flat No. 210, Sector 76, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201306', 
     issueDescription: 'Ant infestation in kitchen and dining areas. Multiple complaints received from residents. Requesting thorough pest control treatment and follow-up.' 
@@ -93,10 +105,14 @@ const dummyData = [
     work: 'Security System Upgrade', 
     date: '2nd Jul', 
     status: "Completed", 
-    postedOn: '2024-07-02', 
+    postedOn: '2nd July, 25', 
     time: '12:00 PM', 
     address: 'Crystal Lake Residency, Tower G, Flat No. 1001, Sector 100, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201303', 
-    issueDescription: 'Upgrade CCTV cameras at all entry and exit points. Current system is outdated and has blind spots. Proposal for new high-definition cameras requested.' 
+    issueDescription: 'Upgrade CCTV cameras at all entry and exit points. Current system is outdated and has blind spots. Proposal for new high-definition cameras requested.',
+    rating: 4.9,
+    completeDate: '4th July', // 2 day gap
+    feedback: 'Excellent upgrade. The new cameras cover all areas and the installation was smooth.',
+    completeTime: '6:00 PM'
   },
   { 
     id: 10, 
@@ -104,10 +120,11 @@ const dummyData = [
     work: 'Swimming Pool Cleaning', 
     date: '3rd Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-03', 
-    time: '04:00 PM', 
+    postedOn: '3rd July, 25', 
+    time: '4:00 PM', 
     address: 'Sunrise Meadows, Tower H, Flat No. 305, Sector 78, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201307', 
-    issueDescription: 'Pool water is cloudy and has debris. Residents have raised hygiene concerns. Full cleaning, water treatment, and filter check required.' 
+    issueDescription: 'Pool water is cloudy and has debris. Residents have raised hygiene concerns. Full cleaning, water treatment, and filter check required.',
+    dueTime: '6:00 PM'
   },
   { 
     id: 11, 
@@ -115,10 +132,11 @@ const dummyData = [
     work: 'Lift Maintenance', 
     date: '4th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-04', 
-    time: '09:00 AM', 
+    postedOn: '4th July, 25', 
+    time: '9:00 AM', 
     address: 'Maple Leaf Society, Tower J, Flat No. 1102, Sector 52, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201301', 
-    issueDescription: 'Lift stuck between floors during peak hours. Emergency rescue was needed. Complete inspection and preventive maintenance requested.' 
+    issueDescription: 'Lift stuck between floors during peak hours. Emergency rescue was needed. Complete inspection and preventive maintenance requested.',
+    pendingStatus: 'Approval Pending'
   },
   { 
     id: 12, 
@@ -126,7 +144,7 @@ const dummyData = [
     work: 'Fire Safety Audit', 
     date: '5th Jul', 
     status: "New", 
-    postedOn: '2024-07-05', 
+    postedOn: '5th July, 25', 
     time: '11:30 AM', 
     address: 'Emerald Enclave, Tower K, Flat No. 604, Sector 44, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201303', 
     issueDescription: 'Annual fire safety check due. Society requires audit of extinguishers, alarms, and evacuation routes. Certification and compliance report needed.' 
@@ -137,10 +155,14 @@ const dummyData = [
     work: 'Carpet Cleaning', 
     date: '6th Jul', 
     status: "Completed", 
-    postedOn: '2024-07-06', 
+    postedOn: '6th July, 25', 
     time: '10:15 AM', 
     address: 'Cedar Woods, Tower L, Flat No. 203, Sector 75, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201307', 
-    issueDescription: 'Stains in hallway carpet from recent event. Deep cleaning and deodorizing required to restore appearance and hygiene.' 
+    issueDescription: 'Stains in hallway carpet from recent event. Deep cleaning and deodorizing required to restore appearance and hygiene.',
+    rating: 3.2,
+    completeDate: '6th July', // 0 day gap
+    feedback: '',
+    completeTime: '2:00 PM'
   },
   { 
     id: 14, 
@@ -148,10 +170,11 @@ const dummyData = [
     work: 'Water Tank Cleaning', 
     date: '7th Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-07', 
-    time: '02:30 PM', 
+    postedOn: '7th July, 25', 
+    time: '2:30 PM', 
     address: 'Lakeview Towers, Tower M, Flat No. 1501, Sector 50, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201301', 
-    issueDescription: 'Sediment in water supply noticed by residents. Requesting cleaning and disinfection of all overhead and underground tanks.' 
+    issueDescription: 'Sediment in water supply noticed by residents. Requesting cleaning and disinfection of all overhead and underground tanks.',
+    dueTime: '5:00 PM'
   },
   { 
     id: 15, 
@@ -159,10 +182,11 @@ const dummyData = [
     work: 'CCTV Installation', 
     date: '8th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-08', 
-    time: '03:45 PM', 
+    postedOn: '8th July, 25', 
+    time: '3:45 PM', 
     address: 'Hilltop Residency, Tower N, Flat No. 702, Sector 79, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201306', 
-    issueDescription: 'Install new cameras at entrance and parking area. Security committee has approved budget for additional surveillance.' 
+    issueDescription: 'Install new cameras at entrance and parking area. Security committee has approved budget for additional surveillance.',
+    pendingStatus: 'Approved'
   },
   { 
     id: 16, 
@@ -170,7 +194,7 @@ const dummyData = [
     work: 'Intercom Repair', 
     date: '9th Jul', 
     status: "New", 
-    postedOn: '2024-07-09', 
+    postedOn: '9th July, 25', 
     time: '12:45 PM', 
     address: 'Palm Grove Villas, Villa No. 8, Sector 93B, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
     issueDescription: 'Intercom not working in block C. Residents unable to communicate with security. Urgent repair and system check required.' 
@@ -181,10 +205,14 @@ const dummyData = [
     work: 'Parking Lot Painting', 
     date: '10th Jul', 
     status: "Completed", 
-    postedOn: '2024-07-10', 
-    time: '08:30 AM', 
+    postedOn: '10th July, 25', 
+    time: '8:30 AM', 
     address: 'Sunset Boulevard, Tower P, Flat No. 1205, Sector 107, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Faded parking lines causing confusion. Society requests repainting of all parking bays and directional arrows.' 
+    issueDescription: 'Faded parking lines causing confusion. Society requests repainting of all parking bays and directional arrows.',
+    rating: 4.1,
+    completeDate: '11th July', // 1 day gap (unchanged, but randomized below)
+    feedback: 'Good job. The parking lines are now clearly visible.',
+    completeTime: '4:00 PM'
   },
   { 
     id: 18, 
@@ -192,10 +220,11 @@ const dummyData = [
     work: 'Gutter Cleaning', 
     date: '11th Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-11', 
+    postedOn: '11th July, 25', 
     time: '10:00 AM', 
     address: 'Royal Residency, Tower Q, Flat No. 405, Sector 108, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Blocked gutters on terrace leading to water overflow. Cleaning and removal of debris required before next rainfall.' 
+    issueDescription: 'Blocked gutters on terrace leading to water overflow. Cleaning and removal of debris required before next rainfall.',
+    dueTime: '2:00 PM'
   },
   { 
     id: 19, 
@@ -203,10 +232,11 @@ const dummyData = [
     work: 'Door Lock Replacement', 
     date: '12th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-12', 
-    time: '01:15 PM', 
+    postedOn: '12th July, 25', 
+    time: '1:15 PM', 
     address: 'Magnolia Heights, Tower R, Flat No. 902, Sector 104, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Broken lock in flat 12B. Residents unable to secure their home. Immediate replacement and spare keys requested.' 
+    issueDescription: 'Broken lock in flat 12B. Residents unable to secure their home. Immediate replacement and spare keys requested.',
+    pendingStatus: 'Approval Pending'
   },
   { 
     id: 20, 
@@ -214,7 +244,7 @@ const dummyData = [
     work: 'Facade Cleaning', 
     date: '13th Jul', 
     status: "New", 
-    postedOn: '2024-07-13', 
+    postedOn: '13th July, 25', 
     time: '11:00 AM', 
     address: 'Coral Springs, Tower S, Flat No. 1107, Sector 143, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201305', 
     issueDescription: 'Dust accumulation on facade affecting building appearance. High-pressure cleaning and surface treatment required.' 
@@ -225,10 +255,14 @@ const dummyData = [
     work: 'Lift Repair', 
     date: '14th Jul', 
     status: "Completed", 
-    postedOn: '2024-07-14', 
-    time: '09:00 AM', 
+    postedOn: '14th July, 25', 
+    time: '9:00 AM', 
     address: 'Amber Heights, Tower T, Flat No. 301, Sector 105, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Lift not stopping at 3rd floor. Residents have reported inconvenience. Repair and safety check required.' 
+    issueDescription: 'Lift not stopping at 3rd floor. Residents have reported inconvenience. Repair and safety check required.',
+    rating: 2.8,
+    completeDate: '16th July', // 2 day gap
+    feedback: '',
+    completeTime: '3:00 PM'
   },
   { 
     id: 22, 
@@ -236,10 +270,11 @@ const dummyData = [
     work: 'Fire Alarm Testing', 
     date: '15th Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-15', 
+    postedOn: '15th July, 25', 
     time: '10:30 AM', 
     address: 'Opal Residency, Tower U, Flat No. 1202, Sector 110, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201301', 
-    issueDescription: 'Annual fire alarm system testing. Residents to be notified of test schedule. Certification required.' 
+    issueDescription: 'Annual fire alarm system testing. Residents to be notified of test schedule. Certification required.',
+    dueTime: '3:00 PM'
   },
   { 
     id: 23, 
@@ -247,10 +282,11 @@ const dummyData = [
     work: 'Garden Lighting Installation', 
     date: '16th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-16', 
-    time: '05:00 PM', 
+    postedOn: '16th July, 25', 
+    time: '5:00 PM', 
     address: 'Sapphire Greens, Tower V, Flat No. 405, Sector 112, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Request for new garden lights along walking path. Proposal for energy-efficient LED fixtures.' 
+    issueDescription: 'Request for new garden lights along walking path. Proposal for energy-efficient LED fixtures.',
+    pendingStatus: 'Approved'
   },
   { 
     id: 24, 
@@ -258,7 +294,7 @@ const dummyData = [
     work: 'Basement Waterproofing', 
     date: '17th Jul', 
     status: "New", 
-    postedOn: '2024-07-17', 
+    postedOn: '17th July, 25', 
     time: '11:45 AM', 
     address: 'Ruby Residency, Tower W, Flat No. 1101, Sector 113, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201305', 
     issueDescription: 'Water seepage in basement parking. Requesting inspection and waterproofing solution.' 
@@ -269,10 +305,14 @@ const dummyData = [
     work: 'Gym Equipment Maintenance', 
     date: '18th Jul', 
     status: "Completed", 
-    postedOn: '2024-07-18', 
-    time: '07:30 AM', 
+    postedOn: '18th July, 25', 
+    time: '7:30 AM', 
     address: 'Pearl Towers, Tower X, Flat No. 1502, Sector 114, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201306', 
-    issueDescription: 'Treadmill and elliptical not working. Requesting urgent repair and maintenance.' 
+    issueDescription: 'Treadmill and elliptical not working. Requesting urgent repair and maintenance.',
+    rating: 4.0,
+    completeDate: '18th July', // 0 day gap
+    feedback: '',
+    completeTime: '11:00 AM'
   },
   { 
     id: 26, 
@@ -280,10 +320,11 @@ const dummyData = [
     work: 'Clubhouse Painting', 
     date: '19th Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-19', 
-    time: '02:00 PM', 
+    postedOn: '19th July, 25', 
+    time: '2:00 PM', 
     address: 'Diamond Enclave, Tower Y, Flat No. 203, Sector 115, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201307', 
-    issueDescription: 'Clubhouse walls require repainting before society event. Requesting color samples and schedule.' 
+    issueDescription: 'Clubhouse walls require repainting before society event. Requesting color samples and schedule.',
+    dueTime: '8:00 PM'
   },
   { 
     id: 27, 
@@ -291,10 +332,11 @@ const dummyData = [
     work: 'Children Park Repair', 
     date: '20th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-20', 
-    time: '04:30 PM', 
+    postedOn: '20th July, 25', 
+    time: '4:30 PM', 
     address: 'Jade Gardens, Tower Z, Flat No. 504, Sector 116, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201308', 
-    issueDescription: 'Broken swings and slides in children park. Requesting repair and safety inspection.' 
+    issueDescription: 'Broken swings and slides in children park. Requesting repair and safety inspection.',
+    pendingStatus: 'Approval Pending'
   },
   { 
     id: 28, 
@@ -302,8 +344,8 @@ const dummyData = [
     work: 'Boundary Wall Plastering', 
     date: '21st Jul', 
     status: "New", 
-    postedOn: '2024-07-21', 
-    time: '09:15 AM', 
+    postedOn: '21st July, 25', 
+    time: '9:15 AM', 
     address: 'Topaz Residency, Tower AA, Flat No. 601, Sector 117, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201309', 
     issueDescription: 'Cracks in boundary wall plaster. Requesting repair before monsoon.' 
   },
@@ -313,10 +355,14 @@ const dummyData = [
     work: 'Parking Gate Automation', 
     date: '22nd Jul', 
     status: "Completed", 
-    postedOn: '2024-07-22', 
+    postedOn: '22nd July, 25', 
     time: '12:00 PM', 
     address: 'Onyx Heights, Tower BB, Flat No. 1002, Sector 118, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201310', 
-    issueDescription: 'Manual parking gate to be automated. Proposal for RFID-based entry system.' 
+    issueDescription: 'Manual parking gate to be automated. Proposal for RFID-based entry system.',
+    rating: 5.0,
+    completeDate: '23rd July', // 1 day gap (unchanged, but randomized below)
+    feedback: 'Automation works perfectly. Entry and exit are now seamless.',
+    completeTime: '5:30 PM'
   },
   { 
     id: 30, 
@@ -324,10 +370,11 @@ const dummyData = [
     work: 'Solar Panel Cleaning', 
     date: '23rd Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-23', 
+    postedOn: '23rd July, 25', 
     time: '10:00 AM', 
     address: 'Quartz Villas, Villa No. 15, Sector 119, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201311', 
-    issueDescription: 'Dust accumulation on solar panels reducing efficiency. Requesting cleaning and performance check.' 
+    issueDescription: 'Dust accumulation on solar panels reducing efficiency. Requesting cleaning and performance check.',
+    dueTime: '1:00 PM'
   },
   { 
     id: 31, 
@@ -335,10 +382,11 @@ const dummyData = [
     work: 'Lobby AC Repair', 
     date: '24th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-24', 
-    time: '03:00 PM', 
+    postedOn: '24th July, 25', 
+    time: '3:00 PM', 
     address: 'Turquoise Towers, Tower CC, Flat No. 305, Sector 120, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201312', 
-    issueDescription: 'Lobby AC not cooling. Residents have complained of discomfort. Requesting urgent repair.' 
+    issueDescription: 'Lobby AC not cooling. Residents have complained of discomfort. Requesting urgent repair.',
+    pendingStatus: 'Approved'
   },
   { 
     id: 32, 
@@ -346,8 +394,8 @@ const dummyData = [
     work: 'Sewage Line Cleaning', 
     date: '25th Jul', 
     status: "New", 
-    postedOn: '2024-07-25', 
-    time: '08:30 AM', 
+    postedOn: '25th July, 25', 
+    time: '8:30 AM', 
     address: 'Ivory Residency, Tower DD, Flat No. 1104, Sector 121, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201313', 
     issueDescription: 'Foul smell in basement. Suspected sewage line blockage. Requesting cleaning and inspection.' 
   },
@@ -357,10 +405,14 @@ const dummyData = [
     work: 'Rainwater Harvesting Maintenance', 
     date: '26th Jul', 
     status: "Completed", 
-    postedOn: '2024-07-26', 
+    postedOn: '26th July, 25', 
     time: '11:00 AM', 
     address: 'Marigold Enclave, Tower EE, Flat No. 1201, Sector 122, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201314', 
-    issueDescription: 'Annual maintenance of rainwater harvesting system. Cleaning and filter replacement required.' 
+    issueDescription: 'Annual maintenance of rainwater harvesting system. Cleaning and filter replacement required.',
+    rating: 3.9,
+    completeDate: '28th July', // 2 day gap
+    feedback: '',
+    completeTime: '1:00 PM'
   },
   { 
     id: 34, 
@@ -368,10 +420,11 @@ const dummyData = [
     work: 'Society Notice Board Installation', 
     date: '27th Jul', 
     status: "Ongoing", 
-    postedOn: '2024-07-27', 
-    time: '01:30 PM', 
+    postedOn: '27th July, 25', 
+    time: '1:30 PM', 
     address: 'Lavender Towers, Tower FF, Flat No. 1402, Sector 123, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201315', 
-    issueDescription: 'Request for new digital notice board in lobby. Proposal for installation and software integration.' 
+    issueDescription: 'Request for new digital notice board in lobby. Proposal for installation and software integration.',
+    dueTime: '7:00 PM'
   },
   { 
     id: 35, 
@@ -379,13 +432,12 @@ const dummyData = [
     work: 'Main Gate Painting', 
     date: '28th Jul', 
     status: "Applied", 
-    postedOn: '2024-07-28', 
-    time: '02:45 PM', 
+    postedOn: '28th July, 25', 
+    time: '2:45 PM', 
     address: 'Willow Woods, Tower GG, Flat No. 1303, Sector 124, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201316', 
-    issueDescription: 'Main gate paint peeling off. Requesting repainting and rust treatment.' 
+    issueDescription: 'Main gate paint peeling off. Requesting repainting and rust treatment.',
+    pendingStatus: 'Approved'
   },
 ];
-
-
 
 export default dummyData;
