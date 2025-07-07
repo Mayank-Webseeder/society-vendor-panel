@@ -108,8 +108,8 @@ const Step4_Profile1 = () => {
           height: '100%',
           display: 'flex',
           borderRadius: '12px',
-          overflow: 'hidden',
           flexDirection: { xs: 'column', md: 'row' }, // Stack on small screens
+          overflow: 'auto'
         }}
       >
 
@@ -280,7 +280,7 @@ const Step4_Profile1 = () => {
             )}
           </div>
 
-          {/* Continue Button (hidden on xs/sm, visible on md+) */}
+          {/* Continue Button */}
           <div style={{ display: 'flex', justifyContent: 'center' }} className="hidden md:flex">
             <Button
               variant="outlined"
@@ -298,7 +298,8 @@ const Step4_Profile1 = () => {
                   borderColor: '#56A9D9',
                 },
                 width: '150px',
-                alignSelf: 'center'
+                alignSelf: 'center',
+                mb: 2,
               }}
             >
               Continue
