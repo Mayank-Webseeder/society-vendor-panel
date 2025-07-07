@@ -1,3 +1,7 @@
+// Primary task is just to collect onboarding data, which is saved to local storage 
+// at final onboarding step(Step8_VerifyOtp.jsx) by name of 'velra_user'
+
+
 import { createContext, useContext, useState, useCallback } from "react";
 
 
@@ -11,15 +15,19 @@ export const OnboardingProvider = ({ children }) => {
 
     const [onboardingData, setOnboardingData] = useState({
         name: '',
+        initials: '',
+        id: '',
+        dateOfBirth: '',
+        gender: '',
         businessName: '',
-        experience: '',
+        workExperience: '',
         idProof: '',
         idProofFile: null,
         building: '',
         locality: '',
         landmark: '',
-        state: '',
         city: '',
+        state: '',
         pincode: '',
         currentLocation: '',
         whatYouOffer: [],
@@ -32,8 +40,11 @@ export const OnboardingProvider = ({ children }) => {
         rating: 4,
         appliedJobs: 160,
         notifications: false,
+        agreedTermsAndConditions: false,
+        agreedPrivacyPolicy: false,
     });
 
+    
     // Memoize this function!
     const updateOnboardingData = useCallback((updates) => {
         setOnboardingData((prev) => ({ ...prev, ...updates }));

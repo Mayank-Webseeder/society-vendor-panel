@@ -17,6 +17,30 @@ function AvailabilityCard() {
   };
 
 
+  // Helper to format time (removes :00 if minutes are zero)
+  const formatTime = (timeStr) => {
+    // Matches "hh:mm AM/PM"
+    const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i);
+    if (!match) return timeStr;
+    const [, hour, min, period] = match;
+    if (min === '00') {
+      return `${parseInt(hour, 10)} ${period.toUpperCase()}`;
+    }
+    return `${parseInt(hour, 10)}:${min} ${period.toUpperCase()}`;
+  };
+
+  // Format working hours string
+  const getFormattedWorkingHours = (hours) => {
+    // Example: "10:00 AM - 7:00 PM"
+    const parts = hours.split('-').map(part => part.trim());
+    if (parts.length !== 2) return hours;
+    return `${formatTime(parts[0])} - ${formatTime(parts[1])}`;
+  };
+
+  const formattedWorkingHours = getFormattedWorkingHours(workingHours);
+
+
+
 
   return (
     <div className="font-inter w-full h-full">
@@ -65,7 +89,7 @@ function AvailabilityCard() {
               </Typography>
             </Box>
             <span className="bg-[#56A9D9] text-white text-base font-medium px-4 py-1 rounded-md shadow-sm">
-              {workingHours}
+              {formattedWorkingHours}
             </span>
           </Box>
         </Box>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, TextField, Button, Box, IconButton } from '@mui/material';
-import { ChevronLeft, Search, X } from 'lucide-react'; // Using Lucide icons
+import { ChevronLeft, Search, X } from 'lucide-react';
 import Autocomplete from '@mui/material/Autocomplete';
 import dummyOffers from '../static/dummyData_ServicesOffered';
 
@@ -41,6 +41,18 @@ const WorkDetails = () => {
   };
 
 
+  const handleEdit = () => {
+    const formData = {
+      services: selectedServices.map(s => s.value),
+      workExperience,
+      workingHours,
+      workingDays: selectedDays,
+    };
+    console.log('Collected Work Details:', formData);
+    // You can now use consolidatedData as needed
+  };
+
+
 
   
   return (
@@ -52,7 +64,7 @@ const WorkDetails = () => {
         boxShadow: 3,
         border: '1px solid #E0E0E0',
         borderRadius: '12px',
-        width: '80%', // Ensures responsiveness
+        width: '75%', // Ensures responsiveness
         //maxWidth: { xs: '100%', sm: '500px', md: '600px' }, // Example max-width for larger screens
         p: { xs: 2, sm: 3 }, // Responsive padding
         display: 'flex',
@@ -80,14 +92,20 @@ const WorkDetails = () => {
           Services Offered
         </Typography>
         <Autocomplete
-          options={dummyOffers.filter(service => !selectedServices.some(s => s.value === service.value))}
+          multiple
+          options={dummyOffers}
           getOptionLabel={(option) => option.label}
-          onChange={handleServiceAdd}
-          value={null} // Ensures the input field clears after selection
+          value={selectedServices}
+          onChange={(event, newValue) => setSelectedServices(newValue)}
+          disableCloseOnSelect
           renderInput={(params) => (
             <TextField
               {...params}
-              placeholder="Search Services"
+              placeholder={
+                selectedServices.length === 0
+                  ? "Search Services"
+                  : `${selectedServices.length} selected`
+              }
               variant="outlined"
               InputProps={{
                 ...params.InputProps,
@@ -233,9 +251,12 @@ const WorkDetails = () => {
         </Box>
       </Box>
 
+
+
       {/* Edit Button */}
       <Button
         variant="outlined"
+        onClick={handleEdit}
         sx={{
           mt: { xs: 2, sm: 6 }, // Responsive margin top
           py: '10px',

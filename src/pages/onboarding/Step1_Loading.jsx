@@ -12,17 +12,17 @@ const Step1_Loading = () => {
   // Animate dots always
   useEffect(() => {
     const interval = setInterval(() => {
-      setDotCount((prev) => (prev === 3 ? 1 : prev + 1));
+      setDotCount((prev) => (prev === 3 ? 0 : prev + 1));
     }, 400);
     return () => clearInterval(interval);
   }, []);
 
-  // Redirect after 3 seconds if spinner is shown
+  // Redirect after 2 seconds if spinner is shown
   useEffect(() => {
     if (showSpinner) {
       const timeout = setTimeout(() => {
         navigate('/auth/onboarding/what-you-offer', { replace: true });
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timeout);
     }
   }, [showSpinner, navigate]);
@@ -33,7 +33,7 @@ const Step1_Loading = () => {
         <img src={loadingPage} alt="loadingPage" />
 
         <div className='flex flex-col jusitfy-center items-center'>
-          <p className='font-extrabold text-4xl text-black/[0.69] mb-5'>
+          <p className='font-extrabold text-4xl text-black/[0.69] mb-3'>
             Let's Get You Set Up
             <span className="inline-block w-8">
               <span className="inline-block animate-dots">
@@ -41,7 +41,7 @@ const Step1_Loading = () => {
               </span>
             </span>
           </p>
-          <p className='font-medium text-lg text-black/[0.59] mb-12'>Build Your Business Presence</p>
+          <p className='font-medium text-lg text-black/[0.59] mb-10'>Build Your Business Presence</p>
         </div>
 
         {/* Button or Spinner */}

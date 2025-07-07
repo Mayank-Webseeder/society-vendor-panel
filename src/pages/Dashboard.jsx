@@ -1,7 +1,6 @@
 import NewLeadsWindow from '../components/NewLeadsWindow';
 import AvailabilityCard from '../components/AvailabilityCard';
 import QuickTipsCard from '../components/QuickTipsCard';
-import dummyData from '../static/dummyData_User';
 import Card1 from '../components/cards/Card1';
 import Card2 from '../components/cards/Card2';
 import Card3 from '../components/cards/Card3';
@@ -19,7 +18,7 @@ const Dashboard = () => {
       
       {/* Heading */}
       <div className="flex flex-col gap-1 flex-shrink-0 px-4 mb-7">
-        <h2 className="text-2xl font-medium">Hi {user?.name}!</h2>
+        <h2 className="text-2xl font-medium">Hi {user?.name ? user.name.split(' ')[0] : ''}!</h2>    {/* Display only the first name */}
         <p className="text-[#818181] text-lg">Welcome to your Dashboard!</p>
       </div>
 

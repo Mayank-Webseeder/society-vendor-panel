@@ -7,7 +7,10 @@ import logoWhite from '../../assets/logoWhite.png';
 import dummyOffers from '../../static/dummyData_ServicesOffered';
 import { useOnBoarding } from './OnboardingContext';
 
+
+
 const Step2_WhatYouOffer = () => {
+
   const { onboardingData, updateOnboardingData } = useOnBoarding();
   const navigate = useNavigate();
 
@@ -16,6 +19,7 @@ const Step2_WhatYouOffer = () => {
   const [selectedServices, setSelectedServices] = useState(onboardingData.whatYouOffer || []);
   const dropdownRef = useRef(null);
 
+  
   // Sync context when selectedServices changes
   useEffect(() => {
     if (
@@ -28,6 +32,7 @@ const Step2_WhatYouOffer = () => {
     }
     updateOnboardingData({ whatYouOffer: selectedServices });
   }, [selectedServices, onboardingData.whatYouOffer, updateOnboardingData]);
+
 
   // Effect to handle clicks outside the dropdown to close it
   useEffect(() => {
@@ -64,6 +69,9 @@ const Step2_WhatYouOffer = () => {
     navigate('/auth/onboarding/working-days');
   };
 
+
+
+
   return (
     <div style={{ position: 'relative', width: '80%', height: '80%' }}>
       {/* Velra logo absolutely positioned relative to this wrapper */}
@@ -92,6 +100,10 @@ const Step2_WhatYouOffer = () => {
           overflowY: 'auto',
         }}
       >
+
+        {/* Debugging Purposes */}
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
         {/* Left Half: Form Content */}
         <div className='flex flex-col flex-1 p-8 sm:p-12 justify-between bg-white'>
           <div className="flex flex-col">

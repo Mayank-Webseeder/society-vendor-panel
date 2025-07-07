@@ -44,6 +44,10 @@ const Step7_VerifyNumber = () => {
         overflow: 'hidden',
       }}
     >
+
+      {/* Debugging Purposes */}
+      {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
       {/* Left Half: Form Content */}
       <div className='flex-1 flex flex-col p-8 mb-28 sm:p-12 justify-center items-center bg-white'>
         <Typography

@@ -1,23 +1,54 @@
-import React from 'react';
+import { useState } from 'react';
 import { Paper, Avatar, Typography, TextField, Button, RadioGroup, FormControlLabel, Radio, Box } from '@mui/material';
 import { Edit as EditIcon } from 'lucide-react';
+import { useUser } from '../UserContext';
 
-const BasicDetailsCard = ({
-  initials = 'VS',
-  id = '#velra123',
-  name: nameProp = '',
-  contact: contactProp = '',
-  dateOfBirth: dobProp = '',
-  gender: genderProp = 'M',
-}) => {
-  const [name, setName] = React.useState(nameProp);
-  const [contact, setContact] = React.useState(contactProp);
-  const [dateOfBirth, setDateOfBirth] = React.useState(dobProp);
-  const [gender, setGender] = React.useState(genderProp);
 
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
+
+const BasicDetailsCard = ({ initials = 'VS' }) => {
+
+  const { user, setUser } = useUser();
+
+  //Temporary state for editing
+  const [tempDetails, setTempDetails] = useState({
+    name: user.name || '',
+    contact: user.phone || '',
+    dateOfBirth: user.dateOfBirth || '',
+    gender: user.gender || 'M',
+  });
+
+  // Handlers for each field
+  const handleChange = (field) => (e) => {
+    setTempDetails({ ...tempDetails, [field]: e.target.value });
   };
+
+  // Contact: only numbers, +, -
+  const handleContactChange = (e) => {
+    const value = e.target.value.replace(/[^0-9+\-]/g, '');
+    setTempDetails({ ...tempDetails, contact: value });
+  };
+
+  // DOB: only numbers & -
+  const handleDateOfBirthChange = (e) => {
+    const value = e.target.value.replace(/[^0-9\-]/g, '');
+    setTempDetails({ ...tempDetails, dateOfBirth: value });
+  };
+
+  // Gender
+  const handleGenderChange = (e) => {
+    setTempDetails({ ...tempDetails, gender: e.target.value })
+  };
+
+
+  // Save changes to context on Edit
+  const handleEdit = () => {
+    setUser({ ...user, ...tempDetails });
+    console.log(tempDetails);
+  };
+
+
+
+
 
   return (
     <Paper
@@ -84,7 +115,7 @@ const BasicDetailsCard = ({
       </Box>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        {id}
+        {user.id}
       </Typography>
 
       {/* Details Section */}
@@ -98,8 +129,8 @@ const BasicDetailsCard = ({
           variant="outlined"
           placeholder='Rahul Sharma'
           fullWidth
-          value={name}
-          onChange={e => setName(e.target.value)}
+          value={tempDetails.name}
+          onChange={handleChange('name')}
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '8px',
@@ -125,8 +156,8 @@ const BasicDetailsCard = ({
           placeholder='+91 999 999 9999'
           variant="outlined"
           fullWidth
-          value={contact}
-          onChange={e => setContact(e.target.value)}
+          value={tempDetails.contact}
+          onChange={handleContactChange}    // Validation
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '8px',
@@ -154,8 +185,8 @@ const BasicDetailsCard = ({
           placeholder='19-05-1999'
           variant="outlined"
           fullWidth
-          value={dateOfBirth}
-          onChange={e => setDateOfBirth(e.target.value)}
+          value={tempDetails.dateOfBirth}
+          onChange={handleDateOfBirthChange}
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '8px',
@@ -180,7 +211,7 @@ const BasicDetailsCard = ({
           <Typography variant="subtitle1" sx={{ fontWeight: '500', color: 'rgb(28,27,31,0.69)' }}>
             Gender
           </Typography>
-          <RadioGroup row value={gender} onChange={handleGenderChange}>
+          <RadioGroup row value={tempDetails.gender} onChange={handleGenderChange}>
             <FormControlLabel
               value="M"
               control={<Radio sx={{ color: '#1976D2', '&.Mui-checked': { color: '#1976D2' } }} />}
@@ -206,6 +237,7 @@ const BasicDetailsCard = ({
       {/* Edit Button */}
       <Button
         variant="outlined"
+        onClick={handleEdit}
         sx={{
           mt: 3,
           mb: 3,
@@ -226,5 +258,6 @@ const BasicDetailsCard = ({
     </Paper>
   );
 };
+
 
 export default BasicDetailsCard;

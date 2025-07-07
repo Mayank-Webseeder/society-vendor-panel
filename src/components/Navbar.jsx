@@ -1,12 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
 import Logo from '../assets/Logo.png';
-import dummyData from "../static/dummyData_User";
-import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 
 
 const Navbar = () => {
 
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const logoClickHandler = () => {
@@ -17,6 +18,7 @@ const Navbar = () => {
     navigate('/my-profile');
   }
 
+// console.log('count--> ',user.notificationsCount);
   
   return (
     <div className='flex items-center justify-between h-full px-12'>
@@ -30,7 +32,7 @@ const Navbar = () => {
         <div className="relative flex items-center justify-center cursor-pointer">
           <FaBell size={26} color="#ABABAD" />
           {
-            dummyData.notifications  &&  <div className="absolute top-0 right-0 h-2.5 w-2.5 bg-red-600 rounded-full"></div>
+            user.notifications  &&  (user.notificationsCount > 0)  &&  <div className="absolute top-0 right-0 h-2.5 w-2.5 bg-red-600 rounded-full"></div>
           }
         </div>
         

@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, TextField, Box, CircularProgress } from '@mui/material';
 import verifyNumber from '../../assets/verifyNumber.png';
+import logoWhite from '../../assets/logoWhite.png';
 import { useAuth } from '../../AuthContext';
 import { useOnBoarding } from './OnboardingContext';
 import { useUser } from '../../UserContext';
 
 
-const RESEND_TIME = 30; // seconds
+const RESEND_TIME = 30;    // seconds
 
 
 const Step7_VerifyNumber = () => {
@@ -79,7 +80,7 @@ const Step7_VerifyNumber = () => {
 
       /***** Save onboarding data to localStorage for global use *****/
       localStorage.setItem('velra_user', JSON.stringify(onboardingData));
-      setUser(onboardingData);    //<-- update context immediately
+      setUser(onboardingData);    //<-- Update context immediately
 
       navigate('/dashboard');
     }, 2200); // 2.2 seconds for a smooth effect
@@ -97,7 +98,6 @@ const Step7_VerifyNumber = () => {
         display: 'flex',
         borderRadius: '12px',
         overflow: 'hidden',
-        fontFamily: 'Inter, sans-serif',
       }}
     >
 

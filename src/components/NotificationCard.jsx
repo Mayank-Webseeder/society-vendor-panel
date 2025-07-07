@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { Paper, Switch, Typography, Box } from '@mui/material'; // Added Box and Typography for better structure
+import { Paper, Switch, Typography, Box } from '@mui/material';
+import { useUser } from '../UserContext';
+
+
 
 const NotificationCard = () => {
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+  const { user, setUser } = useUser();    // 'setUser' is the context setter to update user data
 
   const handleNotificationChange = (event) => {
-    setNotificationsEnabled(event.target.checked);
+    setUser({ ...user, notifications: event.target.checked });
   };
 
+
+
+  
   return (
     <Paper
       elevation={3}
@@ -19,7 +25,6 @@ const NotificationCard = () => {
         boxShadow: 3,
         width: '100%',
         mb: 3,
-        fontFamily: 'Inter, sans-serif', // Ensure Inter font is used
       }}
     >
       <Typography variant="h6" sx={{ fontWeight: 'medium', color: '#424242' }}>
@@ -29,7 +34,7 @@ const NotificationCard = () => {
       <Box className="flex items-center">
         {/* The ON/OFF text is now part of the Switch itself */}
         <Switch
-          checked={notificationsEnabled}
+          checked={user.notifications}
           onChange={handleNotificationChange}
           // Removed color="primary" as we're custom styling
           sx={{

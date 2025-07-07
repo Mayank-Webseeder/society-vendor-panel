@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
-import { Paper, Typography, TextField, Button, Box } from '@mui/material';
+import { useState } from 'react';
+import { Paper, Typography, TextField, Button, Box, FormControl, Autocomplete } from '@mui/material';
+import indianStates from '../static/dummyData_IndianStates';
+import { useUser } from '../UserContext';
 
-const AddressFormCard = ({
-    buildingFlatShopNo: initialBuildingFlatShopNo = '',
-    landmark1: initialLandmark1 = '',
-    landmark2: initialLandmark2 = '',
-    city: initialCity = '',
-    state: initialState = '',
-    pincode: initialPincode = '',
-}) => {
-    const [buildingFlatShopNo, setBuildingFlatShopNo] = useState(initialBuildingFlatShopNo);
-    const [landmark1, setLandmark1] = useState(initialLandmark1);
-    const [landmark2, setLandmark2] = useState(initialLandmark2);
-    const [city, setCity] = useState(initialCity);
-    const [stateValue, setStateValue] = useState(initialState);
-    const [pincode, setPincode] = useState(initialPincode);
+
+
+const AddressFormCard = () => {
+
+    const { user, setUser } = useUser();
+
+    const [tempUserDetails, setTempUserDetails] = useState({
+        building: user.building || '',
+        landmark: user.landmark || '',
+        city: user.city || '',
+        state: user.state || '',
+        pincode: user.pincode || '',
+    });
+
+    // Update tempUserDetails when user context changes (optional, for sync)
+    // useEffect(() => { setTempUserDetails(user); }, [user]);
+
+    // Helper to update a single field in temporary form
+    const handleChange = (field) => (e) => {
+        setTempUserDetails({ ...tempUserDetails, [field]: e.target.value });
+    };
+
+
+    // Handler for edit button --> Finally, save the temporary formData to user-context
+    const handleEdit = () => {
+        setUser({ ...user, ...tempUserDetails });
+        console.log(tempUserDetails);
+    };
 
     return (
         <Paper
@@ -40,14 +56,13 @@ const AddressFormCard = ({
                     Building/Flat/Shop No.
                 </Typography>
                 <TextField
-                    // label="Building/Flat/Shop No."
                     placeholder='Flat-203/Shanti Residency, Sector 21, Navi Mumbai, Maharashtra - 400706'
                     variant="outlined"
                     fullWidth
                     multiline
                     rows={2}
-                    value={buildingFlatShopNo}
-                    onChange={e => setBuildingFlatShopNo(e.target.value)}
+                    value={tempUserDetails.building || ''}
+                    onChange={handleChange('building')}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             borderRadius: '8px',
@@ -70,12 +85,11 @@ const AddressFormCard = ({
                     Landmark
                 </Typography>
                 <TextField
-                    // label="Landmark"
                     placeholder='Purple Residency'
                     variant="outlined"
                     fullWidth
-                    value={landmark1}
-                    onChange={e => setLandmark1(e.target.value)}
+                    value={tempUserDetails.landmark || ''}
+                    onChange={handleChange('landmark')}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             borderRadius: '8px',
@@ -94,17 +108,15 @@ const AddressFormCard = ({
                     }}
                 />
 
-
                 <Typography variant="subtitle1" sx={{ fontWeight: '500', color: 'rgb(28,27,31,0.69)' }}>
                     City
                 </Typography>
                 <TextField
-                    // label="City"
                     placeholder='Mumbai'
                     variant="outlined"
                     fullWidth
-                    value={city}
-                    onChange={e => setCity(e.target.value)}
+                    value={tempUserDetails.city || ''}
+                    onChange={handleChange('city')}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             borderRadius: '8px',
@@ -126,41 +138,62 @@ const AddressFormCard = ({
                 <Typography variant="subtitle1" sx={{ fontWeight: '500', color: 'rgb(28,27,31,0.69)' }}>
                     State
                 </Typography>
-                <TextField
-                    // label="State"
-                    placeholder='Maharashtra'
-                    variant="outlined"
-                    fullWidth
-                    value={stateValue}
-                    onChange={e => setStateValue(e.target.value)}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
+                <FormControl fullWidth variant="outlined" required>
+                    <Autocomplete
+                        options={indianStates}
+                        getOptionLabel={option => option.label}
+                        value={indianStates.find(opt => opt.value === tempUserDetails.state) || null}
+                        onChange={(e, newValue) => setTempUserDetails({ ...tempUserDetails, state: newValue ? newValue.value : '' })}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Select State"
+                                variant="outlined"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                        bgcolor: '#ffffff',
+                                        fontSize: '0.875rem',
+                                        py: '5px',
+                                        '& fieldset': { borderColor: '#e0e0e0' },
+                                    },
+                                    '& .MuiInputBase-input': {
+                                        color: '#424242',
+                                        fontSize: '0.875rem',
+                                        py: '5px',
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        fontSize: '0.875rem',
+                                        color: '#757575',
+                                    },
+                                }}
+                            />
+                        )}
+                        disablePortal
+                        openOnFocus
+                        sx={{
                             borderRadius: '8px',
                             bgcolor: '#ffffff',
-                            '& fieldset': { borderColor: '#e0e0e0' },
-                        },
-                        '& .MuiInputBase-input': {
-                            color: '#424242',
-                            fontSize: '0.875rem',
-                            py: '10px',
-                        },
-                        '& .MuiInputLabel-root': {
-                            fontSize: '0.875rem',
-                            color: '#757575',
-                        },
-                    }}
-                />
+                            maxWidth: '100%',
+                            mb: 2,
+                            // Optional: match the height of other fields
+                            '& .MuiAutocomplete-inputRoot': {
+                                paddingX: 1,
+                                paddingY: 0.5,
+                            },
+                        }}
+                    />
+                </FormControl>
 
                 <Typography variant="subtitle1" sx={{ fontWeight: '500', color: 'rgb(28,27,31,0.69)' }}>
                     Pincode
                 </Typography>
                 <TextField
-                    // label="Pincode"
                     placeholder='302019'
                     variant="outlined"
                     fullWidth
-                    value={pincode}
-                    onChange={e => setPincode(e.target.value)}
+                    value={tempUserDetails.pincode || ''}
+                    onChange={handleChange('pincode')}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             borderRadius: '8px',
@@ -185,22 +218,19 @@ const AddressFormCard = ({
                 sx={{
                     mt: 1,
                     py: '10px',
-                    // bgcolor: '#1976D2',
-                    // color: 'white',
                     fontWeight: 'semibold',
                     borderRadius: '8px',
                     boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                    // '&:hover': {
-                    //     bgcolor: '#1565C0',
-                    // },
                     width: '120px',
                     alignSelf: 'center',
                 }}
+                onClick={handleEdit}
             >
                 Edit
             </Button>
         </Paper>
     );
 };
+
 
 export default AddressFormCard;

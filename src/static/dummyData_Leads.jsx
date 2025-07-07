@@ -11,8 +11,8 @@ const dummyData = [
     issueDescription: 'Leakage in kitchen sink tap. Society has reported consistent dripping and low water pressure. Inspection and minor repair expected.',
     rating: 4.5,
     completeDate: '24th June', // 0 day gap
-    feedback: 'Very professional. The issue was resolved quickly and cleanly. Would request again.',
-    completeTime: '5:00 PM'
+    completeTime: '5:00 PM',
+    feedback: 'Very professional. The issue was resolved quickly and cleanly. Would request again.'
   },
   { 
     id: 2, 
@@ -73,8 +73,8 @@ const dummyData = [
     issueDescription: 'Overgrown bushes and weeds in garden. Society requests trimming, removal of dead plants, and fresh landscaping for the upcoming festival.',
     rating: 3.7,
     completeDate: '30th June', // 1 day gap (unchanged, but randomized below)
-    feedback: '',
-    completeTime: '12:00 PM'
+    completeTime: '12:00 PM',
+    feedback: ''
   },
   { 
     id: 7, 
@@ -111,8 +111,8 @@ const dummyData = [
     issueDescription: 'Upgrade CCTV cameras at all entry and exit points. Current system is outdated and has blind spots. Proposal for new high-definition cameras requested.',
     rating: 4.9,
     completeDate: '4th July', // 2 day gap
-    feedback: 'Excellent upgrade. The new cameras cover all areas and the installation was smooth.',
-    completeTime: '6:00 PM'
+    completeTime: '6:00 PM',
+    feedback: 'Excellent upgrade. The new cameras cover all areas and the installation was smooth.'
   },
   { 
     id: 10, 
@@ -161,8 +161,8 @@ const dummyData = [
     issueDescription: 'Stains in hallway carpet from recent event. Deep cleaning and deodorizing required to restore appearance and hygiene.',
     rating: 3.2,
     completeDate: '6th July', // 0 day gap
-    feedback: '',
-    completeTime: '2:00 PM'
+    completeTime: '2:00 PM',
+    feedback: ''
   },
   { 
     id: 14, 
@@ -211,8 +211,8 @@ const dummyData = [
     issueDescription: 'Faded parking lines causing confusion. Society requests repainting of all parking bays and directional arrows.',
     rating: 4.1,
     completeDate: '11th July', // 1 day gap (unchanged, but randomized below)
-    feedback: 'Good job. The parking lines are now clearly visible.',
-    completeTime: '4:00 PM'
+    completeTime: '4:00 PM',
+    feedback: 'Good job. The parking lines are now clearly visible.'
   },
   { 
     id: 18, 
@@ -261,8 +261,8 @@ const dummyData = [
     issueDescription: 'Lift not stopping at 3rd floor. Residents have reported inconvenience. Repair and safety check required.',
     rating: 2.8,
     completeDate: '16th July', // 2 day gap
+    completeTime: '3:00 PM',
     feedback: '',
-    completeTime: '3:00 PM'
   },
   { 
     id: 22, 
@@ -311,8 +311,8 @@ const dummyData = [
     issueDescription: 'Treadmill and elliptical not working. Requesting urgent repair and maintenance.',
     rating: 4.0,
     completeDate: '18th July', // 0 day gap
-    feedback: '',
-    completeTime: '11:00 AM'
+    completeTime: '11:00 AM',
+    feedback: ''
   },
   { 
     id: 26, 
@@ -411,8 +411,8 @@ const dummyData = [
     issueDescription: 'Annual maintenance of rainwater harvesting system. Cleaning and filter replacement required.',
     rating: 3.9,
     completeDate: '28th July', // 2 day gap
-    feedback: '',
-    completeTime: '1:00 PM'
+    completeTime: '1:00 PM',
+    feedback: ''
   },
   { 
     id: 34, 
@@ -439,5 +439,6 @@ const dummyData = [
     pendingStatus: 'Approved'
   },
 ];
+
 
 export default dummyData;

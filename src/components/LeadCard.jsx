@@ -100,6 +100,7 @@ const LeadCard = ({ lead }) => {
       <Paper
         elevation={3}
         className="mb-3 pb-4 px-4 pt-1 rounded-lg border border-solid border-[#C5C5C5]"
+        sx={{borderRadius: 3}}
       >
         <Box className="flex justify-between items-center mb-2">
 

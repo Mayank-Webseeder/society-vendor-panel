@@ -1,20 +1,20 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { ChevronLeft } from 'lucide-react';
 import termsData from '../static/dummyData_TermsConditions';
+import { useUser } from '../UserContext';
 
 
 
 const TermsAndConditions = () => {
 
+    const { user, setUser } = useUser();
+
     const navigate = useNavigate();
 
-    const [agreed, setAgreed] = useState(false);
-
     const handleCheckboxChange = (event) => {
-        setAgreed(event.target.checked);
-        setTimeout(() => navigate('/my-profile'), 1000);
+        setUser({ ...user, agreedTermsAndConditions: event.target.checked })
+        setTimeout(() => navigate('/my-profile/account-support'), 1000);
     };
 
 
@@ -84,7 +84,7 @@ const TermsAndConditions = () => {
                 <FormControlLabel
                     control={
                         <Checkbox
-                            checked={agreed}
+                            checked={user.agreedTermsAndConditions}
                             onChange={handleCheckboxChange}
                             sx={{
                                 color: '#4487AE', // Changed checkbox color

@@ -49,7 +49,7 @@ const Step5_Profile2 = () => {
     navigate('/auth/onboarding/location');
   };
 
-
+console.log(onboardingData.idProofFile);
 
   
   return (
@@ -63,6 +63,10 @@ const Step5_Profile2 = () => {
         overflow: 'hidden',
       }}
     >
+
+      {/* Debugging Purposes */}
+      {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
       <div
         className="w-full h-full rounded-xl p-8 sm:p-12 flex flex-col justify-between bg-white"
         style={{

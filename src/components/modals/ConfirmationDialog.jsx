@@ -21,7 +21,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
         padding: '32px 24px', zIndex: 10, width: '100%', maxWidth: '23rem', overflowY: 'auto', maxHeight: '90vh'
       }}>
-        <Typography variant="h6" sx={{ mb: 2, textAlign: 'center', fontWeight: 600 }}>
+        <Typography variant="h6" sx={{ mb: 2, textAlign: 'center', fontWeight: 800, fontSize: 22 }}>
           {title}
         </Typography>
         <Typography sx={{ mb: 3, textAlign: 'center' }}>{message}</Typography>

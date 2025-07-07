@@ -167,7 +167,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
           <Box sx={{display: 'flex', alignItems: 'center', gap: 1 }}>
             <TbCalendarCheck color='rgba(28,27,31,0.69)' />
             <Typography variant="subtitle2" color='rgba(28,27,31,0.69)'>
-              Job Date and Time: <span className="font-normal px-1 text-[16px] text-[#2E6074]/[0.69]">{safe(lead.postedOn)} <span>|</span> {safe(lead.date)}</span>
+              Job Date and Time: <span className="font-normal px-1 text-[16px] text-[#2E6074]/[0.69]">{safe(lead.postedOn)} <span>|</span> {safe(lead.time)}</span>
             </Typography>
           </Box>
           

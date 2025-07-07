@@ -5,9 +5,12 @@ import onboardingImage from '../../assets/onboardingImage.png';
 import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
 
+
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+
 const Step3_WorkingDays = () => {
+
   const navigate = useNavigate();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
@@ -18,13 +21,28 @@ const Step3_WorkingDays = () => {
   const [endPeriod, setEndPeriod] = useState(onboardingData.wokingHours?.[1]?.split(' ')[1] || 'PM');
   const [error, setError] = useState('');
 
-  // Only allow 0-12 and colon for time input
+
   const handleTimeChange = (value, setter) => {
-    if (!/^[0-9:]*$/.test(value)) return;
+    // Only allow digits and at most one colon, and colon not as first character
+    if (!/^\d{0,2}(:\d{0,2})?$/.test(value)) return;
+
+    // Prevent colon as the first character
+    if (value.startsWith(':')) return;
+
+    // If there's a colon, validate minutes part
+    if (value.includes(':')) {
+      const [hour, min] = value.split(':');
+      // Only allow if minutes is less than 60
+      if (min && (isNaN(min) || Number(min) >= 60)) return;
+    }
+
+    // Only allow hour between 0 and 12
     const [hour] = value.split(':');
     if (hour && (isNaN(hour) || Number(hour) < 0 || Number(hour) > 12)) return;
+
     setter(value);
   };
+
 
   const handleStartTimeChange = (e) => {
     handleTimeChange(e.target.value, setStartTime);
@@ -34,15 +52,32 @@ const Step3_WorkingDays = () => {
     handleTimeChange(e.target.value, setEndTime);
   };
 
+  // Helper to format time: pad minutes to two digits if only one digit, and add :00 if only hour is present
+  const formatTime = (timeStr) => {
+    if (!timeStr) return '';
+    const [hour, min] = timeStr.split(':');
+    if (min === undefined) {
+      // Only hour entered, add :00
+      return `${String(Number(hour))}:00`;
+    }
+    const paddedMin = min.length === 1 ? `0${min}` : min;
+    return `${String(Number(hour))}:${paddedMin}`;
+  };
+
+
   useEffect(() => {
+    // Always store workingDays in the correct order
+    const orderedDays = daysOfWeek.filter(day => selectedDays.includes(day));
+
     updateOnboardingData({
-      workingDays: selectedDays,
+      workingDays: orderedDays,
       wokingHours: [
-        startTime ? `${startTime} ${startPeriod}` : '',
-        endTime ? `${endTime} ${endPeriod}` : '',
+        startTime ? `${formatTime(startTime)} ${startPeriod}` : '',
+        endTime ? `${formatTime(endTime)} ${endPeriod}` : '',
       ],
     });
   }, [selectedDays, startTime, startPeriod, endTime, endPeriod, updateOnboardingData]);
+
 
   const handleDayToggle = (day) => {
     setSelectedDays((prevSelectedDays) =>
@@ -51,6 +86,18 @@ const Step3_WorkingDays = () => {
         : [...prevSelectedDays, day]
     );
   };
+
+
+  const timeToMinutes = (time, period) => {
+    if (!time) return 0;
+    let [hour, min] = time.split(':');
+    hour = Number(hour);
+    min = Number(min) || 0;
+    if (period === 'PM' && hour !== 12) hour += 12;
+    if (period === 'AM' && hour === 12) hour = 0;
+    return hour * 60 + min;
+  };
+
 
   const handleContinue = () => {
     if (selectedDays.length === 0) {
@@ -74,10 +121,25 @@ const Step3_WorkingDays = () => {
       setError('Hours must be between 0 and 12.');
       return;
     }
+
+    // --- Start time must not be after end time ---
+    const formattedStartTime = formatTime(startTime);
+    const formattedEndTime = formatTime(endTime);
+    const startMins = timeToMinutes(formattedStartTime, startPeriod);
+    const endMins = timeToMinutes(formattedEndTime, endPeriod);
+    if (startMins >= endMins) {
+      setError('Opening time must be before closing time.');
+      return;
+    }
+
     setError('');
     navigate('/auth/onboarding/profile-1');
   };
 
+
+
+
+  
   return (
     <div style={{ position: 'relative', width: '80%', height: '82%' }}>
       {/* Velra logo absolutely positioned relative to this wrapper */}
@@ -112,6 +174,10 @@ const Step3_WorkingDays = () => {
           },
         }}
       >
+
+        {/* Debugging Purposes */}
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
         {/* Left Half: Form Content */}
         <Box
           sx={{
