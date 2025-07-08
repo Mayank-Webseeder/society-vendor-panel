@@ -19,7 +19,7 @@ const defaultUser = {
   currentLocation: "N/A",
   whatYouOffer: ["Housekeeping Services", "Pest Control"],
   workingDays: ['Wed', 'Thu', 'Mon', 'Fri'],
-  workingHours: '9:30 AM - 7:30 PM',
+  workingHours: '9 AM - 7:30 PM',
   phone: "",
   otp: "1234",
   avgResponseTime: 0,

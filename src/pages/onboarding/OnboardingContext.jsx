@@ -32,14 +32,14 @@ export const OnboardingProvider = ({ children }) => {
         currentLocation: '',
         whatYouOffer: [],
         workingDays: [],
-        wokingHours: [],    //startTime, endTime
+        workingHours: '',    //ex.'10:00 AM - 7:30 PM'
         phone: '',
         otp: '',
         avgResponseTime: 9,
         jobsCompleted: 142,
         rating: 4,
         appliedJobs: 160,
-        notifications: false,
+        notifications: true,
         agreedTermsAndConditions: false,
         agreedPrivacyPolicy: false,
     });

@@ -15,10 +15,10 @@ const Step3_WorkingDays = () => {
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
   const [selectedDays, setSelectedDays] = useState(onboardingData.workingDays || []);
-  const [startTime, setStartTime] = useState(onboardingData.wokingHours?.[0]?.split(' ')[0] || '');
-  const [startPeriod, setStartPeriod] = useState(onboardingData.wokingHours?.[0]?.split(' ')[1] || 'AM');
-  const [endTime, setEndTime] = useState(onboardingData.wokingHours?.[1]?.split(' ')[0] || '');
-  const [endPeriod, setEndPeriod] = useState(onboardingData.wokingHours?.[1]?.split(' ')[1] || 'PM');
+  const [startTime, setStartTime] = useState(onboardingData.workingHours?.[0]?.split(' ')[0] || '');
+  const [startPeriod, setStartPeriod] = useState(onboardingData.workingHours?.[0]?.split(' ')[1] || 'AM');
+  const [endTime, setEndTime] = useState(onboardingData.workingHours?.[1]?.split(' ')[0] || '');
+  const [endPeriod, setEndPeriod] = useState(onboardingData.workingHours?.[1]?.split(' ')[1] || 'PM');
   const [error, setError] = useState('');
 
 
@@ -71,10 +71,10 @@ const Step3_WorkingDays = () => {
 
     updateOnboardingData({
       workingDays: orderedDays,
-      wokingHours: [
-        startTime ? `${formatTime(startTime)} ${startPeriod}` : '',
-        endTime ? `${formatTime(endTime)} ${endPeriod}` : '',
-      ],
+      workingHours:
+        startTime && endTime ?
+        `${formatTime(startTime)} ${startPeriod} - ${formatTime(endTime)} ${endPeriod}`  
+        : '',
     });
   }, [selectedDays, startTime, startPeriod, endTime, endPeriod, updateOnboardingData]);
 

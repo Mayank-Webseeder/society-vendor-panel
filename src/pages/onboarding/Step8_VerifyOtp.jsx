@@ -73,6 +73,9 @@ const Step8_VerifyOtp = () => {
     const enteredOtp = otp.join('');
     if (enteredOtp !== '7853') {
       setError('Incorrect OTP. Please try again.');
+      setOtp(['', '', '', '']); // <-- Clear all OTP input fields
+      // Optionally, focus the first input
+      if (inputRefs.current[0]) inputRefs.current[0].focus();
       return;
     }
     setError('');
