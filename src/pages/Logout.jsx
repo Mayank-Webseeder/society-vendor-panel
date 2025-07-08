@@ -16,7 +16,6 @@ const Logout = () => {
     setLoading(true);
     setTimeout(() => {
       logout();    // Clear auth state & remove 'velra_logged_in'
-      localStorage.removeItem('velra_user');    // Also clear user data
       //localStorage.clear();    // (if you want to clear everything)
       navigate('/auth', { replace: true });    // Use navigate for SPA redirect
     }, 2000);

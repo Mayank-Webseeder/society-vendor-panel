@@ -24,6 +24,7 @@ const Step8_VerifyOtp = () => {
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isTiming, setIsTiming] = useState(true);
   const [verifying, setVerifying] = useState(false); // <-- NEW
+  const [error, setError] = useState('');
   const timerRef = useRef(null);
   const inputRefs = useRef([]);
 
@@ -66,7 +67,15 @@ const Step8_VerifyOtp = () => {
 
   const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
 
+
+
   const handleContinue = () => {
+    const enteredOtp = otp.join('');
+    if (enteredOtp !== '7853') {
+      setError('Incorrect OTP. Please try again.');
+      return;
+    }
+    setError('');
     setVerifying(true);
     setTimeout(() => {
       setVerifying(false);
@@ -232,6 +241,12 @@ const Step8_VerifyOtp = () => {
               </Button>
             )}
           </Box>
+
+          {error && (
+            <Typography color="error" sx={{ mb: 2, fontWeight: 500 }}>
+              {error}
+            </Typography>
+          )}
 
           {/* Continue button or animation */}
           {verifying ? (

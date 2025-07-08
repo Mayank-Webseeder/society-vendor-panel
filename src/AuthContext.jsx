@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("velra_logged_in");
+    localStorage.removeItem("velra_user");    //Also clear the user data
     setIsLoggedIn(false);
   };
 
