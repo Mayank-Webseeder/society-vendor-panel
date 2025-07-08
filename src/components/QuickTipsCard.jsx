@@ -8,6 +8,7 @@ function QuickTipsCard() {
     "Responding faster increases your chance by 42%.",
     "Highest earning vendors do 4 jobs/day.",
     "Clients give 5 star to polite and clean vendors.",
+    "Update your profile regularly to attract more clients.",
   ];
 
   return (

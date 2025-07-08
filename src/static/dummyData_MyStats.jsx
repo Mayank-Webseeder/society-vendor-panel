@@ -1,6 +1,7 @@
 
 
 const generateRatings = () => {
+
   let ratings = [];
 
   // Add 82 ratings of 5.0
@@ -29,3 +30,10 @@ const generateRatings = () => {
 
 
 export const ratingsData = generateRatings();
+export const ratingsCount = ratingsData.length;
+
+// Calculate the final average rating (rounded to 1 decimal)
+export const finalRating = ratingsCount? 
+    (ratingsData.reduce((sum, r) => sum + r.rating, 0) / ratingsCount).toFixed(1)
+    : 
+    '0.0';

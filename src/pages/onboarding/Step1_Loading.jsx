@@ -4,7 +4,10 @@ import loadingPage from '../../assets/loadingPage.png';
 import loadingPageTop from '../../assets/loadingPageTop.png';
 import loadingPageBottom from '../../assets/loadingPageBottom.png';
 
+
+
 const Step1_Loading = () => {
+  
   const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
   const [dotCount, setDotCount] = useState(1);

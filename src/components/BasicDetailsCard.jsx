@@ -5,7 +5,7 @@ import { useUser } from '../UserContext';
 
 
 
-const BasicDetailsCard = ({ initials = 'VS' }) => {
+const BasicDetailsCard = () => {
 
   const { user, setUser } = useUser();
 
@@ -92,7 +92,7 @@ const BasicDetailsCard = ({ initials = 'VS' }) => {
             border: '3px solid white',
           }}
         >
-          {initials}
+          {user.initials}
         </Avatar>
       </Box>
 
