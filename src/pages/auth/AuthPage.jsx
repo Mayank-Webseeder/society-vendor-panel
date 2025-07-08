@@ -17,6 +17,7 @@ const AuthPage = () => {
 
   const [loading, setLoading] = useState(false);
 
+  
   const handleLogin = () => {
     // You can add form validation here
     setLoading(true);

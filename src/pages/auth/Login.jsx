@@ -13,8 +13,13 @@ const Login = ({ onSwitch, onLogin }) => {
   
   const handleLogin = (e) => {
     e.preventDefault();
-    // Validation can be added if needed
-    if(onLogin)  onLogin();
+
+    // Dummy Login Credentials --> Replace this with real validation!
+    if (email === "demo@velra.com" && password === "velra123") {
+      if (onLogin) onLogin();
+    } else {
+      alert("Invalid email or password");
+    }
   };
 
 
