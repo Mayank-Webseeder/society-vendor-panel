@@ -17,7 +17,7 @@ const Card3 = () => {
       <div className="flex gap-1">
         {
           Array.from({ length: count }).map((_, idx) => (
-            <IoIosStar key={idx} size={34} color="#A387F4" className="mt-2 z-20" />
+            <IoIosStar key={idx} size={37} color="#A387F4" className="mt-2 z-20" />
           ))
         }
       </div>
@@ -27,14 +27,14 @@ const Card3 = () => {
 
 
   return (
-    <div className="relative bg-[#7366EC] w-56 rounded-xl h-36 overflow-hidden hover:scale-105 cursor-pointer transition-transform duration-300">
-      <p className="relative font-medium text-lg pl-2 text-white/90 z-30 pt-3">Rating & Feedback</p>
-      <p className="relative font-semibold text-white text-3xl z-30 pt-7 pl-1">
+    <div className="relative bg-[#7366EC] w-60 rounded-xl h-40 overflow-hidden hover:scale-105 cursor-pointer transition-transform duration-300">
+      <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">Rating & Feedback</p>
+      <div className="relative font-semibold text-white text-4xl z-30 pt-10 pl-3">
         {renderStars()}
-      </p>
-      <img src={Card3_Vector26} className="absolute z-10 right-0 bottom-0" alt="card3-vector-26" />
+      </div>
+      <img src={Card3_Vector26} className="absolute z-20 right-0 bottom-0" alt="card3-vector-26" />
       <img src={Card3_Vector27} className="absolute z-10 right-0 bottom-0" alt="card3-vector-27" />
-      <FaChevronRight strokeWidth={3} size={22} color="rgba(255,255,255,0.84)" className="absolute right-3 bottom-3 z-20" />
+      <FaChevronRight strokeWidth={3} size={25} color="rgba(255,255,255,0.84)" className="absolute right-3 bottom-3 z-20" />
     </div>
   )
 }

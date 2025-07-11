@@ -1,117 +1,185 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
-import authImgLower from '../../assets/authImgLower.png';
-import authImgUpper from '../../assets/authImgUpper.png';
-import velraSymbol from '../../assets/velraSymbol.png';
-import { Typography, CircularProgress } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
 import { useAuth } from '../../AuthContext';
 
-
 const AuthPage = () => {
-
   const { login } = useAuth();
-
-  const [isLogin, setIsLogin] = useState(true);    // By default, login page will be shown
-
+  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  
   const handleLogin = () => {
-    // You can add form validation here
     setLoading(true);
     setTimeout(() => {
-      login(); // This sets isLoggedIn to true and saves it in localStorage
-      window.location.href = "/dashboard";
+      login();
+
+      setLoading(false);
     }, 2000);
   };
 
+  // Custom dot animation variants for AuthPage loading (up-down pulsating)
+  const dotVariants = {
+    start: { y: "0px" },
+    end: { y: "-15px" },
+  };
+
+  const dotTransition = {
+    duration: 0.5,
+    repeat: Infinity,
+    repeatType: "reverse",
+    ease: "easeInOut",
+  };
+
+  const formPanelVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+  };
+
+  const imagePanelVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.2 } },
+  };
 
   return (
-    <div
-      className="fixed inset-0 flex overflow-y-hidden"
-      style={{
-        flexDirection: 'row',
-      }}
-    >
-      {/* Left: Form */}
-      <div
-        className="
-          flex flex-col justify-center items-center
-          bg-white p-4 sm:p-8
-          w-full
-          md:w-1/2
-          transition-all
-          duration-300
-        "
-        style={{
-          minHeight: '100vh',
-        }}
+    <div className="min-h-screen overflow-y-hidden bg-gray-200 flex flex-col md:flex-row font-inter overflow-hidden">
+      {/* Left: Form Section - Glassmorphism ENHANCEMENT */}
+      <motion.div
+        className="relative flex flex-col justify-center items-center p-6 md:px-12
+                   bg-white/60 backdrop-blur-xl flex-1 md:w-1/2 min-h-screen z-10
+                   shadow-xl rounded-lg md:rounded-none"
+        variants={formPanelVariants}
+        initial="hidden"
+        animate="visible"
       >
+        {/* Optional: Subtle background pattern for more depth */}
+        <div
+          className="absolute inset-0 z-0 opacity-10"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E0E0E0' fill-opacity='0.5' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zm-.173 0L0 5.827V6h1V.827L.173 0zM5.827 0L6 .173V1H.173L0 .827V0h5.827z'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: '6px 6px'
+          }}
+        ></div>
+
         {/* VELRA logo & Title */}
-        <div className='flex gap-2 items-center mb-16'>
-          <img src={velraSymbol} className='h-20 sm:h-24' alt="velra-symbol" />
-          <Typography
-            variant="h3"
-            sx={{
-              fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
-              fontWeight: 'bold',
-              color: '#56A9D9',
-              mb: 1,
-              textAlign: 'left',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
-            }}
+        <div className='flex flex-col items-center mb-14 px-4 text-center z-10'>
+          <motion.h1
+            className="text-6xl sm:text-8xl font-extrabold bg-gradient-to-r from-blue-800 to-purple-800 text-transparent bg-clip-text leading-none tracking-tight drop-shadow-sm"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            style={{fontFamily:"Loto"}}
           >
             VELRA
-          </Typography>
+          </motion.h1>
+          {
+            !loading  &&
+              <motion.p
+                className="text-lg pl-2 text-center text-black/60 mt-2 max-w-xs"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                style={{fontFamily:"Loto"}}
+              >
+                Your gateway to professional opportunities.
+              </motion.p>
+          }
         </div>
 
-
-        {/* Login / SignUp */}
-        <div className="w-full max-w-md px-4">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <CircularProgress sx={{ color: '#56A9D9', mb: 3 }} size={48} thickness={4} />
-              <Typography variant="h6" sx={{ color: '#56A9D9', fontWeight: 600, mt: 2 }}>
-                Logging you in...
-              </Typography>
-            </div>
-          ) : isLogin ? (
-            <Login onSwitch={() => setIsLogin(false)} onLogin={handleLogin} />
-          ) : (
-            <SignUp onSwitch={() => setIsLogin(true)} />
-          )}
+        {/* Login / SignUp Forms */}
+        <div className="w-full max-w-md px-4 z-10">
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div
+                key="loading"
+                className="flex flex-col items-center justify-center py-16"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Custom Dot Loading Animation */}
+                <div className="flex space-x-2 mb-3">
+                  <motion.span
+                    className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                    variants={dotVariants}
+                    initial="start"
+                    animate="end"
+                    transition={dotTransition}
+                  />
+                  <motion.span
+                    className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                    variants={dotVariants}
+                    initial="start"
+                    animate="end"
+                    transition={{ ...dotTransition, delay: 0.15 }}
+                  />
+                  <motion.span
+                    className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                    variants={dotVariants}
+                    initial="start"
+                    animate="end"
+                    transition={{ ...dotTransition, delay: 0.3 }}
+                  />
+                </div>
+                <p className="text-xl text-blue-600 font-semibold mt-4">
+                  {isLogin ? 'Logging you in...' : 'Creating your account...'}
+                </p>
+              </motion.div>
+            ) : isLogin ? (
+              <motion.div
+                key="login"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Login onSwitch={() => setIsLogin(false)} onLogin={handleLogin} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="signup"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <SignUp onSwitch={() => setIsLogin(true)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Right: Image (hidden on screens smaller than md) */}
-      <div
-        className="
-          relative
-          hidden
-          md:flex
-          w-1/2
-          h-full
-          items-center
-          justify-center
-        "
+
+
+      {/* Right: Image Section (hidden on screens smaller than md) */}
+      <motion.div
+        className="relative hidden md:flex flex-1 md:w-1/2 h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${groupMenBlueUniforms})` }}
+        variants={imagePanelVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <div
-          className='absolute inset-0 flex items-center justify-center z-20'
-          style={{ top: '30%', bottom: 'auto', height: 'auto' }}
-        >
-          <span className="font-medium text-5xl text-white/50 text-center">
-            You bring the expertise.<br /> Velra brings the exposure.
-          </span>
-        </div>
+        {/* Dark overlay with subtle gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/40 to-transparent"></div>
 
-        <img src={groupMenBlueUniforms} className="absolute inset-0 w-full h-full object-cover" alt="Group Men Blue Uniforms" />
-        <img src={authImgUpper} className="absolute inset-0 w-full h-full object-cover pointer-events-none" alt="Auth Upper Overlay" />
-        <img src={authImgLower} className='absolute -bottom-40 left-0 right-0 w-full' alt="Auth Lower Overlay" />
-      </div>
+        {/* Tagline */}
+        <motion.div
+          className='absolute inset-0 flex items-center justify-center z-20 p-8'
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.7, ease: "easeOut" }}
+        >
+          <p className="font-semibold text-5xl text-white text-center leading-tight drop-shadow-lg">
+            You bring the expertise.<br /> Velra brings the exposure.
+          </p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
+
 
 export default AuthPage;

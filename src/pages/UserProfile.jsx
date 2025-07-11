@@ -11,12 +11,12 @@ const UserProfile = () => {
 
 
   return (
-    <div className='relative -my-6 -mx-8 flex justify-between bg-[#F5F8FA] min-h-screen'>
+    <div className='relative w-full flex justify-between bg-[#F5F8FA] min-h-screen'>
         {/* Main Content */}
         <div className='w-[90%] z-20'>
 
             {/* Page title */}
-            <div className="flex items-center ml-3 mt-3 gap-1 pb-8">
+            <div className="flex items-center ml-3 gap-1 pb-8">
               <IconButton onClick={() => navigate('/my-profile')}>
                 <ChevronLeft size={25} strokeWidth={3} color="black" />
               </IconButton>
@@ -28,7 +28,7 @@ const UserProfile = () => {
         </div>
 
         {/* Blue Vertical Strip */}
-        <div className='absolute top-0 bottom-0 right-0 bg-[#387091] w-80'></div>
+        {/* <div className='absolute top-0 bottom-0 right-0 bg-[#387091] w-80'></div> */}
     </div>
   )
 }

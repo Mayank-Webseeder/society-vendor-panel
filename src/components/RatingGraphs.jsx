@@ -9,12 +9,12 @@ const RatingGraphs = () => {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
-        padding: '24px',
-        gap: 3,
+        // padding: '24px',
+        // gap: 3,
         backgroundColor: 'white',
-        minHeight: '100vh',
+        // minHeight: '100vh',
         width: '100%',
       }}
     >

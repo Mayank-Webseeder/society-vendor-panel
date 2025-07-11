@@ -35,23 +35,18 @@ import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
 import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
 
 
-
 function App() {
-
   const location = useLocation();
 
-
-  
   return (
     <Routes location={location}>
 
-      {/* Auth flow - full page, no layout */}
+      {/* Auth flow */}
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/auth/forgot-password" element={<ForgotPassword />} />
       <Route path="/auth/reset-password" element={<ResetPassword />} />
 
-
-      {/* New User Onboarding */}
+      {/* Onboarding */}
       <Route path="/auth/onboarding" element={<OnboardingLayout />}>
         <Route index element={<Step1_Loading />} />
         <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
@@ -63,8 +58,7 @@ function App() {
         <Route path="verify-otp" element={<Step8_VerifyOtp />} />
       </Route>
 
-
-      {/* Payment routes - protected, but not inside dashboard layout */}
+      {/* Payment (protected but outside dashboard layout) */}
       <Route
         path="/payment/*"
         element={
@@ -78,28 +72,26 @@ function App() {
         }
       />
 
-
-      {/* Main app layout --> Inside a protected route */}
+      {/* Main App */}
       <Route
         path="*"
         element={
           <ProtectedRoute>
-            <div className="flex flex-col">
-              
-              {/* Navbar */}
-              <div className="fixed top-0 left-0 w-full h-16 bg-white shadow z-50">
+            <div className="relative h-screen w-screen">
+
+              {/* SIDEBAR - fixed to left */}
+              <aside className="fixed top-0 left-0 h-screen w-12 sm:w-16 md:w-20 bg-[#1A2131] z-50 flex flex-col items-center py-2">
+                <Sidebar iconOnly />
+              </aside>
+
+              {/* NAVBAR - sticky inside main */}
+              {/* <header className="fixed top-0 left-12 right-3 sm:left:16 md:left-20 h-16 bg-white shadow z-40 flex items-center">
                 <Navbar />
-              </div>
+              </header> */}
 
-              {/* Main Content Area */}
-              <div className="flex flex-row pt-16 h-full">
-                {/* Sidebar */}
-                <div className="fixed top-16 left-0 w-56 h-[calc(100vh-4rem)] bg-[#1A2131] shadow">
-                  <Sidebar />
-                </div>
 
-                {/* Page Content */}
-                <div className="ml-56 mt-0 py-6 px-8 w-full overflow-y-auto relative" id="main-content">
+                {/* PAGE CONTENT */}
+                <main className="absolute top-0 left-12 sm:left-16 md:left-20 right-0 bottom-0 overflow-y-auto bg-gray-200">
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/new-leads" element={<NewLeads />} />
@@ -109,7 +101,6 @@ function App() {
                     <Route path="/help" element={<Help />} />
                     <Route path="/logout" element={<Logout />} />
 
-                    {/* Nested Routes */}
                     <Route path="/my-profile/*" element={<UserProfile />}>
                       <Route index element={<ProfileCards />} />
                       <Route path="work-details" element={<WorkDetails />} />
@@ -121,19 +112,13 @@ function App() {
                       <Route path="account-support/privacy-policy" element={<PrivacyPolicy />} />
                     </Route>
 
-                    {/* Redirect root to dashboard */}
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-                    {/* Optional: 404 fallback */}
                     <Route path="*" element={<Dashboard />} />
                   </Routes>
-                </div>
+                </main>
+
               </div>
 
-
-              
-
-            </div>
           </ProtectedRoute>
         }
       />
