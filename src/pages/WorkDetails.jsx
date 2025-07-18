@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, TextField, Button, Box, IconButton } from '@mui/material';
-import { ChevronLeft, Search, X } from 'lucide-react';
+import { Typography, TextField, Button, Box, IconButton } from '@mui/material';
+import { Search, X } from 'lucide-react';
 import Autocomplete from '@mui/material/Autocomplete';
-import dummyOffers from '../static/dummyData_ServicesOffered';
+import { motion, AnimatePresence } from 'framer-motion';
+import dummyOffers from '../static/dummyData_ServicesOffered'
 
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+const contentVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeIn" } },
+};
+
 
 
 const WorkDetails = () => {
-
-  const navigate = useNavigate();
 
   const [selectedServices, setSelectedServices] = useState([
     dummyOffers[0], // Housekeeping Services
@@ -21,12 +25,6 @@ const WorkDetails = () => {
   const [workExperience, setWorkExperience] = useState('');
   const [workingHours, setWorkingHours] = useState('');
   const [selectedDays, setSelectedDays] = useState([...daysOfWeek]); // All selected by default
-
-  const handleServiceAdd = (event, newValue) => {
-    if (newValue && !selectedServices.some(service => service.value === newValue.value)) {
-      setSelectedServices([...selectedServices, newValue]);
-    }
-  };
 
   const handleServiceRemove = (serviceToRemove) => {
     setSelectedServices(selectedServices.filter(service => service.value !== serviceToRemove.value));
@@ -40,7 +38,6 @@ const WorkDetails = () => {
     );
   };
 
-
   const handleEdit = () => {
     const formData = {
       services: selectedServices.map(s => s.value),
@@ -49,236 +46,365 @@ const WorkDetails = () => {
       workingDays: selectedDays,
     };
     console.log('Collected Work Details:', formData);
-    // You can now use consolidatedData as needed
   };
 
-
-
-  
   return (
-    <Paper
-      elevation={3}
-      className='flex pl-6 gap-10 w-full'
-      sx={{
-        backgroundColor: "white",
-        boxShadow: 3,
-        border: '1px solid #E0E0E0',
-        borderRadius: '12px',
-        width: '75%', // Ensures responsiveness
-        //maxWidth: { xs: '100%', sm: '500px', md: '600px' }, // Example max-width for larger screens
-        p: { xs: 2, sm: 3 }, // Responsive padding
-        display: 'flex',
-        flexDirection: 'column',
-        gap: { xs: 2, sm: 3 }, // Responsive gap
-        //mx: 'auto', // Center the card
-        ml: 4,
-        mb: 5
-      }}
-    >
-
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 2 } }}>
-        <IconButton onClick={() => navigate('/my-profile')} sx={{ mr: 1, p: 0 }}>
-          <ChevronLeft size={27} strokeWidth={3} color="rgba(0,0,0,0.59)" />
-        </IconButton>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgba(0,0,0,0.59)' }}>
-          Work Details
-        </Typography>
-      </Box>
-
-      {/* Services Offered */}
-      <Box  sx={{ maxWidth: '100%' }}>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'rgba(0,0,0,0.65)', mb: 1 }}>
-          Services Offered
-        </Typography>
-        <Autocomplete
-          multiple
-          options={dummyOffers}
-          getOptionLabel={(option) => option.label}
-          value={selectedServices}
-          onChange={(event, newValue) => setSelectedServices(newValue)}
-          disableCloseOnSelect
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              placeholder={
-                selectedServices.length === 0
-                  ? "Search Services"
-                  : `${selectedServices.length} selected`
-              }
-              variant="outlined"
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <Search size={20} style={{ color: '#757575', marginRight: '8px' }} />
-                ),
-              }}
-              sx={{
-                maxWidth: '70%',
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: '8px',
-                  bgcolor: '#ffffff',
-                  '& fieldset': { borderColor: '#e0e0e0' },
-                },
-                '& .MuiInputBase-input': {
-                  color: '#424242',
-                  fontSize: '0.875rem',
-                  py: '10px',
-                },
-                '& .MuiInputLabel-root': {
-                  fontSize: '0.875rem',
-                  color: '#757575',
-                },
-              }}
-            />
-          )}
-          sx={{ mb: 1 }}
-        />
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {selectedServices.map(service => (
-            <Box
-              key={service.value}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                bgcolor: '#E3F2FD', // Light blue background for tags
-                borderRadius: '4px',
-                px: 1.5,
-                py: 0.5,
-                fontSize: '0.875rem',
-                color: '#1976D2', // Blue text for tags
-                fontWeight: 'medium',
-              }}
-            >
-              {service.label}
-              <IconButton
-                size="small"
-                onClick={() => handleServiceRemove(service)}
-                sx={{ ml: 0.5, p: 0, color: '#1976D2' }}
-              >
-                <X size={14} />
-              </IconButton>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-
-      {/* Work Experience */}
-      <Box sx={{ maxWidth: '100%' }}>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'rgba(0,0,0,0.65)', mb: 1 }}>
-          Work Experience
-        </Typography>
-        <TextField
-          variant="outlined"
-          fullWidth 
-          placeholder='4 years & 3 months'
-          value={workExperience}
-          onChange={(e) => setWorkExperience(e.target.value)}
-          sx={{
-            maxWidth: '60%',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-              bgcolor: '#ffffff',
-              '& fieldset': { borderColor: '#e0e0e0' },
-            },
-            '& .MuiInputBase-input': {
-              color: '#424242',
-              fontSize: '0.875rem',
-              py: '10px',
-            },
-          }}
-        />
-      </Box>
-
-      {/* Working Hours */}
-      <Box sx={{ maxWidth: '100%' }}>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'rgba(0,0,0,0.65)', mb: 1 }}>
-          Working Hours
-        </Typography>
-        <TextField
-          variant="outlined"
-          placeholder='8:00AM - 5:00PM'
-          fullWidth
-          value={workingHours}
-          onChange={(e) => setWorkingHours(e.target.value)}
-          sx={{
-            maxWidth: '50%',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-              bgcolor: '#ffffff',
-              '& fieldset': { borderColor: '#e0e0e0' },
-            },
-            '& .MuiInputBase-input': {
-              color: '#424242',
-              fontSize: '0.875rem',
-              py: '10px',
-            },
-          }}
-        />
-      </Box>
-
-      {/* Working Days */}
-      <Box sx={{ maxWidth: '65%' }}>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'rgba(0,0,0,0.65)', mb: 1 }}>
-          Working Days
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {daysOfWeek.map(day => (
-            <Button
-              key={day}
-              variant={selectedDays.includes(day) ? 'contained' : 'outlined'}
-              onClick={() => handleDayToggle(day)}
-              sx={{
-                minWidth: 'auto', // Allow buttons to shrink
-                px: { xs: 1.5, sm: 3 }, // Responsive horizontal padding
-                py: { xs: 0.5, sm: 0.5 }, // Responsive vertical padding
-                borderRadius: '6px',
-                fontSize: { xs: '0.75rem', sm: '0.975rem' }, // Responsive font size
-                fontWeight: 'medium',
-                textTransform: 'none', // Prevent uppercase
-                //borderColor: '#1976D2', // Blue border for outlined
-                color: selectedDays.includes(day) ? 'white' : '#1976D2', // Blue text for outlined
-                bgcolor: selectedDays.includes(day) ? '#56A9D9' : 'transparent', // Blue background for contained
-                '&:hover': {
-                  bgcolor: selectedDays.includes(day) ? '#1565C0' : '#E3F2FD', // Darker blue or light blue on hover
-                  borderColor: '#1565C0',
-                },
-              }}
-            >
-              {day}
-            </Button>
-          ))}
-        </Box>
-      </Box>
-
-
-
-      {/* Edit Button */}
-      <Button
-        variant="outlined"
-        onClick={handleEdit}
+    <Box sx={{ 
+      width: '100%', 
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#black',
+      borderRadius: '1rem',
+      border: 'none'
+    }}>
+      <Box
         sx={{
-          mt: { xs: 2, sm: 6 }, // Responsive margin top
-          py: '10px',
-          // bgcolor: '#1976D2',
-          // color: 'white',
-          fontWeight: 'semibold',
-          borderRadius: '8px',
-          boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-          '&:hover': {
-            color: 'white',
-            bgcolor: '#1565C0',
-          },
-          width: '120px', // Fixed width for the button
-          alignSelf: 'center', // Center the button
+          width: '100%', 
+          height: '100%',
+          border: 'none',
+          backgroundColor: "white",
+          borderRadius: '1rem',
+          overflow: 'hidden',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          p: { xs: 2, sm: 4 },
         }}
       >
-        Edit
-      </Button>
+        {/* Header */}
+        <Box 
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: '1px solid #E0E0E0',
+            pb: 2,
+            mb: 3
+          }}
+        >
+          <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+            Work Details
+          </Typography>
+        </Box >
 
-    </Paper>
+        {/* Animated Content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key="work-details-content"
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="w-full"
+          >
+            <Box sx={{ p: 1, display: 'flex', maxWidth: '80%', flexDirection: 'column', gap: 7, flex: 1, overflow: 'auto' }}>
+              
+              {/* Services Offered */}
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Box sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    pb:0.5
+                  }}>
+                    <Search size={20} color="#2563EB" />
+                  </Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'rgba(0,0,0,0.7)',
+                      fontSize: '1.125rem'
+                    }}
+                  >
+                    Services Offered
+                  </Typography>
+                </Box>
+                
+                <Autocomplete
+                  multiple
+                  options={dummyOffers}
+                  getOptionLabel={(option) => option.label}
+                  value={selectedServices}
+                  onChange={(event, newValue) => setSelectedServices(newValue)}
+                  disableCloseOnSelect
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder={
+                        selectedServices.length === 0
+                          ? "Search and select services..."
+                          : `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`
+                      }
+                      variant="outlined"
+                      sx={{
+                        mb: 2,
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          backgroundColor: '#F9FAFB',
+                          '& fieldset': { 
+                            borderColor: '#D1D5DB',
+                            borderWidth: '1px'
+                          },
+                          '&:hover fieldset': { borderColor: '#9CA3AF' },
+                          '&.Mui-focused fieldset': { 
+                            borderColor: '#2563EB',
+                            borderWidth: '2px'
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: '#374151',
+                          fontSize: '0.875rem',
+                          py: '12px',
+                        },
+                      }}
+                    />
+                  )}
+                  sx={{
+                    '& .MuiAutocomplete-paper': {
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                  }}
+                />
+                
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                  {selectedServices.map(service => (
+                    <Box
+                      key={service.value}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#EFF6FF',
+                        borderRadius: '8px',
+                        px: 2,
+                        py: 1,
+                        fontSize: '0.875rem',
+                        color: '#1D4ED8',
+                        fontWeight: 500,
+                        border: '1px solid #DBEAFE',
+                      }}
+                    >
+                      {service.label}
+                      <IconButton
+                        size="small"
+                        onClick={() => handleServiceRemove(service)}
+                        sx={{ 
+                          ml: 1, 
+                          p: 0.5, 
+                          color: '#1D4ED8',
+                          '&:hover': { backgroundColor: '#DBEAFE' }
+                        }}
+                      >
+                        <X size={14} />
+                      </IconButton>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+
+              {/* Work Experience */}
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Box sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Typography sx={{ color: '#16A34A', fontWeight: 600 }}>★</Typography>
+                  </Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'rgba(0,0,0,0.7)',
+                      fontSize: '1.125rem'
+                    }}
+                  >
+                    Work Experience
+                  </Typography>
+                </Box>
+                
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  placeholder="e.g., 4 years & 3 months"
+                  value={workExperience}
+                  onChange={(e) => setWorkExperience(e.target.value)}
+                  sx={{
+                    maxWidth: '400px',
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: '#F9FAFB',
+                      '& fieldset': { 
+                        borderColor: '#D1D5DB',
+                        borderWidth: '1px'
+                      },
+                      '&:hover fieldset': { borderColor: '#9CA3AF' },
+                      '&.Mui-focused fieldset': { 
+                        borderColor: '#2563EB',
+                        borderWidth: '2px'
+                      },
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#374151',
+                      fontSize: '0.875rem',
+                      py: '12px',
+                    },
+                  }}
+                />
+              </Box>
+
+              {/* Working Hours */}
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Box sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Typography sx={{ color: '#9333EA', fontWeight: 600 }}>🕐</Typography>
+                  </Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'rgba(0,0,0,0.7)',
+                      fontSize: '1.125rem'
+                    }}
+                  >
+                    Working Hours
+                  </Typography>
+                </Box>
+                
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  placeholder="e.g., 8:00AM - 5:00PM"
+                  value={workingHours}
+                  onChange={(e) => setWorkingHours(e.target.value)}
+                  sx={{
+                    maxWidth: '350px',
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: '#F9FAFB',
+                      '& fieldset': { 
+                        borderColor: '#D1D5DB',
+                        borderWidth: '1px'
+                      },
+                      '&:hover fieldset': { borderColor: '#9CA3AF' },
+                      '&.Mui-focused fieldset': { 
+                        borderColor: '#2563EB',
+                        borderWidth: '2px'
+                      },
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#374151',
+                      fontSize: '0.875rem',
+                      py: '12px',
+                    },
+                  }}
+                />
+              </Box>
+
+              {/* Working Days */}
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Box sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Typography sx={{ color: '#D97706', fontWeight: 600 }}>📅</Typography>
+                  </Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'rgba(0,0,0,0.7)',
+                      fontSize: '1.125rem'
+                    }}
+                  >
+                    Working Days
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                  {daysOfWeek.map(day => (
+                    <Button
+                      key={day}
+                      variant={selectedDays.includes(day) ? 'contained' : 'outlined'}
+                      onClick={() => handleDayToggle(day)}
+                      sx={{
+                        minWidth: '70px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        backgroundColor: selectedDays.includes(day) ? 'transparent' : '#2563EB',
+                        color: selectedDays.includes(day) ? '#6B7280' : 'white',
+                        borderColor: selectedDays.includes(day) ? '#D1D5DB' : '#2563EB',
+                        '&:hover': {
+                          backgroundColor: selectedDays.includes(day) ? '#F3F4F6' : '#1D4ED8',
+                          borderColor: selectedDays.includes(day) ? '#9CA3AF' : '#1D4ED8',
+                        },
+                      }}
+                    >
+                      {day}
+                    </Button>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Footer */}
+            <Box sx={{ 
+              mt: 2,
+              width: '95%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}>
+              <Button
+                variant="contained"
+                onClick={handleEdit}
+                sx={{
+                  backgroundColor: '#3B82F6',
+                  color: 'white',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  py: '8px',
+                  px: '24px',
+                  textTransform: 'none',
+                  // boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                  '&:hover': {
+                    backgroundColor: '#2563EB',
+                    // boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                  },
+                }}
+              >
+                Save Changes
+              </Button>
+            </Box>
+          </motion.div>
+        </AnimatePresence>
+      </Box>
+    </Box>
   );
 };
-
 
 export default WorkDetails;

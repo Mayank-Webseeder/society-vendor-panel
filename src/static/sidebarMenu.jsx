@@ -41,10 +41,10 @@ const sidebarMenu = [
     },
 
     {
-        icon: MdOutlineSupportAgent,
-        title: "Help",
-        redirect: "/my-profile/account-support/help-support"
-    },
+        icon: FaRegUser,
+        title: "User Profile",
+        redirect: "/my-profile"
+    }, 
 
     {
         icon: FaRegBell,
@@ -53,9 +53,9 @@ const sidebarMenu = [
     },
 
     {
-        icon: FaRegUser,
-        title: "User Profile",
-        redirect: "/my-profile"
+        icon: MdOutlineSupportAgent,
+        title: "Help",
+        redirect: "/my-profile/account-support/help-support"
     },
 
     {

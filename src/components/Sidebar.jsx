@@ -1,9 +1,13 @@
 import sidebarMenu from '../static/sidebarMenu';
 import { useLocation, Link } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
+import { notificationCount } from '../static/dummyData_Notifications';
+import NotificationPopup from './NotificationPopup';
 import { useUser } from '../UserContext';
 
-const Sidebar = ({ iconOnly }) => {
+
+const Sidebar = () => {
+
   const location = useLocation();
   const { user } = useUser();
 
@@ -51,29 +55,28 @@ const Sidebar = ({ iconOnly }) => {
         {bottomMenuItems.map((item, idx) => {
           const isActive = location.pathname === item.redirect;
           const Icon = item.icon;
-          // Show notification badge on the first bottom icon if it's a bell
-          const showBadge = idx === 0 && isBellIcon(Icon) && user?.notificationsCount > 0;
+          const isBell = idx === 0 && isBellIcon(Icon);
+
           return (
-            <Link to={item.redirect} key={idx} className="w-full flex justify-center">
-              <Tooltip title={item.title} placement="right">
-                <div
-                  className={`relative flex items-center justify-center w-12 h-12 rounded-lg transition-colors
-                    ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
-                  `}
-                  style={{ padding: 0 }}
-                >
-                  <Icon size={30} className="text-white" />
-                  {showBadge && (
-                    <span
-                      className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
-                      style={{ minWidth: 20, minHeight: 20, fontSize: 12, zIndex: 10 }}
+            <div key={idx} className="w-full flex justify-center">
+              {isBell ? (
+                // Render NotificationPopup for the bell icon
+                <NotificationPopup />
+              ) : (
+                <Link to={item.redirect} className="w-full flex justify-center">
+                  <Tooltip title={item.title} placement="right">
+                    <div
+                      className={`relative flex items-center justify-center w-12 h-12 rounded-lg transition-colors
+                        ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
+                      `}
+                      style={{ padding: 0 }}
                     >
-                      {user.notificationsCount}
-                    </span>
-                  )}
-                </div>
-              </Tooltip>
-            </Link>
+                      <Icon size={30} className="text-white" />
+                    </div>
+                  </Tooltip>
+                </Link>
+              )}
+            </div>
           );
         })}
       </div>

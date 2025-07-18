@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { TbCalendarCheck } from "react-icons/tb";
@@ -13,18 +14,34 @@ const OngoingModal = ({ open, onClose, lead }) => {
   if (!open || !lead) return null;
 
   const safe = (val) => (val !== undefined && val !== null && val !== '' ? val : 'N/A');
-  
+
+  // Hide body scroll when modal is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+
 
 
   return (
     <Box
       sx={{
         position: 'fixed',
-        zIndex: 50,
-        top: '4rem',
-        left: '14rem',
-        width: 'calc(100vw - 14rem)',
-        height: 'calc(100vh - 4rem)',
+        zIndex: 30,
+        top: 0,
+        bottom: 0,
+        left: {xs: '3rem', sm: '4rem', md: '5rem'},
+        right: 0,
+        width: '100%',
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -34,7 +51,7 @@ const OngoingModal = ({ open, onClose, lead }) => {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
           zIndex: 0,
         }}
       />
@@ -42,6 +59,7 @@ const OngoingModal = ({ open, onClose, lead }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
+          border: '1px solid #6B7280',
           borderRadius: '8px',
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
           paddingX: { xs: '20px', md: '24px' },

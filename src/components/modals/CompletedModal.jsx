@@ -21,11 +21,13 @@ const CompletedModal = ({ open, onClose, lead }) => {
     <Box
       sx={{
         position: 'fixed',
-        zIndex: 50,
-        top: '4rem',
-        left: '14rem',
-        width: 'calc(100vw - 14rem)',
-        height: 'calc(100vh - 4rem)',
+        top: 0,
+        bottom: 0,
+        left: {xs: '3rem', sm: '4rem', md: '5rem'},
+        right: 0,
+        zIndex: 30,
+        width: '100%',
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -43,6 +45,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
+          border: '1px solid #6B7280',
           borderRadius: '8px',
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
           paddingX: { xs: '20px', md: '24px' },

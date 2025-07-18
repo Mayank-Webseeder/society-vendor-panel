@@ -1,16 +1,15 @@
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import NewLeads from './pages/NewLeads';
 import MyJobs from './pages/MyJobs';
-import Availability from './pages/Availability';
 import MyStats from './pages/MyStats';
-import Help from './pages/Help';
 import Logout from './pages/Logout';
 import UserProfile from "./pages/UserProfile";
-import ProfileCards from './pages/ProfileCards';
+import PersonalInformation from "./pages/PersonalInformation";
+import SecurityOptions from "./pages/SecurityOptions";
 import WorkDetails from './pages/WorkDetails';
 import DocumentAndVerification from "./pages/DocumentAndVerification";
 import AccountAndSupport from './pages/AccountAndSupport';
@@ -81,7 +80,7 @@ function App() {
 
               {/* SIDEBAR - fixed to left */}
               <aside className="fixed top-0 left-0 h-screen w-12 sm:w-16 md:w-20 bg-[#1A2131] z-50 flex flex-col items-center py-2">
-                <Sidebar iconOnly />
+                <Sidebar iconOnly /> {/* bg-[#1A2131] */}
               </aside>
 
               {/* NAVBAR - sticky inside main */}
@@ -96,13 +95,12 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/new-leads" element={<NewLeads />} />
                     <Route path="/my-jobs" element={<MyJobs />} />
-                    <Route path="/availability" element={<Availability />} />
                     <Route path="/my-stats" element={<MyStats />} />
-                    <Route path="/help" element={<Help />} />
                     <Route path="/logout" element={<Logout />} />
 
                     <Route path="/my-profile/*" element={<UserProfile />}>
-                      <Route index element={<ProfileCards />} />
+                      <Route index element={<PersonalInformation />} />
+                      <Route path="security-options" element={<SecurityOptions />} />
                       <Route path="work-details" element={<WorkDetails />} />
                       <Route path="documents-verification" element={<DocumentAndVerification />} />
                       <Route path="account-support" element={<AccountAndSupport />} />

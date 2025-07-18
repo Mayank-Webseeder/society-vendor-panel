@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+
 const SignUp = ({ onSwitch }) => {
+
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +18,8 @@ const SignUp = ({ onSwitch }) => {
     setTimeout(() => {
       alert('Account created! Redirecting to onboarding...');
       setLoading(false);
-      onSwitch();
+      // navigate('/auth/onboarding', {replace: true});      
+      navigate('/auth/onboarding');      
     }, 2000);
   };
 

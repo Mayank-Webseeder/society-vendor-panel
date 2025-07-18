@@ -1,0 +1,398 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Edit as EditIcon } from 'lucide-react';
+import { FormControl, Select, MenuItem, Button, Box, Typography } from '@mui/material';
+import indianStates from '../static/dummyData_IndianStates';
+import { useUser } from '../UserContext';
+
+
+
+const PersonalInformation = () => {
+
+  const {user, setUser} = useUser();    // get context data
+
+  const [tempUser, setTempUser] = useState({ ...user });
+  const [isEditing, setIsEditing] = useState(false);
+
+
+  // Handlers for My Profile fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTempUser((prevTempUser) => ({
+      ...prevTempUser,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (e) => {
+    const { value } = e.target;
+    setTempUser((prevTempUser) => ({
+      ...prevTempUser,
+      dateOfBirth: value, // Value from input type="date" is already YYYY-MM-DD
+    }));
+  };
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      // Save changes
+      setUser({ ...tempUser });
+      console.log('Profile Saved:', tempUser);
+    } else {
+      // Enter edit mode
+      setTempUser({ ...user }); // Reset tempUser to current user data
+    }
+    setIsEditing(!isEditing);
+  };
+
+  // Framer Motion variants for content sections
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeIn" } },
+  };
+
+
+  // Helper function to render individual form fields for My Profile
+  const renderField = (label, name, value, type = 'text', isTextArea = false) => {
+    // Special handling for gender field
+    if (name === 'gender') {
+    return (
+      <div className="flex flex-col mb-4">
+        <label className="text-xs font-medium text-gray-500 uppercase mb-1">{label}</label>
+        {isEditing ? (
+        <FormControl
+          fullWidth
+          variant="outlined"
+          size="small"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+            border: '1px solid #767676',
+            borderRadius: '6px',
+            transition: 'border 0.2s',
+            '&.Mui-focused': {
+                border: 'none', // Remove border when focused
+            },
+            },
+            '&.Mui-focused': {
+            border: 'none', // Remove border when focused
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent',
+            },
+            '& .MuiSelect-select': {
+            padding: '8px 12px',
+            backgroundColor: '#F3F4F6',
+            borderRadius: '6px',
+            color: '#4A5568',
+            },
+            '& .MuiSvgIcon-root': {
+            color: '#4A5568',
+            },
+          }}
+        >
+          <Select
+            name={name}
+            value={tempUser[name]}
+            onChange={handleChange}
+            displayEmpty
+          >
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+            <MenuItem value="Prefer not to say">Prefer not to say</MenuItem>
+          </Select>
+        </FormControl>
+        ) : (
+        <p className="text-gray-800 border-solid border border-gray-200 text-sm py-2 px-2 bg-gray-100 rounded-md pointer-events-none">{value}</p>
+        )}
+      </div>
+    );
+    }
+
+
+    // Special handling for state field
+    if (name === 'state') {
+        return (
+            <div className="flex flex-col mb-4">
+            <label className="text-xs font-medium text-gray-500 uppercase mb-1">{label}</label>
+            {isEditing ? (
+                <FormControl
+                fullWidth
+                variant="outlined"
+                size="small"
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                    border: '1px solid #767676',
+                    borderRadius: '6px',
+                    transition: 'border 0.2s',
+                    '&.Mui-focused': {
+                        border: 'none', // Remove border when focused
+                    },
+                    },
+                    '&.Mui-focused': {
+                    border: 'none', // Remove border when focused
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'transparent',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'transparent',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'transparent',
+                    },
+                    '& .MuiSelect-select': {
+                    padding: '8px 12px',
+                    backgroundColor: '#F3F4F6',
+                    borderRadius: '6px',
+                    color: '#4A5568',
+                    },
+                    '& .MuiSvgIcon-root': {
+                    color: '#4A5568',
+                    },
+                }}
+                >
+                <Select
+                    name={name}
+                    value={tempUser[name] || ''}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Select State' }}
+                    MenuProps={{
+                    PaperProps: { sx: { maxHeight: 250 } },
+                    anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
+                    transformOrigin: { vertical: 'top', horizontal: 'left' },
+                    }}
+                >
+                    <MenuItem value="" disabled>
+                    Select State
+                    </MenuItem>
+                    {indianStates.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+            ) : (
+                <p className="text-gray-800 border-solid border border-gray-200 text-sm py-2 px-2 bg-gray-100 rounded-md pointer-events-none">
+                {indianStates.find((s) => s.value === value)?.label || value}
+                </p>
+            )}
+            </div>
+        );
+        }
+
+
+    // Special handling for Date of Birth field - reverted to native input type="date"
+    if (name === 'dateOfBirth') {
+      // Helper to format ISO date to "DD MMMM, YYYY" for display
+      const formatDateForDisplay = (isoDateString) => {
+        if (!isoDateString) return 'N/A';
+        try {
+          const [year, month, day] = isoDateString.split('-');
+          const date = new Date(year, month - 1, day); // Month is 0-indexed
+          return date.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
+        } catch (error) {
+          console.error("Error formatting date:", error);
+          return isoDateString; // Fallback to original string if formatting fails
+        }
+      };
+
+
+
+      return (
+        <div className="flex flex-col mb-4">
+          <label className="text-xs font-medium text-gray-500 uppercase mb-1">{label}</label>
+          {isEditing ? (
+            <input
+              type="date" // Use native date picker
+              name={name}
+              value={tempUser[name]} // Value is already YYYY-MM-DD
+              onChange={handleDateChange}
+              className={`w-full p-2 border-solid border bg-gray-100 text-gray-800 text-sm rounded-md
+                ${isEditing ? 'focus:outline-none focus:border-blue-500' : 'pointer-events-none'}
+              `}
+            />
+          ) : (
+            <p className="text-gray-800 border-solid border border-gray-200 text-sm py-2 px-2 bg-gray-100 rounded-md pointer-events-none">
+              {formatDateForDisplay(value)} {/* Format for display */}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    // Existing rendering for other fields (default text input or textarea)
+    return (
+      <div className="flex flex-col mb-4">
+        <label className="text-xs font-medium text-gray-500 uppercase mb-1">{label}</label>
+        {isTextArea ? (
+          <textarea
+            name={name}
+            value={isEditing ? tempUser[name] : user[name]}
+            onChange={handleChange}
+            readOnly={!isEditing}
+            className={`w-full p-2 border-solid border bg-gray-100 text-gray-800 text-sm rounded-md resize-none
+              ${isEditing ? 'focus:outline-none focus:border-blue-500' : 'border-gray-200 pointer-events-none'}
+            `}
+            rows="2"
+          />
+        ) : (
+          <input
+            type={type}
+            name={name}
+            value={isEditing ? tempUser[name] : user[name]}
+            onChange={handleChange}
+            readOnly={!isEditing}
+            className={`w-full p-2 border-solid border bg-gray-100 text-gray-800 text-sm rounded-md
+              ${isEditing ? 'focus:outline-none focus:border-blue-500' : 'border-gray-200 pointer-events-none'}
+            `}
+          />
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className='p-8 w-full h-full'>
+      {/* Header */}
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '1px solid #E0E0E0',
+        pb: 2,
+        mb: 2
+      }}>
+        <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+          Profile Information
+        </Typography>
+        <Button
+          onClick={handleEditToggle}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            px: 2,
+            py: 1,
+            width: 92,
+            bgcolor: '#3B82F6',
+            color: 'white',
+            borderRadius: '0.375rem',
+            // boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            '&:hover': {
+              bgcolor: '#2563EB',
+            },
+            transition: 'background-color 0.15s ease-in-out',
+            textTransform: 'none',
+            fontSize: '0.875rem',
+          }}
+        >
+          {!isEditing  &&  <EditIcon size={14} style={{ marginRight: '0.25rem' }} />}
+          {isEditing ? 'Save' : 'Edit'}
+        </Button>
+      </Box>
+
+      {/* Company Info */}
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={isEditing? 'edit-mode-company' : 'view-mode-company'}
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <Box sx={{
+            bgcolor: 'white',
+            // border: '2px solid black',
+            borderRadius: '0.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            // boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            p: 2,
+            // mb: 4
+          }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+              <Box sx={{
+                width: 16 * 6,
+                height: 16 * 6,
+                bgcolor: '#FFEDD5',
+                // border: '2px solid black',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#EA580C',
+                fontWeight: 'bold',
+                fontSize: '2.5rem',
+                mr: 3
+              }}>
+                {user.initials}
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Typography variant="p" sx={{ fontSize: '1.8rem', fontWeight: 'semibold', color: '#4A5568' }}>
+                  {tempUser.name}
+                </Typography>
+                <Typography variant="p" sx={{ fontSize: '1rem', color: '#718096' }}>
+                  {tempUser.jobTitle}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Personal Details Section */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={isEditing ? "edit-mode" : "view-mode"}
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="bg-white rounded-lg px-6 mb-8"
+        >
+          <h3 className="text-xl font-normal text-gray-800 mb-4">Personal Details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+            {renderField('Full Name', 'name', tempUser.name)}
+            {renderField('Email address', 'email', tempUser.email, 'email')}
+            {renderField('Phone', 'phone', tempUser.phone, 'tel')}
+            {renderField('Gender', 'gender', tempUser.gender)}
+            {renderField('Bio', 'bio', tempUser.bio, 'text', true)}
+            {renderField('Date of Birth', 'dateOfBirth', tempUser.dateOfBirth, 'date')}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Address Section */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={isEditing ? "edit-mode-address" : "view-mode-address"}
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="bg-white rounded-lg p-6 border border-gray-200"
+        >
+          <h3 className="text-xl font-normal text-gray-800 mb-4">Address</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+            {renderField('Flat/Building', 'building', tempUser.building)}
+            {renderField('Locality', 'locality', tempUser.locality)}
+            {renderField('Landmark', 'landmark', tempUser.landmark)}
+            {renderField('City', 'city', tempUser.city)}
+            {renderField('State', 'state', tempUser.state)}
+            {renderField('Country', 'country', tempUser.country)}
+            {renderField('Pincode', 'pincode', tempUser.pincode)}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default PersonalInformation;

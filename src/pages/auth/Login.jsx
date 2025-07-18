@@ -11,7 +11,7 @@ const Login = ({ onSwitch, onLogin }) => {
     if (email === "demo@velra.com" && password === "velra123") {
       if (onLogin) onLogin();
     } else {
-      alert("Invalid email or password. Please try 'demo@velra.com' and 'velra123'.");
+      alert("Invalid email or password.");
     }
   };
 

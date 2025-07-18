@@ -9,15 +9,16 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
 
   return (
     <Box sx={{
-      position: 'fixed', zIndex: 50, top: '4rem', left: '14rem',
-      width: 'calc(100vw - 14rem)', height: 'calc(100vh - 4rem)',
+      position: 'fixed', zIndex: 30, 
+      top: 0, bottom: 0, left: {xs: '3rem', sm: '4rem', md: '5rem'}, right: 0,
+      width: '100%', height: '100%',
       display: 'flex', alignItems: 'center', justifyContent: 'center'
     }}>
       <Box sx={{
         position: 'absolute', inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 0
       }} />
       <Box sx={{
-        position: 'relative', backgroundColor: 'white', borderRadius: '8px',
+        position: 'relative', backgroundColor: 'white', border: '1px solid #6B7280', borderRadius: '8px',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
         padding: '32px 24px', zIndex: 10, width: '100%', maxWidth: '23rem', overflowY: 'auto', maxHeight: '90vh'
       }}>

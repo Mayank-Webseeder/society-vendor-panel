@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CalendarDays, Clock, ChevronLeft, ChevronRight, XCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useUser } from '../UserContext';
-
 
 // Helper to get month name
 const getMonthName = (monthIndex) => {
@@ -29,25 +27,24 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, x: 20 },
+  visible: { opacity: 1, x: 0 },
 };
 
 
 
 
 const AvailabilityCalendar = () => {
-
-  const { user } = useUser();    // Get context-data
+  
+  const { user } = useUser(); // Get context-data
 
   const workingDays = user.workingDays;
-  const workingHours = user.workingHours;
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [dayAvailability, setDayAvailability] = useState({});
   const [isCalendarAnimating, setIsCalendarAnimating] = useState(false);
-  const clearSelection = () => setSelectedDate(null);    // For clearing selection
+  // const clearSelection = () => setSelectedDate(null);
 
   // Helper to generate dummy availability data for a month based on workingDays
   const generateDummyAvailability = useCallback((year, monthIndex) => {
@@ -57,17 +54,15 @@ const AvailabilityCalendar = () => {
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(year, monthIndex, i);
       const dayOfWeekName = getWeekdayName(date);
-
-      // Use the local workingDays constant
       availability[date.toDateString()] = workingDays.includes(dayOfWeekName);
     }
     return availability;
-  }, []); // No dependency on workingDays as it's now a local constant
+  }, [workingDays]);
 
   useEffect(() => {
     const year = currentDate.getFullYear();
     const monthIndex = currentDate.getMonth();
-    setDayAvailability(generateDummyAvailability(year, monthIndex)); // Use local function
+    setDayAvailability(generateDummyAvailability(year, monthIndex));
     setSelectedDate(null);
   }, [currentDate, generateDummyAvailability]);
 
@@ -111,7 +106,17 @@ const AvailabilityCalendar = () => {
     if (day) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
       if (dayAvailability[date.toDateString()]) {
-        setSelectedDate(date);
+        // If already selected, unselect
+        if (
+          selectedDate &&
+          selectedDate.getFullYear() === date.getFullYear() &&
+          selectedDate.getMonth() === date.getMonth() &&
+          selectedDate.getDate() === date.getDate()
+        ) {
+          setSelectedDate(null);
+        } else {
+          setSelectedDate(date);
+        }
       }
     }
   };
@@ -120,20 +125,17 @@ const AvailabilityCalendar = () => {
   const today = new Date();
   const currentMonthYear = `${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
 
-
-
-
   return (
     <div
-      className="w-full bg-gray-200 p-2 rounded-3xl
-                 font-inter text-gray-800 border border-gray-800 flex flex-col gap-5 h-full"
+      className="w-full bg-gray-200 p-2 rounded-3xl mb-1
+                 font-inter text-gray-800 flex flex-col gap-5"
     >
       {/* Calendar Section */}
       <motion.div
-        className="p-3 bg-white rounded-2xl shadow-lg border border-gray-100"
+        className="p-2 bg-white rounded-2xl shadow-lg border border-gray-100"
         variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
       >
         <div className="flex justify-between items-center mb-3 border-b pb-4 border-gray-100">
           <button
@@ -167,151 +169,46 @@ const AvailabilityCalendar = () => {
             ))}
           </div>
 
-        {/* Days of the month grid */}
-        <div className="grid grid-cols-7 gap-1.5">
+          {/* Days of the month grid */}
+          <div className="grid grid-cols-7 gap-1.5">
             {daysInMonthGrid.map((day, index) => {
-                const date = day ? new Date(currentDate.getFullYear(), currentDate.getMonth(), day) : null;
-                const isToday = date && date.toDateString() === today.toDateString();
-                const isSelected = selectedDate && date && date.toDateString() === selectedDate.toDateString();
-                const isAvailable = date && workingDays.includes(getWeekdayName(date));
-                const isPastDate = date && date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+              const date = day ? new Date(currentDate.getFullYear(), currentDate.getMonth(), day) : null;
+              const isToday = date && date.toDateString() === today.toDateString();
+              const isSelected = selectedDate && date && date.toDateString() === selectedDate.toDateString();
+              const isAvailable = date && workingDays.includes(getWeekdayName(date));
+              const isPastDate = date && date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-                let dayClass = "w-10 h-10 flex items-center justify-center text-lg transition-all duration-200 transform";
-                if (!day) dayClass += " invisible";
-                else if (isPastDate && !isToday) dayClass += " border-solid border rounded-full text-sm text-gray-400 border-none cursor-not-allowed bg-white";
-                else if (isSelected) dayClass += " bg-blue-500 border-solid border-none text-white shadow-lg scale-105 text-sm text-sm ring-2 ring-blue-500 rounded-full cursor-pointer";
-                else if (isToday) dayClass += " font-extrabold text-blue-700 ring-2 ring-blue-500 text-sm border-none rounded-full cursor-pointer";
-                else if (isAvailable && !isPastDate) dayClass += " hover:bg-black text-blue-800 text-sm hover:scale-105 cursor-pointer";
-                else if (!isAvailable && day && !isPastDate) dayClass += " text-red-400 text-sm cursor-not-allowed";
-                else if (!isAvailable && day && isToday && !isSelected) dayClass += " font-extrabold text-sm text-red-700";
+              let dayClass = "w-10 h-10 flex items-center justify-center text-lg transition-all duration-200 transform";
+              if (!day) dayClass += " invisible";
+              else if (isPastDate && !isToday) dayClass += " border-solid border rounded-full text-sm text-gray-400 border-none cursor-not-allowed bg-white";
+              else if (isSelected) dayClass += " bg-blue-500 border-solid border-none text-white shadow-lg scale-105 text-sm ring-2 ring-blue-500 rounded-full cursor-pointer";
+              else if (isToday) dayClass += " font-extrabold text-blue-700 ring-2 ring-blue-500 text-sm border-none rounded-full cursor-pointer";
+              else if (isAvailable && !isPastDate) dayClass += " hover:bg-black text-blue-800 text-sm hover:scale-105 cursor-pointer";
+              else if (!isAvailable && day && !isPastDate) dayClass += " text-red-400 text-sm cursor-not-allowed";
+              else if (!isAvailable && day && isToday && !isSelected) dayClass += " font-extrabold text-sm text-red-700";
 
-                return (
+              return (
                 <button
-                    key={index}
-                    onClick={() => handleDateSelect(day)}
-                    disabled={!day || isPastDate || !isAvailable}
-                    className={dayClass}
-                    aria-label={day ? `Select day ${day}` : ''}
-                    style={
-                    // Remove background and border for available/unavailable days (not past, not selected, not today)
+                  key={index}
+                  onClick={() => handleDateSelect(day)}
+                  disabled={!day || isPastDate || !isAvailable}
+                  className={dayClass}
+                  aria-label={day ? `Select day ${day}` : ''}
+                  style={
                     (!isPastDate && !isSelected && !isToday)
-                        ? { background: "transparent", border: "none" }
-                        : undefined
-                    }
+                      ? { background: "transparent", border: "none" }
+                      : undefined
+                  }
                 >
-                    {day}
+                  {day}
                 </button>
-                );
+              );
             })}
+          </div>
         </div>
-        </div>
-      </motion.div>
-
-      {/* Working Hours Section */}
-      <motion.div
-        className="px-6 py-4 glass rounded-2xl shadow-xl border border-gray-100/20 bg-gradient-to-br from-blue-50/50 to-purple-50/50"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="flex items-center justify-center mb-1">
-          <Clock className="w-6 h-6 text-blue-500 mr-2" />
-          <h3 className="text-xl font-semibold text-gray-800">Working Hours</h3>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {selectedDate ? (
-            workingDays.includes(getWeekdayName(selectedDate)) ? (
-              <motion.div
-                key="available"
-                className="flex flex-col items-center justify-center pt-4 pb-2"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="glass p-6 bg-gray-200 rounded-xl max-w-sm w-full text-center shadow-lg">
-                  <p className="text-3xl font-bold text-gray-800 mb-2">{workingHours}</p>
-                  <p className="text-gray-600 text-lg">
-                    {selectedDate.toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </p>
-                </div>
-                <motion.div
-                  className="mt-6 px-4 py-2 flex items-center justify-center gap-2 bg-green-600 text-white rounded-full text-sm font-medium shadow-md"
-                  whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <TaskAltIcon fontSize='small' />
-                  Available
-                </motion.div>
-                <motion.button
-                  onClick={clearSelection}
-                  className="mt-4 px-4 py-1 rounded-full bg-blue-50 text-blue-600 font-semibold shadow hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
-                  style={{ border: 'none' }}
-                  whileHover={{ x: 5, scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Clear Selection
-                </motion.button>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="unavailable"
-                className="flex flex-col items-center justify-center py-4"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                >
-                <XCircle className="w-12 h-12 text-red-400 mb-4" />
-                </motion.div>
-                <p className="text-lg font-medium text-gray-700 mb-2">Not Available</p>
-                <p className="text-gray-500 text-sm">Please select an available date.</p>
-                <motion.button
-                  onClick={clearSelection}
-                  className="mt-4 px-4 py-2 rounded-full bg-blue-50 text-blue-600 font-semibold shadow hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
-                  style={{ border: 'none' }}
-                  whileHover={{ x: 5, scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Clear Selection
-                </motion.button>
-              </motion.div>
-            )
-          ) : (
-            <motion.div
-              key="no-selection"
-              className="flex flex-col items-center justify-center py-4"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              >
-                <CalendarDays className="w-12 h-12 text-gray-400 mb-4" />
-              </motion.div>
-              <p className="text-lg font-medium text-gray-700 mb-2">Select a Date</p>
-              <p className="text-gray-500 text-sm">Available days are highlighted in blue.</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.div>
     </div>
   );
 };
-
 
 export default AvailabilityCalendar;

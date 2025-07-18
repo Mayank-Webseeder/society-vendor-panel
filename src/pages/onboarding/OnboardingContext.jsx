@@ -18,7 +18,7 @@ export const OnboardingProvider = ({ children }) => {
         initials: '',
         id: '',
         dateOfBirth: '',
-        gender: '',
+        gender: 'Male',
         businessName: '',
         workExperience: '',
         idProof: '',

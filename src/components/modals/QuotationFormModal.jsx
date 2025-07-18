@@ -1,6 +1,7 @@
 import { Box, Typography, Button, TextField, MenuItem } from '@mui/material';
 import { IoClose } from "react-icons/io5";
 
+
 const QuotationFormModal = ({ open, onClose, onSubmit }) => {
 
   if (!open) return null;
@@ -12,11 +13,13 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
     <Box
       sx={{
         position: 'fixed',
-        zIndex: 50,
-        top: '4rem',
-        left: '14rem',
-        width: 'calc(100vw - 14rem)',
-        height: 'calc(100vh - 4rem)',
+        zIndex: 30,
+        top: 0,
+        bottom: 0,
+        left: { xs: '3rem', sm: '4rem', md: '5rem' },
+        right: 0,
+        width: '100%',
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,7 +33,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
           zIndex: 0,
         }}
-        onClick={onClose}
+        // onClick={onClose}
       />
 
       {/* Quotation Form */}
@@ -38,6 +41,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
+          border: '1px solid #6B7280',
           borderRadius: '8px',
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
           paddingX: { xs: '20px', md: '24px' },
