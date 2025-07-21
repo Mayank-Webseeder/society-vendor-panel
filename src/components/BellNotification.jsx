@@ -6,13 +6,7 @@ import { Button } from '@mui/material';
 import { useUser } from '../UserContext';
 
 const BellNotification = () => {
-    console.log('🚀🚀🚀 NEW BELL COMPONENT LOADING - v3.0');
-    console.log('🚀🚀🚀 TIMESTAMP:', Date.now());
     const { user } = useUser();
-
-    console.log('🔔 User data:', user);
-    console.log('🔔 Notifications enabled:', user?.notificationsEnabled);
-    console.log('🔔 Notifications data:', notifications);
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
@@ -66,12 +60,8 @@ const BellNotification = () => {
 
     // Early return if user context is not loaded
     if (!user) {
-        console.log('🔔 User context not loaded yet');
         return (
             <div className="relative">
-                <div style={{position: 'absolute', top: '-20px', left: '0', background: 'orange', color: 'white', padding: '2px', fontSize: '10px', zIndex: 9999}}>
-                    LOADING USER...
-                </div>
                 <button className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent">
                     <FaRegBell size={29} />
                 </button>
@@ -80,12 +70,8 @@ const BellNotification = () => {
     }
 
     if (!user.notificationsEnabled) {
-        console.log('🔔 Notifications are disabled for user');
         return (
             <div className="relative">
-                <div style={{position: 'absolute', top: '-20px', left: '0', background: 'purple', color: 'white', padding: '2px', fontSize: '10px', zIndex: 9999}}>
-                    DISABLED
-                </div>
                 <button
                     className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 opacity-50 cursor-not-allowed"
                     disabled={true}
@@ -98,8 +84,6 @@ const BellNotification = () => {
     }
 
     const handleBellClick = () => {
-        console.log('🔔🔔🔔 NEW BELL CLICKED! State:', { isOpen, clicked });
-        alert('NEW BELL COMPONENT CLICKED!');
         setIsOpen(!isOpen);
         setClicked(prev => !prev);
         if (!isOpen) {
@@ -109,17 +93,12 @@ const BellNotification = () => {
 
     return (
         <div className="relative">
-            {/* NEW Debug indicator */}
-            <div style={{position: 'absolute', top: '-20px', left: '0', background: 'cyan', color: 'black', padding: '2px', fontSize: '10px', zIndex: 9999}}>
-                NEW BELL v3.0 ACTIVE
-            </div>
-            
             {/* Notification Bell Icon */}
             <button
                 ref={bellRef}
                 onClick={handleBellClick}
                 className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]"
-                title="Notifications (NEW COMPONENT)"
+                title="Notifications"
                 type="button"
             >
                 <FaRegBell size={29} />
@@ -138,7 +117,7 @@ const BellNotification = () => {
                 >
                     {/* Header */}
                     <div style={{borderBottom:'1px solid #D1D5DB'}} className="flex items-center justify-between bg-gray-50">
-                        <h3 className="text-lg p-3 font-semibold text-gray-800">NEW Notifications</h3>
+                        <h3 className="text-lg p-3 font-semibold text-gray-800">Notifications</h3>
                         <Button
                         sx={{ borderRadius:'8px'}}
                             onClick={() => setIsOpen(false)}
