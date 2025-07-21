@@ -5,6 +5,7 @@ import { notificationCount } from '../static/dummyData_Notifications';
 import NotificationPopup from './NotificationPopup';
 import BellNotification from './BellNotification';
 import { useUser } from '../UserContext';
+import { FaRegBell } from "react-icons/fa";
 
 
 const Sidebar = () => {
@@ -14,15 +15,26 @@ const Sidebar = () => {
 
   // Top 6 menu items (excluding last 3)
   const topMenuItems = sidebarMenu.slice(0, 6);
-  // Last 3 menu items
+  // Last 3 menu items  
   const bottomMenuItems = sidebarMenu.slice(-3);
+  
+  console.log('🔍 All sidebarMenu items:', sidebarMenu.map(item => item.title));
+  console.log('🔍 bottomMenuItems:', bottomMenuItems.map(item => item.title));
 
   // Helper: check if icon is FaBell (works for react-icons/fa and similar)
-  const isBellIcon = (Icon) =>
-    Icon.displayName === "FaBell" ||
-    Icon.displayName === "FaRegBell" ||
-    Icon.name === "FaBell" ||
-    Icon.name === "FaRegBell";
+  const isBellIcon = (Icon) => {
+    console.log('🔍 Checking icon:', Icon, 'displayName:', Icon?.displayName, 'name:', Icon?.name);
+    console.log('🔍 Icon toString:', Icon.toString());
+    console.log('🔍 Direct comparison with FaRegBell:', Icon === FaRegBell);
+    
+    return Icon.displayName === "FaBell" ||
+           Icon.displayName === "FaRegBell" ||
+           Icon.name === "FaBell" ||
+           Icon.name === "FaRegBell" ||
+           Icon === FaRegBell || // Direct comparison
+           Icon.toString().includes('FaRegBell') || // String check
+           Icon.toString().includes('FaBell'); // String check
+  };
 
   return (
     <nav className="flex flex-col items-center w-full h-full justify-between">
@@ -56,7 +68,9 @@ const Sidebar = () => {
         {bottomMenuItems.map((item, idx) => {
           const isActive = location.pathname === item.redirect;
           const Icon = item.icon;
-          const isBell = idx === 0 && isBellIcon(Icon);
+          const isBell = item.title === "Notifications"; // Check by title instead
+          
+          console.log(`🔍 Bottom item ${idx}:`, item.title, 'isBell:', isBell, 'Icon:', Icon);
 
           return (
             <div key={idx} className="w-full flex justify-center">
