@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { useUser } from '../UserContext';
 
 const NotificationPopup = () => {
+    console.log('🚀 NotificationPopup component is rendering');
     const { user } = useUser();
 
     // Add debugging for production
@@ -104,12 +105,29 @@ const NotificationPopup = () => {
         console.log('🔔 State updated, new isOpen should be:', !isOpen);
     };
 
+    // Add a simple test handler
+    const testClick = () => {
+        console.log('🧪 TEST CLICK HANDLER CALLED!');
+        alert('Click detected!');
+    };
+
     return (
         <div className="relative">
+            {/* Debug indicator */}
+            <div style={{position: 'absolute', top: '-20px', left: '0', background: 'red', color: 'white', padding: '2px', fontSize: '10px', zIndex: 9999}}>
+                DEBUG: NotificationPopup Active
+            </div>
+            
             {/* Notification Bell Icon */}
             <button
                 ref={bellRef}
-                onClick={handleBellClick}
+                onClick={(e) => {
+                    console.log('🧪 Raw click event detected:', e);
+                    testClick();
+                    handleBellClick();
+                }}
+                onMouseDown={() => console.log('🧪 Mouse down on bell')}
+                onMouseUp={() => console.log('🧪 Mouse up on bell')}
                 className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]"
                 title="Notifications"
                 type="button"
