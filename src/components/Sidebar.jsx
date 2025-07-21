@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import { notificationCount } from '../static/dummyData_Notifications';
 import NotificationPopup from './NotificationPopup';
+import BellNotification from './BellNotification';
 import { useUser } from '../UserContext';
 
 
@@ -60,8 +61,8 @@ const Sidebar = () => {
           return (
             <div key={idx} className="w-full flex justify-center">
               {isBell ? (
-                // Render NotificationPopup for the bell icon
-                <NotificationPopup />
+                // Render BellNotification for the bell icon (NEW COMPONENT)
+                <BellNotification />
               ) : (
                 <Link to={item.redirect} className="w-full flex justify-center">
                   <Tooltip title={item.title} placement="right">
