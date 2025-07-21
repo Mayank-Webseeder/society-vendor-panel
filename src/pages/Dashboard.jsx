@@ -10,6 +10,7 @@ import QuickActions from '../components/QuickActions';
 import PerformanceSummary from '../components/PerformanceSummary';
 import HeadingCard from '../components/HeadingCard';
 import NewJobs from '../components/NewJobs';
+import GoldMembershipCard from '../components/GoldMembershipCard';
 
 
 const containerVariants = {
@@ -49,18 +50,20 @@ const Dashboard = () => {
         </motion.div>
 
 
-        {/* Main Content Grid */}
+        {/* Main Content Grid (Left side) */}
         <div className="flex-1 pl-4 pr-16 w-full space-y-6">          
           <UpcomingJobs />
 
           <NewJobs />
 
           <QuickActions />
+
+          <GoldMembershipCard />
         </div>
       </div>
 
       {/* Right Side */}
-      <div className='flex flex-col w-[23%] space-y-3'>
+      <div className='flex flex-col w-[23%] space-y-5'>
         <AvailabilityCalendar />
         
         <Notifications />

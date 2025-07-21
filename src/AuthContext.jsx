@@ -1,15 +1,16 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext";
+
 
 const AuthContext = createContext();
-
-
 export const useAuth = () => useContext(AuthContext);
 
 
 export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
+  const { resetUser } = useUser();
 
   // For demo: use localStorage so refresh persists login
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("velra_logged_in"));
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("velra_logged_in");
-    localStorage.removeItem("velra_user");    //Also clear the user data
+    resetUser();    // Resets both state & localStorage for user
     setIsLoggedIn(false);
     navigate('/auth', {replace: true});
   };

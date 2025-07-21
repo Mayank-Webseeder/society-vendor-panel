@@ -49,6 +49,11 @@ const Step2_WhatYouOffer = () => {
 
   const handleAgreedCheckboxChange = (event) => {
     setAgreedToTerms(event.target.checked);
+    updateOnboardingData({ 
+      ...onboardingData, 
+      agreedTermsAndConditions: event.target.checked, 
+      agreedPrivacyPolicy: event.target.checked 
+    });
   };
 
   const handleServiceToggle = (serviceValue) => {
@@ -66,7 +71,7 @@ const Step2_WhatYouOffer = () => {
   };
 
   const handleContinue = () => {
-    navigate('/auth/onboarding/working-days');
+    navigate('/auth/onboarding/working-days', { replace: true });
   };
 
 
@@ -96,13 +101,14 @@ const Step2_WhatYouOffer = () => {
           width: '100%',
           height: '100%',
           display: 'flex',
-          borderRadius: '12px',
+          borderRadius: '20px',
           overflowY: 'auto',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         }}
       >
 
         {/* Debugging Purposes */}
-        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
 
         {/* Left Half: Form Content */}
         <div className='flex flex-col flex-1 p-8 sm:p-12 justify-between bg-white'>
@@ -111,9 +117,10 @@ const Step2_WhatYouOffer = () => {
               variant="h4"
               sx={{
                 fontWeight: 'bold',
-                color: '#212121',
+                color: '#1a1a1a',
                 mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem' },
+                fontSize: { xs: '1.75rem', sm: '2.5rem' },
+                letterSpacing: '-0.02em',
               }}
             >
               Tell Us What You Offer
@@ -121,52 +128,67 @@ const Step2_WhatYouOffer = () => {
             <Typography
               variant="body1"
               sx={{
-                color: '#616161',
+                color: '#6b7280',
                 mb: { xs: 4, sm: 8 },
-                fontSize: { xs: '0.9rem', sm: '1rem' },
+                fontSize: { xs: '1rem', sm: '1.125rem' },
+                lineHeight: 1.6,
               }}
             >
               We'll help connect you with the right societies
             </Typography>
 
             {/* Multi-Select Input */}
-            <div className="relative w-full max-w-md" ref={dropdownRef}>
+            <div className="relative w-full max-w-lg" ref={dropdownRef}>
               <div
-                className="w-full bg-white rounded-lg py-3 pl-12 pr-4 text-gray-500 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 border border-gray-300 shadow-sm flex items-center justify-between cursor-pointer"
+                className="w-full bg-white rounded-xl py-4 pl-14 pr-4 text-gray-500 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-gray-300 transition-all duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <Search size={20} className="absolute left-4 text-gray-400 pointer-events-none" />
-                <span className="ml-8 text-gray-700">
+                <span className="ml-8 text-gray-700 text-base">
                   {selectedServices.length > 0
-                    ? `${selectedServices.length} selected`
-                    : 'Select services...'
+                    ? `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`
+                    : 'Select services you offer...'
                   }
                 </span>
-                <ChevronDown size={20} className="text-gray-500" />
+                <ChevronDown 
+                  size={20} 
+                  className={`text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+                />
               </div>
 
               {isDropdownOpen && (
                 <div
-                  className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-2 py-2 z-10"
-                  style={{ maxHeight: '250px', overflowY: 'auto' }}
+                  className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-xl shadow-xl mt-2 py-2 z-10 backdrop-blur-sm"
+                  style={{ maxHeight: '280px', overflowY: 'auto' }}
                 >
                   {dummyOffers.map((offer) => (
                     <div
                       key={offer.value}
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
                       onClick={() => handleServiceToggle(offer.value)}
                     >
                       <Checkbox
                         checked={selectedServices.includes(offer.value)}
                         onChange={() => handleServiceToggle(offer.value)}
                         sx={{
-                          color: '#6B7280',
+                          color: '#9ca3af',
                           '&.Mui-checked': {
-                            color: '#4487AE',
+                            color: '#3b82f6',
+                          },
+                          '&:hover': {
+                            backgroundColor: 'rgba(59, 130, 246, 0.04)',
                           },
                         }}
                       />
-                      <Typography variant="body1" sx={{ color: '#424242', ml: 1 }}>
+                      <Typography 
+                        variant="body1" 
+                        sx={{ 
+                          color: '#374151', 
+                          ml: 1.5,
+                          fontSize: '0.95rem',
+                          fontWeight: 500,
+                        }}
+                      >
                         {offer.label}
                       </Typography>
                     </div>
@@ -177,21 +199,21 @@ const Step2_WhatYouOffer = () => {
 
             {/* Selected Services Tags */}
             {selectedServices.length > 0 && (
-              <div className="flex flex-wrap gap-x-4 gap-y-3 mt-4 max-w-md">
+              <div className="flex flex-wrap gap-x-3 gap-y-3 mt-6 max-w-lg">
                 {selectedServices.map((serviceValue) => {
                   const service = dummyOffers.find(o => o.value === serviceValue);
                   return service ? (
                     <div
                       key={service.value}
-                      className="relative flex items-center rounded-full px-3 py-1 text-sm text-black/[0.69] border border-solid border-black/[0.69]"
+                      className="relative flex items-center rounded-full px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors duration-150"
                     >
                       <span>{service.label}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveTag(service.value)}
-                        className="absolute border-none flex justify-center items-center rounded-full -right-3 -top-2 bg-black/[0.69] text-white hover:text-gray-700 cursor-pointer focus:outline-none"
+                        className="ml-2 w-5 h-5 flex justify-center items-center border-none rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-150 focus:outline-none"
                       >
-                        <X size={14} />
+                        <X size={12} />
                       </button>
                     </div>
                   ) : null;
@@ -200,58 +222,78 @@ const Step2_WhatYouOffer = () => {
             )}
           </div>
 
-          {/* Continue Button */}
-          {selectedServices.length > 0 && (
-            <Button
-              variant="contained"
-              onClick={handleContinue}
-              disabled={!agreedToTerms}
-              sx={{
-                mt: { xs: 3, sm: 4 },
-                py: '10px',
-                bgcolor: !agreedToTerms ? '#f5f5f5' : '#56A9D9',
-                color: !agreedToTerms ? '#bdbdbd' : 'white',
-                fontWeight: 'bold',
-                borderRadius: '8px',
-                boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                '&:hover': {
-                  bgcolor: !agreedToTerms ? '#f5f5f5' : '#42A5F5',
-                },
-                width: '150px',
-                alignSelf: 'center',
-                opacity: !agreedToTerms ? 0.7 : 1,
-                pointerEvents: !agreedToTerms ? 'none' : 'auto',
-              }}
-            >
-              Continue
-            </Button>
-          )}
-
-          {/* Checkbox for Terms & Conditions */}
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={agreedToTerms}
-                onChange={handleAgreedCheckboxChange}
+          {/* Bottom Section */}
+          <div className="flex flex-col items-center gap-6 mt-8">
+            {/* Continue Button */}
+            {selectedServices.length > 0 && (
+              <Button
+                variant="contained"
+                onClick={handleContinue}
+                disabled={!agreedToTerms}
                 sx={{
-                  color: '#B0B0B0',
-                  '&.Mui-checked': {
-                    color: '#4487AE',
+                  py: '12px',
+                  px: '32px',
+                  bgcolor: !agreedToTerms ? '#f3f4f6' : '#3b82f6',
+                  color: !agreedToTerms ? '#9ca3af' : 'white',
+                  fontWeight: 600,
+                  fontSize: '1rem',
+                  borderRadius: '12px',
+                  boxShadow: !agreedToTerms ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.4)',
+                  '&:hover': {
+                    bgcolor: !agreedToTerms ? '#f3f4f6' : '#2563eb',
+                    boxShadow: !agreedToTerms ? 'none' : '0 6px 16px rgba(59, 130, 246, 0.5)',
+                  },
+                  textTransform: 'none',
+                  transition: 'all 0.2s ease-in-out',
+                  '&:disabled': {
+                    bgcolor: '#f3f4f6',
+                    color: '#9ca3af',
                   },
                 }}
-              />
-            }
-            label={
-              <Typography variant="body2" sx={{ color: 'rgba(0,0,0,0.59)' }}>
-                By continuing, you agree to our Terms & Conditions<br />and Privacy Policy.
-              </Typography>
-            }
-            sx={{ mt: { xs: 4, sm: 6 }, alignSelf: 'flex-start' }}
-          />
+              >
+                Continue
+              </Button>
+            )}
+
+            {/* Checkbox for Terms & Conditions */}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={agreedToTerms}
+                  onChange={handleAgreedCheckboxChange}
+                  sx={{
+                    color: '#d1d5db',
+                    '&.Mui-checked': {
+                      color: '#3b82f6',
+                    },
+                    '&:hover': {
+                      backgroundColor: 'rgba(59, 130, 246, 0.04)',
+                    },
+                  }}
+                />
+              }
+              label={
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: '#6b7280',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  By continuing, you agree to our{' '}
+                  <span style={{ color: '#3b82f6', cursor: 'pointer' }}>Terms & Conditions</span>
+                  {' '}and{' '}
+                  <span style={{ color: '#3b82f6', cursor: 'pointer' }}>Privacy Policy</span>.
+                </Typography>
+              }
+              sx={{ alignSelf: 'flex-start' }}
+            />
+          </div>
         </div>
 
         {/* Right Half: Image */}
-        <div className='flex-1 hidden md:flex items-center justify-center'>
+        <div className='flex-1 hidden md:flex items-center justify-center bg-white'>
           <img
             src={onboardingImage}
             alt="Illustration"

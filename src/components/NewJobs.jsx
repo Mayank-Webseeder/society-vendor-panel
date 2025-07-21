@@ -1,7 +1,8 @@
 import Button from '@mui/material/Button';
-import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
+import { Wrench, Calendar, Clock, MapPin, ChevronRight, Briefcase } from 'lucide-react';
 import dummyData from '../static/dummyData_Leads';
+
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -27,45 +28,120 @@ const getTopNewLeads = (data, count = 4) => {
 const NewJobs = () => {
   const topLeads = getTopNewLeads(dummyData);
 
-  const LeadCard = ({ lead }) => (
+  const LeadCard = ({ lead, index }) => (
     <motion.div
-      className="bg-gray-50 rounded-xl p-4 shadow hover:bg-blue-50 transition-colors cursor-pointer flex flex-col h-full"
-      whileHover={{ scale: 1.02 }}
+      className="group relative mb-2 bg-gradient-to-br from-white to-gray-50/30 rounded-xl border border-gray-200 hover:border-blue-200 transition-all duration-300 hover:shadow-lg cursor-pointer overflow-hidden"
+      whileHover={{ y: -2 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
     >
-      <div className="flex items-center justify-between mb-2">
-        <span className="flex font-semibold items-center text-gray-900/80">
-          <span><WrenchScrewdriverIcon className='w-4 h-4 mr-1'/></span>
-          {lead.work}
-        </span>
-        <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-medium">New</span>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      <div className="relative p-5">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3 flex-1">
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+              <Wrench className="w-5 h-5 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-gray-900 text-base mb-1 group-hover:text-blue-900 transition-colors line-clamp-1">
+                {lead.work}
+              </h4>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
+              New
+            </span>
+            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transform group-hover:translate-x-1 transition-all duration-200" />
+          </div>
+        </div>
+
+        {/* Property Name */}
+        <div className="mb-3">
+          <h5 className="font-medium text-gray-900 text-sm">{lead.name}</h5>
+        </div>
+
+        {/* Address */}
+        <div className="flex items-start gap-2.5 mb-4">
+          <div className="w-7 h-7 bg-gray-100 rounded-md flex items-center justify-center mt-0.5 flex-shrink-0">
+            <MapPin className="w-3.5 h-3.5 text-gray-600" />
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
+            {lead.address}
+          </p>
+        </div>
+
+        {/* Time and Date */}
+        <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1.5 text-gray-600">
+            <div className="w-6 h-6 bg-orange-50 rounded-md flex items-center justify-center">
+              <Calendar className="w-3.5 h-3.5 text-orange-600" />
+            </div>
+            <span className="font-medium">{lead.date}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-gray-600">
+            <div className="w-6 h-6 bg-green-50 rounded-md flex items-center justify-center">
+              <Clock className="w-3.5 h-3.5 text-green-600" />
+            </div>
+            <span className="font-medium">{lead.time}</span>
+          </div>
+        </div>
       </div>
-      <div className="text-sm text-gray-700 mb-1">{lead.name}</div>
-      <div className="text-xs text-gray-500/70 mb-1">{lead.address}</div>
-      <div className="flex items-center justify-between text-xs text-gray-500 mt-auto">
-        <span>🗓 {lead.date}</span>
-        <span>⏰ {lead.time}</span>
-      </div>
+
+      {/* Bottom accent */}
+      <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </motion.div>
   );
 
   return (
     <motion.div
-      className="bg-white rounded-xl shadow-md p-6"
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
       transition={{ delay: 0.3 }}
     >
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">New Jobs</h2>
-        <Button sx={{ borderRadius: '8px' }} variant='outlined' className="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
-          View All
-        </Button>
+      {/* Header */}
+      <div className="px-8 py-6 border-b border-gray-50 bg-gradient-to-r from-gray-50/50 to-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">New Jobs</h2>
+            <p className="text-sm text-gray-500 mt-2 ml-1">
+              {topLeads.length} {topLeads.length === 1 ? 'new opportunity' : 'new opportunities'} available
+            </p>
+          </div>
+          <Button 
+            sx={{ borderRadius: '8px' }} 
+            variant='outlined' 
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-sm rounded-xl border border-blue-200 transition-all duration-200 hover:shadow-md"
+          >
+            View All
+            <ChevronRight size={16} />
+          </Button>
+        </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-        {topLeads.map(lead => (
-          <LeadCard key={lead.id} lead={lead} />
-        ))}
+
+      {/* Content */}
+      <div className="px-6 py-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {topLeads.length === 0 ? (
+            <div className="col-span-2 text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <Briefcase className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-500 text-base font-medium mb-1">No new jobs available</p>
+              <p className="text-gray-400 text-sm">New job opportunities will appear here</p>
+            </div>
+          ) : (
+            topLeads.map((lead, index) => (
+              <LeadCard key={lead.id} lead={lead} index={index} />
+            ))
+          )}
+        </div>
       </div>
     </motion.div>
   );

@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { User as UserIcon, Lock as LockIcon, FileText } from 'lucide-react';
 import { FaToolbox } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
 import { motion } from 'framer-motion';
-import { useUser } from '../UserContext';
 
 
 const sidebarOptions = [
@@ -37,20 +35,9 @@ const itemVariants = {
 
 const UserProfile = () => {
 
-  const { user, setUser } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Determine active sidebar option based on current route
-  const getActiveOption = () => {
-    const found = sidebarOptions.find(opt => location.pathname === opt.route);
-    return found ? found.label : 'My Profile';
-  };
-
-  const [active, setActive] = useState(getActiveOption());
-
-  // Update active option on route change
-  // (optional: useEffect if you want to sync with location.pathname)
 
   return (
     <motion.div
@@ -90,12 +77,14 @@ const UserProfile = () => {
               <motion.div
                 key={opt.label}
                 className={`flex items-center mb-6 py-3 px-4 rounded-lg cursor-pointer transition-colors
-                  ${location.pathname === opt.route ? 'bg-blue-50 text-blue-700 border-solid border font-semibold' : 'text-gray-600 hover:bg-gray-50'}
+                  ${
+                    (opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) ||
+                    location.pathname === opt.route
+                      ? 'bg-blue-50 text-blue-700 border-solid border font-semibold'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }
                 `}
-                onClick={() => {
-                  setActive(opt.label);
-                  navigate(opt.route);
-                }}
+                onClick={() => navigate(opt.route)}
                 variants={itemVariants}
                 whileHover={{ y: -2, scale: 1.03 }}
               >
@@ -105,6 +94,7 @@ const UserProfile = () => {
             ))}
           </div>
         </motion.div>
+
 
         {/* Right Dynamic Content */}
         <motion.div 

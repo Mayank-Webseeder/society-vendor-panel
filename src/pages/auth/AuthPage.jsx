@@ -14,7 +14,6 @@ const AuthPage = () => {
     setLoading(true);
     setTimeout(() => {
       login();
-
       setLoading(false);
     }, 2000);
   };

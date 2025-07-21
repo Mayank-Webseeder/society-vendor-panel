@@ -2,17 +2,14 @@ import Card3_Vector26 from "../../assets/Card3_Vector26.png";
 import Card3_Vector27 from "../../assets/Card3_Vector27.png";
 import { FaChevronRight } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
-import { useUser } from '../../UserContext';
-// import { finalRating } from '../../static/dummyData_MyStats';
+import { finalRating } from '../../static/dummyData_MyStats';
 
 const Card3 = () => {
-
-  const { user } = useUser();
 
 
   // Generate an array of stars based on user.rating
   const renderStars = () => {
-    const count = Math.floor(Number(user.rating)) || 0;
+    const count = Math.floor(Number(finalRating)) || 0;
     return (
       <div className="flex gap-1">
         {
@@ -27,7 +24,7 @@ const Card3 = () => {
 
 
   return (
-    <div className="relative bg-[#7366EC] w-60 rounded-xl h-40 overflow-hidden hover:scale-105 cursor-pointer transition-transform duration-300">
+    <div className="relative bg-[#7366EC] w-60 rounded-xl h-40 overflow-hidden hover:scale-105 transition-transform duration-300">
       <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">Rating & Feedback</p>
       <div className="relative font-semibold text-white text-4xl z-30 pt-10 pl-3">
         {renderStars()}

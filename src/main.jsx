@@ -9,12 +9,12 @@ import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <AuthProvider>
-      <UserProvider>
+    <UserProvider>
+      <AuthProvider>
         <OnboardingProvider>
           <App />
         </OnboardingProvider>
-      </UserProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </UserProvider>
   </BrowserRouter>,
 )

@@ -1,30 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box, CircularProgress } from '@mui/material';
+import { Paper, Typography, Button, TextField, Box, CircularProgress, Fade, Slide } from '@mui/material';
+import { CheckCircle, Phone, Timer, Refresh } from '@mui/icons-material';
 import verifyNumber from '../../assets/verifyNumber.png';
 import logoWhite from '../../assets/logoWhite.png';
 import { useAuth } from '../../AuthContext';
 import { useOnBoarding } from './OnboardingContext';
 import { useUser } from '../../UserContext';
 
-
-const RESEND_TIME = 30;    // seconds
-
+const RESEND_TIME = 30;
 
 const Step8_VerifyOtp = () => {
-
-  const { login } = useAuth();    // The login function to set the local storage
-  const { setUser } = useUser();    // get setUser
-
-  const { onboardingData } = useOnBoarding();    // Get onboarding data
-
+  const { login } = useAuth();
+  const { setUser } = useUser();
+  const { onboardingData, updateOnboardingData } = useOnBoarding();
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isTiming, setIsTiming] = useState(true);
-  const [verifying, setVerifying] = useState(false); // <-- NEW
+  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const timerRef = useRef(null);
   const inputRefs = useRef([]);
 
@@ -61,40 +58,35 @@ const Step8_VerifyOtp = () => {
   const handleResendCode = () => {
     setTimer(RESEND_TIME);
     setIsTiming(true);
-    // Implement actual resend OTP logic here
+    setError('');
     console.log("Resending OTP...");
   };
 
-  const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
-
-
+  const formatTimer = (t) => `${Math.floor(t / 60)}:${(t % 60).toString().padStart(2, '0')}`;
 
   const handleContinue = () => {
     const enteredOtp = otp.join('');
     if (enteredOtp !== '7853') {
       setError('Incorrect OTP. Please try again.');
-      setOtp(['', '', '', '']); // <-- Clear all OTP input fields
-      // Optionally, focus the first input
+      setOtp(['', '', '', '']);
       if (inputRefs.current[0]) inputRefs.current[0].focus();
       return;
     }
     setError('');
     setVerifying(true);
+    updateOnboardingData({ ...onboardingData, otp: enteredOtp });
+
     setTimeout(() => {
-      setVerifying(false);
-      login();    // set auth state & local storage
-
-      /***** Save onboarding data to localStorage for global use *****/
-      localStorage.setItem('velra_user', JSON.stringify(onboardingData));
-      setUser(onboardingData);    //<-- Update context immediately
-
-      navigate('/dashboard');
-    }, 2200); // 2.2 seconds for a smooth effect
+      setSuccess(true);
+      setTimeout(() => {
+        setVerifying(false);
+        login();
+        localStorage.setItem('velra_user', JSON.stringify(onboardingData));
+        setUser(onboardingData);
+        navigate('/dashboard');
+      }, 1000);
+    }, 2200);
   };
-
-
-
-
 
   return (
     <div style={{ position: 'relative', width: '80%', height: '80%' }}>
@@ -115,188 +107,356 @@ const Step8_VerifyOtp = () => {
       </div>
 
       <Paper
-        elevation={7}
+        elevation={24}
         sx={{
           width: '100%',
           height: '100%',
           display: 'flex',
-          borderRadius: '12px',
-          overflow: 'hidden',
+          borderRadius: '24px',
+          overflow: 'auto',
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
 
         {/* Debugging Purposes */}
-        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
 
-        {/* Left Half: Form Content */}
-        <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center bg-white'>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 'bold',
-              color: '#212121',
-              mb: { xs: 2, sm: 3 },
-              fontSize: { xs: '1.75rem', sm: '2.25rem' },
-              textAlign: 'center',
+        {/* Left Half: Enhanced Form Content */}
+        <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center relative'>
+          {/* Background Pattern */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              // background: `
+              //   radial-gradient(circle at 20% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
+              //   radial-gradient(circle at 80% 20%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
+              //   radial-gradient(circle at 40% 40%, rgba(86, 169, 217, 0.02) 0%, transparent 50%)
+              // `,
+              backgroundColor: 'white',
+              zIndex: 0,
             }}
-          >
-            Verify Your Number
-          </Typography>
+          />
 
-          <Typography
-            variant="body1"
-            sx={{
-              color: '#616161',
-              mb: { xs: 4, sm: 6 },
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-              textAlign: 'center',
-              lineHeight: 1.5,
-            }}
-          >
-            We've sent a 4-digit code to +91 XXXXX 12345.<br />Please enter it below to verify your number.
-          </Typography>
+          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '400px' }}>
+            {/* Header with Icon */}
+            <Fade in timeout={800}>
+              <Box sx={{ textAlign: 'center', mb: 4 }}>
+                <Box
+                  sx={{
+                    width: 70,
+                    height: 70,
+                    mx: 'auto',
+                    mb: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'linear-gradient(135deg, #56A9D9 0%, #4A90E2 100%)',
+                    borderRadius: '24px',
+                    boxShadow: '0 8px 32px rgba(86, 169, 217, 0.3)',
+                    // transform: 'rotate(-3deg)',
+                  }}
+                >
+                  <Phone sx={{ color: 'white', fontSize: 36 }} />
+                </Box>
+                
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    mb: 2,
+                    fontSize: { xs: '1.8rem', sm: '2.2rem' },
+                    letterSpacing: '-0.025em',
+                  }}
+                >
+                  Verify Your Number
+                </Typography>
+                
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: '#64748b',
+                    fontSize: { xs: '0.95rem', sm: '1.05rem' },
+                    fontWeight: 400,
+                    lineHeight: 1.6,
+                    maxWidth: '320px',
+                    mx: 'auto',
+                  }}
+                >
+                  We've sent a secure 4-digit code to{' '}
+                  <Box component="span" sx={{ fontWeight: 600, color: '#334155' }}>
+                    +91 XXXXX 12345
+                  </Box>
+                </Typography>
+              </Box>
+            </Fade>
 
-          {/* OTP Input Fields */}
-          <Box
-            sx={{
-              display: 'flex',
-              gap: { xs: 1, sm: 2 },
-              mb: { xs: 4, sm: 6 },
-              maxWidth: '300px',
-              width: '100%',
-              justifyContent: 'center',
-            }}
-          >
-            {otp.map((data, index) => (
-              <TextField
-                key={index}
-                inputRef={(el) => (inputRefs.current[index] = el)}
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]"
-                value={data}
-                onChange={(e) => handleOtpChange(e.target, index)}
-                onFocus={(e) => e.target.select()}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                variant="outlined"
-                inputProps={{
-                  maxLength: 1,
-                  style: { textAlign: 'center' }
-                }}
+            {/* OTP Input Fields */}
+            <Slide in direction="up" timeout={600}>
+              <Box
                 sx={{
-                  width: { xs: '45px', sm: '50px' },
-                  height: { xs: '45px', sm: '50px' },
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                    '&.Mui-focused fieldset': { borderColor: '#56A9D9' },
-                  },
-                  '& .MuiInputBase-input': {
-                    textAlign: 'center',
-                    color: '#212121',
-                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                    py: 1,
-                  },
-                }}
-              />
-            ))}
-          </Box>
-
-          {/* Resend Timer */}
-          <Box sx={{ mb: { xs: 6, sm: 8 }, textAlign: 'center' }}>
-            <Typography
-              variant="body1"
-              sx={{
-                color: 'rgba(0,0,0,0.59)',
-                mb: 1,
-                fontWeight: 'bold',
-              }}
-            >
-              Resend in
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: '400',
-                color: 'rgba(0,0,0,0.59)',
-                fontSize: '0.875rem',
-              }}
-            >
-              {formatTimer(timer)}
-            </Typography>
-            {!isTiming && (
-              <Button
-                variant="text"
-                onClick={handleResendCode}
-                sx={{
-                  mt: 1,
-                  color: '#56A9D9',
-                  textTransform: 'none',
-                  fontWeight: 'bold',
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                    textDecoration: 'underline',
-                  },
+                  display: 'flex',
+                  gap: { xs: 1.5, sm: 2 },
+                  mb: 4,
+                  justifyContent: 'center',
                 }}
               >
-                Resend Code
-              </Button>
+                {otp.map((data, index) => (
+                  <TextField
+                    key={index}
+                    inputRef={(el) => (inputRefs.current[index] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]"
+                    value={data}
+                    onChange={(e) => handleOtpChange(e.target, index)}
+                    onFocus={(e) => e.target.select()}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    variant="outlined"
+                    inputProps={{
+                      maxLength: 1,
+                      style: { textAlign: 'center' }
+                    }}
+                    sx={{
+                      width: { xs: '55px', sm: '64px' },
+                      height: { xs: '55px', sm: '64px' },
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '16px',
+                        background: 'rgba(255, 255, 255, 0.8)',
+                        backdropFilter: 'blur(10px)',
+                        border: '2px solid transparent',
+                        backgroundClip: 'padding-box',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        '& fieldset': { 
+                          border: '2px solid #e2e8f0',
+                          borderRadius: '16px',
+                        },
+                        '&:hover fieldset': { 
+                          borderColor: '#56A9D9',
+                          boxShadow: '0 4px 12px rgba(86, 169, 217, 0.15)',
+                        },
+                        '&.Mui-focused fieldset': { 
+                          borderColor: '#56A9D9',
+                          boxShadow: '0 8px 25px rgba(86, 169, 217, 0.25)',
+                        },
+                        '&.Mui-focused': {
+                          transform: 'translateY(-2px)',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        textAlign: 'center',
+                        color: '#1e293b',
+                        fontSize: { xs: '1.4rem', sm: '1.6rem' },
+                        fontWeight: 600,
+                        py: 0,
+                      },
+                    }}
+                  />
+                ))}
+              </Box>
+            </Slide>
+
+            {/* Timer Section */}
+            <Fade in timeout={1000}>
+              <Box sx={{ mb: 4, textAlign: 'center' }}>
+                {isTiming ? (
+                  <Box
+                    sx={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+                      border: '1px solid #e2e8f0',
+                      mb: 2,
+                    }}
+                  >
+                    <Timer sx={{ 
+                      color: '#64748b', 
+                      fontSize: 20 
+                    }} />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: '#64748b',
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      Resend in {formatTimer(timer)}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Button
+                    variant="text"
+                    onClick={handleResendCode}
+                    startIcon={<Refresh />}
+                    sx={{
+                      color: '#56A9D9',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '0.9rem',
+                      px: 2,
+                      py: 1,
+                      borderRadius: '10px',
+                      background: 'rgba(86, 169, 217, 0.1)',
+                      '&:hover': {
+                        background: 'rgba(86, 169, 217, 0.2)',
+                        transform: 'translateY(-1px)',
+                      },
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    Resend Code
+                  </Button>
+                )}
+              </Box>
+            </Fade>
+
+            {/* Error Message */}
+            {error && (
+              <Fade in>
+                <Box
+                  sx={{
+                    mb: 3,
+                    p: 2,
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+                    border: '1px solid #fecaca',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography 
+                    sx={{ 
+                      color: '#dc2626', 
+                      fontWeight: 500,
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    {error}
+                  </Typography>
+                </Box>
+              </Fade>
             )}
-          </Box>
 
-          {error && (
-            <Typography color="error" sx={{ mb: 2, fontWeight: 500 }}>
-              {error}
-            </Typography>
-          )}
-
-          {/* Continue button or animation */}
-          {verifying ? (
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-              <CircularProgress size={32} sx={{ color: '#56A9D9', mb: 1 }} />
-              <Typography variant="body2" sx={{ color: '#56A9D9', fontWeight: 500 }}>
-                Verifying...
-              </Typography>
-            </Box>
-          ) : (
-            <Button
-              variant="outlined"
-              onClick={handleContinue}
-              disabled={otp.some((digit) => digit === '')}
-              sx={{
-                py: '10px',
-                bgcolor: otp.some((digit) => digit === '') ? '#f5f5f5' : 'white',
-                color: otp.some((digit) => digit === '') ? '#bdbdbd' : '#56A9D9',
-                borderColor: '#56A9D9',
-                fontWeight: 'bold',
-                borderRadius: '8px',
-                boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                '&:hover': {
-                  bgcolor: '#E0F2FF',
-                  borderColor: '#56A9D9',
-                  color: '#56A9D9',
-                },
-                width: '150px',
-                alignSelf: 'center',
-                opacity: otp.some((digit) => digit === '') ? 0.7 : 1,
-                pointerEvents: otp.some((digit) => digit === '') ? 'none' : 'auto',
-              }}
-            >
-              Continue
-            </Button>
-          )}
+            {/* Continue Button or Verification Animation */}
+            <Fade in timeout={1200}>
+              <Box sx={{ textAlign: 'center' }}>
+                {verifying ? (
+                  <Box sx={{ py: 3 }}>
+                    {success ? (
+                      <Fade in>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                          <CheckCircle sx={{ color: '#10b981', fontSize: 48, mb: 2 }} />
+                          <Typography variant="h6" sx={{ color: '#10b981', fontWeight: 600 }}>
+                            Verified Successfully!
+                          </Typography>
+                        </Box>
+                      </Fade>
+                    ) : (
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <CircularProgress 
+                          size={40} 
+                          sx={{ 
+                            color: '#56A9D9', 
+                            mb: 2,
+                            '& .MuiCircularProgress-circle': {
+                              strokeLinecap: 'round',
+                            },
+                          }} 
+                        />
+                        <Typography variant="body1" sx={{ color: '#56A9D9', fontWeight: 600 }}>
+                          Verifying your code...
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                ) : (
+                  <Button
+                    variant="contained"
+                    onClick={handleContinue}
+                    disabled={otp.some((digit) => digit === '')}
+                    sx={{
+                      py: 2,
+                      px: 6,
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      borderRadius: '16px',
+                      textTransform: 'none',
+                      background: otp.some((digit) => digit === '') 
+                        ? 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+                        : 'linear-gradient(135deg, #56A9D9 0%, #4A90E2 100%)',
+                      color: otp.some((digit) => digit === '') ? '#94a3b8' : 'white',
+                      boxShadow: otp.some((digit) => digit === '') 
+                        ? 'none'
+                        : '0 8px 32px rgba(86, 169, 217, 0.4)',
+                      border: 'none',
+                      minWidth: '200px',
+                      '&:hover': {
+                        background: otp.some((digit) => digit === '') 
+                          ? 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+                          : 'linear-gradient(135deg, #4A90E2 0%, #3b82f6 100%)',
+                        transform: otp.some((digit) => digit === '') ? 'none' : 'translateY(-2px)',
+                        boxShadow: otp.some((digit) => digit === '') 
+                          ? 'none'
+                          : '0 12px 40px rgba(86, 169, 217, 0.5)',
+                      },
+                      '&:disabled': {
+                        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+                        color: '#94a3b8',
+                      },
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
+                  >
+                    Continue
+                  </Button>
+                )}
+              </Box>
+            </Fade>
+          </div>
         </div>
 
-
-
-        {/* Right Half: Image (Static) */}
-        <div className='flex-1 hidden md:flex flex-col items-center justify-center'>
-          <img
-            src={verifyNumber}
-            alt="Verify-Number-Illustration"
-            className="max-w-full h-auto object-contain"
+        {/* Right Half: Enhanced Image Section */}
+        <div className='flex-1 hidden md:flex flex-col items-center justify-center relative overflow-hidden'>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              // background: `
+              //   linear-gradient(135deg, rgba(86, 169, 217, 0.1) 0%, rgba(74, 144, 226, 0.05) 100%),
+              //   radial-gradient(circle at 70% 30%, rgba(86, 169, 217, 0.1) 0%, transparent 70%)
+              // `,
+              backgroundColor: 'white',
+              zIndex: 0,
+            }}
           />
+          <div style={{ position: 'relative', zIndex: 1, padding: '2rem' }}>
+            <img
+              src={verifyNumber}
+              alt="Verify-Number-Illustration"
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+                // filter: 'drop-shadow(0 20px 40px rgba(86, 169, 217, 0.2))',
+                transform: 'scale(1.05)',
+              }}
+            />
+          </div>
         </div>
       </Paper>
     </div>

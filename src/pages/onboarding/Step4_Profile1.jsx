@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton } from '@mui/material';
-import { Paperclip } from 'lucide-react';
-import onboardingImage from '../../assets/onboardingImage.png';
+import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton, Fade, Grow } from '@mui/material';
+import { Paperclip, User, Building, Briefcase, Shield, CheckCircle, Mail } from 'lucide-react';
+
+// Assuming these paths are correct relative to your project structure
+// import onboardingImage from '../../assets/onboardingImage.png';
 import logoWhite from '../../assets/logoWhite.png';
-import { useOnBoarding } from './OnboardingContext';
 
-
+import { useOnBoarding } from './OnboardingContext'; // Assuming OnboardingContext is correctly defined
 
 const Step4_Profile1 = () => {
-
   const navigate = useNavigate();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
@@ -17,24 +17,30 @@ const Step4_Profile1 = () => {
   const [yourName, setYourName] = useState(onboardingData.name || '');
   const [businessName, setBusinessName] = useState(onboardingData.businessName || '');
   const [yourExperience, setYourExperience] = useState(onboardingData.workExperience || '');
-  const [idProof, setIdProof] = useState(onboardingData.idProof || '');
-  const [idProofFile, setIdProofFile] = useState(null);
+  const [email, setEmail] = useState(onboardingData.email || '');
+  const [gender, setGender] = useState(onboardingData.gender || '');
+  const [idProof, setIdProof] = useState(onboardingData.idProof || ''); // Holds the file name
+  const [idProofFile, setIdProofFile] = useState(null); // Holds the actual file object
 
+  const [focusedField, setFocusedField] = useState('');
   const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const fileInputRef = useRef();
 
   // Sync local state to context on change
   useEffect(() => {
     updateOnboardingData({
       name: yourName,
-      initials: getInitials(yourName),
+      initials: getInitials(yourName), // Assuming getInitials is meant to generate initials for name
       businessName,
       workExperience: yourExperience,
+      email,
+      gender,
       idProof,
       idProofFile,
     });
-  }, [yourName, businessName, yourExperience, idProof, idProofFile, updateOnboardingData]);
-
+  }, [yourName, businessName, yourExperience, email, gender, idProof, idProofFile, updateOnboardingData]);
 
   // Helper to get initials from name
   const getInitials = (name) => {
@@ -43,31 +49,24 @@ const Step4_Profile1 = () => {
     if (parts.length === 1) {
       return parts[0][0]?.toUpperCase() || '';
     }
-    // More than one word: take first letter of first and last word
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
-  // Helper to generate user id
-  const generateUserId = (name) => {
-    if (!name) return '';
-    const firstPart = name.trim().split(/\s+/)[0].toLowerCase();
-    const randomDigits = Math.floor(1000 + Math.random() * 9000); // 4 random digits
-    return `#${firstPart}${randomDigits}`;
-  };
-
-
   const handleContinue = () => {
-    if (!yourName.trim() || !businessName.trim() || !yourExperience.trim() || !idProofFile) {
-      setError('All fields are required.');
+    if (!yourName.trim() || !businessName.trim() || !yourExperience.trim() || !email.trim() || !gender.trim() || !idProofFile) {
+      setError('Please complete all required fields to continue.');
       return;
     }
     setError('');
-    navigate('/auth/onboarding/profile-2');
+    setShowSuccess(true);
+    setTimeout(() => {
+      navigate('/auth/onboarding/profile-2');
+    }, 800);
   };
 
   const handlePaperclipClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''; // Reset so same file can be selected again
+      fileInputRef.current.value = ''; // Clear previous file selection
       fileInputRef.current.click();
     }
   };
@@ -75,17 +74,34 @@ const Step4_Profile1 = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setIdProof(file.name);    // (optional) just for display
-      setIdProofFile(file);     // <-- this is the actual File object
+      setIdProof(file.name); // Store file name for display
+      setIdProofFile(file); // Store file object
+    } else {
+      setIdProof('');
+      setIdProofFile(null);
     }
   };
 
+  const isFieldComplete = (value) => {
+    return value && (typeof value === 'string' ? value.trim().length > 0 : true);
+  };
 
+  // Corrected getFieldIcon to include Mail icon
+  const getFieldIcon = (fieldName) => {
+    switch (fieldName) {
+      case 'name': return <User size={20} />;
+      case 'gender': return <User size={20} />; // Or a more specific gender icon if available
+      case 'business': return <Building size={20} />;
+      case 'email': return <Mail size={20} />; // Corrected to Mail icon
+      case 'experience': return <Briefcase size={20} />;
+      case 'id': return <Shield size={20} />;
+      default: return null;
+    }
+  };
 
-  
   return (
     <div style={{ position: 'relative', width: '80%', height: '82%' }}>
-      {/* Velra logo absolutely positioned relative to this wrapper */}
+      {/* Velra logo */}
       <div
         style={{
           position: 'absolute',
@@ -102,220 +118,588 @@ const Step4_Profile1 = () => {
       </div>
 
       <Paper
-        elevation={7}
+        elevation={24}
         sx={{
           width: '100%',
           height: '100%',
           display: 'flex',
-          borderRadius: '12px',
-          flexDirection: { xs: 'column', md: 'row' }, // Stack on small screens
-          overflow: 'auto'
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '20px',
+          overflow: 'auto',
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
 
         {/* Debugging Purposes */}
-        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+        <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre>
 
-        {/* Left Half: Form Content */}
+        {/* Form Content - Full Width Centered */}
         <div
-          className="flex-1 flex flex-col p-8 sm:p-12 bg-white"
-          style={{ minHeight: 0, height: '100%' }}
+          style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            padding: '1rem 5rem',
+            position: 'relative',
+            width: '100%',
+            // maxWidth: '1000px',
+            margin: '0 auto',
+            height: '100%'
+          }}
         >
-          <div className="flex flex-col flex-1">
-            <Typography
-              variant="h4"
-              sx={{
-                mt: -3,
-                fontWeight: 'bold',
-                color: '#212121',
-                mb: { xs: 4, sm: 5 },
-                fontSize: { xs: '1.75rem', sm: '2.25rem' },
-              }}
-            >
-              Let's Complete your profile
-            </Typography>
-
-            {/* Your Name */}
-            <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Your Name
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                value={yourName}
-                onChange={(e) => setYourName(e.target.value)}
-                required
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontSize: '0.875rem',
-                    color: '#757575',
-                  },
-                }}
-              />
-            </Box>
-
-            {/* Business Name */}
-            <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Business Name
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                required
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                  },
-                }}
-              />
-            </Box>
-
-            {/* Your Experience */}
-            <Box sx={{ mb: { xs: 2.5, sm: 3 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Your Experience
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                value={yourExperience}
-                onChange={(e) => setYourExperience(e.target.value)}
-                required
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                  },
-                }}
-              />
-            </Box>
-
-            {/* Upload ID Proof */}
-            <Box sx={{ mb: { xs: 6, sm: 5 }, maxWidth: '450px' }}>
-              <Typography variant="body1" sx={{ color: 'rgb(0,0,0,0.69)', mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                Upload ID Proof
-              </Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                placeholder="Aadhaar Card, PAN Card, Driving License, Voter ID"
-                value={idProofFile ? idProofFile.name : ''}
-                onClick={handlePaperclipClick}
-                inputProps={{ readOnly: true, style: { cursor: 'pointer' } }}
-                required
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handlePaperclipClick} edge="end">
-                        <Paperclip size={20} style={{ color: '#757575', cursor: 'pointer', transform: 'rotate(-45deg)' }} />
-                      </IconButton>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        style={{ display: 'none' }}
-                        onChange={handleFileChange}
-                      />
-                    </InputAdornment>
-                  ),
-                  sx: {
-                    '& .MuiInputBase-input::placeholder': {
-                      textAlign: 'start',
-                      opacity: 1,
-                      color: '#A1A0A0',
-                    },
-                  },
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    bgcolor: '#ffffff',
-                    '& fieldset': { borderColor: '#e0e0e0' },
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#424242',
-                    fontSize: '0.875rem',
-                    py: '10px',
-                    cursor: 'pointer'
-                  },
-                }}
-              />
-              {idProofFile && (
-                <Typography variant="caption" sx={{ color: '#1976D2', mt: 1, display: 'block' }}>
-                  Selected file: {idProofFile.name}
-                </Typography>
-              )}
-            </Box>
-            {error && (
-              <Typography variant="body2" sx={{ color: 'red', mb: 2, fontWeight: 500 }}>
-                {error}
-              </Typography>
-            )}
-          </div>
-
-          {/* Continue Button */}
-          <div style={{ display: 'flex', justifyContent: 'center' }} className="hidden md:flex">
-            <Button
-              variant="outlined"
-              onClick={handleContinue}
-              sx={{
-                py: '10px',
-                bgcolor: 'white',
-                color: '#56A9D9',
-                borderColor: '#56A9D9',
-                fontWeight: 'bold',
-                borderRadius: '8px',
-                boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                '&:hover': {
-                  bgcolor: '#E0F2FF',
-                  borderColor: '#56A9D9',
-                },
-                width: '150px',
-                alignSelf: 'center',
-                mb: 2,
-              }}
-            >
-              Continue
-            </Button>
-          </div>
-        </div>
-
-
-
-        {/* Right Half: Image (Static) */}
-        <div className="flex-1 lg:flex flex-col items-center hidden justify-center relative">
-          <img
-            src={onboardingImage}
-            alt="Illustration"
-            className="max-w-full h-auto object-contain"
+          {/* Decorative elements */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              width: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #56A9D9 0%, #4A9FD1 100%)',
+              borderRadius: '50%',
+              opacity: 0.1,
+            }}
           />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '3rem',
+              left: '1rem',
+              width: '40px',
+              height: '40px',
+              background: 'linear-gradient(135deg, #56A9D9 0%, #4A9FD1 100%)',
+              borderRadius: '50%',
+              opacity: 0.08,
+            }}
+          />
+
+          <div className="flex flex-col relative z-10">
+            <Fade in={true} timeout={800}>
+              <div style={{ textAlign: 'center', marginBottom: '3rem', marginTop: '0.5rem' }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    mb: 1,
+                    fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Let's Complete Your Profile
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.6)',
+                    fontSize: { xs: '0.8rem', sm:'0.9rem', md: '1rem' },
+                    fontWeight: 400,
+                  }}
+                >
+                  Tell us about yourself to personalize your experience
+                </Typography>
+              </div>
+            </Fade>
+
+            {/* Grid Layout for Form Fields */}
+            <Box 
+              sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: { xs:'1fr', md: '1fr 1fr'}, 
+                columnGap: '3rem', 
+                rowGap: '1.5rem', 
+                marginBottom: '2rem' 
+              }}
+            >
+              {/* Row 1: Name and Gender */}
+              <Grow in={true} timeout={600}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('name')}
+                    Your Name
+                    {isFieldComplete(yourName) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Enter your full name"
+                    value={yourName}
+                    onChange={(e) => setYourName(e.target.value)}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField('')}
+                    required
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'name' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'name' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'name' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                </Box>
+              </Grow>
+              <Grow in={true} timeout={700}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('gender')}
+                    Gender
+                    {isFieldComplete(gender) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    {['Male', 'Female', 'Prefer not to say'].map((option) => (
+                      <Button
+                        key={option}
+                        variant={gender === option ? 'contained' : 'outlined'}
+                        onClick={() => setGender(option)}
+                        sx={{
+                          // flex: 1,
+                          py: '8px',
+                          px:'20px',
+                          borderRadius: '12px',
+                          textTransform: 'none',
+                          fontWeight: 500,
+                          fontSize: '0.9rem',
+                          background: gender === option
+                            ? 'linear-gradient(135deg, #56A9D9 0%, #4A9FD1 100%)'
+                            : 'transparent',
+                          color: gender === option ? 'white' : '#56A9D9',
+                          borderColor: '#56A9D9',
+                          '&:hover': {
+                            backgroundColor: gender === option
+                              ? 'linear-gradient(135deg, #4A9FD1 0%, #3B82E6 100%)' // Slightly darker gradient for hover
+                              : '#f0f9ff',
+                            borderColor: '#56A9D9',
+                          },
+                        }}
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
+                </Box>
+              </Grow>
+
+              {/* Row 2: Business Name and Email */}
+              <Grow in={true} timeout={800}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('business')}
+                    Business Name
+                    {isFieldComplete(businessName) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Enter your business name"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    onFocus={() => setFocusedField('business')}
+                    onBlur={() => setFocusedField('')}
+                    required
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'business' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'business' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'business' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                </Box>
+              </Grow>
+              <Grow in={true} timeout={900}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('email')}
+                    Email Address
+                    {isFieldComplete(email) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField('')}
+                    required
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'email' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'email' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'email' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                </Box>
+              </Grow>
+
+              {/* Row 3: Work Experience and Upload ID */}
+              <Grow in={true} timeout={1000}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('experience')}
+                    Your Experience
+                    {isFieldComplete(yourExperience) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Describe your professional experience"
+                    value={yourExperience}
+                    onChange={(e) => setYourExperience(e.target.value)}
+                    onFocus={() => setFocusedField('experience')}
+                    onBlur={() => setFocusedField('')}
+                    required
+                    // multiline
+                    // rows={3}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'business' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'business' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'business' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                </Box>
+              </Grow>
+              <Grow in={true} timeout={1100}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {getFieldIcon('id')}
+                    Upload ID Proof
+                    {idProofFile && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Aadhaar Card, PAN Card, Driving License, Voter ID"
+                    value={idProofFile ? idProofFile.name : ''}
+                    onClick={handlePaperclipClick}
+                    onFocus={() => setFocusedField('id')}
+                    onBlur={() => setFocusedField('')}
+                    inputProps={{ readOnly: true, style: { cursor: 'pointer' } }}
+                    required
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={handlePaperclipClick}
+                            edge="end"
+                            sx={{
+                              backgroundColor: '#f1f5f9',
+                              borderRadius: '8px',
+                              '&:hover': {
+                                backgroundColor: '#e2e8f0',
+                              },
+                            }}
+                          >
+                            <Paperclip
+                              size={20}
+                              style={{
+                                color: '#56A9D9',
+                                cursor: 'pointer',
+                                transform: 'rotate(-45deg)'
+                              }}
+                            />
+                          </IconButton>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'id' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'id' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'id' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        cursor: 'pointer',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                  {idProofFile && (
+                    <Fade in={true} timeout={500}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: '#10B981',
+                          mt: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          fontWeight: 500,
+                        }}
+                      >
+                        <CheckCircle size={16} />
+                        File uploaded successfully: {idProofFile.name}
+                      </Typography>
+                    </Fade>
+                  )}
+                </Box>
+              </Grow>
+            </Box>
+
+            {/* Error Message */}
+            {error && (
+              <Fade in={true} timeout={500}>
+                <Typography
+                  variant="body2"
+                  color="error"
+                  sx={{ mt: 2, textAlign: 'center', fontWeight: 500, fontSize: '0.9rem' }}
+                >
+                  {error}
+                </Typography>
+              </Fade>
+            )}
+
+            {/* Success Message */}
+            {showSuccess && (
+              <Fade in={true} timeout={500}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mt: 2,
+                    textAlign: 'center',
+                    color: '#10B981',
+                    fontWeight: 500,
+                    fontSize: '0.9rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 1
+                  }}
+                >
+                  <CheckCircle size={18} />
+                  Profile saved! Redirecting...
+                </Typography>
+              </Fade>
+            )}
+
+            {/* Continue Button */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <Button
+                variant="contained"
+                onClick={handleContinue}
+                sx={{
+                  my: 3,
+                  py: '14px',
+                  px: '14px',
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  width: 160, 
+                  fontSize: '1.1rem',
+                  background: 'linear-gradient(135deg, #4A9FD1 0%, #3B82E6 100%)',
+                  boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #3B82E6 0%, #2563EB 100%)',
+                    boxShadow: '0 6px 20px rgba(37, 99, 235, 0.5)',
+                  },
+                }}
+              >
+                Continue
+              </Button>
+            </Box>
+            
+          </div>
         </div>
       </Paper>
     </div>

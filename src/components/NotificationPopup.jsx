@@ -3,9 +3,10 @@ import { Bell, X, Clock, CheckCircle, AlertTriangle, XCircle, Info } from 'lucid
 import { notifications, notificationCount } from '../static/dummyData_Notifications';
 import { FaRegBell } from "react-icons/fa";
 import { Button } from '@mui/material';
-
+import { useUser } from '../UserContext';
 
 const NotificationPopup = () => {
+    const { user } = useUser();
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
@@ -58,6 +59,7 @@ const NotificationPopup = () => {
     const displayedNotifications = showAll ? notifications : notifications.slice(0, 4);
 
     const handleBellClick = () => {
+        if (!user.notificationsEnabled) return;
         setIsOpen(!isOpen);
         setClicked(prev => !prev);
         if (!isOpen) {
@@ -71,12 +73,19 @@ const NotificationPopup = () => {
             <button
                 ref={bellRef}
                 onClick={handleBellClick}
-                className={`p-2 border-none text-white rounded-lg transition-colors duration-200 cursor-pointer
-                    ${clicked? 'bg-black' : 'bg-transparent hover:bg-[#1E3A8A]'}    
+                className={`p-2 border-none rounded-lg transition-colors duration-200
+                    ${user.notificationsEnabled 
+                        ? 'text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]' 
+                        : 'text-gray-400 cursor-not-allowed bg-transparent'
+                    }
+                    ${clicked && user.notificationsEnabled ? 'bg-black' : ''}
                 `}
+                disabled={!user.notificationsEnabled}
+                title={user.notificationsEnabled ? "Notifications" : "Notifications are disabled"}
+                type="button"
             >
                 <FaRegBell size={29} />
-                {notificationCount() > 0 && (
+                {notificationCount() > 0 && user.notificationsEnabled && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                         {notificationCount()}
                     </span>
@@ -84,7 +93,7 @@ const NotificationPopup = () => {
             </button>
 
             {/* Notification Popup */}
-            {isOpen && (
+            {isOpen && user.notificationsEnabled && (
                 <div
                     ref={popupRef}
                     className={`absolute left-12 sm:left-14 md:left-16 bottom-0 w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-hidden`}
