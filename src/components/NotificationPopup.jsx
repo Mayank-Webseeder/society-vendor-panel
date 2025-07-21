@@ -8,6 +8,12 @@ import { useUser } from '../UserContext';
 const NotificationPopup = () => {
     const { user } = useUser();
 
+    // Add debugging for production
+    console.log('NotificationPopup rendered, user:', user);
+    console.log('Notifications enabled:', user?.notificationsEnabled);
+    console.log('Notifications data:', notifications);
+    console.log('Notification count:', notificationCount());
+
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
     const [clicked, setClicked] = useState(false);
@@ -56,10 +62,37 @@ const NotificationPopup = () => {
         }
     };
 
-    const displayedNotifications = showAll ? notifications : notifications.slice(0, 4);
+    const displayedNotifications = showAll ? (notifications || []) : (notifications || []).slice(0, 4);
+
+    // Add safety check for notifications array
+    if (!Array.isArray(notifications)) {
+        console.error('NotificationPopup: notifications is not an array:', notifications);
+        return null;
+    }
+
+    // Early return if user context is not loaded or notifications are disabled
+    if (!user) {
+        console.log('NotificationPopup: User context not loaded yet');
+        return null;
+    }
+
+    if (!user.notificationsEnabled) {
+        console.log('NotificationPopup: Notifications are disabled for user');
+        return (
+            <div className="relative">
+                <button
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 opacity-50 cursor-not-allowed"
+                    disabled={true}
+                    title="Notifications are disabled"
+                >
+                    <Bell className="w-6 h-6 text-gray-400" />
+                </button>
+            </div>
+        );
+    }
 
     const handleBellClick = () => {
-        if (!user.notificationsEnabled) return;
+        console.log('Bell clicked, current state:', { isOpen, user: user?.notificationsEnabled });
         setIsOpen(!isOpen);
         setClicked(prev => !prev);
         if (!isOpen) {
@@ -85,7 +118,7 @@ const NotificationPopup = () => {
                 type="button"
             >
                 <FaRegBell size={29} />
-                {notificationCount() > 0 && user.notificationsEnabled && (
+                {notificationCount() > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                         {notificationCount()}
                     </span>
@@ -93,10 +126,10 @@ const NotificationPopup = () => {
             </button>
 
             {/* Notification Popup */}
-            {isOpen && user.notificationsEnabled && (
+            {isOpen && (
                 <div
                     ref={popupRef}
-                    className={`absolute left-12 sm:left-14 md:left-16 bottom-0 w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-hidden`}
+                    className={`absolute left-12 sm:left-14 md:left-16 bottom-0 w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-auto`}
                 >
                     {/* Header */}
                     <div style={{borderBottom:'1px solid #D1D5DB'}} className="flex items-center justify-between bg-gray-50">
