@@ -120,7 +120,7 @@ const NewLeads = () => {
               <FiberNewIcon sx={{ color: "white", fontSize: 34 }} />
             </div>
             <div className="flex flex-col gap-0.5">
-              <h2 style={{ fontFamily:'Manrope' }} className="text-2xl font-normal text-black/75">New Leadssss</h2>
+              <h2 style={{ fontFamily:'Manrope' }} className="text-2xl font-normal text-black/75">New Leads</h2>
               <p style={{ fontFamily:'Lato' }} className="text-sm text-gray-700/60 mt-1">View all newly available leads</p>
             </div>
           </div>
