@@ -13,6 +13,8 @@ const NotificationPopup = () => {
     console.log('Notifications enabled:', user?.notificationsEnabled);
     console.log('Notifications data:', notifications);
     console.log('Notification count:', notificationCount());
+    console.log('🔔 Import check - notifications type:', typeof notifications, Array.isArray(notifications));
+    console.log('🔔 Import check - notificationCount type:', typeof notificationCount);
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
@@ -92,12 +94,14 @@ const NotificationPopup = () => {
     }
 
     const handleBellClick = () => {
-        console.log('Bell clicked, current state:', { isOpen, user: user?.notificationsEnabled });
+        console.log('🔔 BELL CLICKED! Current state:', { isOpen, clicked, notificationsEnabled: user?.notificationsEnabled });
+        console.log('🔔 About to toggle popup...');
         setIsOpen(!isOpen);
         setClicked(prev => !prev);
         if (!isOpen) {
             setShowAll(false);
         }
+        console.log('🔔 State updated, new isOpen should be:', !isOpen);
     };
 
     return (
@@ -106,23 +110,20 @@ const NotificationPopup = () => {
             <button
                 ref={bellRef}
                 onClick={handleBellClick}
-                className={`p-2 border-none rounded-lg transition-colors duration-200
-                    ${user.notificationsEnabled 
-                        ? 'text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]' 
-                        : 'text-gray-400 cursor-not-allowed bg-transparent'
-                    }
-                    ${clicked && user.notificationsEnabled ? 'bg-black' : ''}
-                `}
-                disabled={!user.notificationsEnabled}
-                title={user.notificationsEnabled ? "Notifications" : "Notifications are disabled"}
+                className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]"
+                title="Notifications"
                 type="button"
             >
                 <FaRegBell size={29} />
-                {notificationCount() > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                        {notificationCount()}
-                    </span>
-                )}
+                {(() => {
+                    const count = notificationCount();
+                    console.log('🔔 Notification count calculated:', count);
+                    return count > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                            {count}
+                        </span>
+                    );
+                })()}
             </button>
 
             {/* Notification Popup */}
@@ -131,6 +132,7 @@ const NotificationPopup = () => {
                     ref={popupRef}
                     className={`absolute left-12 sm:left-14 md:left-16 bottom-0 w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-auto`}
                 >
+                    {console.log('🔔 POPUP IS RENDERING! isOpen:', isOpen)}
                     {/* Header */}
                     <div style={{borderBottom:'1px solid #D1D5DB'}} className="flex items-center justify-between bg-gray-50">
                         <h3 className="text-lg p-3 font-semibold text-gray-800">Notifications</h3>
