@@ -6,7 +6,8 @@ import { Button } from '@mui/material';
 import { useUser } from '../UserContext';
 
 const NotificationPopup = () => {
-    console.log('🚀 NotificationPopup component is rendering');
+    console.log('🚀 NotificationPopup component is rendering - VERSION 2.0');
+    console.log('🚀 BUILD TIMESTAMP:', new Date().toISOString());
     const { user } = useUser();
 
     // Add debugging for production
@@ -114,8 +115,8 @@ const NotificationPopup = () => {
     return (
         <div className="relative">
             {/* Debug indicator */}
-            <div style={{position: 'absolute', top: '-20px', left: '0', background: 'red', color: 'white', padding: '2px', fontSize: '10px', zIndex: 9999}}>
-                DEBUG: NotificationPopup Active
+            <div style={{position: 'absolute', top: '-20px', left: '0', background: 'lime', color: 'black', padding: '2px', fontSize: '10px', zIndex: 9999}}>
+                DEBUG v2.0: NotificationPopup Active
             </div>
             
             {/* Notification Bell Icon */}
