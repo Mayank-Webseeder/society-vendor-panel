@@ -43,8 +43,8 @@ function AvailabilityCard() {
 
 
   return (
-    <div className="font-inter w-full h-full">
-      <Paper elevation={3} sx={{borderRadius: '0.5rem'}} className="rounded-lg shadow-lg px-3 pt-1 bg-white border border-solid border-[#C5C5C5] w-full h-full flex flex-col mb-7">
+    <div className="font-inter shadow-md w-full h-full">
+      <Paper elevation={3} sx={{borderRadius: '0.5rem'}} className="rounded-lg px-3 pt-1 bg-white border border-solid border-[#C5C5C5] w-full h-full flex flex-col mb-7">
         <Box className="flex justify-between items-center mb-4 flex-shrink-0">
           <Typography variant="h6" sx={{fontWeight: '600'}} className="text-gray-800 font-semibold text-lg">
             Available

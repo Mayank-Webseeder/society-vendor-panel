@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 const GoldMembershipCard = () => {
   return (
     <motion.div 
-      className="min-w-80 w-[60%] relative overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-400 group cursor-pointer border border-gray-700/50"
+      className="min-w-80 w-[60%] relative overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-400 group cursor-pointer"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

@@ -281,11 +281,11 @@ const PersonalInformation = () => {
   };
 
   return (
-    <div className='p-8 w-full h-full'>
+    <div className='p-5 sm:p-8 w-full h-full relative'>
       {/* Header */}
       <Box sx={{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: { xs: 'flex-start', sm: 'space-between' },
         alignItems: 'center',
         borderBottom: '1px solid #E0E0E0',
         pb: 2,
@@ -294,10 +294,11 @@ const PersonalInformation = () => {
         <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
           Profile Information
         </Typography>
+        {/* Desktop Edit Button */}
         <Button
           onClick={handleEditToggle}
           sx={{
-            display: 'flex',
+            display: { xs: 'none', sm: 'flex' },
             alignItems: 'center',
             px: 2,
             py: 1,
@@ -305,7 +306,6 @@ const PersonalInformation = () => {
             bgcolor: '#3B82F6',
             color: 'white',
             borderRadius: '0.375rem',
-            // boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
             '&:hover': {
               bgcolor: '#2563EB',
             },
@@ -318,6 +318,37 @@ const PersonalInformation = () => {
           {isEditing ? 'Save' : 'Edit'}
         </Button>
       </Box>
+
+      {/* Mobile Edit Button - Fixed at bottom-right */}
+      <Button
+        onClick={handleEditToggle}
+        sx={{
+          display: { xs: 'flex', sm: 'none' },
+          position: 'fixed',
+          bottom: 80, // Above mobile navigation
+          right: 20,
+          zIndex: 40,
+          alignItems: 'center',
+          px: 3,
+          py: 1.5,
+          minWidth: 100,
+          bgcolor: '#3B82F6',
+          color: 'white',
+          borderRadius: '25px',
+          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
+          '&:hover': {
+            bgcolor: '#2563EB',
+            boxShadow: '0 6px 16px rgba(59, 130, 246, 0.5)',
+          },
+          transition: 'all 0.2s ease-in-out',
+          textTransform: 'none',
+          fontSize: '0.875rem',
+          fontWeight: 600,
+        }}
+      >
+        {!isEditing  &&  <EditIcon size={16} style={{ marginRight: '0.5rem' }} />}
+        {isEditing ? 'Save' : 'Edit'}
+      </Button>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Company Info */}
@@ -373,15 +404,16 @@ const PersonalInformation = () => {
         {/* Notification toggle */}
         <Box 
           sx={{ 
-            display: 'flex', 
+            display: { xs: 'none', sm: 'flex' }, 
             alignItems: 'center',
-            justifyContent: 'flex-start',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'center',
             // border: '2px solid green',
-            width: 'fit-content',
+            // width: 'fit-content',
             height: 'fit-content',
             mt: 2,
             // mb: 3,
-            pr:1, 
+            // pr: 1, 
             gap: 1 
           }}
         >
@@ -393,7 +425,7 @@ const PersonalInformation = () => {
               mr: 1,
             }}
           >
-            Notifications:
+            Notifications
           </Typography>
           <IOSSwitch
             checked={user.notificationsEnabled}
@@ -412,7 +444,7 @@ const PersonalInformation = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="bg-white rounded-lg px-6 mb-8"
+          className="bg-white rounded-lg px-1 sm:px-6 mb-8"
         >
           <h3 className="text-xl font-normal text-gray-800 mb-4">Personal Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
@@ -435,7 +467,7 @@ const PersonalInformation = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="bg-white rounded-lg p-6 border border-gray-200"
+          className="bg-white rounded-lg px-1 sm:px-6 border border-gray-200"
         >
           <h3 className="text-xl font-normal text-gray-800 mb-4">Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">

@@ -5,7 +5,7 @@ import BellNotification from './BellNotification';
 import { useUser } from '../UserContext';
 
 
-const Sidebar = () => {
+const Sidebar = ({ mobileTopBar = false }) => {
 
   const location = useLocation();
   const { user } = useUser();
@@ -15,11 +15,68 @@ const Sidebar = () => {
   // Last 3 menu items  
   const bottomMenuItems = sidebarMenu.slice(-3);
 
+  // Filter items for mobile (exclude Availability, Help, Notifications, and Logout)
+  const mobileMenuItems = sidebarMenu.filter(item => 
+    item.title !== "Availability" && 
+    item.title !== "Help" && 
+    item.title !== "Notifications" &&
+    item.title !== "Log out"
+  );
+
+  // Mobile Bottom Bar Layout
+  if (mobileTopBar) {
+    return (
+      <nav className="flex items-center justify-center px-2 w-full h-full">
+        {/* Menu Items */}
+        <div className="flex justify-between items-center w-full gap-4">
+          {/* Regular menu items first */}
+          {mobileMenuItems.map((item, idx) => {
+            const isActive = location.pathname === item.redirect;
+            const Icon = item.icon;
+            return (
+              <Link to={item.redirect} key={idx} className="flex justify-center">
+                <div
+                  className={`flex items-center justify-center w-8 h-8 rounded-md transition-colors
+                    ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
+                  `}
+                >
+                  <Icon size={18} className="text-white" />
+                </div>
+              </Link>
+            );
+          })}
+          
+          {/* Bell Notification second to last */}
+          <BellNotification mobile />
+          
+          {/* Logout button at the very end */}
+          {(() => {
+            const logoutItem = sidebarMenu.find(item => item.title === "Log out");
+            const isActive = location.pathname === logoutItem.redirect;
+            const Icon = logoutItem.icon;
+            return (
+              <Link to={logoutItem.redirect} className="flex justify-center">
+                <div
+                  className={`flex items-center justify-center w-8 h-8 rounded-md transition-colors
+                    ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
+                  `}
+                >
+                  <Icon size={19} className="text-white" />
+                </div>
+              </Link>
+            );
+          })()}
+        </div>
+      </nav>
+    );
+  }
+
+  // Desktop Sidebar Layout
   return (
     <nav className="flex flex-col items-center w-full h-full justify-between">
       {/* Top menu items */}
       <div className="flex flex-col items-center gap-5 w-full mt-1">
-        <Link to='/dashboard' className='no-underline'>
+        <Link to='/dashboard' className='hidden sm:block no-underline'>
           <p className='text-xl text-[#56A9D9]' style={{ fontFamily: 'Parisienne, cursive' }}>Velra</p>
         </Link>
         {topMenuItems.map((item, idx) => {

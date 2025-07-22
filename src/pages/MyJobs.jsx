@@ -138,10 +138,10 @@ const MyJobs = () => {
 
 
   return (
-    <div className="relative flex flex-col gap-10 px-4 mt-4 w-full">
+    <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
 
     <motion.div
-      className="w-full px-2 mx-auto space-y-6 text-gray-800"
+      className="w-full px-2 flex flex-col gap-6 text-gray-800"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -149,48 +149,50 @@ const MyJobs = () => {
 
       {/* Header Section */}
       <motion.div
-        className="flex flex-col border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-6 py-4"
+        className="flex flex-col shadow-md hover:shadow-lg border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-4 sm:px-6 py-3 sm:py-4"
         variants={itemVariants}
       >
-        <div className="flex gap-5">
+        <div className="flex gap-3 sm:gap-5">
           {/* Briefcase icon container with specified color and shadow */}
-          <div className="flex justify-center items-center p-4 rounded-xl bg-[#56A9D9] shadow-md">
-            <BusinessCenterIcon sx={{ color: "white", fontSize: 32 }} />
+          <div className="flex justify-center items-center p-2 sm:p-3 rounded-xl bg-[#56A9D9] shadow-md">
+            <BusinessCenterIcon sx={{ color: "white", fontSize: { xs: 28, sm: 34 } }} />
           </div>
           <div className="flex flex-col gap-0.5">
-            {/* Main heading with Lato font */}
-            <p style={{fontFamily:'Manrope'}} className="text-2xl font-normal text-black/75">My Jobs</p>
-            {/* Subheading with Lato font */}
-            <p style={{fontFamily:'Lato'}} className="text-sm text-gray-700/60 mt-1">View and manage all available leads</p>
+            <h2 style={{fontFamily:'Manrope'}} className="text-xl sm:text-2xl font-normal text-black/75">My Jobs</h2>
+            <p style={{fontFamily:'Lato'}} className="text-xs sm:text-sm text-gray-700/60 mt-1">View and manage all available leads</p>
           </div>
         </div>
       </motion.div>
 
       {/* Job Status Cards Section */}
-        <div className="flex gap-12 justify-start items-center">
-          {jobStatuses.map((status) => (
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-12 sm:justify-start sm:items-center">
+        {
+          jobStatuses.map((status) => (
             <motion.div
               key={status.name}
-              className={`bg-white rounded-xl w-52 p-3 shadow-sm border-solid border border-gray-300
-                          flex flex-col items-start transition-all duration-200
-                          transform hover:scale-[1.03] hover:shadow-lg cursor-pointer`}
+              className={`
+                bg-white rounded-xl w-full sm:w-52 p-3 sm:p-3 shadow-sm border-solid border border-gray-300
+                  flex flex-col items-start transition-all duration-200
+                  transform hover:scale-[1.03] hover:shadow-lg cursor-pointer`
+              }
               variants={itemVariants}
               whileHover={{ y: -5 }}
             >
-              <div className="flex items-center mb-2">
-                <status.icon className={`w-5 h-5 ${status.color} mr-2`} />
-                <p style={{fontFamily:'Lato'}} className="text-base font-bold text-gray-700">{status.name}</p>
+              <div className="flex items-center mb-1 sm:mb-2">
+                <status.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${status.color} mr-1 sm:mr-2`} />
+                <p style={{fontFamily:'Lato'}} className="text-sm sm:text-base font-bold text-gray-700">{status.name}</p>
               </div>
-              <p style={{fontFamily:'Lato'}} className={`text-3xl font-bold ${status.color} leading-none`}>{status.count}</p>
+              <p style={{fontFamily:'Lato'}} className={`text-2xl sm:text-3xl font-bold ${status.color} leading-none`}>{status.count}</p>
             </motion.div>
-          ))}
-        </div>
+          ))
+        }
+      </div>
     </motion.div>
 
 
       {/* Table */}
       <motion.div
-        className="border-solid border border-gray-300 rounded-xl mx-2 mb-10 overflow-x-auto"
+        className="border-solid border border-gray-300 rounded-xl mx-2 overflow-x-auto"
         variants={itemVariants}
         initial='hidden'
         animate='visible'
@@ -273,7 +275,7 @@ const MyJobs = () => {
             {/* Table Head Row */}
             <tr className="bg-[#F9FAFB] text-gray-500">
               <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
-              <th className="py-4 pl-20 text-left font-normal w-32 sm:w-40 md:w-48">WORK</th>
+              <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
               <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-44">
                 <span
                   className="cursor-pointer select-none text-center flex justify-center items-center gap-1"
@@ -302,7 +304,7 @@ const MyJobs = () => {
                 </Menu>
               </th>
               <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
-                <span className="flex items-center justify-center gap-1 select-none">
+                <span className="gap-1 select-none">
                   POSTED ON
                   <Button
                     size="small"
@@ -329,10 +331,10 @@ const MyJobs = () => {
                       style={{ borderBottom: "1px solid #E5E7EB" }}
                     >
                       <td className="py-3 px-4">{lead.name}</td>
-                      <td className="py-3 pl-12">
-                        <span className="flex items-center gap-2">
+                      <td className="py-3 px-4 text-center">
+                        <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
                           <WrenchScrewdriverIcon className="w-4 h-4 text-gray-500" />
-                          {lead.work}
+                          <span className="text-sm text-gray-700">{lead.work}</span>
                         </span>
                       </td>
                       <td className="py-3 text-center">

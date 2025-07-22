@@ -3,6 +3,36 @@ import { Typography, Box } from '@mui/material';
 import { ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const supportOptions = [
+  {
+    id: 'help-support',
+    title: 'Help and Support',
+    bgColor: '#B5E3FD',
+    hoverColor: '#CFE2F3',
+    route: 'help-support'
+  },
+  {
+    id: 'faq',
+    title: 'FAQ',
+    bgColor: '#B5CBFD',
+    hoverColor: '#CFE2F3',
+    route: 'faq'
+  },
+  {
+    id: 'terms',
+    title: 'Terms and Conditions',
+    bgColor: '#BAB5FD',
+    hoverColor: '#E0D8F1',
+    route: 'terms-conditions'
+  },
+  {
+    id: 'privacy',
+    title: 'Privacy Policy',
+    bgColor: '#D4B5FD',
+    hoverColor: '#E0D8F1',
+    route: 'privacy-policy'
+  }
+];
 
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -15,35 +45,15 @@ const AccountAndSupport = () => {
 
     const navigate = useNavigate();
 
-    const handleClick = (item) => {
-      if (item === 'Help and Support') navigate('help-support');
-      else if (item === 'FAQ') navigate('faq');
-      else if (item === 'Terms and Conditions') navigate('terms-conditions');
-      else if (item === 'Privacy Policy') navigate('privacy-policy');
+    const handleClick = (route) => {
+        navigate(route);
     }
 
 
 
     return (
         <AnimatePresence mode='wait'>
-            <Box
-                sx={{
-                    backgroundColor: "white",
-                    // boxShadow: 3,
-                    // border: '1px solid #E0E0E0',
-                    borderRadius: '1rem', // Ensure rounded corners are applied
-                    width: '100%', // Responsive width
-                    height: '100%',
-                    // maxWidth: { xs: '100%', sm: '600px', md: '700px' }, // Example max-width for larger screens
-                    p: { xs: 2, sm: 4 }, // Responsive padding
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: { xs: 2, sm: 5 }, // Responsive spacing between sections
-                    // mx: 'auto', // Center the card
-                    // ml: 4,
-                    // mb: 7
-                }}
-            >
+            <Box className='p-5 sm:p-8 w-full h-full'>
                 {/* Header */}
                 <Box sx={{
                     display: 'flex',
@@ -51,12 +61,16 @@ const AccountAndSupport = () => {
                     alignItems: 'center',
                     borderBottom: '1px solid #E0E0E0',
                     pb: 2,
-                    mb: 2
+                    mb: {xs: 4, sm: 5}
                 }}>
                     <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
-                    Account & Support
+                        Account & Support
+                        
+                        {/* <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                            Account & Support
+                        </Box> */}
                     </Typography>
-                </Box >
+                </Box>
 
                 {/* Grid of Support Options */}
                 <motion.div
@@ -68,121 +82,47 @@ const AccountAndSupport = () => {
                 >
                     <Box
                         sx={{
-                            maxWidth:'90%',
                             display: 'grid',
                             gridTemplateColumns: {
                                 xs: '1fr', // Single column on extra small screens
                                 sm: '1fr 1fr', // Two columns on small and up
                             },
-                            columnGap: { xs: 4, sm: 7 }, // Responsive gap between grid items
-                            rowGap: { xs: 4, sm: 4 }, // Responsive gap between grid items
+                            gap: { xs: 2, sm: 3.5 }, // Reduced gap between grid items
+                            mx: { xs: 1, sm: 1 }, // Responsive margins
                         }}
                     >
-                        {/* Help and Support Card */}
-                        <Box
-                            onClick={() => handleClick('Help and Support')}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                p: { xs: 2, sm: 2.5 },
-                                bgcolor: '#B5E3FD', // Light blue background
-                                borderRadius: '12px',
-                                cursor: 'pointer',
-                                border: '2px solid white',
-                                boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
-                                transition: 'background-color 0.3s ease',
-                                '&:hover': {
-                                    bgcolor: '#CFE2F3', // Slightly darker blue on hover
-                                },
-                            }}
-                        >
-                            <Typography variant="body1" sx={{ fontSize: 18 , fontWeight: '800', color: 'rgb(0,0,0,0.59)' }}>
-                                Help and Support
-                            </Typography>
-                            <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
-                        </Box>
-
-                        {/* FAQ Card */}
-                        <Box
-                            onClick={() => handleClick('FAQ')}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                p: { xs: 2, sm: 2.5 },
-                                bgcolor: '#B5CBFD', // Light blue background
-                                borderRadius: '12px',
-                                cursor: 'pointer',
-                                border: '2px solid white',
-                                boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
-                                transition: 'background-color 0.3s ease',
-                                '&:hover': {
-                                    bgcolor: '#CFE2F3',
-                                },
-                            }}
-                        >
-                            <Typography variant="body1" sx={{ fontSize: 18 , fontWeight: '800', color: 'rgb(0,0,0,0.59)' }}>
-                                FAQ
-                            </Typography>
-                            <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
-                        </Box>
-
-                        {/* Terms and Conditions Card */}
-                        <Box
-                            onClick={() => handleClick('Terms and Conditions')}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                p: { xs: 2, sm: 2.5 },
-                                bgcolor: '#BAB5FD', // Light purple background
-                                borderRadius: '12px',
-                                cursor: 'pointer',
-                                border: '2px solid white',
-                                boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
-                                transition: 'background-color 0.3s ease',
-                                '&:hover': {
-                                    bgcolor: '#E0D8F1', // Slightly darker purple on hover
-                                },
-                            }}
-                        >
-                            <Typography variant="body1" sx={{ fontSize: 18 , fontWeight: '800', color: 'rgb(0,0,0,0.59)' }}>
-                                Terms and Conditions
-                            </Typography>
-                            <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
-                        </Box>
-
-                        {/* Privacy Policy Card */}
-                        <Box
-                            onClick={() => handleClick('Privacy Policy')}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                p: { xs: 2, sm: 2.5 },
-                                bgcolor: '#D4B5FD', // Light purple background
-                                borderRadius: '12px',
-                                cursor: 'pointer',
-                                border: '2px solid white',
-                                boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
-                                transition: 'background-color 0.3s ease',
-                                '&:hover': {
-                                    bgcolor: '#E0D8F1',
-                                },
-                            }}
-                        >
-                            <Typography variant="body1" sx={{ fontSize: 18 , fontWeight: '800', color: 'rgb(0,0,0,0.59)' }}>
-                                Privacy Policy
-                            </Typography>
-                            <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
-                        </Box>
+                        {supportOptions.map((option) => (
+                            <Box
+                                key={option.id}
+                                onClick={() => handleClick(option.route)}
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    p: { xs: 2, sm: 2.5 },
+                                    bgcolor: option.bgColor,
+                                    borderRadius: '12px',
+                                    cursor: 'pointer',
+                                    border: '2px solid white',
+                                    boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
+                                    transition: 'background-color 0.3s ease',
+                                    '&:hover': {
+                                        bgcolor: option.hoverColor,
+                                    },
+                                }}
+                            >
+                                <Typography variant="body1" sx={{ 
+                                    fontSize: { xs: '1rem', sm: '1.125rem' }, 
+                                    fontWeight: '800', 
+                                    color: 'rgb(0,0,0,0.59)' 
+                                }}>
+                                    {option.title}
+                                </Typography>
+                                <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
+                            </Box>
+                        ))}
                     </Box>
-                
-
-                    {/* Responsive Empty Space */}
-                    <Box sx={{ py: { xs: 8, sm: 12, md: 16 } }} /> {/* Adjust padding as needed for desired height */}
-                  </motion.div>              
+                </motion.div>
             </Box>
         </AnimatePresence>
     );

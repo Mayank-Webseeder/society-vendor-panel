@@ -31,13 +31,13 @@ const SecurityOptions = () => {
   };
 
   return (
-    <Box className='p-8 w-full h-full'>
+    <Box className='p-5 sm:p-8 w-full h-full'>
       {/* Header for Security Options */}
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        pb: 2
+        pb: 1
       }}>
         <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
           Security Options
@@ -71,7 +71,7 @@ const SecurityOptions = () => {
               </Typography>
             </Box>
 
-            <div className="flex flex-col gap-3 mt-4 max-w-[60%]">
+            <div className="flex flex-col gap-3 mt-4 w-full sm:max-w-[60%]">
               {/* Current Password */}
               <div className="flex flex-col mb-2">
                 <label className="text-sm font-medium text-gray-500 mb-1">Current Password</label>
@@ -107,19 +107,20 @@ const SecurityOptions = () => {
               </div>
             </div>
 
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', maxWidth: '60%', mt: 5, gap: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', maxWidth: { sm: '60%' }, mt: 5, gap: { xs: 1.5, sm: 3 } }}>
               <Button
                 variant="outlined"
                 onClick={handleClearPasswords}
                 sx={{
-                  py: '8px',
-                  px: '24px',
+                  py: { xs: '6px', sm: '8px' },
+                  px: { xs: '16px', sm: '24px' },
                   bgcolor: 'white',
                   color: '#616161',
                   borderColor: '#D1D5DB',
                   fontWeight: 'semibold',
                   borderRadius: '8px',
                   textTransform: 'none',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
                   '&:hover': {
                     bgcolor: '#F3F4F6',
                     borderColor: '#9CA3AF',
@@ -132,13 +133,14 @@ const SecurityOptions = () => {
                 variant="contained"
                 onClick={handleChangePassword}
                 sx={{
-                  py: '8px',
-                  px: '24px',
+                  py: { xs: '6px', sm: '8px' },
+                  px: { xs: '16px', sm: '24px' },
                   bgcolor: '#3B82F6',
                   color: 'white',
                   fontWeight: 'semibold',
                   borderRadius: '8px',
                   textTransform: 'none',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
                   '&:hover': {
                     bgcolor: '#2563EB',
                   },

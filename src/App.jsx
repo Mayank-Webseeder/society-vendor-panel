@@ -2,7 +2,7 @@ import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 // import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard';
 import NewLeads from './pages/NewLeads';
 import MyJobs from './pages/MyJobs';
 import MyStats from './pages/MyStats';
@@ -12,6 +12,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import SecurityOptions from "./pages/SecurityOptions";
 import WorkDetails from './pages/WorkDetails';
 import DocumentAndVerification from "./pages/DocumentAndVerification";
+import GoldMembershipCard from './components/GoldMembershipCard';
 import AccountAndSupport from './pages/AccountAndSupport';
 import HelpAndSupport from './pages/HelpAndSupport';
 import FAQ from './pages/FAQ';
@@ -78,20 +79,19 @@ function App() {
           <ProtectedRoute>
             <div className="relative h-screen w-screen">
 
-              {/* SIDEBAR - fixed to left */}
-              <aside className="fixed top-0 left-0 h-screen w-12 sm:w-16 md:w-20 bg-[#1A2131] z-50 flex flex-col items-center py-2">
-                <Sidebar iconOnly /> {/* bg-[#1A2131] */}
+              {/* SIDEBAR - hidden on mobile, visible on sm+ */}
+              <aside className="hidden sm:fixed sm:top-0 sm:left-0 sm:h-screen sm:w-16 md:w-20 bg-[#1A2131] z-50 sm:flex sm:flex-col sm:items-center sm:py-2">
+                <Sidebar iconOnly />
               </aside>
 
-              {/* NAVBAR - sticky inside main */}
-              {/* <header className="fixed top-0 left-12 right-3 sm:left:16 md:left-20 h-16 bg-white shadow z-40 flex items-center">
-                <Navbar />
-              </header> */}
+              {/* MOBILE BOTTOM MENU BAR - visible only on mobile */}
+              <div className="sm:hidden fixed bottom-0 left-0 right-0 h-14 bg-[#1A2131] z-50 flex items-center justify-center">
+                <Sidebar mobileTopBar />
+              </div>
 
-
-                {/* PAGE CONTENT */}
-                <main className="absolute top-0 left-12 sm:left-16 md:left-20 right-0 bottom-0 overflow-y-auto bg-gray-200">
-                  <Routes>
+              {/* PAGE CONTENT */}
+              <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gray-200">
+                <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/new-leads" element={<NewLeads />} />
                     <Route path="/my-jobs" element={<MyJobs />} />
@@ -103,6 +103,7 @@ function App() {
                       <Route path="security-options" element={<SecurityOptions />} />
                       <Route path="work-details" element={<WorkDetails />} />
                       <Route path="documents-verification" element={<DocumentAndVerification />} />
+                      <Route path="membership" element={<GoldMembershipCard />} />
                       <Route path="account-support" element={<AccountAndSupport />} />
                       <Route path="account-support/help-support" element={<HelpAndSupport />} />
                       <Route path="account-support/faq" element={<FAQ />} />

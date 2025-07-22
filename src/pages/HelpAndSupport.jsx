@@ -52,25 +52,17 @@ const HelpAndSupport = () => {
   ];
 
   return (
-    <Box 
-        sx={{
-            backgroundColor: 'white',
-            borderRadius: '1rem',
-            width: '100%',
-            height: '100%',
-            p: { xs: 2, sm: 3 },
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: 2, sm: 3 },
-            mb: 1
-        }}
-    >
+    <Box className='p-3 sm:p-8 w-full h-full'>
       {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 3 } }}>
-        <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 2, p: 0 }}>
-            <ChevronLeft size={32} strokeWidth={3} color="rgba(0,0,0,0.65)" />
+      <Box sx={{ display: 'flex', alignItems: 'center', pt:{ xs: 1, sm: 0 }, mb: { xs: 3, sm: 4 } }}>
+        <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
+            <ChevronLeft size={25} strokeWidth={3} color="rgba(0,0,0,0.65)" />
         </IconButton>
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0,0,0,0.65)' }}>
+        <Typography variant="h5" sx={{ 
+          fontWeight: 'bold', 
+          color: 'rgba(0,0,0,0.65)',
+          fontSize: { xs: '1.25rem', sm: '1.45rem' }
+        }}>
             Help & Support
         </Typography>
       </Box>
@@ -84,101 +76,209 @@ const HelpAndSupport = () => {
           exit='exit'
         >
           {/* Main Content */}
-          <Box sx={{ px: { xs: 2, sm: 4 }}}>
+          <Box sx={{ mx: { xs: 2, sm: 3 } }}>
             {/* Services Offered Section */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-medium text-gray-600 mb-4">Services Offered</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Box sx={{ mb: { xs: 6, sm: 8 } }}>
+              <Typography variant="h4" sx={{ 
+                fontSize: { xs: '1.125rem', sm: '1.35rem' }, 
+                fontWeight: 'medium', 
+                color: '#6B7280', 
+                mb: 2 
+              }}>
+                Services Offered
+              </Typography>
+              <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                gap: { xs: 3, sm: 4 }
+              }}>
                 {services.map((service, index) => (
                   <motion.div 
-                    key={index} 
-                    className="bg-gradient-to-r from-slate-100 to-slate-200 rounded-lg border-solid border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                    key={index}
                     variants={contentVariants}
                     initial='hidden'
                     animate='visible'
                     exit='exit'
                   >
-                    <h3 className="text-lg font-semibold text-gray-600 mb-2">{service.title}</h3>
-                    <p className="text-gray-600 text-sm">{service.description}</p>
+                    <Box sx={{
+                      background: 'linear-gradient(to right, #f1f5f9, #e2e8f0)',
+                      borderRadius: '8px',
+                      border: '1px solid #e5e7eb',
+                      p: { xs: 1, sm: 3 },
+                      transition: 'box-shadow 0.3s ease',
+                      '&:hover': {
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                      }
+                    }}>
+                      <Typography variant="h6" sx={{ 
+                        fontSize: { xs: '0.875rem', sm: '1.125rem' }, 
+                        fontWeight: 'semibold', 
+                        color: '#6B7280', 
+                        mb: 1 
+                      }}>
+                        {service.title}
+                      </Typography>
+                      <Typography variant="body2" sx={{ 
+                        color: '#6B7280', 
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' } 
+                      }}>
+                        {service.description}
+                      </Typography>
+                    </Box>
                   </motion.div>
                 ))}
-              </div>
-            </div>
+              </Box>
+            </Box>
 
             {/* Issue Description Section */}
-            <motion.div 
-              className="mb-8"
+            <motion.div
               variants={contentVariants}
               initial='hidden'
               animate='visible'
               exit='exit'
             >
-              <h2 className="text-xl font-semibold text-gray-600 mb-4">What's the issue you're facing?</h2>
-              <div className="bg-white rounded-lg border-solid border border-gray-200">
-                <textarea
-                  value={issueDescription}
-                  onChange={(e) => setIssueDescription(e.target.value)}
-                  placeholder="Describe your issue here..."
-                  className="w-full bg-white rounded-lg h-96 p-6 border-0 resize-none focus:outline-none focus:ring-0 placeholder-gray-400"
-                  rows={12}
-                />
-              </div>
+              <Box sx={{ mb: { xs: 4, sm: 6 } }}>
+                <Typography variant="h5" sx={{ 
+                  fontSize: { xs: '1rem', sm: '1.25rem' }, 
+                  fontWeight: 'semibold', 
+                  color: '#6B7280', 
+                  mb: { xs: 2, sm: 3 } 
+                }}>
+                  What's the issue you're facing?
+                </Typography>
+                <Box sx={{
+                  bgcolor: 'white',
+                  borderRadius: '8px',
+                  border: '1px solid #e5e7eb'
+                }}>
+                  <textarea
+                    value={issueDescription}
+                    onChange={(e) => setIssueDescription(e.target.value)}
+                    placeholder="Describe your issue here..."
+                    style={{
+                      width: '100%',
+                      backgroundColor: 'white',
+                      borderRadius: '8px',
+                      height: '240px',
+                      padding: '16px',
+                      border: '0',
+                      resize: 'none',
+                      outline: 'none',
+                      fontFamily: 'inherit',
+                      fontSize: '14px'
+                    }}
+                    rows={12}
+                  />
+                </Box>
+              </Box>
             </motion.div>
 
             {/* Submit Button */}
-            <motion.div 
-              className="flex justify-center mb-12"
+            <motion.div
               variants={contentVariants}
               initial='hidden'
               animate='visible'
               exit='exit'
             >
-              <button
-                onClick={handleSubmit}
-                disabled={!issueDescription.trim() || isSubmitting}
-                className={`px-8 py-3 rounded-lg border-none font-semibold text-white transition-all ${
-                  !issueDescription.trim() || isSubmitting
-                    ? 'bg-gray-400'
-                    : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer'
-                }`}
-              >
-                {isSubmitting ? 'SUBMITTING...' : 'SAVE'}
-              </button>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                mb: { xs: 6, sm: 8 } 
+              }}>
+                <button
+                  onClick={handleSubmit}
+                  disabled={!issueDescription.trim() || isSubmitting}
+                  style={{
+                    padding: '12px 32px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: 600,
+                    color: 'white',
+                    fontSize: '14px',
+                    backgroundColor: !issueDescription.trim() || isSubmitting ? '#9CA3AF' : '#3B82F6',
+                    cursor: !issueDescription.trim() || isSubmitting ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!(!issueDescription.trim() || isSubmitting)) {
+                      e.target.style.backgroundColor = '#2563EB';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!(!issueDescription.trim() || isSubmitting)) {
+                      e.target.style.backgroundColor = '#3B82F6';
+                    }
+                  }}
+                >
+                  {isSubmitting ? 'SUBMITTING...' : 'SAVE'}
+                </button>
+              </Box>
             </motion.div>
 
             {/* Contact Information */}
-            <motion.div 
-              className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-16"
+            <motion.div
               variants={contentVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
-              <div className="flex flex-col items-center text-center">
-                <div className="flex items-center text-gray-600 mb-2">
-                  <Phone className="w-5 h-5 mr-2" />
-                  <span className="font-medium">Call us</span>
-                </div>
-                <a 
-                  href="tel:+919999999999" 
-                  className="text-sm text-blue-500 hover:text-blue-600 transition-colors no-underline"
-                >
-                  +91 999 999 9999
-                </a>
-              </div>
-              
-              <div className="flex flex-col items-center text-center">
-                <div className="flex items-center text-gray-600 mb-2">
-                  <Mail className="w-5 h-5 mr-2" />
-                  <span className="font-medium">Email</span>
-                </div>
-                <a 
-                  href="mailto:abc99@gmail.com" 
-                  className="text-sm text-blue-500 hover:text-blue-600 transition-colors no-underline"
-                >
-                  abc99@gmail.com
-                </a>
-              </div>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'row', md: 'row' },
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: { xs: 4, md: 8 }
+              }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: '#6B7280', mb: 0.5 }}>
+                    <Phone size={16} style={{ marginRight: '6px' }} />
+                    <Typography variant="body1" sx={{ 
+                      fontWeight: 'medium', 
+                      fontSize: { xs: '0.75rem', sm: '1rem' } 
+                    }}>
+                      Call us
+                    </Typography>
+                  </Box>
+                  <Typography
+                    component="a"
+                    href="tel:+919999999999"
+                    sx={{
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      color: '#3B82F6',
+                      textDecoration: 'none',
+                      '&:hover': { color: '#2563EB' },
+                      transition: 'color 0.3s ease'
+                    }}
+                  >
+                    +91 999 999 9999
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: '#6B7280', mb: 0.5 }}>
+                    <Mail size={16} style={{ marginRight: '6px' }} />
+                    <Typography variant="body1" sx={{ 
+                      fontWeight: 'medium', 
+                      fontSize: { xs: '0.75rem', sm: '1rem' } 
+                    }}>
+                      Email
+                    </Typography>
+                  </Box>
+                  <Typography
+                    component="a"
+                    href="mailto:abc99@gmail.com"
+                    sx={{
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      color: '#3B82F6',
+                      textDecoration: 'none',
+                      '&:hover': { color: '#2563EB' },
+                      transition: 'color 0.3s ease'
+                    }}
+                  >
+                    abc99@gmail.com
+                  </Typography>
+                </Box>
+              </Box>
             </motion.div>
           </Box>
         </motion.div>

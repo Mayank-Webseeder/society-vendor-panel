@@ -3,7 +3,7 @@ import { Button, IconButton, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
-import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Bell } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, FileText } from 'lucide-react';
 import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import NewLeadModal from '../components/modals/NewLeadModal';
@@ -101,10 +101,10 @@ const NewLeads = () => {
 
 
   return (
-    <div className="relative flex flex-col gap-10 px-4 mt-4 w-full">
+    <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
 
       <motion.div
-        className="w-full px-2 mx-auto space-y-6 text-gray-800"
+        className="w-full px-2 flex flex-col gap-6 text-gray-800"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -112,39 +112,38 @@ const NewLeads = () => {
       
         {/* Header Section */}
         <motion.div
-          className="flex flex-col border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-6 py-4"
+          className="flex flex-col shadow-md hover:shadow-lg border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-4 sm:px-6 py-3 sm:py-4"
           variants={itemVariants}
         >
-          <div className="flex gap-5">
-            <div className="flex justify-center items-center p-3 rounded-xl bg-[#F86B0F] shadow-md">
-              <FiberNewIcon sx={{ color: "white", fontSize: 34 }} />
+          <div className="flex gap-3 sm:gap-5">
+            <div className="flex justify-center items-center p-2 sm:p-3 rounded-xl bg-[#F86B0F] shadow-md">
+              <FiberNewIcon sx={{ color: "white", fontSize: { xs: 28, sm: 34 } }} />
             </div>
             <div className="flex flex-col gap-0.5">
-              <h2 style={{ fontFamily:'Manrope' }} className="text-2xl font-normal text-black/75">New Leads</h2>
-              <p style={{ fontFamily:'Lato' }} className="text-sm text-gray-700/60 mt-1">View all newly available leads</p>
+              <h2 style={{ fontFamily:'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/75">New Leads</h2>
+              <p style={{ fontFamily:'Lato' }} className="text-xs sm:text-sm text-gray-700/60 mt-1">View all newly available leads</p>
             </div>
           </div>
         </motion.div>
 
         {/* Dynamic Lead Count Badge */}
         <motion.div
-          className="w-[20%] min-w-52 bg-white rounded-full px-6 py-3 border-solid border border-gray-300 shadow-md flex items-center justify-center gap-4"
+          className={`
+            bg-white rounded-xl w-40 sm:w-52 px-3 py-2 sm:p-3 shadow-sm border-solid border border-gray-300
+              flex flex-col items-start transition-all duration-200
+              transform hover:scale-[1.03] hover:shadow-lg cursor-pointer`
+            }
           variants={itemVariants}
-          whileHover={{ scale: 1.01, boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }}
+          whileHover={{ y: -5 }}
         >
-          {/* <motion.div
-            className='flex items-center justify-center'
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
-          >
-            <Bell className="w-6 h-6 text-blue-500" />
-          </motion.div> */}
-          <p style={{fontFamily:'Lato'}} className="text-xl font-semibold text-gray-700">New Leads:</p>
+          <div className="flex items-center mb-1 sm:mb-2">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mr-1 sm:mr-2" />
+            <p style={{fontFamily:'Lato'}} className="text-sm sm:text-base font-bold text-gray-700">New</p>
+          </div>
           <motion.p
             key={totalResults}
             style={{ fontFamily:'Lato' }}
-            className="text-3xl font-extrabold text-blue-700"
+            className="text-2xl sm:text-3xl font-bold text-blue-600 leading-none"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 120, damping: 15 }}
@@ -152,12 +151,13 @@ const NewLeads = () => {
             {totalResults}
           </motion.p>
         </motion.div>
+
       </motion.div>
 
 
       {/* Table */}
       <motion.div
-       className="border-solid border border-gray-300 rounded-xl mx-2 mb-10 overflow-x-auto"
+       className="border-solid border border-gray-300 rounded-xl mx-2 overflow-x-auto"
         variants={itemVariants}
         initial='hidden'
         animate='visible'
@@ -166,7 +166,78 @@ const NewLeads = () => {
           <thead>
             {/* Search Row */}
             <tr>
-              <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
+              <th colSpan={4} className="lg:hidden bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
+                <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
+                  <TextField
+                    value={search}
+                    onChange={e => {
+                      setSearch(e.target.value);
+                      setPage(1);
+                    }}
+                    placeholder="Search by lead name"
+                    size="small"
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon color="action" />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        search && (
+                          <InputAdornment position="end">
+                            <CloseIcon
+                              fontSize="small"
+                              className="cursor-pointer text-gray-400 hover:text-gray-600"
+                              onClick={() => {
+                                setSearch('');
+                                setPage(1);
+                              }}
+                            />
+                          </InputAdornment>
+                        )
+                      ),
+                      style: { borderRadius: 8, background: "white" }
+                    }}
+                    sx={{ width: 220 }}
+                  />
+                  <TextField
+                    value={searchWork}
+                    onChange={e => {
+                      setSearchWork(e.target.value);
+                      setPage(1);
+                    }}
+                    placeholder="Search by work"
+                    size="small"
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon color="action" />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        searchWork && (
+                          <InputAdornment position="end">
+                            <CloseIcon
+                              fontSize="small"
+                              className="cursor-pointer text-gray-400 hover:text-gray-600"
+                              onClick={() => {
+                                setSearchWork('');
+                                setPage(1);
+                              }}
+                            />
+                          </InputAdornment>
+                        )
+                      ),
+                      style: { borderRadius: 8, background: "white" }
+                    }}
+                    sx={{ width: 220 }}
+                  />
+                </div>
+              </th>
+
+              <th colSpan={5} className="hidden lg:table-cell bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
                 <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
                   <TextField
                     value={search}
@@ -240,9 +311,9 @@ const NewLeads = () => {
             {/* Table Head Row */}
             <tr className="bg-[#F9FAFB] text-gray-500">
               <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
-              <th className="py-4 pl-20 text-left font-normal w-32 sm:w-40 md:w-48">WORK</th>
-              <th className="py-4 font-normal w-28 sm:w-32 md:w-44">
-                <span className="text-center pl-6 gap-1 select-none">
+              <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
+              <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
+                <span className="gap-1 select-none">
                   POSTED ON
                   <IconButton
                     size="small"
@@ -254,69 +325,82 @@ const NewLeads = () => {
                   </IconButton>
                 </span>
               </th>
-              <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">POSTED AT</th>
-              <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32 rounded-tr-xl">ACTION</th>
+              <th className="hidden lg:table-cell py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th>
+              <th className="py-4 text-center font-normal w-16 sm:w-20 md:w-24 rounded-tr-xl">ACTION</th>
             </tr>
           </thead>
 
           <tbody>
-            {paginatedLeads.length > 0 ? (
+            {
+            paginatedLeads.length > 0 ? (
               <>
-                {paginatedLeads.map(lead => (
-                  <tr
-                    key={lead.id}
-                    className="hover:bg-blue-50 transition"
-                    style={{ borderBottom: "1px solid #E5E7EB" }}
-                  >
-                    <td className="py-3 px-4">{lead.name}</td>
-                    <td className="py-3 pl-12">
-                      <span className="flex items-center gap-2">
-                        <WrenchScrewdriverIcon className="w-4 h-4 text-gray-500" />
-                        {lead.work}
-                      </span>
-                    </td>
-                    <td className="py-3 text-center">{lead.postedOn}</td>
-                    <td className="py-3 text-center">{lead.time}</td>
-                    <td className="py-3 text-center">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        sx={{ textTransform: 'none', borderRadius: 2, fontWeight: 600 }}
-                        onClick={() => {    // Modal-handling
-                          setModalLead(lead);
-                          setModalOpen(true);
-                          setProceed(false);
-                          setShowQuotationForm(false);
-                        }}
-                      >
-                        Apply
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                {
+                  paginatedLeads.map(lead => (
+                    <tr
+                      key={lead.id}
+                      className="hover:bg-blue-50 transition"
+                      style={{ borderBottom: "1px solid #E5E7EB" }}
+                    >
+                      <td className="py-3 px-4">{lead.name}</td>
+
+                      <td className="py-3 px-4 text-center">
+                        <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
+                          <WrenchScrewdriverIcon className="w-4 h-4 text-gray-500" />
+                          <span className="text-sm text-gray-700">{lead.work}</span>
+                        </span>
+                      </td>
+
+                      <td className="py-3 text-center">{lead.postedOn}</td>
+                      <td className="hidden lg:table-cell py-3 text-center">{lead.time}</td>
+                      <td className="py-3 text-center">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          sx={{ textTransform: 'none', borderRadius: 2, fontWeight: 600 }}
+                          onClick={() => {    // Modal-handling
+                            setModalLead(lead);
+                            setModalOpen(true);
+                            setProceed(false);
+                            setShowQuotationForm(false);
+                          }}
+                        >
+                          Apply
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                }
+                
                 {/* Add empty rows if less than 10 entries on this page */}
                 {Array.from({ length: ROWS_PER_PAGE - paginatedLeads.length }).map((_, idx) => (
                   <tr key={`empty-${idx}`}>
-                    <td
-                      colSpan={5}
-                      className="py-3 px-4"
-                      style={{
-                        background: "#fff",
-                        borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none",
-                        height: 56 // Match data row height
-                      }}
-                    />
+                    <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
+                    <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
+                    <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
+                    <td className="hidden lg:table-cell py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
+                    <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
                 <td 
-                  colSpan={5} 
-                  className="text-center text-gray-400 bg-white rounded-b-xl" 
+                  colSpan={4} 
+                  className="lg:hidden text-center text-gray-400 bg-white rounded-b-xl" 
                   style={{ 
-                    height: ROWS_PER_PAGE * 56, // 56px per row, matches your data row height
-                    minHeight: 560, // fallback for 10 rows
+                    height: ROWS_PER_PAGE * 56,
+                    minHeight: 560,
+                    verticalAlign: 'middle'
+                  }}
+                >
+                  No new leads found.
+                </td>
+                <td 
+                  colSpan={5} 
+                  className="hidden lg:table-cell text-center text-gray-400 bg-white rounded-b-xl" 
+                  style={{ 
+                    height: ROWS_PER_PAGE * 56,
+                    minHeight: 560,
                     verticalAlign: 'middle'
                   }}
                 >
@@ -329,7 +413,56 @@ const NewLeads = () => {
           {/* Pagination Row */}
           <tfoot>
             <tr>
-              <td colSpan={5} className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
+              <td colSpan={4} className="lg:hidden bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <span className="text-gray-600 text-sm">
+                    {totalResults === 0
+                      ? "Showing 0 results"
+                      : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={handlePrevPage}
+                      disabled={page === 1}
+                      sx={{
+                        minWidth: 0,
+                        borderRadius: 2,
+                        px: 1.5,
+                        fontWeight: 600,
+                        color: page === 1 ? '#bdbdbd' : '#1976D2',
+                        borderColor: page === 1 ? '#e0e0e0' : '#1976D2',
+                        '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
+                      }}
+                    >
+                      <ChevronLeft size={18} />
+                    </Button>
+                    <span className="text-gray-700 text-sm font-medium">
+                      Page {page} of {totalPages || 1}
+                    </span>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={handleNextPage}
+                      disabled={page === totalPages || totalResults === 0}
+                      sx={{
+                        minWidth: 0,
+                        borderRadius: 2,
+                        px: 1.5,
+                        fontWeight: 600,
+                        color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2',
+                        borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2',
+                        '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
+                      }}
+                    >
+                      <ChevronRight size={18} />
+                    </Button>
+                  </div>
+                </div>
+              </td>
+
+              <td colSpan={5} className="hidden lg:table-cell bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
                 <div className="flex items-center justify-between px-4 py-3">
                   <span className="text-gray-600 text-sm">
                     {totalResults === 0

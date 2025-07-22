@@ -51,42 +51,36 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <Box
-        sx={{
-          backgroundColor: "white",
-          borderRadius: '1rem',
-          width: '100%',
-          height: '100%',
-          p: { xs: 2, sm: 4 },
-          display: 'flex',
-          flexDirection: 'column',
-          gap: { xs: 2, sm: 5 },
-          mb: 1,
-        }}
-      >
-        {/* Header (NOT animated) */}
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid #E0E0E0',
-          pb: 2,
-        }}>
-          <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+    <Box className='p-5 sm:p-8 w-full h-full'>
+      {/* Header */}
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '1px solid #E0E0E0',
+        pb: 2,
+        mb: 4
+      }}>
+        <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
             Document & Verification
-          </Typography>
-        </Box >
+          </Box>
+          <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+            Docs & Verification
+          </Box>
+        </Typography>
+      </Box>
 
-        {/* Animated Content */}
+      {/* Animated Content */}
+      <AnimatePresence mode="wait">
         <motion.div
           key="document-verification-content"
           variants={contentVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
-          className='h-full relative'
-          style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+          className='relative'
+          style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 120px)' }}
         >
           {/* Preview the onboarding document if present */}
           {file && file instanceof File && (
@@ -163,11 +157,11 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                 borderColor: '#E0E0E0',
                 color: '#424242',
                 borderRadius: '8px',
-                px: 2,
-                py: 1,
-                mx: 3,
-                mb: 5,
-                fontSize: '0.875rem',
+                px: { xs: 1.5, sm: 2 },
+                py: { xs: 0.75, sm: 1 },
+                mx: { xs: 1, sm: 3 },
+                mb: { xs: 3, sm: 5 },
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
                 fontWeight: 'medium',
                 '&:hover': {
                   borderColor: '#C5C5C5',
@@ -193,9 +187,10 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
             initial="hidden"
             animate="visible"
             exit="exit"
+            style={{ flex: 1 }}
           >
-            <Box sx={{ mx: 3, mt: 1, display: 'flex', flexDirection: 'column' }}>
-              <Typography variant='button' sx={{ fontWeight: 'medium', color: '#424242', mb: 3 }}>
+            <Box sx={{ mx: { xs: 1, sm: 3 }, mt: 1, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant='button' sx={{ fontWeight: 'medium', color: '#424242', mb: 2 }}>
                 Your Uploaded Documents
               </Typography>
               {uploadedDocuments.length === 0 ? (
@@ -284,21 +279,20 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
             </Box>
           </motion.div>
 
-          {/* Save Button at the bottom-center */}
+          {/* Save Button at bottom-center */}
           <Box sx={{
-            flex: 1,
             display: 'flex',
-            alignItems: 'flex-end',
             justifyContent: 'center',
+            alignItems: 'flex-end',
             width: '100%',
-            mt: { xs: 8, sm: 10 },
+            mt: 'auto',
+            py: { xs: 2, sm: 3 },
           }}>
             <motion.div
               variants={contentVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-              style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
               <Button
                 variant="contained"
@@ -308,13 +302,14 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
                   color: 'white',
                   fontWeight: 600,
                   textTransform: 'none',
-                  py: '8px',
-                  px: '24px',
+                  py: { xs: '6px', sm: '8px' },
+                  px: { xs: '16px', sm: '24px' },
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
                   borderRadius: '8px',
                   '&:hover': {
                     backgroundColor: '#2563EB',
                   },
-                  width: 120,
+                  width: { xs: 100, sm: 120 },
                 }}
               >
                 Save
@@ -322,8 +317,8 @@ const DocumentAndVerification = ({ title = "Document and Verification", route })
             </motion.div>
           </Box>
         </motion.div>
-      </Box>
-    </AnimatePresence>
+      </AnimatePresence>
+    </Box>
   );
 };
 

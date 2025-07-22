@@ -10,7 +10,6 @@ import QuickActions from '../components/QuickActions';
 import PerformanceSummary from '../components/PerformanceSummary';
 import HeadingCard from '../components/HeadingCard';
 import NewJobs from '../components/NewJobs';
-import GoldMembershipCard from '../components/GoldMembershipCard';
 
 
 const containerVariants = {
@@ -30,15 +29,16 @@ const Dashboard = () => {
 
 
   return (
-    <div id='parent-div' className="tracking-wide w-full pb-8 flex justify-between">
+    <div id='parent-div' className="tracking-wide w-full pt-3 pb-5 gap-3 flex">
       
-      <div id='child-1' className='flex flex-col w-[77%] pt-2'>
+      {/* Left Side */}
+      <div id='child-1' className='flex flex-col gap-6 px-4 w-full lg:w-[70%] xl:w-[77%]'>
         {/* Heading */}
         <HeadingCard />
 
         {/* Cards */}
         <motion.div 
-          className="flex items-center w-full gap-5 flex-shrink-0 px-4 mb-12"
+          className="hidden sm:flex justify-start xl:justify-between items-center rounded-2xl gap-4 w-full flex-shrink-0"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -49,21 +49,20 @@ const Dashboard = () => {
           <Card4 />
         </motion.div>
 
+        {/* Utility Cards */}
+        <UpcomingJobs />
 
-        {/* Main Content Grid (Left side) */}
-        <div className="flex-1 pl-4 pr-16 w-full space-y-6">          
-          <UpcomingJobs />
+        <NewJobs />
 
-          <NewJobs />
+        <QuickActions />
 
-          <QuickActions />
-
-          <GoldMembershipCard />
-        </div>
+        {/* <GoldMembershipCard /> */}
       </div>
 
+
+
       {/* Right Side */}
-      <div className='flex flex-col w-[23%] space-y-5'>
+      <div className='hidden lg:flex lg:w-[30%] flex-col xl:w-[23%] px-2 gap-6'>
         <AvailabilityCalendar />
         
         <Notifications />

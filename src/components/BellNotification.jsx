@@ -5,7 +5,8 @@ import { FaRegBell } from "react-icons/fa";
 import { Button } from '@mui/material';
 import { useUser } from '../UserContext';
 
-const BellNotification = () => {
+const BellNotification = ({ mobile = false }) => {
+
     const { user } = useUser();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -62,8 +63,8 @@ const BellNotification = () => {
     if (!user) {
         return (
             <div className="relative">
-                <button className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent">
-                    <FaRegBell size={29} />
+                <button className={`border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent ${mobile ? 'p-1' : 'p-2'}`}>
+                    <FaRegBell size={mobile ? 18 : 29} />
                 </button>
             </div>
         );
@@ -73,7 +74,7 @@ const BellNotification = () => {
         return (
             <div className="relative">
                 <button
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 opacity-50 cursor-not-allowed"
+                    className="p-2 rounded-full hover:bg-gray-500 transition-colors duration-200 opacity-50 cursor-not-allowed"
                     disabled={true}
                     title="Notifications are disabled"
                 >
@@ -97,30 +98,36 @@ const BellNotification = () => {
             <button
                 ref={bellRef}
                 onClick={handleBellClick}
-                className="p-2 border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent hover:bg-[#1E3A8A]"
+                className={`border-none flex justify-center items-center transition-colors duration-200 text-white cursor-pointer ${clicked? "bg-black" : 'bg-transparent hover:bg-[#1E3A8A]'} ${mobile ? 'p-1' : 'p-2'}`}
                 title="Notifications"
                 type="button"
             >
-                <FaRegBell size={29} />
+                <FaRegBell size={mobile ? 18 : 30} />
                 {notificationCount() > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                        {notificationCount()}
+                    <span className={`absolute bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium ${mobile ? '-top-0.5 -right-0.5 w-4 h-4' : '-top-1 -right-1 w-5 h-5'}`}>
+                        <span className='block'>{notificationCount()}</span>
                     </span>
                 )}
             </button>
 
             {/* Notification Popup */}
             {isOpen && (
-                <div
-                    ref={popupRef}
-                    className={`absolute left-12 sm:left-14 md:left-16 bottom-0 w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-auto`}
-                >
+                <>
+                    {/* Backdrop overlay for mobile */}
+                    {mobile && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />
+                    )}
+                    
+                    <div
+                        ref={popupRef}
+                        className={`${mobile ? 'fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2' : 'absolute left-12 sm:left-14 md:left-16 bottom-0'} w-80 bg-white rounded-lg shadow-xl border-solid border-2 border-gray-300 z-50 overflow-auto`}
+                    >
                     {/* Header */}
                     <div style={{borderBottom:'1px solid #D1D5DB'}} className="flex items-center justify-between bg-gray-50">
                         <h3 className="text-lg p-3 font-semibold text-gray-800">Notifications</h3>
                         <Button
                         sx={{ borderRadius:'8px'}}
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => { setIsOpen(false); setClicked(false) }}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
                         >
                             <X size={20} />
@@ -181,10 +188,12 @@ const BellNotification = () => {
                             )}
                         </div>
                     )}
-                </div>
+                    </div>
+                </>
             )}
         </div>
     );
 };
+
 
 export default BellNotification;

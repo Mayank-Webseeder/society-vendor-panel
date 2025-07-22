@@ -112,10 +112,10 @@ const Notifications = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-gray-200 px-2 h-fit rounded-2xl flex flex-col gap-5 shadow-sm"
+      className="w-full bg-gray-200 h-fit rounded-2xl flex flex-col shadow-md"
     >
       <motion.div
-        className="rounded-2xl flex flex-col shadow-sm bg-white border border-gray-100 overflow-hidden"
+        className="rounded-2xl backdrop-blur-sm flex flex-col bg-white border border-gray-100 overflow-auto"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         style={
@@ -128,9 +128,9 @@ const Notifications = () => {
         <div className="px-6 py-5 border-b border-gray-50 bg-gradient-to-r from-gray-50/50 to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+              {/* <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
                 <Bell className="w-5 h-5 text-blue-600" />
-              </div>
+              </div> */}
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 tracking-tight">Notifications</h2>
                 <p className="text-sm text-gray-500 mt-0.5">Stay updated with your activities</p>

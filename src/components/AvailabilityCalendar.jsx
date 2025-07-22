@@ -127,12 +127,12 @@ const AvailabilityCalendar = () => {
 
   return (
     <div
-      className="w-full bg-gray-200 p-2 rounded-3xl mb-1
+      className="w-full bg-gray-200 rounded-2xl
                  font-inter text-gray-800 flex flex-col gap-5"
     >
       {/* Calendar Section */}
       <motion.div
-        className="p-2 bg-white rounded-2xl shadow-lg border border-gray-100"
+        className="p-2 bg-white rounded-2xl shadow-lg"
         variants={containerVariants}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -146,7 +146,7 @@ const AvailabilityCalendar = () => {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h3 className="text-2xl font-bold text-blue-700">{currentMonthYear}</h3>
+          <h3 className="text-2xl text-center font-bold text-blue-700">{currentMonthYear}</h3>
           <button
             onClick={goToNextMonth}
             className="p-2 rounded-full bg-blue-100 flex border-none justify-center items-center text-blue-600 hover:bg-blue-200
@@ -180,7 +180,7 @@ const AvailabilityCalendar = () => {
 
               let dayClass = "w-10 h-10 flex items-center justify-center text-lg transition-all duration-200 transform";
               if (!day) dayClass += " invisible";
-              else if (isPastDate && !isToday) dayClass += " border-solid border rounded-full text-sm text-gray-400 border-none cursor-not-allowed bg-white";
+              else if (isPastDate && !isToday) dayClass += " border-solid border rounded-full text-sm text-gray-400 border-none cursor-not-allowed bg-transparent";
               else if (isSelected) dayClass += " bg-blue-500 border-solid border-none text-white shadow-lg scale-105 text-sm ring-2 ring-blue-500 rounded-full cursor-pointer";
               else if (isToday) dayClass += " font-extrabold text-blue-700 ring-2 ring-blue-500 text-sm border-none rounded-full cursor-pointer";
               else if (isAvailable && !isPastDate) dayClass += " hover:bg-black text-blue-800 text-sm hover:scale-105 cursor-pointer";

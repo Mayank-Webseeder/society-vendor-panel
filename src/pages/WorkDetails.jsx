@@ -49,44 +49,22 @@ const WorkDetails = () => {
   };
 
   return (
-    <Box sx={{ 
-      width: '100%', 
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: '#black',
-      borderRadius: '1rem',
-      border: 'none'
-    }}>
-      <Box
+    <Box className='p-5 sm:p-8 w-full h-full'>
+      {/* Header */}
+      <Box 
         sx={{
-          width: '100%', 
-          height: '100%',
-          border: 'none',
-          backgroundColor: "white",
-          borderRadius: '1rem',
-          overflow: 'hidden',
-          flex: 1,
           display: 'flex',
-          flexDirection: 'column',
-          p: { xs: 2, sm: 4 },
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid #E0E0E0',
+          pb: 2,
+          mb: 2
         }}
       >
-        {/* Header */}
-        <Box 
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderBottom: '1px solid #E0E0E0',
-            pb: 2,
-            mb: 3
-          }}
-        >
-          <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
-            Work Details
-          </Typography>
-        </Box >
+        <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+          Work Details
+        </Typography>
+      </Box >
 
         {/* Animated Content */}
         <AnimatePresence mode="wait">
@@ -98,7 +76,7 @@ const WorkDetails = () => {
             exit="exit"
             className="w-full"
           >
-            <Box sx={{ p: 1, display: 'flex', maxWidth: '80%', flexDirection: 'column', gap: 7, flex: 1, overflow: 'auto' }}>
+            <Box sx={{ p: { xs: 0.5, sm: 1 }, display: 'flex', maxWidth: { xs: '100%', sm: '80%' }, flexDirection: 'column', gap: { xs: 4, sm: 7 }, flex: 1, overflow: 'auto' }}>
               
               {/* Services Offered */}
               <Box>
@@ -240,7 +218,7 @@ const WorkDetails = () => {
                   value={workExperience}
                   onChange={(e) => setWorkExperience(e.target.value)}
                   sx={{
-                    maxWidth: '400px',
+                    maxWidth: '500px',
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
                       backgroundColor: '#F9FAFB',
@@ -295,7 +273,7 @@ const WorkDetails = () => {
                   value={workingHours}
                   onChange={(e) => setWorkingHours(e.target.value)}
                   sx={{
-                    maxWidth: '350px',
+                    maxWidth: '450px',
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
                       backgroundColor: '#F9FAFB',
@@ -350,10 +328,10 @@ const WorkDetails = () => {
                       variant={selectedDays.includes(day) ? 'contained' : 'outlined'}
                       onClick={() => handleDayToggle(day)}
                       sx={{
-                        minWidth: '70px',
-                        height: '48px',
+                        minWidth: { xs: '55px', sm: '70px' },
+                        height: { xs: '38px', sm: '48px' },
                         borderRadius: '12px',
-                        fontSize: '0.875rem',
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
                         fontWeight: 600,
                         textTransform: 'none',
                         backgroundColor: selectedDays.includes(day) ? 'transparent' : '#2563EB',
@@ -387,13 +365,12 @@ const WorkDetails = () => {
                   color: 'white',
                   fontWeight: 600,
                   borderRadius: '8px',
-                  py: '8px',
-                  px: '24px',
+                  py: { xs: '6px', sm: '8px' },
+                  px: { xs: '16px', sm: '24px' },
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
                   textTransform: 'none',
-                  // boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
                   '&:hover': {
                     backgroundColor: '#2563EB',
-                    // boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                   },
                 }}
               >
@@ -402,7 +379,6 @@ const WorkDetails = () => {
             </Box>
           </motion.div>
         </AnimatePresence>
-      </Box>
     </Box>
   );
 };
