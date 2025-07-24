@@ -31,7 +31,7 @@ const defaultUser = {
   notificationsEnabled: true,
   agreedTermsAndConditions: false,
   agreedPrivacyPolicy: false,
-  membershipActive: true,
+  membershipActive: false,
   membershipStatus: "GOLD",
   membershipPrice: 999,
   membershipStartDate: '2025-04-12', // YYYY-MM-DD
