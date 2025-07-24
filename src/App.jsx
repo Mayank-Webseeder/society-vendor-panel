@@ -2,7 +2,7 @@ import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 // import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import Dashboard from './pages/dashboard';
+import Dashboard from './pages/Dashboard';
 import NewLeads from './pages/NewLeads';
 import MyJobs from './pages/MyJobs';
 import MyStats from './pages/MyStats';
