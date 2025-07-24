@@ -1,27 +1,29 @@
 import { motion } from 'framer-motion';
 import { useUser } from '../UserContext';
+import LockIcon from '@mui/icons-material/Lock';
 import dummyData from '../static/dummyData_Leads';
 import { finalRating } from '../static/dummyData_MyStats';
 
+
 const PerformanceSummary = () => {
+
   const { user } = useUser();
-  const responseTime = user.avgResponseTime;
   const jobsCompleted = dummyData.filter(lead => lead.status === "Completed").length;
 
   const summary = {
     jobsCompleted,
-    earnings: 420,
+    earnings: user.earnings,
     avgRating: finalRating,
-    responseTime,
+    responseTime: user.avgResponseTime,
   };
 
   const metrics = [
     {
       label: 'Jobs Completed',
-      value: summary.jobsCompleted,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-      iconBg: 'bg-emerald-100',
+      value: user.membershipActive ? summary.jobsCompleted : <LockIcon className="text-yellow-500" />,
+      color: user.membershipActive ? 'text-emerald-600' : 'text-gray-400',
+      bgColor: user.membershipActive ? 'bg-emerald-50' : 'bg-gray-200',
+      iconBg: user.membershipActive ? 'bg-emerald-100' : 'bg-gray-100',
       icon: '✓'
     },
     {
@@ -91,7 +93,7 @@ const PerformanceSummary = () => {
               </div>
               
               <div className="flex items-center gap-1">
-                <span className={`font-bold text-lg ${metric.color}`}>
+                <span className={`flex justify-center items-center font-bold text-lg ${metric.color}`}>
                   {metric.value}
                 </span>
                 {metric.unit && (

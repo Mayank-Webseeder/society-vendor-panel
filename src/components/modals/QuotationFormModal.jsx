@@ -16,7 +16,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
         zIndex: 30,
         top: 0,
         bottom: 0,
-        left: { xs: '3rem', sm: '4rem', md: '5rem' },
+        left: { xs: '0rem', sm: '4rem', md: '5rem' },
         right: 0,
         width: '100%',
         height: '100%',

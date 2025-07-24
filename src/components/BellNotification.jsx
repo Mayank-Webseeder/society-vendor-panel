@@ -98,7 +98,7 @@ const BellNotification = ({ mobile = false }) => {
             <button
                 ref={bellRef}
                 onClick={handleBellClick}
-                className={`border-none flex justify-center items-center transition-colors duration-200 text-white cursor-pointer ${clicked? "bg-black" : 'bg-transparent hover:bg-[#1E3A8A]'} ${mobile ? 'p-1' : 'p-2'}`}
+                className={`border-none flex justify-center items-center rounded-lg transition-colors duration-200 text-white cursor-pointer ${clicked? "bg-black" : 'bg-transparent hover:bg-[#1E3A8A]'} ${mobile ? 'p-2' : 'p-2'}`}
                 title="Notifications"
                 type="button"
             >

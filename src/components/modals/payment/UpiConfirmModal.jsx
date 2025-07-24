@@ -1,16 +1,36 @@
 import { useState } from 'react';
 import { X, Clock, ChevronDown } from 'lucide-react';
-import Button from '@mui/material/Button';
+import { useUser } from '../../../UserContext';
+
 
 const UpiConfirmModal = ({ onProceed, onClose }) => {
+
+  const { user } = useUser();
   const [expanded, setExpanded] = useState(false);
   const [approved, setApproved] = useState(false);
   const [proceeding, setProceeding] = useState(false);
 
-  // Dummy data
-  const startDate = 'Jun 18, 2025';
-  const endDate = 'Jun 18, 2026';
-  const expiresOn = "4:30 PM";
+  const startDate = user.membershipStartDate;
+  const endDate = user.membershipEndDate;
+  const expiresOn = user.membershipEndTime;
+
+  // Utility function to convert 24-hour time to 12-hour format
+  const convertTo12HourFormat = (time24) => {
+    const [hours, minutes] = time24.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const hours12 = hours % 12 || 12; // Convert 0 to 12 for midnight
+    return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+  };
+
+  // Utility function to format dates as "Apr 12, 2025"
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
 
   // Handler for animated proceed
   const handleProceed = () => {
@@ -57,6 +77,7 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
 
         {/* Glassmorphic effect inner div */}
         <div
+          className='min-h-52'
           style={{
             background: 'rgba(86, 169, 217, 0.04)',
             borderRadius: '16px',
@@ -70,7 +91,7 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
           }}
         >
           {/* Approve/Decline Buttons */}
-          <div className="flex justify-center gap-16 w-full mb-8 px-4">
+          {/* <div className="flex justify-center gap-16 w-full mb-8 px-4">
             <Button
               variant={approved ? "outlined" : "contained"}
               color="primary"
@@ -112,7 +133,7 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
             >
               Decline
             </Button>
-          </div>
+          </div> */}
 
           {/* Approve Payment Section */}
           <hr className='w-full border-t-1 border-gray-300' />
@@ -125,10 +146,10 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
             }}
             onClick={() => setExpanded((prev) => !prev)}
           >
-            <div className="flex items-center pt-2 pb-1 justify-between">
+            <div className="flex items-center px-2 py-4 justify-between">
               <div className="flex items-center">
                 <Clock size={22} strokeWidth={3} color='rgba(0,0,0,0.69)' className="mr-3" />
-                <span className="text-lg font-semibold text-gray-800">Approve Payment</span>
+                <span className="text-lg font-semibold text-gray-800">Subscription Detail</span>
               </div>
               <ChevronDown
                 size={24}
@@ -149,8 +170,8 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
               }}
               onClick={e => e.stopPropagation()}
             >
-              <span className="block text-base font-medium text-[#4487AE] py-2">
-                Expires On: {expiresOn}
+              <span className="block text-base font-medium text-black/60 px-6 py-1">
+                Expires On: <span className='font-semibold text-lg px-1 text-[#4487AE]'>{convertTo12HourFormat(expiresOn)}</span>
               </span>
             </div>
           </div>
@@ -160,11 +181,11 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
           <div className="grid grid-cols-2 gap-4 my-4">
             <div>
               <p className="text-base text-black">Start date</p>
-              <p className="text-base font-medium text-black">{startDate}</p>
+              <p className="text-base font-medium text-black">{formatDate(startDate)}</p>
             </div>
             <div>
               <p className="text-base text-black">End date</p>
-              <p className="text-base font-medium text-black">{endDate}</p>
+              <p className="text-base font-medium text-black">{formatDate(endDate)}</p>
             </div>
           </div>
         </div>
@@ -176,19 +197,17 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
 
         {/* Proceed Button with animation */}
         <button
-          className={`w-[30%] bg-[#56A9D9] border-none text-lg text-white font-bold py-2 rounded-md shadow-md transition-colors cursor-pointer flex items-center justify-center
-            ${!approved || proceeding ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-500'}
-          `}
+          className={`w-[30%] bg-[#56A9D9] mt-12 border-none text-lg text-white font-bold p-2 rounded-md shadow-md transition-colors duration-200 cursor-pointer flex items-center justify-center hover:bg-blue-500`}
           onClick={handleProceed}
-          disabled={!approved || proceeding}
+          // disabled={!approved || proceeding}
         >
           {proceeding ? (
-            <span className="flex items-center gap-2 animate-pulse">
+            <span className="flex justify-center items-center gap-2 px-2 animate-pulse">
               <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
               </svg>
-              Processing...
+              <span>Processing...</span>
             </span>
           ) : (
             "Proceed"

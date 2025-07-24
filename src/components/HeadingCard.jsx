@@ -2,73 +2,98 @@ import { useState, useEffect } from 'react';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { useUser } from '../UserContext';
 
+// // Mock icon component (replace with your actual Material-UI import)
+// const PermIdentityIcon = ({ className }) => (
+//   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+//     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+//   </svg>
+// );
+
+// Mock user context (replace with your actual context)
+// const useUser = () => ({
+//   user: { name: 'John Doe', membershipActive: true }
+// });
+
 const HeadingCard = () => {
+
   const { user } = useUser();
 
-  // State for current time
-  const [now, setNow] = useState(new Date());
+  const membershipActive = user?.membershipActive;
+  const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
-    // Update every minute
-    const interval = setInterval(() => setNow(new Date()), 60000);
-    return () => clearInterval(interval);
+    const now = new Date();
+    const hour = now.getHours();
+
+    if (hour < 12) {
+      setGreeting('Good Morning');
+    } else if (hour < 18) {
+      setGreeting('Good Afternoon');
+    } else {
+      setGreeting('Good Evening');
+    }
   }, []);
 
   return (
-    <div className="flex flex-col gap-1 flex-shrink-0 rounded-2xl">
-      <div className="bg-white rounded-2xl shadow-sm border-solid border border-gray-400 px-3 py-2 sm:px-5 sm:py-0 hover:shadow-md transition-shadow duration-200">
-        <div className='flex justify-between items-center'>
-          <div className='flex items-center gap-2 sm:gap-4'>
-            <div className="relative">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-sm">
-                <PermIdentityIcon className="text-indigo-600 text-xl sm:text-3xl" />
+    <div className="w-full">
+      <div className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl shadow-lg border border-slate-200/60 backdrop-blur-sm hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 ease-out group overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+        
+        {/* Content container */}
+        <div className="relative px-6 py-4 sm:px-7 sm:py-5">
+          <div className="flex justify-between items-start">
+            {/* Main content area */}
+            <div className="flex items-center gap-5 sm:gap-6 flex-1">
+              {/* Enhanced avatar section */}
+              <div className="relative">
+                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-4 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
+                  <PermIdentityIcon sx={{fontSize: 34}} className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10" />
+                </div>
+                {/* Subtle glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
               </div>
-              {/* <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white shadow-sm animate-pulse"></div> */}
-            </div>
-            <div>
-              <h2 className="text-lg sm:text-2xl font-normal text-gray-900 mb-0.5 sm:mb-1" style={{fontFamily:'Manrope'}}>
-                Hi {user?.name ? user.name.split(' ')[0] : 'User'}!
-              </h2>
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                {/* <p style={{fontFamily:'Manrope'}} className="text-gray-600 text-sm font-medium">Online • Active now</p> */}
-                <p style={{fontFamily:'Manrope'}} className="text-gray-600 text-xs sm:text-sm font-medium">Online</p>
+
+              {/* Greeting text */}
+              <div className="flex-1">
+                <div className="space-y-1">
+                  <h1 className="text-xl sm:text-3xl font-semibold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent leading-tight">
+                    {greeting}
+                  </h1>
+                  <p className="text-lg sm:text-xl text-slate-600 font-medium">
+                    {user?.name ? user.name.split(' ')[0] : 'User'} !
+                  </p>
+                </div>
+                {/* Subtle underline accent */}
+                <div className="mt-2 h-0.5 w-12 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-60"></div>
               </div>
             </div>
-          </div>
-          {/* OPTIMIZE BELOW DIV */}
-          <div className="block text-right rounded-lg px-2 sm:px-4 space-y-1 sm:space-y-1.5 py-1 sm:py-2.5">
-            <div style={{fontFamily:'Manrope'}} className="text-xs sm:text-sm font-semibold text-gray-900 mb-0.5 sm:mb-1">
-              <span className="block sm:hidden">
-                {new Date().toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric' 
-                })}
-                <br />
-                {new Date().toLocaleDateString('en-US', { weekday: 'short' })}
-              </span>
-              <span className="hidden sm:block">
-                {new Date().toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-                <br />
-                {new Date().toLocaleDateString('en-US', { weekday: 'long' })}
-              </span>
-            </div>
-            <div style={{fontFamily:'Manrope'}} className="hidden sm:block text-xs text-gray-500 font-medium">
-              {now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              })}
-            </div>
+
+            {/* Membership badge */}
+            {membershipActive && (
+              <div className="flex-shrink-0 ml-4">
+                <div className="relative">
+                  <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-4 py-2.5 text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
+                    {/* Premium icon */}
+                    <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="hidden sm:inline">Gold Member</span>
+                    <span className="sm:hidden">Gold</span>
+                  </span>
+                  {/* Subtle shimmer effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover/badge:opacity-100 group-hover/badge:animate-pulse transition-opacity duration-500"></div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Bottom accent line */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
       </div>
     </div>
   );
 };
-
 
 export default HeadingCard;

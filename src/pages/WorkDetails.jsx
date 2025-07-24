@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Typography, TextField, Button, Box, IconButton } from '@mui/material';
 import { Search, X } from 'lucide-react';
 import Autocomplete from '@mui/material/Autocomplete';
 import { motion, AnimatePresence } from 'framer-motion';
 import dummyOffers from '../static/dummyData_ServicesOffered'
+import { useUser } from '../UserContext';
+import LockIcon from '@mui/icons-material/Lock';
+import AccessLockedModal from '../components/modals/AccessLockedModal';
 
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -17,6 +21,10 @@ const contentVariants = {
 
 
 const WorkDetails = () => {
+
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive); // Open modal if no membership
 
   const [selectedServices, setSelectedServices] = useState([
     dummyOffers[0], // Housekeeping Services
@@ -48,8 +56,23 @@ const WorkDetails = () => {
     console.log('Collected Work Details:', formData);
   };
 
+  // Redirect to dashboard when modal closes
+  const handleModalClose = () => {
+    navigate('/dashboard');
+  };
+
+
   return (
     <Box className='p-5 sm:p-8 w-full h-full'>
+      {/* Access Locked Modal */}
+      <AccessLockedModal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        heading="Access Restricted"
+        subheading="Subscribe to update your availability and unlock premium features."
+      />
+
+
       {/* Header */}
       <Box 
         sx={{
@@ -64,6 +87,10 @@ const WorkDetails = () => {
         <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
           Work Details
         </Typography>
+        {/* Yellow Lock Icon */}
+        {
+          !user.membershipActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} />
+        }
       </Box >
 
         {/* Animated Content */}

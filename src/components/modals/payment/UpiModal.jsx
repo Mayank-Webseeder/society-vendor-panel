@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { IoClose } from "react-icons/io5";
 import Select from 'react-select';
-import bhimUpi from '../../assets/bhimUpi.png';
-import paytm from '../../assets/paytm.png';
-import phonepe from '../../assets/phonepe.png';
-import amazonPay from '../../assets/amazonPay.png';
-import googlePay from '../../assets/googlePay.png';
+import bhim from '../../../assets/logos/bhim.svg';
+import paytm from '../../../assets/logos/paytm.svg';
+import phonepe from '../../../assets/logos/phonepe.svg';
+import amazonpay from '../../../assets/logos/amazonpay.svg';
+import gpay from '../../../assets/logos/gpay.svg';
 
 const upiApps = [
-  { label: 'Google Pay', value: 'gpay', icon: googlePay },
+  { label: 'Google Pay', value: 'gpay', icon: gpay },
   { label: 'PhonePe', value: 'phonepe', icon: phonepe },
   { label: 'Paytm', value: 'paytm', icon: paytm },
-  { label: 'Amazon Pay', value: 'amazonpay', icon: amazonPay },
-  { label: 'BHIM', value: 'bhim', icon: bhimUpi },
+  { label: 'Amazon Pay', value: 'amazonpay', icon: amazonpay },
+  { label: 'BHIM', value: 'bhim', icon: bhim },
 ];
 
 const customStyles = {
@@ -68,14 +68,14 @@ const UpiModal = ({ onProceed, onClose }) => {
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[rgba(134,198,234,0.27)] bg-opacity-30 z-50 font-inter">
+    <div className="fixed inset-0 flex items-center justify-center bg-[rgba(134,198,234,0.45)] bg-opacity-30 z-50 font-inter">
       <div
         className="relative rounded-xl shadow-lg flex flex-col items-center border border-white/30 px-6 py-4"
         style={{
           background: 'rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.57)',
           width: '45vw',
           height: '80vh',
           maxWidth: '900px',
@@ -93,10 +93,10 @@ const UpiModal = ({ onProceed, onClose }) => {
 
         <h1 className="text-2xl self-start font-semibold mb-8 text-slate-800 mt-5">Set up UPI payment</h1>
 
-        <div className="flex items-center justify-start space-x-2 mb-20 w-full">
-          {[bhimUpi, paytm, phonepe, amazonPay, googlePay].map((src, idx) => (
-            <div key={idx} className="bg-white p-1 rounded-lg shadow-sm flex justify-center items-center">
-              <img src={src} alt="upi" className="h-11 object-contain" />
+        <div className="flex items-center justify-start space-x-3 mb-20 w-full">
+          {[bhim, paytm, phonepe, amazonpay, gpay].map((src, idx) => (
+            <div key={idx} className="bg-white p-2 rounded-lg shadow-sm flex justify-center items-center">
+              <img src={src} alt="upi" className="h-6 object-contain" />
             </div>
           ))}
         </div>
@@ -126,7 +126,7 @@ const UpiModal = ({ onProceed, onClose }) => {
                     {...innerProps}
                     className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${isFocused ? 'bg-blue-100' : ''}`}
                   >
-                    <img src={data.icon} alt={data.label} className="h-6 w-6 object-contain" />
+                    <img src={data.icon} alt={data.label} className="h-7 w-7 object-contain" />
                     <span>{data.label}</span>
                   </div>
                 ),

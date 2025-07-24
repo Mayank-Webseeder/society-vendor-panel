@@ -19,7 +19,7 @@ const NewLeadModal = ({
 
   const safe = (val) => (val !== undefined && val !== null && val !== '' ? val : 'N/A');
 
-console.log("Proceed --> ",proceed);
+// console.log("Proceed --> ",proceed);
 
   return (
     <Box
@@ -27,7 +27,7 @@ console.log("Proceed --> ",proceed);
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        left: { xs: '3rem', sm: '4rem', md: '5rem' },
+        left: { xs: '0rem', sm: '4rem', md: '5rem' },
         right: 0,
         bottom: 0,
         width: '100%',

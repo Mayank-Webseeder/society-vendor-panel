@@ -23,7 +23,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
         position: 'fixed',
         top: 0,
         bottom: 0,
-        left: {xs: '3rem', sm: '4rem', md: '5rem'},
+        left: {xs: '0rem', sm: '4rem', md: '5rem'},
         right: 0,
         zIndex: 30,
         width: '100%',

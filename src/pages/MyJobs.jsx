@@ -1,12 +1,11 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Menu, MenuItem, Button, TextField, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
+import { Search as SearchIcon, Close as CloseIcon, Lock as LockIcon, BusinessCenter as BusinessCenterIcon } from '@mui/icons-material';
 import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown } from 'lucide-react';
 import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { FileText, Hourglass, CheckSquare, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import dummyData from "../static/dummyData_Leads";
 import NewLeadModal from "../components/modals/NewLeadModal";
 import QuotationFormModal from "../components/modals/QuotationFormModal";
@@ -14,6 +13,7 @@ import OngoingModal from "../components/modals/OngoingModal";
 import CompletedModal from "../components/modals/CompletedModal";
 import WithdrawApplicationModal from "../components/modals/WithdrawApplicationModal";
 import CancelJobModal from '../components/modals/CancelJobModal';
+import { useUser } from "../UserContext";
 
 
 const statusOptions = [
@@ -37,13 +37,19 @@ const parsePostedOn = (str) => {
 
 
 const MyJobs = () => {
+
+  const { user } = useUser();
+  const location = useLocation();
+
   // Manage modal states
   const [modalLead, setModalLead] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [proceed, setProceed] = useState(false);
   const [showQuotationForm, setShowQuotationForm] = useState(false);
 
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  // Set the initial filter based on navigation state or default to "All"
+  const [selectedStatus, setSelectedStatus] = useState(location.state?.filter || "All");
+
   const [statusAnchorEl, setStatusAnchorEl] = useState(null);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -53,8 +59,8 @@ const MyJobs = () => {
   const jobStatuses = [
     { name: "New", color: "text-blue-600", icon: FileText, count: dummyData.filter(lead => lead.status === "New").length },
     { name: "Ongoing", color: "text-yellow-600", icon: Hourglass, count: dummyData.filter(lead => lead.status === "Ongoing").length },
-    { name: "Completed", color: "text-green-600", icon: CheckSquare, count: dummyData.filter(lead => lead.status === "Completed").length },
-    { name: "Applied", color: "text-purple-600", icon: Send, count: dummyData.filter(lead => lead.status === "Applied").length },
+    { name: "Completed", color: "text-green-600", icon: CheckSquare, count: dummyData.filter(lead => lead.status === "Completed").length, premium: true },
+    { name: "Applied", color: "text-purple-600", icon: Send, count: dummyData.filter(lead => lead.status === "Applied").length, premium: true },
   ];
 
   const containerVariants = {
@@ -84,14 +90,16 @@ const MyJobs = () => {
     lead.work.toLowerCase().includes(searchWork.toLowerCase())
   );
 
-  const sortedLeads = [...filteredLeads].sort((a, b) => {
+  // Restrict table entries if membership is inactive
+  const restrictedLeads = user.membershipActive
+    ? filteredLeads
+    : filteredLeads.filter((lead) => lead.status === "New" || lead.status === "Ongoing");
+
+
+  const sortedLeads = [...restrictedLeads].sort((a, b) => {
     const dateA = parsePostedOn(a.postedOn);
     const dateB = parsePostedOn(b.postedOn);
-    if (sortOrder === 'asc') {
-      return dateA - dateB;
-    } else {
-      return dateB - dateA;
-    }
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
   });
 
 
@@ -166,26 +174,48 @@ const MyJobs = () => {
 
       {/* Job Status Cards Section */}
       <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-12 sm:justify-start sm:items-center">
-        {
-          jobStatuses.map((status) => (
-            <motion.div
-              key={status.name}
-              className={`
-                bg-white rounded-xl w-full sm:w-52 p-3 sm:p-3 shadow-sm border-solid border border-gray-300
-                  flex flex-col items-start transition-all duration-200
-                  transform hover:scale-[1.03] hover:shadow-lg cursor-pointer`
-              }
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-center mb-1 sm:mb-2">
-                <status.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${status.color} mr-1 sm:mr-2`} />
-                <p style={{fontFamily:'Lato'}} className="text-sm sm:text-base font-bold text-gray-700">{status.name}</p>
+        {jobStatuses.map((status) => (
+          <motion.div
+            key={status.name}
+            className={`
+              bg-white rounded-xl w-full sm:w-52 p-3 sm:p-3 shadow-sm border-solid border border-gray-300
+              flex flex-col items-start transition-all duration-200
+              transform hover:scale-[1.03] hover:shadow-lg cursor-pointer
+            `}
+            variants={itemVariants}
+            whileHover={{ y: -5 }}
+          >
+            <div className="flex items-center mb-1 sm:mb-2">
+              <status.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${status.color} mr-1 sm:mr-2`} />
+              <p style={{ fontFamily: 'Lato' }} className="text-sm sm:text-base font-bold text-gray-700">
+                {status.name}
+              </p>
+            </div>
+            <div className="min-h-9 flex items-center">
+              {status.premium && !user.membershipActive ? (
+              <div className="flex items-center gap-2">
+                {/* Lock Icon */}
+                <LockIcon className="text-yellow-500 text-lg" />
+                {/* Premium Feature Text */}
+                <p
+                  style={{ fontFamily: 'Lato' }}
+                  className="text-xs sm:text-sm font-medium text-yellow-600/80 italic"
+                >
+                  Premium Feature
+                </p>
               </div>
-              <p style={{fontFamily:'Lato'}} className={`text-2xl sm:text-3xl font-bold ${status.color} leading-none`}>{status.count}</p>
-            </motion.div>
-          ))
-        }
+            ) : (
+              <p
+                style={{ fontFamily: 'Lato' }}
+                className={`text-2xl sm:text-3xl font-bold ${status.color} leading-none`}
+              >
+                {status.count}
+              </p>
+            )}
+            </div>
+            
+          </motion.div>
+        ))}
       </div>
     </motion.div>
 
@@ -291,13 +321,43 @@ const MyJobs = () => {
                   anchorEl={statusAnchorEl}
                   open={Boolean(statusAnchorEl)}
                   onClose={handleStatusClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right', // Aligns the menu to the right of the button
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right', // Ensures the menu opens from the right
+                  }}
                 >
                   {statusOptions.map(option => (
                     <MenuItem
                       key={option.label}
                       selected={selectedStatus === option.label}
                       onClick={() => handleStatusSelect(option.label)}
+                      disabled={
+                        !user.membershipActive  &&
+                        (option.label === "Applied" || option.label === "Completed")
+                      }
+                      sx={{
+                        display: 'flex',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                        // p:0.5,
+                        gap: 1, // Adds spacing between the lock icon and text
+                      }}
                     >
+                      {/* Add Lock Icon for Premium Options */}
+                      {!user.membershipActive &&
+                        (option.label === "Applied" || option.label === "Completed") && (
+                          <LockIcon
+                            sx={{
+                              fontSize: 18,
+                              color: '#EAB308',
+                            }}
+                          />
+                        )
+                      }
                       {option.label}
                     </MenuItem>
                   ))}
@@ -354,12 +414,16 @@ const MyJobs = () => {
                             {lead.pendingStatus}
                           </span>
                         ) : (
-                          <span className={`px-4 py-2 rounded-full text-sm font-semibold
-                            ${lead.status === "Completed" ? "bg-green-100 text-green-700" :
-                              lead.status === "Ongoing" ? "bg-yellow-100 text-yellow-700" :
-                              lead.status === "New" ? "bg-gray-100 text-gray-700" : "bg-gray-50 text-gray-500"}
-                          `}>
-                            {lead.status} {lead.status == 'New'? '!':''}
+                          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                            lead.status === "Completed"
+                              ? "bg-green-100 text-green-700"
+                              : lead.status === "Ongoing"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : lead.status === "New"
+                              ? (user.membershipActive ? "bg-gray-100 text-gray-700" : "bg-green-100 text-green-700")
+                              : "bg-gray-50 text-gray-500"
+                          }`}>
+                            {lead.status} {lead.status === 'New' ? '!' : ''}
                           </span>
                         )}
                       </td>

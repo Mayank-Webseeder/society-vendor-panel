@@ -37,7 +37,7 @@ const SecurityOptions = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        pb: 1
+        pb: 2
       }}>
         <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
           Security Options

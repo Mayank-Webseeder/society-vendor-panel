@@ -12,7 +12,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import SecurityOptions from "./pages/SecurityOptions";
 import WorkDetails from './pages/WorkDetails';
 import DocumentAndVerification from "./pages/DocumentAndVerification";
-import GoldMembershipCard from './components/GoldMembershipCard';
+import MembershipPage from "./pages/MembershipPage";
 import AccountAndSupport from './pages/AccountAndSupport';
 import HelpAndSupport from './pages/HelpAndSupport';
 import FAQ from './pages/FAQ';
@@ -90,7 +90,7 @@ function App() {
               </div>
 
               {/* PAGE CONTENT */}
-              <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gray-200">
+              <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gradient-to-br from-blue-100 to-blue-50">
                 <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/new-leads" element={<NewLeads />} />
@@ -103,7 +103,7 @@ function App() {
                       <Route path="security-options" element={<SecurityOptions />} />
                       <Route path="work-details" element={<WorkDetails />} />
                       <Route path="documents-verification" element={<DocumentAndVerification />} />
-                      <Route path="membership" element={<GoldMembershipCard />} />
+                      <Route path="membership" element={<MembershipPage />} />
                       <Route path="account-support" element={<AccountAndSupport />} />
                       <Route path="account-support/help-support" element={<HelpAndSupport />} />
                       <Route path="account-support/faq" element={<FAQ />} />

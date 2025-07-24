@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '@mui/material/Button';
 import { Clock, MapPin, Calendar, ChevronRight } from 'lucide-react';
 import dummyData from '../static/dummyData_Leads';
 import CancelJobModal from './modals/CancelJobModal';
+import { useUser } from '../UserContext';
+
 
 // Helper to parse "17th Jul" to a Date object for current year
 function parseJobDate(dateStr) {
@@ -36,10 +39,13 @@ function getDateLabel(dateStr) {
   return dateStr;
 }
 
-const upcomingJobs = dummyData.filter(lead => lead.pendingStatus === 'Approved').length;
+const approvedJobs = dummyData.filter(lead => lead.pendingStatus === 'Approved').length;
 
-const UpcomingJobs = () => {
 
+const AppliedJobs = () => {
+
+  const { user } = useUser();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,25 +72,29 @@ const UpcomingJobs = () => {
       className="bg-white rounded-2xl shadow-md overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-    > {/*border border-gray-1008*/}
+    >
       {/* Header */}
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-50 bg-gradient-to-r from-gray-50/50 to-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">Upcoming Jobs</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">Applied Jobs</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
-              {upcomingJobs} {upcomingJobs === 1 ? 'job' : 'jobs'} scheduled
+              {approvedJobs} {approvedJobs === 1 ? 'job' : 'jobs'} scheduled
             </p>
           </div>
-          <Button 
-            sx={{ borderRadius: '8px' }} 
-            variant='outlined' 
-            className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-xs sm:text-sm rounded-xl border border-blue-200 transition-all duration-200 hover:shadow-md"
-          >
-            <span className="hidden sm:inline">View All</span>
-            <span className="sm:hidden">All</span>
-            <ChevronRight size={14} className="sm:w-4 sm:h-4" />
-          </Button>
+          {
+            user.membershipActive  &&
+              <Button
+                onClick={() => navigate('/my-jobs', { state: { filter: 'Applied' } })}
+                sx={{ borderRadius: '8px' }} 
+                variant='outlined' 
+                className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-xs sm:text-sm rounded-xl border border-blue-200 transition-all duration-200 hover:shadow-md"
+              >
+                <span className="hidden sm:inline">View All</span>
+                <span className="sm:hidden">All</span>
+                <ChevronRight size={14} className="sm:w-4 sm:h-4" />
+              </Button>
+          }
         </div>
       </div>
 
@@ -103,7 +113,7 @@ const UpcomingJobs = () => {
             jobs.map((job, index) => (
               <motion.div
                 key={job.id}
-                className="group relative mb-2 bg-gradient-to-br from-white to-gray-50/30 rounded-xl border-solid border border-gray-200 hover:border-blue-200 transition-all duration-300 hover:shadow-lg cursor-pointer overflow-hidden"
+                className="group relative mb-2 bg-gradient-to-br from-white to-gray-50/30 rounded-xl border-solid border border-gray-200 hover:border-green-300 transition-all duration-300 hover:shadow-lg cursor-pointer overflow-hidden"
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -114,13 +124,13 @@ const UpcomingJobs = () => {
                 }}
               >
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/0 to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <div className="relative p-3 sm:p-5">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-3 sm:mb-4">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1 group-hover:text-blue-900 transition-colors">
+                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1 group-hover:text-green-900 transition-colors">
                         {job.work}
                       </h4>
                       <div className="flex items-center gap-1.5">
@@ -130,7 +140,7 @@ const UpcomingJobs = () => {
                         </span>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-blue-500 transform group-hover:translate-x-1 transition-all duration-200" />
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-green-500 transform group-hover:translate-x-1 transition-all duration-200" />
                   </div>
 
                   {/* Details */}
@@ -142,7 +152,7 @@ const UpcomingJobs = () => {
                       <div>
                         <span className="font-medium text-xs sm:text-sm text-gray-900">{job.time}</span>
                         <span className="text-gray-500 mx-1 sm:mx-2">•</span>
-                        <span className="text-xs sm:text-sm font-medium text-blue-600">{getDateLabel(job.date)}</span>
+                        <span className="text-xs sm:text-sm font-medium text-green-600">{getDateLabel(job.date)}</span>
                       </div>
                     </div>
 
@@ -156,7 +166,7 @@ const UpcomingJobs = () => {
                 </div>
 
                 {/* Bottom accent */}
-                <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="h-1 bg-gradient-to-r from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
             ))
           )}
@@ -174,4 +184,4 @@ const UpcomingJobs = () => {
 };
 
 
-export default UpcomingJobs;
+export default AppliedJobs;

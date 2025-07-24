@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UpiModal from '../../components/payment/UpiModal';
-import UpiConfirmModal from '../../components/payment/UpiConfirmModal';
-import UpiSuccessModal from '../../components/payment/UpiSuccessModal';
+import UpiModal from '../../components/modals/payment/UpiModal';
+import UpiConfirmModal from '../../components/modals/payment/UpiConfirmModal';
+import UpiSuccessModal from '../../components/modals/payment/UpiSuccessModal';
 import MembershipBenefits from './MembershipBenefits';
 import PaymentMethod from './PaymentMethod';
-import { IoClose } from "react-icons/io5";
-import Logo from '../../assets/Logo.png';
-
-// Add this import for a spinner (you can use any spinner you like)
 import { CircularProgress } from '@mui/material';
 
+
 const Payment = () => {
+
   const [modalStep, setModalStep] = useState(null); // null | 'upi' | 'confirm' | 'success'
   const [loading, setLoading] = useState(false); // <-- Spinner state
   const navigate = useNavigate();
@@ -26,7 +24,31 @@ const Payment = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-white">
+    <div 
+      className="flex flex-col min-h-screen w-full"
+      style={{
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)', // Same gradient as MembershipBenefits.jsx
+        fontFamily: 'Inter, sans-serif',
+        position: 'relative',
+        overflow: 'hidden',
+      }}  
+    >
+      {/* Background Pattern */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `
+            radial-gradient(circle at 25% 25%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(86, 169, 217, 0.02) 0%, transparent 50%)
+          `,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Spinner Overlay */}
       {loading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70">
@@ -36,7 +58,7 @@ const Payment = () => {
       )}
 
       {/* Navbar */}
-      <div className='w-full h-16 px-10 flex justify-between items-center'>
+      {/* <div className='border-solid w-full h-16 px-10 flex justify-between items-center'>
         <img src={Logo} alt="velra-logo" />
         <button
           className='h-fit bg-[#56A9D9] border-none p-1 flex justify-center items-center rounded-full transition-colors duration-200 hover:bg-[#3577a3]'
@@ -46,10 +68,10 @@ const Payment = () => {
         >
           <IoClose color='white' size={24} />
         </button>
-      </div>
+      </div> */}
 
       {/* Main Content */}
-      <div className="flex w-full flex-1">
+      <div className="flex w-full h-full flex-1">
         {/* Left Half */}
         <div className="flex flex-1 justify-center h-full p-2">
           <MembershipBenefits />

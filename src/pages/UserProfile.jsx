@@ -1,17 +1,20 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { User as UserIcon, Lock as LockIcon, FileText } from 'lucide-react';
+import { User as UserIcon, Lock as LockIcon, FileText, User } from 'lucide-react';
+import { MdCardMembership } from "react-icons/md";
 import { FaToolbox } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
 import { motion } from 'framer-motion';
+import LockIconMui from '@mui/icons-material/Lock';
+import { useUser } from '../UserContext';
 
 
 const sidebarOptions = [
   { label: 'My Profile', icon: <UserIcon size={20} />, route: '/my-profile' },
   { label: 'Security', icon: <LockIcon size={20} />, route: '/my-profile/security-options' },
-  { label: 'Work Details', icon: <FaToolbox size={20} />, route: '/my-profile/work-details' },
+  { label: 'Work Details', icon: <FaToolbox size={20} />, route: '/my-profile/work-details', isPremium: true },
   { label: 'Documents', icon: <FileText size={20} />, route: '/my-profile/documents-verification' },
+  { label: "Membership", icon: <MdCardMembership size={20} />, route: '/my-profile/membership' },
   { label: 'Support', icon: <BiSupport size={20} />, route: '/my-profile/account-support' },
-  // Add more options as needed
 ];
 
 const containerVariants = {
@@ -35,6 +38,7 @@ const itemVariants = {
 
 const UserProfile = () => {
 
+  const { user } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -139,8 +143,14 @@ const UserProfile = () => {
                 variants={itemVariants}
                 whileHover={{ y: -2, scale: 1.03 }}
               >
-                <span className='hidden md:block'>{opt.icon}</span>
-                <span className="xl:ml-2.5 text-center">{opt.label}</span>
+                <span className='hidden md:block'>
+                  {opt.icon}
+                </span>
+                <span className="flex flex-col items-center text-center xl:flex-row xl:ml-2.5 gap-1">
+                  {opt.label}
+                  {/* Lock Icon for Premium Options */}
+                  {opt.isPremium  &&  !user.membershipActive  &&  <LockIconMui sx={{ fontSize: 18, color: '#F59E0B' }} />}
+                </span>
               </motion.div>
             ))}
           </div>
