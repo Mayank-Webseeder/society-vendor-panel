@@ -69,6 +69,17 @@ const Dashboard = () => {
         <div id='child-1' className='flex flex-col gap-6 px-4 w-full lg:w-[70%] xl:w-[77%]'>
           {/* Heading */}
           <HeadingCard />
+          
+          
+          {/* TESTING */}
+          {/* <div>
+            <span>Backend URL: {import.meta.env.VITE_API_BASE_URL}</span>
+            <br />
+            <span>Environment: {import.meta.env.VITE_ENVIRONMENT}</span>
+            <br/>
+            <span>API Timeout: {import.meta.env.VITE_API_TIMEOUT}</span>
+          </div> */}
+
 
           {/* Cards */}
           {/* <StatusCards /> */}

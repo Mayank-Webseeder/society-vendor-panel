@@ -22,6 +22,7 @@ import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
 import AuthPage from './pages/auth/AuthPage';
+import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import OnboardingLayout from './pages/onboarding/OnboardingLayout';
@@ -35,6 +36,7 @@ import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
 import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
 
 
+
 function App() {
   const location = useLocation();
 
@@ -43,6 +45,7 @@ function App() {
 
       {/* Auth flow */}
       <Route path="/auth" element={<AuthPage />} />
+      <Route path='/auth/validate-email' element={<ValidateEmail />} />
       <Route path="/auth/forgot-password" element={<ForgotPassword />} />
       <Route path="/auth/reset-password" element={<ResetPassword />} />
 

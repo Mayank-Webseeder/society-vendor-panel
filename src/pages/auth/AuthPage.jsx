@@ -155,7 +155,7 @@ const AuthPage = () => {
 
       {/* Right: Image Section (hidden on screens smaller than md) */}
       <motion.div
-        className="relative hidden md:flex flex-1 md:w-1/2 h-screen bg-cover bg-center"
+        className="relative hidden md:flex flex-1 md:w-1/2 min-h-screen bg-cover bg-center"
         style={{ backgroundImage: `url(${groupMenBlueUniforms})` }}
         variants={imagePanelVariants}
         initial="hidden"

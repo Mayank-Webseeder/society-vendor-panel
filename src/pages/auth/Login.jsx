@@ -1,19 +1,63 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { loginVendor } from '../../services/api/auth'; // Import the login API function
+
+
+const TEST_EMAIL = import.meta.env.VITE_TEST_EMAIL;
+const TEST_PASSWORD = import.meta.env.VITE_TEST_PASSWORD;
+
 
 const Login = ({ onSwitch, onLogin }) => {
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(''); 
 
-  const handleLogin = (e) => {
+
+  const handleLogin = async(e) => {
     e.preventDefault();
-    if (email === "demo@velra.com" && password === "velra123") {
+
+    // Check for test credentials
+    if (email === TEST_EMAIL && password === TEST_PASSWORD) {
+      console.log('✅ Logged in with test credentials');
+      localStorage.setItem('authToken', 'TEST_AUTH_TOKEN'); // Store a mock token for test login
       if (onLogin) onLogin();
-    } else {
-      alert("Invalid email or password.");
+      navigate('/dashboard');
+      return;
+    }
+
+    // Basic validation
+    if (!email.trim() || !password.trim()) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    setError('');
+
+    try {
+      // Call the loginVendor API
+      const result = await loginVendor(email.trim(), password.trim());
+
+      console.log('✅ Login successful:', result);
+
+      // Store the authToken in localStorage
+      localStorage.setItem('authToken', result.authToken);
+
+      // Trigger the onLogin callback
+      if (onLogin) onLogin();
+
+      // Navigate to the dashboard or home page
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('❌ Login failed:', error);
+      setError(error.message || 'Login failed. Please try again.');
     }
   };
+
 
   const inputVariants = {
     initial: { y: 10, opacity: 0 },
@@ -37,6 +81,17 @@ const Login = ({ onSwitch, onLogin }) => {
       >
         Welcome Back!
       </motion.h2>
+
+      {/* Error Message */}
+      {error && (
+        <motion.div
+          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {error}
+        </motion.div>
+      )}
 
       <motion.div variants={inputVariants}>
         <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
@@ -84,7 +139,7 @@ const Login = ({ onSwitch, onLogin }) => {
         <motion.button
           type="button"
           className="text-blue-600 hover:text-blue-800 border-none bg-gray-100 font-medium cursor-pointer transition-colors duration-200"
-          onClick={() => alert('Forgot Password functionality not implemented yet.')}
+          onClick={() => navigate('/auth/forgot-password')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

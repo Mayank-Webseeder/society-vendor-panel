@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { sendOtpEmailVerification } from '../../services/api/auth';    // Import the API function
 
 
 const SignUp = ({ onSwitch }) => {
@@ -11,17 +12,48 @@ const SignUp = ({ onSwitch }) => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSignup = (e) => {
+
+  const handleSignup = async(e) => {
     e.preventDefault();
+
+    // Basic validation
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      alert('Account created! Redirecting to onboarding...');
+    setError('');
+    console.log("Entered email: ", email)
+
+    try {
+      // Call the sendOtpEmailVerification API
+      const result = await sendOtpEmailVerification(email.trim());
+      
+      // console.log('✅ OTP sent successfully:', result);
+      
+      // Show success message
+      alert('OTP sent successfully! Please check your email for verification.');
+      
+      // Navigate to email validation page
+      navigate('/auth/validate-email');
+      
+    } catch (error) {
+      console.error('❌ Failed to send OTP:', error);
+      setError(error.message || 'Failed to send OTP. Please try again.');
+
+    } finally {
       setLoading(false);
-      // navigate('/auth/onboarding', {replace: true});      
-      navigate('/auth/onboarding');      
-    }, 2000);
+    }
   };
+
 
   // Custom dot animation variants for SignUp loading
   const dotVariants = {
@@ -97,6 +129,17 @@ const SignUp = ({ onSwitch }) => {
       >
         Join Velra Today!
       </motion.h2>
+
+      {/* Error Message */}
+      {error && (
+        <motion.div 
+          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {error}
+        </motion.div>
+      )}
 
       <motion.div variants={inputVariants}>
         <label htmlFor="fullname" className="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
