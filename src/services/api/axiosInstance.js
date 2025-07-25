@@ -8,8 +8,8 @@ const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT);
 
 
 const api = axios.create({
-  // baseURL: API_BASE_URL,
-  baseURL: '/api',    // Use proxy for development
+  baseURL: API_BASE_URL,
+  // baseURL: '/api',    // Use proxy for development
   timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
