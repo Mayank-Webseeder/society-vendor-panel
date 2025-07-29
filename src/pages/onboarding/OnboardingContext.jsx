@@ -16,7 +16,7 @@ export const OnboardingProvider = ({ children }) => {
     const [onboardingData, setOnboardingData] = useState({
         name: '',
         initials: '',
-        // id: '',
+        id: '',
         bio: '',
         dateOfBirth: '',
         gender: '',
@@ -26,6 +26,9 @@ export const OnboardingProvider = ({ children }) => {
         workExperience: '',
         idProof: '',
         idProofFile: null,
+        payscale: '',
+        preferredPaymentMethod: '',
+        lastPayments: '',
         building: '',
         locality: '',
         landmark: '',
@@ -33,7 +36,8 @@ export const OnboardingProvider = ({ children }) => {
         state: '',
         country: '',
         pincode: '',
-        currentLocation: '',
+        address:'',
+        locationCoordinates: '',
         whatYouOffer: [],
         workingDays: [],
         workingHours: '',    //ex.'10:00 AM - 7:30 PM'
@@ -51,7 +55,22 @@ export const OnboardingProvider = ({ children }) => {
     
     // Memoize this function!
     const updateOnboardingData = useCallback((updates) => {
-        setOnboardingData((prev) => ({ ...prev, ...updates }));
+        setOnboardingData((prev) => {
+            const updatedData = { ...prev, ...updates };
+
+            // Dynamically compute the address field
+            updatedData.address = [
+                updatedData.building,
+                updatedData.locality,
+                updatedData.landmark,
+                updatedData.city,
+                updatedData.state,
+                updatedData.country,
+                updatedData.pincode,
+            ].filter(Boolean).join(', '); // Filter out empty values and join with commas
+
+            return updatedData;
+        });
     }, []);
     
 

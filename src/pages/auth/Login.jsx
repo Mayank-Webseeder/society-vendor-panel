@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { loginVendor } from '../../services/api/auth'; // Import the login API function
+import { loginVendor } from '../../services/api/auth';
+import { useUser } from '../../UserContext';
+import defaultUser from '../../DefaultUser';
 
 
 const TEST_EMAIL = import.meta.env.VITE_TEST_EMAIL;
@@ -11,6 +13,7 @@ const TEST_PASSWORD = import.meta.env.VITE_TEST_PASSWORD;
 const Login = ({ onSwitch, onLogin }) => {
 
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +27,17 @@ const Login = ({ onSwitch, onLogin }) => {
     // Check for test credentials
     if (email === TEST_EMAIL && password === TEST_PASSWORD) {
       console.log('✅ Logged in with test credentials');
-      localStorage.setItem('authToken', 'TEST_AUTH_TOKEN'); // Store a mock token for test login
+
+      // Set testMode to true in defaultUser and store it in localStorage
+      const testUser = { ...defaultUser, testMode: true };
+      localStorage.setItem('velra_user', JSON.stringify(testUser));
+
+      // Update the user context immediately
+      setUser(testUser);
+
+      // Store a mock token for test login
+      localStorage.setItem('authToken', 'TEST_AUTH_TOKEN');
+
       if (onLogin) onLogin();
       navigate('/dashboard');
       return;
@@ -39,7 +52,7 @@ const Login = ({ onSwitch, onLogin }) => {
     setError('');
 
     try {
-      // Call the loginVendor API
+      // Call the loginVendor API (API 2)
       const result = await loginVendor(email.trim(), password.trim());
 
       console.log('✅ Login successful:', result);
@@ -172,5 +185,6 @@ const Login = ({ onSwitch, onLogin }) => {
     </motion.form>
   );
 };
+
 
 export default Login;

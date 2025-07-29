@@ -22,7 +22,7 @@ const OnboardingLayout = () => {
       <div 
         className="relative h-screen w-screen flex justify-center items-center"
         style={{
-          background: `
+          backgroundImage: `
             radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, 
               rgba(255, 255, 255, 0.15) 0%, 
               transparent 50%),
@@ -174,7 +174,7 @@ const OnboardingLayout = () => {
 
         <Outlet />
 
-        <style jsx>{`
+        <style>{`
           @keyframes gradientShift {
             0%, 100% {
               background-position: 0% 50%, 0% 0%, 0% 0%, 0% 0%, 100% 100%;

@@ -8,7 +8,10 @@ import { useAuth } from '../../AuthContext';
 import { useOnBoarding } from './OnboardingContext';
 import { useUser } from '../../UserContext';
 
+
 const RESEND_TIME = 30;
+const TEST_OTP = import.meta.env.VITE_TEST_OTP;
+
 
 const Step8_VerifyOtp = () => {
   const { login } = useAuth();
@@ -64,29 +67,59 @@ const Step8_VerifyOtp = () => {
 
   const formatTimer = (t) => `${Math.floor(t / 60)}:${(t % 60).toString().padStart(2, '0')}`;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp !== '7853') {
+    
+    // Check if the entered OTP matches the test OTP
+    if (enteredOtp !== TEST_OTP) {
       setError('Incorrect OTP. Please try again.');
       setOtp(['', '', '', '']);
       if (inputRefs.current[0]) inputRefs.current[0].focus();
       return;
     }
+
     setError('');
     setVerifying(true);
-    updateOnboardingData({ ...onboardingData, otp: enteredOtp });
 
-    setTimeout(() => {
+    // Prepare form data for API call
+    const formData = new FormData();
+    formData.append('name', onboardingData.name);
+    formData.append('businessName', onboardingData.businessName);
+    formData.append('address', onboardingData.address);
+    formData.append('services', JSON.stringify(onboardingData.whatYouOffer)); // Convert array to JSON string
+    formData.append('workingDays', JSON.stringify(onboardingData.workingDays)); // Convert array to JSON string
+    formData.append('workingHours', onboardingData.workingHours);
+    formData.append('payScale', onboardingData.payscale);
+    formData.append('location', onboardingData.locationCoordinates);
+    formData.append('paymentMethods', onboardingData.preferredPaymentMethod);
+    formData.append('lastPayments', onboardingData.lastPayments);
+    formData.append('experience', onboardingData.workExperience);
+    formData.append('phone', onboardingData.phone);
+    if (onboardingData.idProofFile) {
+      formData.append('idProof', onboardingData.idProofFile); // Attach file
+    }
+
+    try {
+      // Make API call to createProfile
+      const response = await createProfile(formData);
+
+      // If successful, update local storage and context
+      localStorage.setItem('velra_user', JSON.stringify(onboardingData));
+      setUser(onboardingData);
       setSuccess(true);
+
       setTimeout(() => {
         setVerifying(false);
-        login();
-        localStorage.setItem('velra_user', JSON.stringify(onboardingData));
-        setUser(onboardingData);
+        login(); // Log in the user
         navigate('/dashboard');
       }, 1000);
-    }, 2200);
+    } catch (error) {
+      setError('Failed to create profile. Please try again.');
+      console.error('Error creating profile:', error);
+      setVerifying(false);
+    }
   };
+
 
   return (
     <div style={{ position: 'relative', width: '80%', height: '80%' }}>

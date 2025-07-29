@@ -4,6 +4,7 @@ import { Paper, Typography, Button, TextField, Box, Container, InputAdornment, A
 import verifyNumber from '../../assets/verifyNumber.png';
 import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
+import { createProfile } from '../../services/api/auth';
 
 
 const Step7_VerifyNumber = () => {

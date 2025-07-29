@@ -34,7 +34,7 @@ const SignUp = ({ onSwitch }) => {
     console.log("Entered email: ", email)
 
     try {
-      // Call the sendOtpEmailVerification API
+      // Call the sendOtpEmailVerification API (API 5)
       const result = await sendOtpEmailVerification(email.trim());
       
       // console.log('✅ OTP sent successfully:', result);
@@ -43,7 +43,9 @@ const SignUp = ({ onSwitch }) => {
       alert('OTP sent successfully! Please check your email for verification.');
       
       // Navigate to email validation page
-      navigate('/auth/validate-email');
+      navigate('/auth/validate-email', {
+        state: { fullName, email, password },    // Pass data here
+      });
       
     } catch (error) {
       console.error('❌ Failed to send OTP:', error);

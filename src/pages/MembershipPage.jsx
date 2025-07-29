@@ -90,7 +90,7 @@ const MembershipPage = () => {
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">
                     No Active Membership Found !
                 </h2>
-                <p className="text-lg text-gray-600 mb-8 max-w-md">
+                <p className="text-base text-gray-400 mb-8 max-w-md">
                     It looks like you don't have an active premium membership.
                     Subscribe today to unlock exclusive features and elevate your experience!
                 </p>

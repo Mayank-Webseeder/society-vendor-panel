@@ -297,7 +297,7 @@ const Step5_Profile2 = () => {
                         '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
                         '& .MuiSelect-select': {
-                          color: '#424242',
+                          color: '#94A3B8',
                           fontSize: '0.95rem',
                           py: '14px',
                           px: '16px',

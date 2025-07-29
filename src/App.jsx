@@ -24,6 +24,7 @@ import PaymentFailure from './pages/payment/PaymentFailure';
 import AuthPage from './pages/auth/AuthPage';
 import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
+import VerifyOtpForgotPassword from "./pages/auth/VerifyOtpForgotPassword";
 import ResetPassword from './pages/auth/ResetPassword';
 import OnboardingLayout from './pages/onboarding/OnboardingLayout';
 import Step1_Loading from './pages/onboarding/Step1_Loading';
@@ -47,7 +48,8 @@ function App() {
       <Route path="/auth" element={<AuthPage />} />
       <Route path='/auth/validate-email' element={<ValidateEmail />} />
       <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-      <Route path="/auth/reset-password" element={<ResetPassword />} />
+      <Route path="/auth/forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
+      <Route path="/auth/forgot-password/reset-password" element={<ResetPassword />} />
 
       {/* Onboarding */}
       <Route path="/auth/onboarding" element={<OnboardingLayout />}>

@@ -38,11 +38,7 @@ export const validateEmail = async (email, otp) => {
 
 // API 5: Send OTP for Email Verification
 export const sendOtpEmailVerification = async (email) => {
-  // console.log('Sending OTP request with email:', email);
   const response = await api.post('/api/vendor/sendOtpEmailVerification', { email });
-  // const response = await api.post('/vendor/sendOtpEmailVerification', { email });
-  // console.log("Otp req sent succesfully");
-  // console.log('Response:', response.data);
   return response.data;
 };
 

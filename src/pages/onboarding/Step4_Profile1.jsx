@@ -1,24 +1,29 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton, Fade, Grow } from '@mui/material';
-import { Paperclip, User, Building, Briefcase, Shield, CheckCircle, Mail } from 'lucide-react';
-
-// Assuming these paths are correct relative to your project structure
-// import onboardingImage from '../../assets/onboardingImage.png';
+import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton, Fade, Grow, FormControl, Select, MenuItem } from '@mui/material';
+import { Paperclip, User, Building, Briefcase, Shield, CheckCircle, IndianRupee } from 'lucide-react';
+import { MdOutlinePayment } from "react-icons/md";
+import { BiReceipt } from "react-icons/bi";
 import logoWhite from '../../assets/logoWhite.png';
+import { useOnBoarding } from './OnboardingContext';
 
-import { useOnBoarding } from './OnboardingContext'; // Assuming OnboardingContext is correctly defined
 
 const Step4_Profile1 = () => {
+
   const navigate = useNavigate();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
   // Initialize state from context
   const [yourName, setYourName] = useState(onboardingData.name || '');
-  const [businessName, setBusinessName] = useState(onboardingData.businessName || '');
-  const [yourExperience, setYourExperience] = useState(onboardingData.workExperience || '');
-  const [email, setEmail] = useState(onboardingData.email || '');
+  const [id, setId] = useState(onboardingData.id || '');
+  const [fixedIdSuffix, setFixedIdSuffix] = useState(''); // Store the six-digit number separately
+  const [isIdFinalized, setIsIdFinalized] = useState(false); // Track if ID is finalized
   const [gender, setGender] = useState(onboardingData.gender || '');
+  const [businessName, setBusinessName] = useState(onboardingData.businessName || '');
+  const [payscale, setPayscale] = useState(onboardingData.payscale || '');
+  const [preferredPaymentMethod, setPreferredPaymentMethod] = useState(onboardingData.preferredPaymentMethod || '');
+  const [lastPayments, setLastPayments] = useState(onboardingData.lastPayments || '');
+  const [yourExperience, setYourExperience] = useState(onboardingData.workExperience || '');
   const [idProof, setIdProof] = useState(onboardingData.idProof || ''); // Holds the file name
   const [idProofFile, setIdProofFile] = useState(null); // Holds the actual file object
 
@@ -32,15 +37,17 @@ const Step4_Profile1 = () => {
   useEffect(() => {
     updateOnboardingData({
       name: yourName,
-      initials: getInitials(yourName), // Assuming getInitials is meant to generate initials for name
+      initials: getInitials(yourName),
+      gender,
       businessName,
       workExperience: yourExperience,
-      email,
-      gender,
       idProof,
       idProofFile,
+      payscale,
+      preferredPaymentMethod,
+      lastPayments,
     });
-  }, [yourName, businessName, yourExperience, email, gender, idProof, idProofFile, updateOnboardingData]);
+  }, [yourName, gender, businessName, yourExperience, idProof, idProofFile, payscale, preferredPaymentMethod, lastPayments, updateOnboardingData]);
 
   // Helper to get initials from name
   const getInitials = (name) => {
@@ -52,8 +59,42 @@ const Step4_Profile1 = () => {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
+
+  // Function to generate ID based on name
+  const generateId = (name) => {
+    if (!name.trim()) return '';
+    const firstName = name.split(' ')[0].slice(0, 6); // Extract first name (max 6 characters)
+    const randomNumbers = Math.floor(100000 + Math.random() * 900000); // Generate random 6-digit number
+    return `#${firstName}${randomNumbers}`;
+  };
+
+  useEffect(() => {
+    // Generate six digits only once when the user enters the first character
+    if (fixedIdSuffix === '' && yourName.trim().length > 0) {
+      const randomNumbers = Math.floor(100000 + Math.random() * 900000); // Generate random 6-digit number
+      setFixedIdSuffix(randomNumbers.toString()); // Store the six digits separately
+    }
+
+    // Update the name part dynamically based on user input
+    if (yourName.trim().length > 0) {
+      const firstName = yourName.split(' ')[0].slice(0, 6); // Extract first name (max 6 characters)
+      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1); // Capitalize the first character
+      const updatedId = `#${capitalizedFirstName}${fixedIdSuffix}`; // Combine name part with constant six digits
+      setId(updatedId);
+      updateOnboardingData({ name: yourName, id: updatedId }); // Update context with name and ID
+    }
+
+    // Reset ID and suffix if the name field is emptied
+    if (yourName.trim().length === 0) {
+      setId(''); // Clear the ID
+      setFixedIdSuffix(''); // Clear the six-digit suffix
+      updateOnboardingData({ name: '', id: '' }); // Update context with empty name and ID
+    }
+  }, [yourName, fixedIdSuffix, updateOnboardingData]);
+
+
   const handleContinue = () => {
-    if (!yourName.trim() || !businessName.trim() || !yourExperience.trim() || !email.trim() || !gender.trim() || !idProofFile) {
+    if (!yourName.trim() || !gender.trim() || !businessName.trim() || !payscale.trim() || !yourExperience.trim() || !idProofFile) {
       setError('Please complete all required fields to continue.');
       return;
     }
@@ -86,18 +127,22 @@ const Step4_Profile1 = () => {
     return value && (typeof value === 'string' ? value.trim().length > 0 : true);
   };
 
-  // Corrected getFieldIcon to include Mail icon
+
+  // getFieldIcon to include icons
   const getFieldIcon = (fieldName) => {
     switch (fieldName) {
       case 'name': return <User size={20} />;
-      case 'gender': return <User size={20} />; // Or a more specific gender icon if available
+      case 'gender': return <User size={20} />;
       case 'business': return <Building size={20} />;
-      case 'email': return <Mail size={20} />; // Corrected to Mail icon
+      case 'payscale': return <IndianRupee size={18} />;
       case 'experience': return <Briefcase size={20} />;
       case 'id': return <Shield size={20} />;
+      case 'paymentMethod': return <MdOutlinePayment size={20} />;
+      case 'lastPayments': return <BiReceipt size={20} />
       default: return null;
     }
   };
+
 
   return (
     <div style={{ position: 'relative', width: '80%', height: '82%' }}>
@@ -175,6 +220,7 @@ const Step4_Profile1 = () => {
           />
 
           <div className="flex flex-col relative z-10">
+            {/* Heading */}
             <Fade in={true} timeout={800}>
               <div style={{ textAlign: 'center', marginBottom: '3rem', marginTop: '0.5rem' }}>
                 <Typography
@@ -212,11 +258,11 @@ const Step4_Profile1 = () => {
                 display: 'grid', 
                 gridTemplateColumns: { xs:'1fr', md: '1fr 1fr'}, 
                 columnGap: '3rem', 
-                rowGap: '1.5rem', 
+                rowGap: '1.9rem', 
                 marginBottom: '2rem' 
               }}
             >
-              {/* Row 1: Name and Gender */}
+              {/* Row 1: Name & Gender */}
               <Grow in={true} timeout={600}>
                 <Box>
                   <Typography
@@ -332,7 +378,8 @@ const Step4_Profile1 = () => {
                 </Box>
               </Grow>
 
-              {/* Row 2: Business Name and Email */}
+
+              {/* Row 2: Business Name & Work Experience */}
               <Grow in={true} timeout={800}>
                 <Box>
                   <Typography
@@ -394,70 +441,6 @@ const Step4_Profile1 = () => {
                   />
                 </Box>
               </Grow>
-              <Grow in={true} timeout={900}>
-                <Box>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: 'rgba(0, 0, 0, 0.8)',
-                      mb: 1.5,
-                      fontSize: '1rem',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1
-                    }}
-                  >
-                    {getFieldIcon('email')}
-                    Email Address
-                    {isFieldComplete(email) && (
-                      <CheckCircle size={16} style={{ color: '#10B981' }} />
-                    )}
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    type="email"
-                    placeholder="Enter your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField('')}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: focusedField === 'email' ? '#f0f9ff' : '#ffffff',
-                        transition: 'all 0.3s ease',
-                        '& fieldset': {
-                          borderColor: focusedField === 'email' ? '#56A9D9' : '#e2e8f0',
-                          borderWidth: focusedField === 'email' ? '2px' : '1px',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: '#56A9D9',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#56A9D9',
-                          borderWidth: '2px',
-                        },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: '#1a1a1a',
-                        fontSize: '1rem',
-                        py: '14px',
-                        px: '16px',
-                        fontWeight: 500,
-                      },
-                      '& .MuiInputBase-input::placeholder': {
-                        color: '#94a3b8',
-                        opacity: 1,
-                      },
-                    }}
-                  />
-                </Box>
-              </Grow>
-
-              {/* Row 3: Work Experience and Upload ID */}
               <Grow in={true} timeout={1000}>
                 <Box>
                   <Typography
@@ -469,7 +452,7 @@ const Step4_Profile1 = () => {
                       fontWeight: 600,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1
+                      gap: 1,
                     }}
                   >
                     {getFieldIcon('experience')}
@@ -478,49 +461,56 @@ const Step4_Profile1 = () => {
                       <CheckCircle size={16} style={{ color: '#10B981' }} />
                     )}
                   </Typography>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    placeholder="Describe your professional experience"
-                    value={yourExperience}
-                    onChange={(e) => setYourExperience(e.target.value)}
-                    onFocus={() => setFocusedField('experience')}
-                    onBlur={() => setFocusedField('')}
-                    required
-                    // multiline
-                    // rows={3}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
+                  <FormControl fullWidth variant="outlined" required>
+                    <Select
+                      value={yourExperience}
+                      onChange={(e) => setYourExperience(e.target.value)}
+                      displayEmpty
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            maxHeight: 250,
+                          },
+                        },
+                        anchorOrigin: {
+                          vertical: 'bottom',
+                          horizontal: 'left',
+                        },
+                        transformOrigin: {
+                          vertical: 'top',
+                          horizontal: 'left',
+                        },
+                      }}
+                      sx={{
                         borderRadius: '12px',
-                        backgroundColor: focusedField === 'business' ? '#f0f9ff' : '#ffffff',
-                        transition: 'all 0.3s ease',
-                        '& fieldset': {
-                          borderColor: focusedField === 'business' ? '#56A9D9' : '#e2e8f0',
-                          borderWidth: focusedField === 'business' ? '2px' : '1px',
+                        bgcolor: '#ffffff',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '& .MuiSelect-select': {
+                          color: '#94A3B8',
+                          fontSize: '0.95rem',
+                          py: '14px',
+                          px: '16px',
+                          fontWeight: 500,
                         },
-                        '&:hover fieldset': {
-                          borderColor: '#56A9D9',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#56A9D9',
-                          borderWidth: '2px',
-                        },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: '#1a1a1a',
-                        fontSize: '1rem',
-                        py: '14px',
-                        px: '16px',
-                        fontWeight: 500,
-                      },
-                      '& .MuiInputBase-input::placeholder': {
-                        color: '#94a3b8',
-                        opacity: 1,
-                      },
-                    }}
-                  />
+                      }}
+                    >
+                      <MenuItem value="" disabled>
+                        Select Experience
+                      </MenuItem>
+                      <MenuItem value="Less than 1 year">Less than 1 year</MenuItem>
+                      <MenuItem value="1-3 years">1-3 years</MenuItem>
+                      <MenuItem value="3-5 years">3-5 years</MenuItem>
+                      <MenuItem value="More than 5 years">More than 5 years</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Box>
               </Grow>
+
+
+              {/* Row 3: Upload ID & Payscale */}
               <Grow in={true} timeout={1100}>
                 <Box>
                   <Typography
@@ -635,7 +625,225 @@ const Step4_Profile1 = () => {
                   )}
                 </Box>
               </Grow>
+              <Grow in={true} timeout={900}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    {getFieldIcon('payscale')}
+                    Payscale
+                    {isFieldComplete(payscale) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <FormControl fullWidth variant="outlined" required>
+                    <Select
+                      value={payscale}
+                      onChange={(e) => setPayscale(e.target.value)}
+                      displayEmpty
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <Typography sx={{ color: '#56A9D9', fontWeight: 600 }}>₹</Typography>
+                        </InputAdornment>
+                      }
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            maxHeight: 250,
+                          },
+                        },
+                        anchorOrigin: {
+                          vertical: 'bottom',
+                          horizontal: 'left',
+                        },
+                        transformOrigin: {
+                          vertical: 'top',
+                          horizontal: 'left',
+                        },
+                      }}
+                      sx={{
+                        borderRadius: '12px',
+                        bgcolor: '#ffffff',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '& .MuiSelect-select': {
+                          color: payscale === '' ? '#94A3B8' : '#424242', // Placeholder color when no value is selected
+                          fontSize: '0.95rem',
+                          py: '14px',
+                          px: '16px',
+                          fontWeight: 500,
+                        },
+                      }}
+                    >
+                      <MenuItem value="" disabled sx={{ color: '#94A3B8' }}>
+                        Select Payscale
+                      </MenuItem>
+                      <MenuItem value="₹5,000 - ₹10,000">₹5,000 - ₹10,000</MenuItem>
+                      <MenuItem value="₹10,000 - ₹15,000">₹10,000 - ₹15,000</MenuItem>
+                      <MenuItem value="₹15,000 - ₹20,000">₹15,000 - ₹20,000</MenuItem>
+                      <MenuItem value="₹20,000 - ₹25,000">₹20,000 - ₹25,000</MenuItem>
+                      <MenuItem value="₹25,000+">₹25,000+</MenuItem>
+                      {/* <MenuItem value="₹10,000 - ₹20,000">₹10,000 - ₹20,000</MenuItem>
+                      <MenuItem value="₹20,000 - ₹30,000">₹20,000 - ₹30,000</MenuItem>
+                      <MenuItem value="₹30,000 - ₹40,000">₹30,000 - ₹40,000</MenuItem>
+                      <MenuItem value="₹40,000 - ₹50,000">₹40,000 - ₹50,000</MenuItem>
+                      <MenuItem value="₹50,000+">₹50,000+</MenuItem> */}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Grow>
+
+
+              {/* Row 4: Preferred Payment Method & Last Payments */}
+              <Grow in={true} timeout={1200}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    {getFieldIcon('paymentMethod')}
+                    Preferred Payment Method
+                    {isFieldComplete(preferredPaymentMethod) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <FormControl fullWidth variant="outlined" required>
+                    <Select
+                      value={preferredPaymentMethod}
+                      onChange={(e) => setPreferredPaymentMethod(e.target.value)}
+                      displayEmpty
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            maxHeight: 250,
+                          },
+                        },
+                        anchorOrigin: {
+                          vertical: 'bottom',
+                          horizontal: 'left',
+                        },
+                        transformOrigin: {
+                          vertical: 'top',
+                          horizontal: 'left',
+                        },
+                      }}
+                      sx={{
+                        borderRadius: '12px',
+                        bgcolor: '#ffffff',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                        '& .MuiSelect-select': {
+                          color: preferredPaymentMethod === '' ? '#94A3B8' : '#424242', // Placeholder color when no value is selected
+                          fontSize: '0.95rem',
+                          py: '14px',
+                          px: '16px',
+                          fontWeight: 500,
+                        },
+                      }}
+                    >
+                      <MenuItem value="" disabled sx={{ color: '#94A3B8' }}>
+                        Select Payment Method
+                      </MenuItem>
+                      <MenuItem value="Cash">Cash</MenuItem>
+                      <MenuItem value="Credit Card">Credit Card</MenuItem>
+                      <MenuItem value="Debit Card">Debit Card</MenuItem>
+                      <MenuItem value="UPI">UPI</MenuItem>
+                      <MenuItem value="Net Banking">Net Banking</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Grow>
+              <Grow in={true} timeout={1300}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.8)',
+                      mb: 1.5,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    {getFieldIcon('lastPayments')}
+                    Last Payments
+                    {isFieldComplete(lastPayments) && (
+                      <CheckCircle size={16} style={{ color: '#10B981' }} />
+                    )}
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Enter last payment amount"
+                    value={lastPayments}
+                    onChange={(e) => setLastPayments(e.target.value)}
+                    onFocus={() => setFocusedField('lastPayments')}
+                    onBlur={() => setFocusedField('')}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Typography sx={{ color: '#56A9D9', fontWeight: 600 }}>₹</Typography>
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: focusedField === 'lastPayments' ? '#f0f9ff' : '#ffffff',
+                        transition: 'all 0.3s ease',
+                        '& fieldset': {
+                          borderColor: focusedField === 'lastPayments' ? '#56A9D9' : '#e2e8f0',
+                          borderWidth: focusedField === 'lastPayments' ? '2px' : '1px',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#56A9D9',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#56A9D9',
+                          borderWidth: '2px',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: '#1a1a1a',
+                        fontSize: '1rem',
+                        py: '14px',
+                        px: '16px',
+                        fontWeight: 500,
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#94a3b8',
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                </Box>
+              </Grow>
             </Box>
+
 
             {/* Error Message */}
             {error && (
@@ -672,6 +880,7 @@ const Step4_Profile1 = () => {
                 </Typography>
               </Fade>
             )}
+
 
             {/* Continue Button */}
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>

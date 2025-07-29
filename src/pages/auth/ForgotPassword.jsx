@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import { motion } from 'framer-motion';
+import { sendOtp } from '../../services/api/auth';
 
-const RESEND_TIME = 59; // seconds
+
+const RESEND_TIME = 59;    // seconds
+
 
 const ForgotPassword = () => {
+
   const [email, setEmail] = useState('');
   const [showResend, setShowResend] = useState(false);
   const [timer, setTimer] = useState(RESEND_TIME);
@@ -27,14 +31,23 @@ const ForgotPassword = () => {
     return () => clearInterval(timerRef.current);
   }, [isTiming]);
 
-  const handleFormSubmit = (e) => {
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setShowResend(true);
-    setTimer(RESEND_TIME);
-    setIsTiming(true);
-    // API call here
-    console.log("Password reset link requested for:", email);
+
+    try {
+      // Call API 3 to send OTP
+      await sendOtp(email);
+      console.log("OTP sent successfully to:", email);
+
+      // Redirect to VerifyOtpForgotPassword page with email as state
+      navigate('/auth/verify-otp-forgot-password', { state: { email } });
+    } catch (error) {
+      console.error("Failed to send OTP:", error);
+      alert("Failed to send OTP. Please try again.");
+    }
   };
+
 
   const formatTimer = (t) => `0:${t.toString().padStart(2, '0')}`;
 

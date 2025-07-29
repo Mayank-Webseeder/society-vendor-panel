@@ -1,11 +1,22 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';    // useLocation() will be used to retrieve the state object from react-router-dom passed by SignUp.jsx
 import { motion } from 'framer-motion';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
+import { validateEmail, signupVendor } from '../../services/api/auth';
+
 
 const ValidateEmail = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Extract data from state
+  const { fullName, email, password } = location.state || {};    // Default to empty object if state is undefined
+
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
 
   const handleValidate = async (e) => {
     e.preventDefault();
@@ -20,16 +31,27 @@ const ValidateEmail = () => {
     setError('');
 
     try {
-      // Call the actual validate email API (to be implemented)
+      // Step 1: Validate Email (API 4)
       console.log('Validating OTP:', otp);
-      alert('Email validated successfully!');
+      const emailValidationResult = await validateEmail(email, otp); // Pass email and OTP
+      console.log('✅ Email validated successfully:', emailValidationResult);
+
+      // Step 2: Signup Vendor (API 1)
+      const signupResult = await signupVendor(fullName, email, password)
+      console.log('✅ Signup successful:', signupResult);
+
+      // Redirect to onboarding page
+      navigate('/auth/onboarding');
+
     } catch (error) {
-      console.error('❌ Validation failed:', error);
-      setError(error.message || 'Validation failed. Please try again.');
+      console.error('❌ Validation or Signup failed:', error);
+      setError(error.message || 'Validation or Signup failed. Please try again.');
+    
     } finally {
       setLoading(false);
     }
   };
+
 
   const dotVariants = {
     start: { y: "0px" },
@@ -171,12 +193,12 @@ const ValidateEmail = () => {
 
               {/* Message Below Input */}
               <motion.p
-                className="text-sm text-gray-600 pb-10"
+                className="text-sm text-gray-600 pb-7"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                We have sent a One-Time Password(OTP) to your entered email. Please verify the otp to continue.
+                A One-Time Password(OTP) has been sent to your entered email address. Please verify the otp and continue with the registration process.
               </motion.p>
 
               <motion.button

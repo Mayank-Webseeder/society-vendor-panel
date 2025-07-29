@@ -79,7 +79,7 @@ const AppliedJobs = () => {
           <div>
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">Applied Jobs</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
-              {approvedJobs} {approvedJobs === 1 ? 'job' : 'jobs'} scheduled
+              {jobs.length} {jobs.length === 1 ? 'job' : 'jobs'} scheduled
             </p>
           </div>
           {

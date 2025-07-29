@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import { motion } from 'framer-motion';
+import { forgetPassword } from '../../services/api/auth';
+
 
 const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[@#$])[A-Za-z\d@#$]{8,}$/;
+
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     // Validate password
@@ -30,9 +33,25 @@ const ResetPassword = () => {
     }
 
     setError('');
-    // Handle password reset logic here
-    console.log('Password reset successful');
-    navigate('/dashboard');
+    try {
+      // Extract email and otp from state
+      const { email, otp } = location.state || {};
+
+      if (!email || !otp) {
+        setError('Invalid request. Please try again.');
+        return;
+      }
+
+      // Call API 6: forgetPassword
+      await forgetPassword(email, otp, password);
+      console.log('✅ Password reset successful');
+
+      // Redirect to login page after successful password reset
+      navigate('/auth/login', { replace: true });
+    } catch (error) {
+      console.error('❌ Password reset failed:', error);
+      setError(error.response?.data?.message || 'Failed to reset password. Please try again.');
+    }
   };
 
   return (
