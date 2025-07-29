@@ -7,9 +7,10 @@ import logoWhite from '../../assets/logoWhite.png';
 import { useAuth } from '../../AuthContext';
 import { useOnBoarding } from './OnboardingContext';
 import { useUser } from '../../UserContext';
+import { createProfile } from '../../services/api/auth';
 
 
-const RESEND_TIME = 30;
+const RESEND_TIME = 59;
 const TEST_OTP = import.meta.env.VITE_TEST_OTP;
 
 
@@ -69,15 +70,25 @@ const Step8_VerifyOtp = () => {
 
   const handleContinue = async () => {
     const enteredOtp = otp.join('');
-    
+
     // Check if the entered OTP matches the test OTP
-    if (enteredOtp !== TEST_OTP) {
-      setError('Incorrect OTP. Please try again.');
-      setOtp(['', '', '', '']);
-      if (inputRefs.current[0]) inputRefs.current[0].focus();
+    if (enteredOtp === TEST_OTP) {
+      console.log('✅ Test OTP entered. Logging in as test user.');
+
+      // Set testMode to true in onboardingData and store it in localStorage
+      const testUser = { ...onboardingData, testMode: true };
+      localStorage.setItem('velra_user', JSON.stringify(testUser));
+
+      // Update the user context immediately
+      setUser(testUser);
+
+      // Log in the user and redirect to the dashboard
+      login();
+      navigate('/dashboard');
       return;
     }
 
+    // If not the test OTP, proceed with API call
     setError('');
     setVerifying(true);
 
@@ -154,7 +165,7 @@ const Step8_VerifyOtp = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Left Half: Enhanced Form Content */}
         <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center relative'>

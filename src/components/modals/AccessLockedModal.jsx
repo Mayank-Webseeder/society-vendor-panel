@@ -28,7 +28,7 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
           zIndex: 0,
         }}
         onClick={onClose}

@@ -108,7 +108,7 @@ const Step2_WhatYouOffer = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Left Half: Form Content */}
         <div className='flex flex-col flex-1 p-8 sm:p-12 justify-between bg-white'>

@@ -1,13 +1,48 @@
+import { useState } from 'react';
 import { Box, Typography, Button, TextField, MenuItem } from '@mui/material';
 import { IoClose } from "react-icons/io5";
+import { applyToJob } from '../../services/api/jobs';
+import { toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 
 
-const QuotationFormModal = ({ open, onClose, onSubmit }) => {
+const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
+
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   if (!open) return null;
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 to 23 hours
   const minutes = Array.from({ length: 60 }, (_, i) => i); // 0 to 59 minutes
+
+
+  const handleApply = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      // Call the applyToJob API
+      await applyToJob(jobId, message);
+      console.log('✅ Successfully applied to the job');
+
+      // Show success toast
+      toast.success('Application submitted successfully!');
+
+      // Trigger the onSubmit callback (if provided)
+      if (onSubmit) onSubmit();
+
+      // Close the modal
+      onClose();
+    } catch (err) {
+      console.error('❌ Failed to apply to the job:', err);
+      setError('Failed to apply. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <Box
@@ -214,6 +249,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
             fullWidth
             multiline
             rows={5}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             sx={{ 
               mb: 4,
               boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
@@ -230,10 +267,17 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
             }}
           />
 
+          {error && (
+            <Typography color="error" sx={{ mb: 2 }}>
+              {error}
+            </Typography>
+          )}
+
           <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
             <Button
               variant="contained"
-              onClick={onSubmit}
+              onClick={handleApply}
+              disabled={loading}
               sx={{
                 width: '50%',
                 backgroundColor: '#56A9D9', // Set the default background color
@@ -249,7 +293,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit }) => {
                 fontSize: '1.125rem',
               }}
             >
-              Submit and Apply
+              {loading ? 'Submitting...' : 'Submit and Apply'}
             </Button>
           </Box>
         </Box>

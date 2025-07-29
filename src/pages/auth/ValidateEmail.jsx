@@ -109,11 +109,11 @@ const ValidateEmail = () => {
           {
             !loading &&
               <motion.p
-                className="text-lg pl-2 text-center text-black/60 mt-2 max-w-xs"
+                className="text-base pl-2 text-center text-black/60 mt-2 max-w-xs"
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                style={{fontFamily:"Loto"}}
+                // style={{fontFamily:"Loto"}}
               >
                 Validate your email to proceed.
               </motion.p>

@@ -546,7 +546,7 @@ const Step6_Location = () => {
         }}
       >
         {/* Debugging Purposes */}
-        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Conditional Rendering based on location status */}
         {locationStatus === 'success' ? renderSuccessScreen() : renderInitialScreen()}

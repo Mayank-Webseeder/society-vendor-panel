@@ -5,7 +5,9 @@ import Login from './Login';
 import SignUp from './SignUp';
 import { useAuth } from '../../AuthContext';
 
+
 const AuthPage = () => {
+  
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);

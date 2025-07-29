@@ -179,7 +179,7 @@ const Step4_Profile1 = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Form Content - Full Width Centered */}
         <div

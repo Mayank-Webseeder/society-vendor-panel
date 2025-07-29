@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { useUser } from '../UserContext';
+import { Switch } from '@mui/material';
 
 // // Mock icon component (replace with your actual Material-UI import)
 // const PermIdentityIcon = ({ className }) => (
@@ -15,7 +16,7 @@ import { useUser } from '../UserContext';
 // });
 
 const HeadingCard = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const membershipActive = user?.membershipActive;
   const [greeting, setGreeting] = useState('');
@@ -32,6 +33,13 @@ const HeadingCard = () => {
       setGreeting('Good Evening');
     }
   }, []);
+
+  const handleToggleMembership = () => {
+    setUser({
+      ...user,
+      membershipActive: !user.membershipActive,
+    });
+  };
 
   return (
     <div className="w-full">
@@ -101,7 +109,7 @@ const HeadingCard = () => {
 
         {/* Test Mode Badge */}
         {user?.testMode && (
-          <div className="absolute bottom-4 right-4">
+          <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <div className="inline-flex items-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-800 ring-2 ring-red-200/60 shadow-md hover:shadow-lg transition-all duration-300">
               <svg
                 className="w-4 h-4 text-red-500"
@@ -115,6 +123,17 @@ const HeadingCard = () => {
                 />
               </svg>
               Test Mode Active
+            </div>
+            
+            {/* Toggle Switch for Membership */}
+            <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-2 ring-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300">
+              <span>Membership</span>
+              <Switch
+                checked={membershipActive}
+                onChange={handleToggleMembership}
+                color="primary"
+                size="small"
+              />
             </div>
           </div>
         )}

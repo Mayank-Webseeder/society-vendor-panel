@@ -85,7 +85,7 @@ const Step5_Profile2 = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre> */}
         
         <div
           style={{

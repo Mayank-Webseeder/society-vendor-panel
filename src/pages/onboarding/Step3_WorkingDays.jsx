@@ -181,7 +181,7 @@ const Step3_WorkingDays = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Left Half: Enhanced Form Content */}
         <Box

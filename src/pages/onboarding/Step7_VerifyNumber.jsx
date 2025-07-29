@@ -69,7 +69,7 @@ const Step7_VerifyNumber = () => {
       >
 
         {/* Debugging Purposes */}
-        <pre>{JSON.stringify(onboardingData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
         {/* Left Half: Form Content */}
         <Container
@@ -100,7 +100,7 @@ const Step7_VerifyNumber = () => {
             <Box
               sx={{
                 // border: '2px solid red',
-                p: 1.5,
+                p: 2,
                 width: 100,
                 height: 100,
                 borderRadius: '50%',

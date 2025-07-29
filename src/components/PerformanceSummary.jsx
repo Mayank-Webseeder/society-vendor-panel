@@ -28,10 +28,10 @@ const PerformanceSummary = () => {
     },
     {
       label: 'Earnings',
-      value: `$${summary.earnings}`,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100',
+      value: user.membershipActive ? `$${summary.earnings}` : <LockIcon className="text-yellow-500" />,
+      color: user.membershipActive ? 'text-green-600' : 'text-gray-400',
+      bgColor: user.membershipActive ? 'bg-green-50' : 'bg-gray-200',
+      iconBg: user.membershipActive ? 'bg-green-100' : 'bg-gray-100',
       icon: '$'
     },
     {

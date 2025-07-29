@@ -35,6 +35,8 @@ import Step5_Profile2 from './pages/onboarding/Step5_Profile2';
 import Step6_Location from './pages/onboarding/Step6_Location';
 import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
 import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -42,91 +44,96 @@ function App() {
   const location = useLocation();
 
   return (
-    <Routes location={location}>
+    <>
+      {/* ToastContainer for notifications */}
+      <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Auth flow */}
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path='/auth/validate-email' element={<ValidateEmail />} />
-      <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-      <Route path="/auth/forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
-      <Route path="/auth/forgot-password/reset-password" element={<ResetPassword />} />
+      <Routes location={location}>
 
-      {/* Onboarding */}
-      <Route path="/auth/onboarding" element={<OnboardingLayout />}>
-        <Route index element={<Step1_Loading />} />
-        <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
-        <Route path="working-days" element={<Step3_WorkingDays />} />
-        <Route path="profile-1" element={<Step4_Profile1 />} />
-        <Route path="profile-2" element={<Step5_Profile2 />} />
-        <Route path="location" element={<Step6_Location />} />
-        <Route path="verify-number" element={<Step7_VerifyNumber />} />
-        <Route path="verify-otp" element={<Step8_VerifyOtp />} />
-      </Route>
+        {/* Auth flow */}
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path='/auth/validate-email' element={<ValidateEmail />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route path="/auth/forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
+        <Route path="/auth/forgot-password/reset-password" element={<ResetPassword />} />
 
-      {/* Payment (protected but outside dashboard layout) */}
-      <Route
-        path="/payment/*"
-        element={
-          <ProtectedRoute>
-            <Routes>
-              <Route path="" element={<Payment />} />
-              <Route path="success" element={<PaymentSuccess />} />
-              <Route path="failure" element={<PaymentFailure />} />
-            </Routes>
-          </ProtectedRoute>
-        }
-      />
+        {/* Onboarding */}
+        <Route path="/auth/onboarding" element={<OnboardingLayout />}>
+          <Route index element={<Step1_Loading />} />
+          <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
+          <Route path="working-days" element={<Step3_WorkingDays />} />
+          <Route path="profile-1" element={<Step4_Profile1 />} />
+          <Route path="profile-2" element={<Step5_Profile2 />} />
+          <Route path="location" element={<Step6_Location />} />
+          <Route path="verify-number" element={<Step7_VerifyNumber />} />
+          <Route path="verify-otp" element={<Step8_VerifyOtp />} />
+        </Route>
 
-      {/* Main App */}
-      <Route
-        path="*"
-        element={
-          <ProtectedRoute>
-            <div className="relative h-screen w-screen">
+        {/* Payment (protected but outside dashboard layout) */}
+        <Route
+          path="/payment/*"
+          element={
+            <ProtectedRoute>
+              <Routes>
+                <Route path="" element={<Payment />} />
+                <Route path="success" element={<PaymentSuccess />} />
+                <Route path="failure" element={<PaymentFailure />} />
+              </Routes>
+            </ProtectedRoute>
+          }
+        />
 
-              {/* SIDEBAR - hidden on mobile, visible on sm+ */}
-              <aside className="hidden sm:fixed sm:top-0 sm:left-0 sm:h-screen sm:w-16 md:w-20 bg-[#1A2131] z-50 sm:flex sm:flex-col sm:items-center sm:py-2">
-                <Sidebar iconOnly />
-              </aside>
+        {/* Main App */}
+        <Route
+          path="*"
+          element={
+            <ProtectedRoute>
+              <div className="relative h-screen w-screen">
 
-              {/* MOBILE BOTTOM MENU BAR - visible only on mobile */}
-              <div className="sm:hidden fixed bottom-0 left-0 right-0 h-14 bg-[#1A2131] z-50 flex items-center justify-center">
-                <Sidebar mobileTopBar />
-              </div>
+                {/* SIDEBAR - hidden on mobile, visible on sm+ */}
+                <aside className="hidden sm:fixed sm:top-0 sm:left-0 sm:h-screen sm:w-16 md:w-20 bg-[#1A2131] z-50 sm:flex sm:flex-col sm:items-center sm:py-2">
+                  <Sidebar iconOnly />
+                </aside>
 
-              {/* PAGE CONTENT */}
-              <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gradient-to-br from-blue-100 to-blue-50">
-                <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/new-leads" element={<NewLeads />} />
-                    <Route path="/my-jobs" element={<MyJobs />} />
-                    <Route path="/my-stats" element={<MyStats />} />
-                    <Route path="/logout" element={<Logout />} />
+                {/* MOBILE BOTTOM MENU BAR - visible only on mobile */}
+                <div className="sm:hidden fixed bottom-0 left-0 right-0 h-14 bg-[#1A2131] z-50 flex items-center justify-center">
+                  <Sidebar mobileTopBar />
+                </div>
 
-                    <Route path="/my-profile/*" element={<UserProfile />}>
-                      <Route index element={<PersonalInformation />} />
-                      <Route path="security-options" element={<SecurityOptions />} />
-                      <Route path="work-details" element={<WorkDetails />} />
-                      <Route path="documents-verification" element={<DocumentAndVerification />} />
-                      <Route path="membership" element={<MembershipPage />} />
-                      <Route path="account-support" element={<AccountAndSupport />} />
-                      <Route path="account-support/help-support" element={<HelpAndSupport />} />
-                      <Route path="account-support/faq" element={<FAQ />} />
-                      <Route path="account-support/terms-conditions" element={<TermsAndConditions />} />
-                      <Route path="account-support/privacy-policy" element={<PrivacyPolicy />} />
-                    </Route>
+                {/* PAGE CONTENT */}
+                <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gradient-to-br from-blue-100 to-blue-50">
+                  <Routes>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/new-leads" element={<NewLeads />} />
+                      <Route path="/my-jobs" element={<MyJobs />} />
+                      <Route path="/my-stats" element={<MyStats />} />
+                      <Route path="/logout" element={<Logout />} />
 
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                    <Route path="*" element={<Dashboard />} />
-                  </Routes>
-                </main>
+                      <Route path="/my-profile/*" element={<UserProfile />}>
+                        <Route index element={<PersonalInformation />} />
+                        <Route path="security-options" element={<SecurityOptions />} />
+                        <Route path="work-details" element={<WorkDetails />} />
+                        <Route path="documents-verification" element={<DocumentAndVerification />} />
+                        <Route path="membership" element={<MembershipPage />} />
+                        <Route path="account-support" element={<AccountAndSupport />} />
+                        <Route path="account-support/help-support" element={<HelpAndSupport />} />
+                        <Route path="account-support/faq" element={<FAQ />} />
+                        <Route path="account-support/terms-conditions" element={<TermsAndConditions />} />
+                        <Route path="account-support/privacy-policy" element={<PrivacyPolicy />} />
+                      </Route>
 
-              </div>
+                      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                      <Route path="*" element={<Dashboard />} />
+                    </Routes>
+                  </main>
 
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+                </div>
+
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
   );
 }
 
