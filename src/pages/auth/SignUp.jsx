@@ -83,28 +83,28 @@ const SignUp = ({ onSwitch }) => {
         {/* Custom Dot Loading Animation */}
         <div className="flex space-x-2 mb-3">
           <motion.span
-            className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+            className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
             variants={dotVariants}
             initial="start"
             animate="end"
             transition={dotTransition}
           />
           <motion.span
-            className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+            className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
             variants={dotVariants}
             initial="start"
             animate="end"
             transition={{ ...dotTransition, delay: 0.15 }}
           />
           <motion.span
-            className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+            className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
             variants={dotVariants}
             initial="start"
             animate="end"
             transition={{ ...dotTransition, delay: 0.3 }}
           />
         </div>
-        <p className="text-xl text-blue-600 font-semibold mt-4">Creating your account...</p>
+        <p className="text-xl text-blue-300 font-semibold mt-4">Creating your account...</p>
       </motion.div>
     );
   }
@@ -123,8 +123,8 @@ const SignUp = ({ onSwitch }) => {
       variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
     >
       <motion.h2
-        className="text-3xl font-normal text-black/70 text-center mb-8"
-        style={{fontFamily:"Loto"}}
+        className="text-3xl font-normal text-white text-center mb-8"
+        style={{ fontFamily:"Loto" }}
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.5 }}
@@ -144,14 +144,14 @@ const SignUp = ({ onSwitch }) => {
       )}
 
       <motion.div variants={inputVariants}>
-        <label htmlFor="fullname" className="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
+        <label htmlFor="fullname" className="block text-white text-sm font-medium mb-2">Full Name</label>
         <input
           type="text"
           id="fullname"
           placeholder="John Doe"
           className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     text-gray-800 transition-all duration-200 text-base"
+                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           required
@@ -159,14 +159,14 @@ const SignUp = ({ onSwitch }) => {
       </motion.div>
 
       <motion.div variants={inputVariants}>
-        <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
+        <label htmlFor="email" className="block text-white text-sm font-medium mb-2">Email Address</label>
         <input
           type="email"
           id="email"
           placeholder="your.email@example.com"
           className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     text-gray-800 transition-all duration-200 text-base"
+                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -174,14 +174,14 @@ const SignUp = ({ onSwitch }) => {
       </motion.div>
 
       <motion.div variants={inputVariants}>
-        <label htmlFor="password" className="block text-gray-700 text-sm font-medium mb-2">Password</label>
+        <label htmlFor="password" className="block text-white text-sm font-medium mb-2">Password</label>
         <input
           type="password"
           id="password"
           placeholder="••••••••"
           className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     text-gray-800 transition-all duration-200 text-base"
+                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -192,31 +192,38 @@ const SignUp = ({ onSwitch }) => {
         <input
           type="checkbox"
           id="remember"
-          className="form-checkbox h-4 w-4 text-blue-600 rounded-md border-gray-300 focus:ring-blue-500 cursor-pointer"
+          className="form-checkbox h-4 w-4 text-blue-400 rounded-md border-gray-300 focus:ring-blue-400 cursor-pointer"
           checked={rememberMe}
           onChange={(e) => setRememberMe(e.target.checked)}
         />
-        <label htmlFor="remember" className="ml-2 text-gray-600 cursor-pointer">
+        <label htmlFor="remember" className="ml-2 text-white/80 cursor-pointer">
           Remember Me
         </label>
       </motion.div>
 
       <motion.button
         type="submit"
-        className="w-full bg-blue-600 border-none text-lg text-white font-bold py-2 rounded-lg shadow-lg hover:bg-blue-700 cursor-pointer
-                   transition-all duration-300 transform hover:scale-[1.01] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        whileHover={{ y: -2 }}
+        className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
+                   transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+        style={{
+          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+          boxShadow: '0 4px 15px rgba(59,130,246,0.3)'
+        }}
+        whileHover={{ 
+          y: -2,
+          boxShadow: '0 6px 25px rgba(59,130,246,0.4)'
+        }}
         whileTap={{ scale: 0.98 }}
         variants={inputVariants}
       >
         Sign Up
       </motion.button>
 
-      <motion.p className="text-center text-gray-600 text-sm mt-4" variants={inputVariants}>
+      <motion.p className="text-center text-white/80 text-sm mt-4" variants={inputVariants}>
         Already have an account?{' '}
         <motion.button
           type="button"
-          className="text-blue-600 text-base bg-transparent pl-1 border-none hover:text-blue-800 font-medium cursor-pointer transition-colors duration-200"
+          className="text-blue-300 text-base bg-transparent pl-1 border-none hover:text-blue-100 font-medium cursor-pointer transition-colors duration-200"
           onClick={onSwitch}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

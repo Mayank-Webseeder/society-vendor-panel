@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, TrendingUp, Users, Award, BarChart3 } from 'lucide-react';
 import { ChartNoAxesCombined } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ratingsData, ratingsCount, finalRating } from '../static/dummyData_MyStats';
+import AccessLockedModal from '../components/modals/AccessLockedModal';
+import { useUser } from '../UserContext';
 
 
 const containerVariants = {
@@ -121,6 +124,14 @@ const StarRating = ({ rating, size = 'w-5 h-5' }) => (
 
 
 const MyStats = () => {
+
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive);
+
+  const handleModalClose = () => {
+    navigate('/dashboard');
+  };
 
   const totalRatings = ratingsCount;
   const positiveRatings = ratingBreakdown[5] + ratingBreakdown[4];
@@ -492,6 +503,14 @@ const MyStats = () => {
             </motion.div>
           </motion.div>
         </motion.div>
+        {!user.membershipActive && (
+        <AccessLockedModal
+          open={isModalOpen}
+          onClose={handleModalClose}
+          heading="Access Restricted"
+          subheading="Subscribe to unlock detailed statistics and premium insights."
+        />
+      )}
     </div>
   );
 };

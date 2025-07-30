@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import { motion } from 'framer-motion';
 import { Wrench, Calendar, Clock, MapPin, ChevronRight, Briefcase, Timer } from 'lucide-react';
 import dummyData from '../static/dummyData_Leads';
+import { useUser } from '../UserContext';
+
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -27,8 +29,12 @@ const getTopOngoingJobs = (data, count = 2) => {
     .slice(0, count);
 };
 
+
+
 const OngoingJobs = () => {
+
   const navigate = useNavigate();
+  const { user } = useUser();
   const topJobs = getTopOngoingJobs(dummyData);
 
   const JobCard = ({ job, index }) => (
@@ -108,6 +114,9 @@ const OngoingJobs = () => {
     </motion.div>
   );
 
+
+
+
   return (
     <motion.div
       className="bg-white rounded-2xl shadow-md overflow-hidden"
@@ -122,7 +131,16 @@ const OngoingJobs = () => {
           <div>
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">Work in Progress</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
-              {totalOngoingJobs} {totalOngoingJobs === 1 ? 'job in progress' : 'jobs in progress'}
+              {
+                user.membershipActive ?
+                  <>
+                    {totalOngoingJobs} {totalOngoingJobs === 1 ? 'job in progress' : 'jobs in progress'}
+                  </>
+                  :
+                  <>
+                    No job currently in progress
+                  </>
+              }
             </p>
           </div>
           <Button 
@@ -141,8 +159,8 @@ const OngoingJobs = () => {
       {/* Content */}
       <div className="px-3 sm:px-6 py-1">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:md:grid-cols-2">
-          {topJobs.length === 0 ? (
-            <div className="col-span-2 text-center py-8 sm:py-12">
+          {topJobs.length === 0  ||  !user.membershipActive ? (
+            <div className="col-span-2 border-solid border border-gray-200 rounded-2xl text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>

@@ -420,7 +420,7 @@ const PersonalInformation = () => {
           <Typography
             sx={{
               fontSize: '1.2rem',
-              color: '#4A5568',
+              color: user.membershipActive ? '#4A5568' : '#A0AEC0', // Faded color when disabled
               fontWeight: 500,
               mr: 1,
             }}
@@ -428,9 +428,19 @@ const PersonalInformation = () => {
             Notifications
           </Typography>
           <IOSSwitch
-            checked={user.notificationsEnabled}
+            checked={user.notificationsEnabled && user.membershipActive}
             onChange={() => setUser({ ...user, notificationsEnabled: !user.notificationsEnabled })}
-            inputProps={{ 'aria-label': 'Enable notifications' }}
+            inputProps={{ 'aria-label': 'Enable notifications', disabled: !user.membershipActive }}
+            sx={{
+              pointerEvents: user.membershipActive ? 'auto' : 'none',
+              cursor: user.membershipActive ? 'pointer' : 'default',
+              '& .MuiSwitch-thumb': {
+                cursor: user.membershipActive ? 'pointer' : 'default',
+              },
+              '& .MuiSwitch-track': {
+                cursor: user.membershipActive ? 'pointer' : 'default',
+              },
+            }}
           />
         </Box>
       </Box>

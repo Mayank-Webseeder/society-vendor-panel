@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';    // useLocation() will be used to retrieve the state object from react-router-dom passed by SignUp.jsx
+import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import { validateEmail, signupVendor } from '../../services/api/auth';
 
 
 const ValidateEmail = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -76,46 +76,102 @@ const ValidateEmail = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-y-hidden bg-gray-200 flex flex-col md:flex-row font-inter overflow-hidden">
+    <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden"
+         style={{
+           background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
+         }}>
       {/* Left: Form Section */}
       <motion.div
         className="relative flex flex-col justify-center items-center p-6 md:px-12
-                   bg-white/60 backdrop-blur-xl flex-1 md:w-1/2 min-h-screen z-10
-                   shadow-xl rounded-lg md:rounded-none"
+                   flex-1 md:w-1/2 min-h-screen z-10"
         variants={formPanelVariants}
         initial="hidden"
         animate="visible"
+        style={{
+          background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
+        }}
       >
-        {/* Optional: Subtle background pattern */}
+        {/* Professional grid pattern overlay */}
         <div
-          className="absolute inset-0 z-0 opacity-10"
+          className="absolute inset-0 z-0 opacity-50"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E0E0E0' fill-opacity='0.5' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zm-.173 0L0 5.827V6h1V.827L.173 0zM5.827 0L6 .173V1H.173L0 .827V0h5.827z'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: '6px 6px'
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }}
+        ></div>
+
+        {/* Subtle geometric accent */}
+        <div
+          className="absolute top-0 left-0 w-1/2 h-full z-0"
+          style={{
+            background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
+            transform: 'skewX(15deg)',
+            transformOrigin: 'top'
+          }}
+        ></div>
+
+        {/* Professional corner accents */}
+        <div
+          className="absolute top-0 right-0 w-48 h-48 z-0"
+          style={{
+            background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)',
+            borderRadius: '50%',
+            transform: 'translate(50%, -50%)'
+          }}
+        ></div>
+
+        <div
+          className="absolute bottom-0 left-0 w-72 h-72 z-0"
+          style={{
+            background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
+            borderRadius: '50%',
+            transform: 'translate(-50%, 50%)'
           }}
         ></div>
 
         {/* VELRA logo & Title */}
         <div className='flex flex-col items-center mb-14 px-4 text-center z-10'>
-          <motion.h1
-            className="text-6xl sm:text-8xl font-extrabold bg-gradient-to-r from-blue-800 to-purple-800 text-transparent bg-clip-text leading-none tracking-tight drop-shadow-sm"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            style={{fontFamily:"Loto"}}
+          <Typography
+            variant="h1"
+            sx={{
+              fontWeight: '700',
+              background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontSize: { xs: '3.5rem', md: '6rem' },
+              fontFamily: 'Roboto, sans-serif',
+              letterSpacing: '0.1em',
+              textAlign: 'center',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              position: 'relative',
+              mb: 2,
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: '-4px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '60%',
+                height: '2px',
+                background: 'linear-gradient(90deg, #60a5fa, #ffffff)',
+                borderRadius: '1px',
+              },
+            }}
           >
             VELRA
-          </motion.h1>
+          </Typography>
           {
             !loading &&
               <motion.p
-                className="text-base pl-2 text-center text-black/60 mt-2 max-w-xs"
+                className="text-base text-center text-white/60 mt-2"
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                // style={{fontFamily:"Loto"}}
+                style={{fontFamily:"Roboto"}}
               >
-                Validate your email to proceed.
+                Your gateway to professional opportunities.
               </motion.p>
           }
         </div>
@@ -134,83 +190,101 @@ const ValidateEmail = () => {
               {/* Custom Dot Loading Animation */}
               <div className="flex space-x-2 mb-3">
                 <motion.span
-                  className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                  className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
                   variants={dotVariants}
                   initial="start"
                   animate="end"
                   transition={dotTransition}
                 />
                 <motion.span
-                  className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                  className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
                   variants={dotVariants}
                   initial="start"
                   animate="end"
                   transition={{ ...dotTransition, delay: 0.15 }}
                 />
                 <motion.span
-                  className="block w-4 h-4 bg-blue-500 rounded-full shadow-md drop-shadow-sm"
+                  className="block w-4 h-4 bg-blue-300 rounded-full shadow-md drop-shadow-sm"
                   variants={dotVariants}
                   initial="start"
                   animate="end"
                   transition={{ ...dotTransition, delay: 0.3 }}
                 />
               </div>
-              <p className="text-xl text-blue-600 font-semibold mt-4">Validating OTP...</p>
+              <p className="text-xl text-blue-300 font-semibold mt-4">Validating OTP...</p>
             </motion.div>
           ) : (
-            <motion.form
-              onSubmit={handleValidate}
-              className="space-y-6"
-              initial="initial"
-              animate="animate"
-              variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
-            >
-              {/* Error Message */}
-              {error && (
-                <motion.div 
-                  className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+            <>
+              <motion.h2
+                className="text-2xl font-normal text-white/80 text-left mb-8"
+                style={{ fontFamily:"Loto" }}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+              >
+                Validate Email
+              </motion.h2>
+
+              <motion.form
+                onSubmit={handleValidate}
+                className="space-y-6"
+                initial="initial"
+                animate="animate"
+                variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
+              >
+                {/* Error Message */}
+                {error && (
+                  <motion.div 
+                    className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {error}
+                  </motion.div>
+                )}
+
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                 >
-                  {error}
+                  <label htmlFor="otp" className="block text-white text-sm font-medium mb-2">Enter OTP</label>
+                  <input
+                    type="text"
+                    id="otp"
+                    placeholder="123456"
+                    className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
+                               focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                               text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                  />
                 </motion.div>
-              )}
 
-              <motion.div>
-                <label htmlFor="otp" className="block text-gray-700 text-sm font-medium mb-2">Enter OTP</label>
-                <input
-                  type="text"
-                  id="otp"
-                  placeholder="123456"
-                  className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                             text-gray-800 transition-all duration-200 text-base"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required
-                />
-              </motion.div>
+                {/* Message Below Input */}
+                <motion.p
+                  className="text-sm text-white/70 pb-7"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  A One-Time Password (OTP) has been sent to your entered email address. Please verify the otp and continue with the registration process.
+                </motion.p>
 
-              {/* Message Below Input */}
-              <motion.p
-                className="text-sm text-gray-600 pb-7"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                A One-Time Password(OTP) has been sent to your entered email address. Please verify the otp and continue with the registration process.
-              </motion.p>
-
-              <motion.button
-                type="submit"
-                className="w-full bg-blue-600 border-none text-lg text-white font-bold py-2 rounded-lg shadow-lg hover:bg-blue-700 cursor-pointer
-                           transition-all duration-300 transform hover:scale-[1.01] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Validate OTP
-              </motion.button>
-            </motion.form>
+                <motion.button
+                  type="submit"
+                  className="w-full border-none py-3 px-6 rounded-lg font-semibold transition-all duration-200 text-base
+                             bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer
+                             shadow-md"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                >
+                  Validate OTP
+                </motion.button>
+              </motion.form>
+            </>
           )}
         </div>
       </motion.div>

@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate, replace } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 // import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -21,6 +21,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
+import LandingPageSociety from './pages/LandingPageSociety';
+import LandingPageVendor from './pages/LandingPageVendor';
 import AuthPage from './pages/auth/AuthPage';
 import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -50,12 +52,19 @@ function App() {
 
       <Routes location={location}>
 
+        {/* Landing Pages */}
+        <Route path="/" element={<Navigate to="/society-landing" replace={true} />} />
+        <Route path="/society-landing" element={<LandingPageSociety />} />
+        <Route path="/vendor-landing" element={<LandingPageVendor />} />
+
         {/* Auth flow */}
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path='/auth/validate-email' element={<ValidateEmail />} />
-        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-        <Route path="/auth/forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
-        <Route path="/auth/forgot-password/reset-password" element={<ResetPassword />} />
+        <Route path="/auth">
+          <Route index element={<AuthPage />} /> {/* Default page for /auth */}
+          <Route path="validate-email" element={<ValidateEmail />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
+          <Route path="forgot-password/reset-password" element={<ResetPassword />} />
+        </Route>
 
         {/* Onboarding */}
         <Route path="/auth/onboarding" element={<OnboardingLayout />}>
@@ -69,19 +78,11 @@ function App() {
           <Route path="verify-otp" element={<Step8_VerifyOtp />} />
         </Route>
 
-        {/* Payment (protected but outside dashboard layout) */}
-        <Route
-          path="/payment/*"
-          element={
-            <ProtectedRoute>
-              <Routes>
-                <Route path="" element={<Payment />} />
-                <Route path="success" element={<PaymentSuccess />} />
-                <Route path="failure" element={<PaymentFailure />} />
-              </Routes>
-            </ProtectedRoute>
-          }
-        />
+        {/* Payment (not a protected route) */}
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/success" element={<PaymentSuccess />} />
+        <Route path="/payment/failure" element={<PaymentFailure />} />
+
 
         {/* Main App */}
         <Route
@@ -132,10 +133,10 @@ function App() {
             </ProtectedRoute>
           }
         />
+
       </Routes>
     </>
   );
 }
-
 
 export default App;

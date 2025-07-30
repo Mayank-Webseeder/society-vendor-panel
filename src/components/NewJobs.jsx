@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { motion } from 'framer-motion';
 import { Wrench, Calendar, Clock, MapPin, ChevronRight, Briefcase } from 'lucide-react';
 import dummyData from '../static/dummyData_Leads';
+import { useUser } from '../UserContext';
 
 
 const containerVariants = {
@@ -33,7 +34,7 @@ const getTopNewLeads = (data, count = 2) => {
 const NewJobs = () => {
 
   const navigate = useNavigate();
-
+  const { user } = useUser();
   const topLeads = getTopNewLeads(dummyData);
 
   const LeadCard = ({ lead, index }) => (
@@ -122,7 +123,16 @@ const NewJobs = () => {
           <div>
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">New Leads</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
-              {totalNewLeads} {totalNewLeads === 1 ? 'new opportunity' : 'new opportunities'} available
+              {
+                user.membershipActive ?
+                  <>
+                    {totalNewLeads} {totalNewLeads === 1 ? 'new opportunity' : 'new opportunities'} available
+                  </>
+                  :
+                  <>
+                    No new jobs currently
+                  </>
+              }
             </p>
           </div>
           <Button 
@@ -141,8 +151,8 @@ const NewJobs = () => {
       {/* Content */}
       <div className="px-3 sm:px-6 py-1">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:md:grid-cols-2">
-          {topLeads.length === 0 ? (
-            <div className="col-span-2 text-center py-8 sm:py-12">
+          {topLeads.length === 0  ||  !user.membershipActive ? (
+            <div className="col-span-2 border-solid border border-gray-200 rounded-2xl text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>

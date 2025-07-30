@@ -5,6 +5,7 @@ import { Bell, BellRing, CheckCircle, AlertTriangle, Info, DollarSign, MessageSq
 import { notifications as notificationsData, notificationCount } from '../static/dummyData_Notifications';
 import { useUser } from '../UserContext';
 
+
 const typeConfig = {
   info: {
     bgColor: 'bg-blue-50',
@@ -49,7 +50,7 @@ const getNotificationIcon = (message) => {
   return Info;
 };
 
-const NotificationItem = ({ notification, index }) => {
+const NotificationItem = ({ notification, index, onNotificationClick }) => {
   const config = typeConfig[notification.type] || typeConfig.info;
   const IconComponent = getNotificationIcon(notification.message);
 
@@ -60,6 +61,7 @@ const NotificationItem = ({ notification, index }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 }}
+      onClick={onNotificationClick}
     >
       <div className="px-4 py-2 flex items-start gap-3">
         <div className={`w-8 h-8 rounded-lg ${config.iconBg} flex items-center justify-center flex-shrink-0 mt-0.5`}>
@@ -109,13 +111,26 @@ const Notifications = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showAll]);
 
+  const handleNotificationClick = (notification) => {
+    if (notification.locked) {
+      setOpenModal(true);
+    } else {
+      // Handle the notification click for unlocked notifications
+      console.log('Notification clicked:', notification);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       ref={containerRef}
-      className="w-full bg-gray-200 h-fit rounded-2xl flex flex-col shadow-md"
+      className="w-full h-fit rounded-2xl flex flex-col"
     >
       <motion.div
-        className="rounded-2xl backdrop-blur-sm flex flex-col bg-white border border-gray-100 overflow-auto"
+        className="rounded-2xl backdrop-blur-sm shadow-md flex flex-col bg-white border border-gray-100 overflow-auto"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         style={
@@ -141,7 +156,7 @@ const Notifications = () => {
               whileHover={{ scale: 1.05 }}
             >
               {
-                user.notificationsEnabled  &&  (
+                user.membershipActive  &&  user.notificationsEnabled  &&  (
                   <>
                     <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
                       <span className="text-xs text-white font-bold">{count}</span>
@@ -159,7 +174,15 @@ const Notifications = () => {
         {/* Content */}
         <div className="p-4">
           <div className="space-y-3">
-            {count === 0  ||  !user.notificationsEnabled ? (
+            {!user.membershipActive ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Bell className="w-8 h-8 text-gray-400" />
+                </div>
+                <p className="text-gray-500 text-base font-medium mb-1">Notifications are locked</p>
+                <p className="text-gray-400 text-sm">Subscribe to unlock notifications and stay updated.</p>
+              </div>
+            ) : count === 0 || !user.notificationsEnabled ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                   <Bell className="w-8 h-8 text-gray-400" />
@@ -169,13 +192,18 @@ const Notifications = () => {
               </div>
             ) : (
               displayedNotifications.map((notification, index) => (
-                <NotificationItem key={notification.id} notification={notification} index={index} />
-              ))
-            )}
+                <NotificationItem 
+                  key={notification.id} 
+                  notification={notification} 
+                  index={index} 
+                  onNotificationClick={() => handleNotificationClick(notification)} 
+                />
+              )))
+            }
           </div>
 
           {/* Action Buttons */}
-          {(!showAll  &&  count > 3  &&  user.notificationsEnabled) && (
+          {(!showAll && count > 3 && user.notificationsEnabled && user.membershipActive) && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -209,7 +237,7 @@ const Notifications = () => {
             </motion.div>
           )}
           
-          {(showAll  &&  count > 3  &&  user.notificationsEnabled) && (
+          {(showAll && count > 3 && user.notificationsEnabled && user.membershipActive) && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -248,6 +276,7 @@ const Notifications = () => {
 };
 
 export default Notifications;
+
 
 
 // import { useState, useRef, useEffect } from 'react';

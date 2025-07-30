@@ -102,7 +102,7 @@ const AppliedJobs = () => {
       <div className="border-none px-3 sm:px-6 py-1">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:md:grid-cols-2">
           {jobs.length === 0 ? (
-            <div className="col-span-2 text-center py-8 sm:py-12">
+            <div className="col-span-2 border-solid border border-gray-200 rounded-2xl text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>

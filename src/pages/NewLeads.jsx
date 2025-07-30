@@ -606,6 +606,7 @@ const ROWS_PER_PAGE = 10;
 const NewLeads = () => {
 
   const { user } = useUser();
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive); // Open modal if no membership
   

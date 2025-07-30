@@ -70,7 +70,7 @@ const BellNotification = ({ mobile = false }) => {
         );
     }
 
-    if (!user.notificationsEnabled) {
+    if (!user.notificationsEnabled || !user.membershipActive) {
         return (
             <div className="relative">
                 <button

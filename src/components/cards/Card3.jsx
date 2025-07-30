@@ -4,9 +4,13 @@ import Card3_Vector27 from "../../assets/Card3_Vector27.png";
 import { FaChevronRight } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
 import { finalRating } from '../../static/dummyData_MyStats';
+import { useUser } from "../../UserContext";
+
 
 const Card3 = () => {
+
   const navigate = useNavigate();
+  const { user } = useUser();
 
   // Generate an array of stars based on user.rating
   const renderStars = () => {
@@ -28,8 +32,17 @@ const Card3 = () => {
       <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">
         Rating & Feedback
       </p>
-      <div className="relative font-semibold text-white text-4xl z-30 pt-10 pl-3">
-        {renderStars()}
+      <div className="relative font-semibold text-white text-4xl z-30 pt-12 pl-3">
+        {
+          user.membershipActive ?
+            <>
+              {renderStars()}
+            </>
+            :
+            <span className="pl-2">
+              N/A
+            </span>
+        }
       </div>
       <img
         src={Card3_Vector26}

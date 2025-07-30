@@ -32,7 +32,18 @@ const Card2 = () => {
     <>
       <div onClick={handleCardClick} className="relative hidden sm:block bg-[#668AEC] w-60 rounded-2xl h-40 overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer">
         <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">Jobs Completed</p>
-        <p className="relative font-semibold text-white text-4xl z-30 pt-12 pl-5">{jobsCompleted}</p>
+        <p className="relative font-semibold text-white text-4xl z-30 pt-12 pl-5">
+          {
+            user.membershipActive ?
+              <>
+                {jobsCompleted}
+              </>
+              :
+              <>
+              N/A
+              </>
+          }
+        </p>
         <img src={Card2_Ellipse12} className="absolute z-20 right-0 bottom-5" alt="card2-ellipse-12" />
         <img src={Card2_Vector24} className="absolute z-10 right-0 bottom-0" alt="card2-vector-24" />
         <img src={Card2_Vector25} className="absolute z-10 right-0 bottom-0" alt="card2-vector-25" />

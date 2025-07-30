@@ -126,13 +126,10 @@ const AvailabilityCalendar = () => {
   const currentMonthYear = `${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
 
   return (
-    <div
-      className="w-full bg-gray-200 rounded-2xl
-                 font-inter text-gray-800 flex flex-col gap-5"
-    >
+    <div className="w-full rounded-2xl font-inter text-gray-800 flex flex-col gap-5">
       {/* Calendar Section */}
       <motion.div
-        className="p-2 bg-white rounded-2xl shadow-lg"
+        className="p-2 bg-white rounded-2xl shadow-md"
         variants={containerVariants}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}

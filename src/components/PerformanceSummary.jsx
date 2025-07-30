@@ -36,28 +36,28 @@ const PerformanceSummary = () => {
     },
     {
       label: 'Avg Rating',
-      value: `${summary.avgRating}`,
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
-      iconBg: 'bg-amber-100',
+      value: user.membershipActive ? `${summary.avgRating}` : <LockIcon className="text-yellow-500" />,
+      color: user.membershipActive ? 'text-amber-600' : 'text-gray-400',
+      bgColor: user.membershipActive ? 'bg-amber-50' : 'bg-gray-200',
+      iconBg: user.membershipActive ? 'bg-amber-100' : 'bg-gray-100',
       icon: '★',
-      suffix: true
+      suffix: user.membershipActive
     },
     {
       label: 'Response Time',
-      value: `${summary.responseTime}`,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
+      value: user.membershipActive ? `${summary.responseTime}` : <LockIcon className="text-yellow-500" />,
+      color: user.membershipActive ? 'text-blue-600' : 'text-gray-400',
+      bgColor: user.membershipActive ? 'bg-blue-50' : 'bg-gray-200',
+      iconBg: user.membershipActive ? 'bg-blue-100' : 'bg-gray-100',
       icon: '⏱',
-      unit: 'min'
+      unit: user.membershipActive ? 'min' : null
     }
   ];
 
   return (
-    <div className="w-full bg-gray-200 rounded-2xl shadow-md h-fit">
+    <div className="w-full rounded-2xl h-fit">
       <motion.div
-        className="bg-white backdrop-blur-sm rounded-xl border border-gray-100/50 p-5 h-full flex flex-col"
+        className="bg-white backdrop-blur-sm shadow-md rounded-xl border border-gray-100/50 p-5 h-full flex flex-col"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
