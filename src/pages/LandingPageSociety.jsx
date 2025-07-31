@@ -298,7 +298,7 @@ const LandingPageSociety = () => {
                   fontWeight: '400',
                 }}
               >
-                Discover a wide range of trusted services tailored to meet your society's unique needs, ensuring convenience and quality for every member.
+                Discover a wide range of trusted services tailored to meet your society's daily needs, ensuring convenience and quality for every member.
               </Typography>
             </Box>
           </motion.div>
