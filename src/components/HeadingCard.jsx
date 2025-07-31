@@ -96,8 +96,8 @@ const HeadingCard = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="hidden sm:inline">Gold Member</span>
-                    <span className="sm:hidden">Gold</span>
+                    <span className="inline">Subscription Active</span>
+                    {/* <span className="sm:hidden">Subscription </span> */}
                   </span>
                   {/* Subtle shimmer effect */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover/badge:opacity-100 group-hover/badge:animate-pulse transition-opacity duration-500"></div>

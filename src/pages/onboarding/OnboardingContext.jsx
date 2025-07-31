@@ -40,7 +40,7 @@ export const OnboardingProvider = ({ children }) => {
         locationCoordinates: '',
         whatYouOffer: [],
         workingDays: [],
-        workingHours: '',    //ex.'10:00 AM - 7:30 PM'
+        // workingHours: '',    //ex.'10:00 AM - 7:30 PM'
         phone: '',
         otp: '',
         avgResponseTime: 12,

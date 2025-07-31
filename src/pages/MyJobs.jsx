@@ -17,6 +17,8 @@ import { useUser } from "../UserContext";
 import AccessLockedModal from "../components/modals/AccessLockedModal";
 
 
+const MotionButton = motion(Button);
+
 const statusOptions = [
   { label: "All" },
   { label: "New" },
@@ -151,6 +153,18 @@ const MyJobs = () => {
 
   const handlePrevPage = () => setPage((p) => Math.max(1, p - 1));
   const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
+
+  const handleCancel = (lead) => {
+    setModalLead(lead);
+    setModalOpen(true);
+    setProceed(false); // Ensure modal opens in cancel mode
+  };
+
+  const handleWithdraw = (lead) => {
+    setModalLead(lead);
+    setModalOpen(true);
+    setProceed(true); // Ensure modal opens in withdraw mode
+  };
 
 
 
@@ -374,7 +388,48 @@ const MyJobs = () => {
                         className="hover:bg-blue-50 transition"
                         style={{ borderBottom: "1px solid #E5E7EB" }}
                       >
-                        <td className="py-3 px-4">{lead.name}</td>
+                        <td className="py-3 px-4">
+                          {lead.name}
+                          {lead.interested && (
+                            <span
+                              style={{
+                                marginLeft: '8px',
+                                color: '#16a34a',
+                                fontWeight: '600',
+                                fontSize: '0.8rem',
+                                border: '1px solid #86efac',
+                                borderRadius: '12px',
+                                padding: '3px 8px',
+                                backgroundColor: '#f0fdf4',
+                                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                transition: 'all 0.2s ease',
+                                cursor: 'default',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = '#dcfce7';
+                                e.target.style.borderColor = '#4ade80';
+                                e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = '#f0fdf4';
+                                e.target.style.borderColor = '#86efac';
+                                e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
+                              }}
+                            >
+                              <span style={{
+                                width: '6px',
+                                height: '6px',
+                                backgroundColor: '#16a34a',
+                                borderRadius: '50%',
+                                display: 'inline-block',
+                              }}></span>
+                              Interested
+                            </span>
+                          )}
+                        </td>
                         <td className="py-3 px-4 text-center">
                           <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
                             <WrenchScrewdriverIcon className="w-4 h-4 text-gray-500" />
@@ -413,14 +468,190 @@ const MyJobs = () => {
                         </td>
                         <td className="py-3 text-center">{lead.postedOn}</td>
                         <td className="py-3 px-4 text-center">
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            sx={{ textTransform: 'none', borderRadius: 2, fontWeight: 600 }}
-                            onClick={() => handleView(lead)}
-                          >
-                            View
-                          </Button>
+                          {lead.status === "New" ? (
+                            lead.interested ? (
+                              <MotionButton
+                                whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(16, 185, 129, 0.10)' }}
+                                whileTap={{ y: 1 }}
+                                transition={{ type: "tween" }}
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  minWidth: 100,
+                                  textTransform: 'none',
+                                  borderRadius: 2,
+                                  fontWeight: 600,
+                                  color: 'green',
+                                  borderColor: 'green',
+                                  '&:hover': { 
+                                    borderColor: 'darkgreen', 
+                                    background: '#F0FFF4',
+                                    // textDecoration:'underline',
+                                  },
+                                }}
+                                onClick={() => {
+                                  setModalLead(lead);
+                                  setModalOpen(true);
+                                  setProceed(true);
+                                }}
+                              >
+                                Fill Quotation
+                              </MotionButton>
+                            ) : (
+                              <MotionButton
+                                whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(33, 150, 243, 0.10)' }}
+                                whileTap={{ y: 1 }}
+                                transition={{ type: 'tween' }}
+                                variant="outlined"
+                                size="small"
+                                sx={{ 
+                                  minWidth: 100, 
+                                  textTransform: 'none', 
+                                  borderRadius: 2, 
+                                  fontWeight: 800,
+                                  color: '#1976D2',
+                                  borderColor: '#1976D2',
+                                  '&:hover': {
+                                    borderColor: '#1565C0',
+                                    background: '#E3F2FD',
+                                    // textDecoration: 'underline',
+                                  },
+                                }}
+                                onClick={() => {
+                                  setModalLead(lead);
+                                  setModalOpen(true);
+                                  setProceed(false);
+                                }}
+                              >
+                                Apply
+                              </MotionButton>
+                            )
+                          ) : lead.status === "Applied" ? (
+                            lead.pendingStatus === "Approval Pending" ? (
+                              <MotionButton
+                                whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(255, 152, 0, 0.10)' }}
+                                whileTap={{ y: 1 }}
+                                transition={{ type: 'tween' }}
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  minWidth: 100,
+                                  textTransform: 'none',
+                                  borderRadius: 2,
+                                  fontWeight: 600,
+                                  color: '#ff9800',
+                                  borderColor: '#ff9800',
+                                  '&:hover': {
+                                    borderColor: '#f57c00',
+                                    background: '#FFF3E0',
+                                    // textDecoration: 'underline',
+                                  },
+                                }}
+                                onClick={() => handleWithdraw(lead)}
+                              >
+                                Withdraw
+                              </MotionButton>
+                            ) : lead.pendingStatus === "Approved" ? (
+                              <MotionButton
+                                whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(229, 57, 53, 0.10)' }}
+                                whileTap={{ y: 1 }}
+                                transition={{ type: 'tween' }}
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  minWidth: 100,
+                                  textTransform: 'none',
+                                  borderRadius: 2,
+                                  fontWeight: 600,
+                                  color: '#e53935',
+                                  borderColor: '#e53935',
+                                  '&:hover': {
+                                    borderColor: '#b71c1c',
+                                    background: '#FFEBEE',
+                                    // textDecoration: 'underline',
+                                  },
+                                }}
+                                onClick={() => handleCancel(lead)}
+                              >
+                                Cancel
+                              </MotionButton>
+                            ) : (
+                              <MotionButton
+                                whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(255, 179, 0, 0.10)' }}
+                                whileTap={{ y: 1 }}
+                                transition={{ type: 'tween' }}
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  minWidth: 100,
+                                  textTransform: 'none',
+                                  borderRadius: 2,
+                                  fontWeight: 600,
+                                  color: '#FFB300',
+                                  borderColor: '#FFB300',
+                                  background: '#FFF8E1',
+                                  '&:hover': {
+                                    borderColor: '#FFA000',
+                                    background: '#FFE0B2',
+                                    // textDecoration: 'underline',
+                                  },
+                                }}
+                                onClick={() => handleView(lead)}
+                              >
+                                View
+                              </MotionButton>
+                            )
+                          ) : lead.status === "Completed" ? (
+                            <MotionButton
+                              whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(33, 150, 243, 0.10)' }}
+                              whileTap={{ y: 1 }}
+                              transition={{ type: 'tween' }}
+                              variant="outlined"
+                              size="small"
+                              sx={{
+                                minWidth: 100,
+                                textTransform: 'none',
+                                borderRadius: 2,
+                                fontWeight: 500,
+                                color: 'green',
+                                borderColor: 'green',
+                                // background: '#E3F2FD',
+                                '&:hover': {
+                                  borderColor: 'darkgreen',
+                                  background: '#F0FFF4',
+                                  // textDecoration: 'underline',
+                                },
+                              }}
+                              onClick={() => handleView(lead)}
+                            >
+                              Ratings
+                            </MotionButton>
+                          ) : (
+                            <MotionButton
+                              whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(255, 179, 0, 0.10)' }}
+                              whileTap={{ y: 1 }}
+                              transition={{ type: 'tween' }}
+                              variant="outlined"
+                              size="small"
+                              sx={{ 
+                                minWidth: 100, 
+                                textTransform: 'none', 
+                                borderRadius: 2, 
+                                fontWeight: 600,
+                                color: '#FFB300',
+                                borderColor: '#FFB300',
+                                // background: '#FFF8E1',
+                                '&:hover': {
+                                  borderColor: '#FFA000',
+                                  background: 'rgba(255, 160, 0, 0.1)',
+                                  // textDecoration: 'underline',
+                                },
+                              }}
+                              onClick={() => handleView(lead)}
+                            >
+                              View
+                            </MotionButton>
+                          )}
                         </td>
                       </tr>
                     );

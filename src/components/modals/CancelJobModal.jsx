@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { CalendarDaysIcon, ClockIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { IoClose } from "react-icons/io5";
+import { MdCancel } from "react-icons/md";
 import ConfirmationDialog from './ConfirmationDialog';
 
 
@@ -25,254 +26,350 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        bottom: 0,
-        left: {xs: '0rem', sm: '4rem', md: '5rem'},
+        left: { xs: '0rem', sm: '4rem', md: '5rem' },
         right: 0,
+        bottom: 0,
         width: '100%',
         height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
           position: 'relative',
           backgroundColor: 'white',
-          border: '1px solid #6B7280',
-          borderRadius: '8px',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-          paddingX: { xs: '20px', md: '24px' },
-          paddingY: { xs: '16px', md: '20px' },
+          borderRadius: '16px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+          paddingX: { xs: '24px', md: '32px' },
+          paddingY: { xs: '24px', md: '32px' },
           zIndex: 10,
           width: '100%',
-          maxWidth: '32rem',
+          maxWidth: '500px',
+          maxHeight: '95vh',
           overflowY: 'auto',
-          maxHeight: '90vh',
-          overflow: 'visible'
         }}
       >
         {/* Close icon */}
         <Box
           sx={{
             position: 'absolute',
-            top: -50,
-            right: -40,
+            top: 7,
+            right: 7,
             zIndex: 20,
             borderRadius: '50%',
-            width: '40px',
-            height: '40px',
+            width: '32px',
+            height: '32px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            backgroundColor: 'rgba(51, 109, 142, 0.5)',
-            '&:hover': { backgroundColor: '#60A5FA' },
+            backgroundColor: '#f3f4f6',
+            transition: 'all 0.2s ease',
+            '&:hover': { 
+              backgroundColor: '#e5e7eb',
+              transform: 'scale(1.05)',
+            },
           }}
           onClick={onClose}
         >
-          <IoClose size={25} color="#fff" />
+          <IoClose size={18} color="#6b7280" />
         </Box>
 
-        {/* Job Details Header */}
-        <Typography
-          variant="h5"
-          sx={{
-            marginLeft: '-8px',
-            marginBottom: '20px',
-            fontWeight: '500',
-            color: '#1a202c',
-          }}
-        >
-          Job Details
-        </Typography>
-
-        {/* Posted On */}
-        <Typography
-          variant="body2"
-          className='text-gray-500'
-          sx={{
-            paddingLeft: '4px',
-            marginBottom: '12px',
-            color: '#6B7280',
-            fontSize: '14px',
-          }}
-        >
-          Posted On: <span className="font-normal px-1 text-[17px] text-gray-400">{safe(lead.postedOn)}</span>
-        </Typography>
+        {/* Header */}
+        <Box sx={{ marginBottom: '24px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: '600',
+                color: '#111827',
+                fontSize: '24px',
+              }}
+            >
+              Cancel Job
+            </Typography>
+            {/* <Box
+              sx={{
+                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '13px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <MdCancel size={14} />
+              Cancel
+            </Box> */}
+          </Box>
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#6b7280',
+              fontSize: '14px',
+              marginTop: '4px',
+            }}
+          >
+            Posted on {safe(lead.postedOn)}
+          </Typography>
+        </Box>
 
         {/* Date and Time */}
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '44px',
-            marginBottom: '30px',
-            color: '#2d3748',
+            gap: '16px',
+            marginBottom: '24px',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              flex: 1,
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
             <CalendarDaysIcon
               style={{
                 height: '20px',
                 width: '20px',
-                marginRight: '8px',
-                color: '#718096',
+                color: '#6b7280',
               }}
             />
-            <Typography
-              variant="body1"
-              sx={{
-                fontSize: '16px',
-                fontWeight: 500,
-                color: 'rgba(0, 0, 0, 0.69)'
-              }}
-            >
-              {safe(lead.date)}, {CURRENT_YEAR}
-            </Typography>
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+              >
+                Job Date
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#111827',
+                }}
+              >
+                {safe(lead.date)}, {CURRENT_YEAR}
+              </Typography>
+            </Box>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          
+          <Box
+            sx={{
+              flex: 1,
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
             <ClockIcon
               style={{
                 height: '20px',
                 width: '20px',
-                marginRight: '8px',
-                color: '#718096',
+                color: '#6b7280',
               }}
             />
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+              >
+                Job Time
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#111827',
+                }}
+              >
+                {safe(lead.time)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Location */}
+        <Box sx={{ marginBottom: '24px' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: '600',
+              fontSize: '18px',
+              color: '#111827',
+              marginBottom: '4px',
+            }}
+          >
+            {safe(lead.name)}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#6b7280',
+              lineHeight: '1.5',
+              fontSize: '14px',
+            }}
+          >
+            {safe(lead.address)}
+          </Typography>
+        </Box>
+
+        {/* Service Details */}
+        <Box sx={{ marginBottom: '32px' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#111827',
+              marginBottom: '16px',
+            }}
+          >
+            Service Details
+          </Typography>
+          
+          <Box
+            sx={{
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '8px',
+              marginBottom: '16px',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                marginBottom: '8px',
+                color: '#6b7280',
+                fontWeight: '500',
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Service Type
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <WrenchScrewdriverIcon
+                style={{
+                  height: '18px',
+                  width: '18px',
+                  color: '#6b7280',
+                }}
+              />
+              <Typography
+                variant="body1"
+                sx={{
+                  color: '#111827',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                }}
+              >
+                {safe(lead.work)}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '8px',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                marginBottom: '8px',
+                color: '#6b7280',
+                fontWeight: '500',
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Issue Description
+            </Typography>
             <Typography
               variant="body1"
               sx={{
-                fontSize: '16px',
-                fontWeight: 500,
-                color: 'rgba(0, 0, 0, 0.69)'
+                color: '#111827',
+                lineHeight: '1.5',
+                fontSize: '14px',
               }}
             >
-              {safe(lead.time)}
+              {safe(lead.issueDescription)}
             </Typography>
           </Box>
         </Box>
 
-        {/* Society Name */}
-        <Typography
-          variant="h6"
-          sx={{
-            marginTop: '-10px',
-            marginBottom: '4px',
-            fontWeight: 'semibold',
-            fontSize: '16px',
-            color: '#1a202c',
-          }}
-        >
-          {safe(lead.name)}
-        </Typography>
-
-        {/* Address */}
-        <Typography
-          variant="body2"
-          sx={{
-            marginBottom: '24px',
-            color: '#6B7280',
-            lineHeight: '1.625',
-            letterSpacing: '0.018rem'
-          }}
-        >
-          {safe(lead.address)}
-        </Typography>
-
-        {/* Job Details (Service Type) Section */}
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: '22px',
-            marginTop: '40px',
-            marginBottom: '10px',
-            fontWeight: '500',
-            color: '#1a202c',
-          }}
-        >
-          Service Details
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            marginBottom: '4px',
-            color: '#2d3748',
-            fontWeight: 500,
-            fontSize: '16px'
-          }}
-        >
-          Service Type
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: '20px',
-            color: '#2d3748',
-          }}
-        >
-          <WrenchScrewdriverIcon
-            style={{
-              height: '20px',
-              width: '20px',
-              marginRight: '8px',
-              color: '#6B7280',
-            }}
-          />
-          <Typography
-            variant="body1"
-            sx={{
-              color: '#6B7280',
-              fontSize: '14px'
-            }}
-          >
-            {safe(lead.work)}
-          </Typography>
-        </Box>
-
-        {/* Issue Description Section */}
-        <Typography
-          variant="body1"
-          sx={{
-            marginBottom: '4px',
-            color: '#2d3748',
-            fontWeight: 500,
-            fontSize: '16px'
-          }}
-        >
-          Issue Description
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            marginBottom: '50px',
-            color: '#6B7280',
-            lineHeight: '1.625',
-            fontSize: '14px',
-            letterSpacing: '0.018rem'
-          }}
-        >
-          {safe(lead.issueDescription)}
-        </Typography>
-
         {/* Cancel Job Button */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            width: '100%',
+            marginTop: '24px',
+          }}
+        >
           <Button
             variant="contained"
-            color="error"
-            sx={{ width: '45%' }}
+            sx={{
+              width: '100%',
+              maxWidth: '300px',
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: '600',
+              borderRadius: '12px',
+              textTransform: 'none',
+              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+              boxShadow: '0 8px 20px rgba(239, 68, 68, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                boxShadow: '0 12px 25px rgba(220, 38, 38, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              '&:active': {
+                transform: 'translateY(0px)',
+              },
+            }}
             onClick={() => setShowConfirm(true)}
           >
+            <MdCancel size={20} style={{ marginRight: '8px' }} />
             Cancel Job
           </Button>
         </Box>

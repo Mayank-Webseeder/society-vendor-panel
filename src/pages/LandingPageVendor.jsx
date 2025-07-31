@@ -306,8 +306,9 @@ const LandingPageVendor = () => {
                   <Card
                     sx={{
                       height: '100%',
-                      width: '100%',
-                      width: 500,
+                      // width: '100%',
+                      minWidth: 500,
+                      maxWidth: 500,
                       minHeight: 255,
                       background: 'linear-gradient(145deg, rgba(245,245,245,1) 0%, rgba(230,230,230,1) 100%)',
                       backdropFilter: 'blur(20px)',

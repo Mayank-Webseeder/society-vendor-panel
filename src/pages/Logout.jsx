@@ -23,7 +23,7 @@ const Logout = () => {
   };
 
   const handleNo = () => {
-    navigate('/', { replace: true });
+    navigate('/dashboard', { replace: true });
   };
 
   return (

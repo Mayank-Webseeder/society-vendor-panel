@@ -10,9 +10,7 @@
 // import QuotationFormModal from '../components/modals/QuotationFormModal';
 // import { getNearbyJobs } from '../services/api/jobs'; // Import the API
 
-
 // const ROWS_PER_PAGE = 10;
-
 
 // const NewLeads = () => {
 //   // Manage modal states
@@ -365,7 +363,21 @@
 //                       className="hover:bg-blue-50 transition"
 //                       style={{ borderBottom: "1px solid #E5E7EB" }}
 //                     >
-//                       <td className="py-3 px-4">{lead.name}</td>
+//                       <td className="py-3 px-4">
+//                         {lead.name}
+//                         {lead.interested && (
+//                           <span
+//                             style={{
+//                               marginLeft: '8px',
+//                               color: 'green',
+//                               fontWeight: 'bold',
+//                               fontSize: '0.85rem',
+//                             }}
+//                           >
+//                             Interested
+//                           </span>
+//                         )}
+//                       </td>
 
 //                       <td className="py-3 px-4 text-center">
 //                         <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
@@ -600,6 +612,7 @@ import AccessLockedModal from '../components/modals/AccessLockedModal';
 import { useUser } from '../UserContext';
 
 
+const MotionButton = motion(Button);
 const ROWS_PER_PAGE = 10;
 
 
@@ -952,7 +965,48 @@ const NewLeads = () => {
                       className="hover:bg-blue-50 transition"
                       style={{ borderBottom: "1px solid #E5E7EB" }}
                     >
-                      <td className="py-3 px-4">{lead.name}</td>
+                      <td className="py-3 px-4">
+                        {lead.name}
+                        {lead.interested && (
+                          <span
+                            style={{
+                              marginLeft: '8px',
+                              color: '#16a34a',
+                              fontWeight: '600',
+                              fontSize: '0.8rem',
+                              border: '1px solid #86efac',
+                              borderRadius: '12px',
+                              padding: '3px 8px',
+                              backgroundColor: '#f0fdf4',
+                              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              transition: 'all 0.2s ease',
+                              cursor: 'default',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = '#dcfce7';
+                              e.target.style.borderColor = '#4ade80';
+                              e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = '#f0fdf4';
+                              e.target.style.borderColor = '#86efac';
+                              e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
+                            }}
+                          >
+                            <span style={{
+                              width: '6px',
+                              height: '6px',
+                              backgroundColor: '#16a34a',
+                              borderRadius: '50%',
+                              display: 'inline-block',
+                            }}></span>
+                            Interested
+                          </span>
+                        )}
+                      </td>
 
                       <td className="py-3 px-4 text-center">
                         <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
@@ -964,19 +1018,63 @@ const NewLeads = () => {
                       <td className="py-3 text-center">{lead.postedOn}</td>
                       <td className="hidden lg:table-cell py-3 text-center">{lead.time}</td>
                       <td className="py-3 text-center">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          sx={{ textTransform: 'none', borderRadius: 2, fontWeight: 600 }}
-                          onClick={() => {    // Modal-handling
-                            setModalLead(lead);
-                            setModalOpen(true);
-                            setProceed(false);
-                            setShowQuotationForm(false);
-                          }}
-                        >
-                          Apply
-                        </Button>
+                        {lead.interested ? (
+                          <MotionButton
+                            whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(16, 185, 129, 0.10)' }}
+                            whileTap={{ y: 1 }}
+                            transition={{ type: "tween" }}
+                            variant="outlined"
+                            size="small"
+                            sx={{
+                              minWidth: 100,
+                              textTransform: 'none',
+                              borderRadius: 2,
+                              fontWeight: 600,
+                              color: 'green',
+                              borderColor: 'green',
+                              '&:hover': { 
+                                borderColor: 'darkgreen', 
+                                background: '#F0FFF4',
+                                // textDecoration:'underline',
+                              },
+                            }}
+                            onClick={() => {
+                              setModalLead(lead);
+                              setModalOpen(true);
+                              setProceed(true);
+                            }}
+                          >
+                            Fill Quotation
+                          </MotionButton>
+                        ) : (
+                          <MotionButton
+                            whileHover={{ y: -2, boxShadow: '0 4px 16px rgba(33, 150, 243, 0.10)' }}
+                            whileTap={{ y: 1 }}
+                            transition={{ type: 'tween' }}
+                            variant="outlined"
+                            size="small"
+                            sx={{
+                              minWidth: 100,
+                              textTransform: 'none', 
+                              borderRadius: 2, 
+                              fontWeight: 800,
+                              color: '#1976D2',
+                              borderColor: '#1976D2',
+                              '&:hover': {
+                                borderColor: '#1565C0',
+                                background: '#E3F2FD',
+                                // textDecoration: 'underline',
+                              }, 
+                            }}
+                            onClick={() => {
+                              setModalLead(lead);
+                              setModalOpen(true);
+                              setProceed(false);
+                            }}
+                          >
+                            Apply
+                          </MotionButton>
+                        )}
                       </td>
                     </tr>
                   ))

@@ -47,7 +47,8 @@ const dummyData = [
     postedOn: '27th June, 25', 
     time: '2:00 PM', 
     address: 'Yellow Stone Co., Tower B, Flat No. 1202, Sector 50, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201301', 
-    issueDescription: 'Suspected roof leakage after recent rains. Water stains visible on top floor ceilings. Full inspection and report needed before monsoon.' 
+    issueDescription: 'Suspected roof leakage after recent rains. Water stains visible on top floor ceilings. Full inspection and report needed before monsoon.',
+    interested: false,
   },
   { 
     id: 5, 
@@ -97,7 +98,8 @@ const dummyData = [
     postedOn: '1st July, 25', 
     time: '10:30 AM', 
     address: 'Golden Gate Complex, Tower F, Flat No. 210, Sector 76, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201306', 
-    issueDescription: 'Ant infestation in kitchen and dining areas. Multiple complaints received from residents. Requesting thorough pest control treatment and follow-up.' 
+    issueDescription: 'Ant infestation in kitchen and dining areas. Multiple complaints received from residents. Requesting thorough pest control treatment and follow-up.',
+    interested: false,
   },
   { 
     id: 9, 
@@ -147,7 +149,8 @@ const dummyData = [
     postedOn: '5th July, 25', 
     time: '11:30 AM', 
     address: 'Emerald Enclave, Tower K, Flat No. 604, Sector 44, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201303', 
-    issueDescription: 'Annual fire safety check due. Society requires audit of extinguishers, alarms, and evacuation routes. Certification and compliance report needed.' 
+    issueDescription: 'Annual fire safety check due. Society requires audit of extinguishers, alarms, and evacuation routes. Certification and compliance report needed.',
+    interested: false,
   },
   { 
     id: 13, 
@@ -197,7 +200,8 @@ const dummyData = [
     postedOn: '9th July, 25', 
     time: '12:45 PM', 
     address: 'Palm Grove Villas, Villa No. 8, Sector 93B, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201304', 
-    issueDescription: 'Intercom not working in block C. Residents unable to communicate with security. Urgent repair and system check required.' 
+    issueDescription: 'Intercom not working in block C. Residents unable to communicate with security. Urgent repair and system check required.',
+    interested: false,
   },
   { 
     id: 17, 
@@ -247,7 +251,8 @@ const dummyData = [
     postedOn: '13th July, 25', 
     time: '11:00 AM', 
     address: 'Coral Springs, Tower S, Flat No. 1107, Sector 143, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201305', 
-    issueDescription: 'Dust accumulation on facade affecting building appearance. High-pressure cleaning and surface treatment required.' 
+    issueDescription: 'Dust accumulation on facade affecting building appearance. High-pressure cleaning and surface treatment required.',
+    interested: false,
   },
   { 
     id: 21, 
@@ -297,7 +302,8 @@ const dummyData = [
     postedOn: '17th July, 25', 
     time: '11:45 AM', 
     address: 'Ruby Residency, Tower W, Flat No. 1101, Sector 113, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201305', 
-    issueDescription: 'Water seepage in basement parking. Requesting inspection and waterproofing solution.' 
+    issueDescription: 'Water seepage in basement parking. Requesting inspection and waterproofing solution.',
+    interested: false, 
   },
   { 
     id: 25, 
@@ -347,7 +353,8 @@ const dummyData = [
     postedOn: '21st July, 25', 
     time: '9:15 AM', 
     address: 'Topaz Residency, Tower AA, Flat No. 601, Sector 117, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201309', 
-    issueDescription: 'Cracks in boundary wall plaster. Requesting repair before monsoon.' 
+    issueDescription: 'Cracks in boundary wall plaster. Requesting repair before monsoon.',
+    interested: false,
   },
   { 
     id: 29, 
@@ -397,7 +404,8 @@ const dummyData = [
     postedOn: '25th July, 25', 
     time: '8:30 AM', 
     address: 'Ivory Residency, Tower DD, Flat No. 1104, Sector 121, Noida, Gautam Buddh Nagar, Uttar Pradesh - 201313', 
-    issueDescription: 'Foul smell in basement. Suspected sewage line blockage. Requesting cleaning and inspection.' 
+    issueDescription: 'Foul smell in basement. Suspected sewage line blockage. Requesting cleaning and inspection.',
+    interested: false,
   },
   { 
     id: 33, 

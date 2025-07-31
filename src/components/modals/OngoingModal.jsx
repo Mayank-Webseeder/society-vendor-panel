@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
-import { TbCalendarCheck } from "react-icons/tb";
-import { FiClock } from "react-icons/fi";
+import { CalendarDaysIcon, ClockIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { IoClose } from "react-icons/io5";
+import { MdAccessTime } from "react-icons/md";
+import { FaSpinner } from "react-icons/fa";
 
 
 const CURRENT_YEAR = 25;
@@ -37,221 +37,360 @@ const OngoingModal = ({ open, onClose, lead }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        bottom: 0,
-        left: {xs: '0rem', sm: '4rem', md: '5rem'},
+        left: { xs: '0rem', sm: '4rem', md: '5rem' },
         right: 0,
+        bottom: 0,
         width: '100%',
         height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
           position: 'relative',
           backgroundColor: 'white',
-          border: '1px solid #6B7280',
-          borderRadius: '8px',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-          paddingX: { xs: '20px', md: '24px' },
-          paddingY: { xs: '16px', md: '20px' },
+          borderRadius: '16px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+          paddingX: { xs: '24px', md: '32px' },
+          paddingY: { xs: '24px', md: '32px' },
           zIndex: 10,
           width: '100%',
-          maxWidth: '32rem',
+          maxWidth: '520px',
+          maxHeight: '95vh',
           overflowY: 'auto',
-          maxHeight: '90vh',
-          overflow: 'visible'
         }}
       >
         {/* Close icon */}
         <Box
           sx={{
             position: 'absolute',
-            top: -50,
-            right: -40,
+            top: 7,
+            right: 7,
             zIndex: 20,
             borderRadius: '50%',
-            width: '40px',
-            height: '40px',
+            width: '32px',
+            height: '32px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            backgroundColor: 'rgba(51, 109, 142, 0.5)',
-            '&:hover': { backgroundColor: '#60A5FA' },
+            backgroundColor: '#f3f4f6',
+            transition: 'all 0.2s ease',
+            '&:hover': { 
+              backgroundColor: '#e5e7eb',
+              transform: 'scale(1.05)',
+            },
           }}
           onClick={onClose}
         >
-          <IoClose size={25} color="#fff" />
+          <IoClose size={18} color="#6b7280" />
         </Box>
 
-        {/* Job Details Header */}
-        <Typography
-          variant="h5"
-          sx={{
-            marginLeft: '-8px',
-            marginBottom: '20px',
-            fontWeight: '500',
-            color: '#1a202c',
-          }}
-        >
-          Job Details
-        </Typography>
-
-
-        {/* Posted On */}
-        <Typography
-          variant="body2"
-          className='text-gray-300'
-          sx={{
-            paddingLeft: '4px',
-            marginTop: '12px',
-            marginBottom: '12px',
-            color: '#6B7280',
-            fontSize: '15px',
-          }}
-        >
-          Posted On: <span className="font-normal px-1 text-[17px] text-[#2E6074]/[0.69]">{safe(lead.postedOn)}</span>
-        </Typography>
-
-
-        {/* Date and dueTime */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 0.5,
-            marginBottom: 4
-          }}
-        >
-          <Box sx={{display: 'flex', alignItems: 'center', gap: 1 }}>
-            <TbCalendarCheck color='rgba(28,27,31,0.69)' />
-            <Typography variant="subtitle2" color='rgba(28,27,31,0.69)'>
-              Job Date and Time: <span className="font-normal px-1 text-[16px] text-[#2E6074]/[0.69]">{safe(lead.postedOn)} <span>|</span> {safe(lead.time)}</span>
+        {/* Header */}
+        <Box sx={{ marginBottom: '24px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: '600',
+                color: '#111827',
+                fontSize: '24px',
+              }}
+            >
+              Job In Progress
             </Typography>
+            <Box
+              sx={{
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '13px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <FaSpinner size={12} className="animate-spin" />
+              Ongoing
+            </Box>
           </Box>
-          
-          <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-            <FiClock color='rgba(28,27,31,0.69)' />
-            <Typography variant="subtitle2" color='rgba(28,27,31,0.69)'>
-              Due Time: <span className="font-normal px-1 text-[16px] text-[#2E6074]/[0.69]">{safe(lead.dueTime)}</span>
-            </Typography>
-          </Box>
-        </Box>
-
-
-        {/* Society Name */}
-        <Typography
-          variant="h6"
-          sx={{
-            marginTop: '-10px',
-            marginBottom: '4px',
-            fontWeight: 'semibold',
-            fontSize: '16px',
-            color: '#1a202c',
-          }}
-        >
-          {safe(lead.name)}
-        </Typography>
-
-        {/* Address */}
-        <Typography
-          variant="body2"
-          sx={{
-            marginBottom: '24px',
-            color: '#6B7280',
-            lineHeight: '1.625',
-            letterSpacing: '0.018rem'
-          }}
-        >
-          {safe(lead.address)}
-        </Typography>
-
-        {/* Job Details (Service Type) Section */}
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: '22px',
-            marginTop: '40px',
-            marginBottom: '10px',
-            fontWeight: '500',
-            color: '#1a202c',
-          }}
-        >
-          Service Details
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            marginBottom: '4px',
-            color: '#2d3748',
-            fontWeight: 500,
-            fontSize: '16px'
-          }}
-        >
-          Service Type
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: '20px',
-            color: '#2d3748',
-          }}
-        >
-          <WrenchScrewdriverIcon
-            style={{
-              height: '20px',
-              width: '20px',
-              marginRight: '8px',
-              color: '#6B7280',
-            }}
-          />
           <Typography
-            variant="body1"
+            variant="body2"
             sx={{
-              color: '#6B7280',
-              fontSize: '14px'
+              color: '#6b7280',
+              fontSize: '14px',
+              marginTop: '4px',
             }}
           >
-            {safe(lead.work)}
+            Posted on {safe(lead.postedOn)}
           </Typography>
         </Box>
 
-        {/* Issue Description Section */}
-        <Typography
-          variant="body1"
+
+        {/* Date and Time */}
+        <Box
           sx={{
-            marginBottom: '4px',
-            color: '#2d3748',
-            fontWeight: 500,
-            fontSize: '16px'
+            display: 'flex',
+            gap: '16px',
+            marginBottom: '24px',
           }}
         >
-          Issue Description
-        </Typography>
-        <Typography
-          variant="body1"
+          <Box
+            sx={{
+              flex: 1,
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <CalendarDaysIcon
+              style={{
+                height: '20px',
+                width: '20px',
+                color: '#6b7280',
+              }}
+            />
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+              >
+                Job Date
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#111827',
+                }}
+              >
+                {safe(lead.date)}, {CURRENT_YEAR}
+              </Typography>
+            </Box>
+          </Box>
+          
+          <Box
+            sx={{
+              flex: 1,
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <ClockIcon
+              style={{
+                height: '20px',
+                width: '20px',
+                color: '#6b7280',
+              }}
+            />
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+              >
+                Job Time
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#111827',
+                }}
+              >
+                {safe(lead.time)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Due Time */}
+        <Box
           sx={{
-            marginBottom: '16px',
-            color: '#6B7280',
-            lineHeight: '1.625',
-            fontSize: '14px',
-            letterSpacing: '0.018rem'
+            backgroundColor: '#fef3c7',
+            borderRadius: '8px',
+            padding: '12px',
+            marginBottom: '24px',
+            border: '1px solid #fde68a',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
           }}
         >
-          {safe(lead.issueDescription)}
-        </Typography>
+          <MdAccessTime
+            style={{
+              height: '20px',
+              width: '20px',
+              color: '#d97706',
+            }}
+          />
+          <Box>
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: '12px',
+                color: '#92400e',
+                fontWeight: '500',
+              }}
+            >
+              Due Time
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#111827',
+              }}
+            >
+              {safe(lead.dueTime)}
+            </Typography>
+          </Box>
+        </Box>
+
+
+        {/* Location */}
+        <Box sx={{ marginBottom: '24px' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: '600',
+              fontSize: '18px',
+              color: '#111827',
+              marginBottom: '4px',
+            }}
+          >
+            {safe(lead.name)}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#6b7280',
+              lineHeight: '1.5',
+              fontSize: '14px',
+            }}
+          >
+            {safe(lead.address)}
+          </Typography>
+        </Box>
+
+        {/* Service Details */}
+        <Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#111827',
+              marginBottom: '16px',
+            }}
+          >
+            Service Details
+          </Typography>
+          
+          <Box
+            sx={{
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '8px',
+              marginBottom: '16px',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                marginBottom: '8px',
+                color: '#6b7280',
+                fontWeight: '500',
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Service Type
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <WrenchScrewdriverIcon
+                style={{
+                  height: '18px',
+                  width: '18px',
+                  color: '#6b7280',
+                }}
+              />
+              <Typography
+                variant="body1"
+                sx={{
+                  color: '#111827',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                }}
+              >
+                {safe(lead.work)}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '8px',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                marginBottom: '8px',
+                color: '#6b7280',
+                fontWeight: '500',
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Issue Description
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: '#111827',
+                lineHeight: '1.5',
+                fontSize: '14px',
+              }}
+            >
+              {safe(lead.issueDescription)}
+            </Typography>
+          </Box>
+        </Box>
 
       </Box>
     </Box>

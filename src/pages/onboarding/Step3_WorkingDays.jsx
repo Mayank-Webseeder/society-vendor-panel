@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, Box, TextField, MenuItem, Select, Fade, Zoom } from '@mui/material';
-import { Schedule, AccessTime, CheckCircle, EventAvailable } from '@mui/icons-material';
+import { Paper, Typography, Button, Box, Fade, Zoom } from '@mui/material';
+import { CheckCircle, EventAvailable } from '@mui/icons-material';
 import onboardingImage from '../../assets/onboardingImage.png';
 import logoWhite from '../../assets/logoWhite.png';
 import { useOnBoarding } from './OnboardingContext';
@@ -13,10 +13,6 @@ const Step3_WorkingDays = () => {
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
   const [selectedDays, setSelectedDays] = useState(onboardingData.workingDays || []);
-  const [startTime, setStartTime] = useState(onboardingData.workingHours?.[0]?.split(' ')[0] || '');
-  const [startPeriod, setStartPeriod] = useState(onboardingData.workingHours?.[0]?.split(' ')[1] || 'AM');
-  const [endTime, setEndTime] = useState(onboardingData.workingHours?.[1]?.split(' ')[0] || '');
-  const [endPeriod, setEndPeriod] = useState(onboardingData.workingHours?.[1]?.split(' ')[1] || 'PM');
   const [error, setError] = useState('');
   const [showContent, setShowContent] = useState(false);
 
@@ -24,49 +20,12 @@ const Step3_WorkingDays = () => {
     setShowContent(true);
   }, []);
 
-  const handleTimeChange = (value, setter) => {
-    if (!/^\d{0,2}(:\d{0,2})?$/.test(value)) return;
-    if (value.startsWith(':')) return;
-
-    if (value.includes(':')) {
-      const [hour, min] = value.split(':');
-      if (min && (isNaN(min) || Number(min) >= 60)) return;
-    }
-
-    const [hour] = value.split(':');
-    if (hour && (isNaN(hour) || Number(hour) < 0 || Number(hour) > 12)) return;
-
-    setter(value);
-  };
-
-  const handleStartTimeChange = (e) => {
-    handleTimeChange(e.target.value, setStartTime);
-  };
-
-  const handleEndTimeChange = (e) => {
-    handleTimeChange(e.target.value, setEndTime);
-  };
-
-  const formatTime = (timeStr) => {
-    if (!timeStr) return '';
-    const [hour, min] = timeStr.split(':');
-    if (min === undefined) {
-      return `${String(Number(hour))}:00`;
-    }
-    const paddedMin = min.length === 1 ? `0${min}` : min;
-    return `${String(Number(hour))}:${paddedMin}`;
-  };
-
   useEffect(() => {
     const orderedDays = daysOfWeek.filter(day => selectedDays.includes(day));
     updateOnboardingData({
       workingDays: orderedDays,
-      workingHours:
-        startTime && endTime ?
-        `${formatTime(startTime)} ${startPeriod} - ${formatTime(endTime)} ${endPeriod}`  
-        : '',
     });
-  }, [selectedDays, startTime, startPeriod, endTime, endPeriod, updateOnboardingData]);
+  }, [selectedDays, updateOnboardingData]);
 
   const handleDayToggle = (day) => {
     setSelectedDays((prevSelectedDays) =>
@@ -76,45 +35,9 @@ const Step3_WorkingDays = () => {
     );
   };
 
-  const timeToMinutes = (time, period) => {
-    if (!time) return 0;
-    let [hour, min] = time.split(':');
-    hour = Number(hour);
-    min = Number(min) || 0;
-    if (period === 'PM' && hour !== 12) hour += 12;
-    if (period === 'AM' && hour === 12) hour = 0;
-    return hour * 60 + min;
-  };
-
   const handleContinue = () => {
     if (selectedDays.length === 0) {
       setError('Please select at least one working day.');
-      return;
-    }
-    if (!startTime || !endTime) {
-      setError('Please enter both opening and closing hours.');
-      return;
-    }
-    const [startHour] = startTime.split(':');
-    const [endHour] = endTime.split(':');
-    if (
-      isNaN(startHour) ||
-      isNaN(endHour) ||
-      Number(startHour) < 0 ||
-      Number(startHour) > 12 ||
-      Number(endHour) < 0 ||
-      Number(endHour) > 12
-    ) {
-      setError('Hours must be between 0 and 12.');
-      return;
-    }
-
-    const formattedStartTime = formatTime(startTime);
-    const formattedEndTime = formatTime(endTime);
-    const startMins = timeToMinutes(formattedStartTime, startPeriod);
-    const endMins = timeToMinutes(formattedEndTime, endPeriod);
-    if (startMins >= endMins) {
-      setError('Opening time must be before closing time.');
       return;
     }
 
@@ -349,252 +272,6 @@ const Step3_WorkingDays = () => {
                       </Button>
                     </Zoom>
                   ))}
-                </Box>
-
-                {/* Enhanced Working Hours Section */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2.5 }}>
-                  <Box
-                    sx={{
-                      p: 1,
-                      borderRadius: '10px',
-                      background: 'linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%)',
-                      color: 'white',
-                      boxShadow: '0 3px 8px rgba(255, 107, 107, 0.3)',
-                    }}
-                  >
-                    <AccessTime fontSize="small" />
-                  </Box>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: '700',
-                      background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-                      backgroundClip: 'text',
-                      WebkitBackgroundClip: 'text',
-                      color: 'transparent',
-                      fontSize: { xs: '1.4rem', sm: '1.6rem' },
-                      letterSpacing: '-0.3px',
-                    }}
-                  >
-                    Select Your Working Hours
-                  </Typography>
-                </Box>
-
-                {/* Enhanced Time Input Containers */}
-                <Box sx={{ mb: 3, maxWidth: '500px', display: 'flex', flexDirection: {xs: 'column', sm: 'row'}, gap: {xs: 0, sm: 6} }}>
-                  {/* Opening Hours */}
-                  <Box 
-                    sx={{ 
-                      mb: 2.5, 
-                      p: 2,
-                      minWidth: 230,
-                      height: '100%',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(86, 169, 217, 0.05) 0%, rgba(66, 165, 245, 0.05) 100%)',
-                      border: '1px solid rgba(86, 169, 217, 0.1)',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        boxShadow: '0 4px 12px rgba(86, 169, 217, 0.1)',
-                        transform: 'translateY(-1px)',
-                      },
-                    }}
-                  >
-                    <Typography 
-                      variant="subtitle1" 
-                      sx={{ 
-                        color: '#56A9D9', 
-                        mb: 1.5, 
-                        fontWeight: '600',
-                        fontSize: { xs: '0.95rem', sm: '1rem' },
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-                        }}
-                      />
-                      Opening Hours
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <TextField
-                        variant="outlined"
-                        placeholder="hh:mm"
-                        value={startTime}
-                        onChange={handleStartTimeChange}
-                        inputProps={{ inputMode: 'text', pattern: '[0-9:]*', maxLength: 5 }}
-                        sx={{
-                          width: 100,
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '10px',
-                            background: 'linear-gradient(135deg, #ffffff 0%, #f8fbff 100%)',
-                            transition: 'all 0.3s ease',
-                            '& fieldset': { 
-                              borderColor: '#e0e0e0',
-                              borderWidth: '1.5px',
-                            },
-                            '&:hover fieldset': { 
-                              borderColor: '#56A9D9',
-                            },
-                            '&.Mui-focused fieldset': { 
-                              borderColor: '#42A5F5',
-                              boxShadow: '0 0 0 2px rgba(66, 165, 245, 0.1)',
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: '#2c3e50',
-                            fontSize: '0.9rem',
-                            fontWeight: '500',
-                            py: '10px',
-                            textAlign: 'center',
-                          },
-                        }}
-                      />
-                      <Select
-                        value={startPeriod}
-                        onChange={(e) => setStartPeriod(e.target.value)}
-                        sx={{
-                          height: 40,
-                          minWidth: 70,
-                          borderRadius: '10px',
-                          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                          fontWeight: '600',
-                          fontSize: '0.9rem',
-                          color: '#2c3e50',
-                          '& .MuiSelect-select': { 
-                            padding: '10px 12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                          },
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'rgba(86, 169, 217, 0.2)',
-                            borderWidth: '1.5px',
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#56A9D9',
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#42A5F5',
-                          },
-                        }}
-                      >
-                        <MenuItem value="AM">AM</MenuItem>
-                        <MenuItem value="PM">PM</MenuItem>
-                      </Select>
-                    </Box>
-                  </Box>
-
-                  {/* Closing Hours */}
-                  <Box 
-                    sx={{ 
-                      mb: 2.5, 
-                      p: 2,
-                      height: '100%',
-                      minWidth: 230,
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(255, 107, 107, 0.05) 0%, rgba(255, 82, 82, 0.05) 100%)',
-                      border: '1px solid rgba(255, 107, 107, 0.1)',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        boxShadow: '0 4px 12px rgba(255, 107, 107, 0.1)',
-                        transform: 'translateY(-1px)',
-                      },
-                    }}
-                  >
-                    <Typography 
-                      variant="subtitle1" 
-                      sx={{ 
-                        color: '#FF6B6B', 
-                        mb: 1.5, 
-                        fontWeight: '600',
-                        fontSize: { xs: '0.95rem', sm: '1rem' },
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          background: 'linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%)',
-                        }}
-                      />
-                      Closing Hours
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <TextField
-                        variant="outlined"
-                        placeholder="hh:mm"
-                        value={endTime}
-                        onChange={handleEndTimeChange}
-                        inputProps={{ inputMode: 'text', pattern: '[0-9:]*', maxLength: 5 }}
-                        sx={{
-                          width: 100,
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '10px',
-                            background: 'linear-gradient(135deg, #ffffff 0%, #f8fbff 100%)',
-                            transition: 'all 0.3s ease',
-                            '& fieldset': { 
-                              borderColor: '#e0e0e0',
-                              borderWidth: '1.5px',
-                            },
-                            '&:hover fieldset': { 
-                              borderColor: '#FF6B6B',
-                            },
-                            '&.Mui-focused fieldset': { 
-                              borderColor: '#FF5252',
-                              boxShadow: '0 0 0 2px rgba(255, 82, 82, 0.1)',
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: '#2c3e50',
-                            fontSize: '0.9rem',
-                            fontWeight: '500',
-                            py: '10px',
-                            textAlign: 'center',
-                          },
-                        }}
-                      />
-                      <Select
-                        value={endPeriod}
-                        onChange={(e) => setEndPeriod(e.target.value)}
-                        sx={{
-                          height: 40,
-                          minWidth: 70,
-                          borderRadius: '10px',
-                          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                          fontWeight: '600',
-                          fontSize: '0.9rem',
-                          color: '#2c3e50',
-                          '& .MuiSelect-select': { 
-                            padding: '10px 12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                          },
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'rgba(255, 107, 107, 0.2)',
-                            borderWidth: '1.5px',
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#FF6B6B',
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#FF5252',
-                          },
-                        }}
-                      >
-                        <MenuItem value="AM">AM</MenuItem>
-                        <MenuItem value="PM">PM</MenuItem>
-                      </Select>
-                    </Box>
-                  </Box>
                 </Box>
 
                 {/* Enhanced Error Message */}

@@ -26,9 +26,24 @@ const LandingPageSociety = () => {
 
   const benefits = [
     {
-      icon: <EventIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
-      title: 'Community Events & Workshops',
-      description: 'Access exclusive community events and skill-building workshops',
+      icon: <BadgeIcon sx={{ fontSize: 40, color: '#8B5CF6' }} />,
+      title: 'Verified Trusted Services',
+      description: 'Access only verified and trusted vendors for all your service needs',
+    },
+    {
+      icon: <BadgeIcon sx={{ fontSize: 40, color: '#84CC16' }} />,
+      title: 'Enhanced Security',
+      description: 'Verified vendor badges ensure enhanced security and trust',
+    },
+    // {
+    //   icon: <EventIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
+    //   title: 'Community Events & Workshops',
+    //   description: 'Access exclusive community events and skill-building workshops',
+    // },
+    {
+      icon: <SettingsIcon sx={{ fontSize: 40, color: '#F97316' }} />,
+      title: 'Customizable Packages',
+      description: 'Tailored service packages designed specifically for societies',
     },
     // {
     //   icon: <HandshakeIcon sx={{ fontSize: 40, color: '#10B981' }} />,
@@ -41,11 +56,6 @@ const LandingPageSociety = () => {
       description: 'Get special discounts on services and products from verified vendors',
     },
     {
-      icon: <BadgeIcon sx={{ fontSize: 40, color: '#8B5CF6' }} />,
-      title: 'Verified Trusted Services',
-      description: 'Access only verified and trusted vendors for all your service needs',
-    },
-    {
       icon: <SupportIcon sx={{ fontSize: 40, color: '#EF4444' }} />,
       title: 'Streamlined Communication',
       description: 'Easy and direct communication channels with service vendors',
@@ -55,16 +65,7 @@ const LandingPageSociety = () => {
       title: 'Emergency Support',
       description: 'Quick access to emergency services and round-the-clock support',
     },
-    {
-      icon: <BadgeIcon sx={{ fontSize: 40, color: '#84CC16' }} />,
-      title: 'Enhanced Security',
-      description: 'Verified vendor badges ensure enhanced security and trust',
-    },
-    // {
-    //   icon: <SettingsIcon sx={{ fontSize: 40, color: '#F97316' }} />,
-    //   title: 'Customizable Packages',
-    //   description: 'Tailored service packages designed specifically for societies',
-    // },
+    
     {
       icon: <NotificationsIcon sx={{ fontSize: 40, color: '#EC4899' }} />,
       title: 'Local Updates',
@@ -315,8 +316,9 @@ const LandingPageSociety = () => {
                     <Card
                       sx={{
                         height: '100%',
-                        width: '100%',
-                        width: 500,
+                        // width: '100%',
+                        minWidth: 500,
+                        maxWidth: 500,
                         minHeight: 255,
                         background: 'linear-gradient(145deg, rgba(245,245,245,1) 0%, rgba(230,230,230,1) 100%)',
                         backdropFilter: 'blur(20px)',
