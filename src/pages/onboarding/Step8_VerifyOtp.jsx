@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, TextField, Box, CircularProgress, Fade, Slide } from '@mui/material';
-import { CheckCircle, Phone, Timer, Refresh } from '@mui/icons-material';
+import { CheckCircle, Timer, Refresh } from '@mui/icons-material';
+import { FaPhone } from "react-icons/fa6";
 import verifyNumber from '../../assets/verifyNumber.png';
-import logoWhite from '../../assets/logoWhite.png';
 import { useAuth } from '../../AuthContext';
 import { useOnBoarding } from './OnboardingContext';
 import { useUser } from '../../UserContext';
@@ -134,42 +134,65 @@ const Step8_VerifyOtp = () => {
 
   return (
     <div style={{ position: 'relative', width: '80%', height: '80%' }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: '-4rem',
-          left: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          zIndex: 2,
-          overflow: 'visible'
-        }}
-      >
-        <img src={logoWhite} alt="velra-logo" />
-        <h3 className="font-semibold text-5xl text-white">VELRA</h3>
-      </div>
-
       <Paper
-        elevation={24}
+        elevation={0}
         sx={{
           width: '100%',
           height: '100%',
           display: 'flex',
-          borderRadius: '24px',
-          overflow: 'auto',
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '16px',
+          overflowY: 'auto',
+          backgroundColor: '#ffffff',
+          border: 'none',
+          boxShadow: 'none',
+          // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+          // Hide scrollbar for Firefox
+          scrollbarWidth: 'none',
+          // Alternative for older browsers
+          msOverflowStyle: 'none',
+          '@media (max-width:1150px)': {
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          },
         }}
       >
 
         {/* Debugging Purposes */}
         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
-        {/* Left Half: Enhanced Form Content */}
-        <div className='flex-1 flex flex-col p-8 sm:p-12 justify-center items-center relative'>
-          {/* Background Pattern */}
+        {/* Left Half: Form Content */}
+        <Box
+          sx={{
+            // border: '2px solid red',
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+            position: 'relative',
+            minWidth: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            px: { xs: 3, sm: 4, md: 5 },
+            py: { xs: 3, sm: 4 },
+            height: '100%',
+            backgroundColor: '#ffffff',
+            '@media (max-width:1200px)': {
+              width: '100%',
+              alignItems: 'center',
+              flex: 'unset',
+              minWidth: 0,
+            },
+            '@media (min-width:1201px)': {
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '60%',
+            },
+          }}
+        >
+          {/* Subtle background patterns */}
           <div
             style={{
               position: 'absolute',
@@ -177,331 +200,438 @@ const Step8_VerifyOtp = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              // background: `
-              //   radial-gradient(circle at 20% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
-              //   radial-gradient(circle at 80% 20%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
-              //   radial-gradient(circle at 40% 40%, rgba(86, 169, 217, 0.02) 0%, transparent 50%)
-              // `,
-              backgroundColor: 'white',
+              backgroundImage: `
+                radial-gradient(circle at 20% 20%, rgba(86, 169, 217, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%)
+              `,
+              pointerEvents: 'none',
               zIndex: 0,
             }}
           />
 
-          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '400px' }}>
-            {/* Header with Icon */}
-            <Fade in timeout={800}>
-              <Box sx={{ textAlign: 'center', mb: 4 }}>
-                <Box
-                  sx={{
-                    width: 70,
-                    height: 70,
-                    mx: 'auto',
-                    mb: 3,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'linear-gradient(135deg, #56A9D9 0%, #4A90E2 100%)',
-                    borderRadius: '24px',
-                    boxShadow: '0 8px 32px rgba(86, 169, 217, 0.3)',
-                    // transform: 'rotate(-3deg)',
-                  }}
-                >
-                  <Phone sx={{ color: 'white', fontSize: 36 }} />
-                </Box>
-                
+          {/* Decorative corner accents */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '120px',
+              height: '120px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)',
+              transform: 'translate(50%, -50%)',
+              zIndex: 0,
+            }}
+          />
+
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)',
+              transform: 'translate(-50%, 50%)',
+              zIndex: 0,
+            }}
+          />
+
+          <Fade in timeout={1000}>
+            <div
+              style={{ 
+                flex: 1, 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                position: 'relative', 
+                minWidth: 0,
+                width: '100%',
+                zIndex: 1,
+                textAlign: 'center',
+                minHeight: '100%',
+              }}
+              className='w-full h-full rounded-xl flex flex-col'
+            >
+              {/* Top Section - Hero */}
+              <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
+                {/* Main Title */}
                 <Typography
                   variant="h3"
                   sx={{
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-                    backgroundClip: 'text',
+                    fontWeight: '700',
+                    background: 'linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
-                    mb: 2,
-                    fontSize: { xs: '1.8rem', sm: '2.2rem' },
-                    letterSpacing: '-0.025em',
+                    fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
+                    fontFamily: 'Roboto, sans-serif',
+                    letterSpacing: '0.02em',
+                    textAlign: 'center',
+                    mb: 1.5,
+                    position: 'relative',
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: '-6px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '50%',
+                      height: '2px',
+                      background: 'linear-gradient(90deg, #56A9D9, #1e3a8a)',
+                      borderRadius: '1px',
+                    },
                   }}
                 >
-                  Verify Your Number
+                  Verify OTP
                 </Typography>
-                
+
+                {/* Subtitle */}
                 <Typography
-                  variant="body1"
+                  variant="h6"
                   sx={{
-                    color: '#64748b',
-                    fontSize: { xs: '0.95rem', sm: '1.05rem' },
-                    fontWeight: 400,
-                    lineHeight: 1.6,
-                    maxWidth: '320px',
-                    mx: 'auto',
+                    color: 'rgba(30, 58, 138, 0.7)',
+                    fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    mb: 2,
+                    fontFamily: 'Roboto, sans-serif',
                   }}
                 >
                   We've sent a secure 4-digit code to{' '}
-                  <Box component="span" sx={{ fontWeight: 600, color: '#334155' }}>
+                  <Box component="span" sx={{ fontWeight: 600, color: 'rgba(30, 58, 138, 0.9)' }}>
                     +91 XXXXX 12345
                   </Box>
                 </Typography>
-              </Box>
-            </Fade>
 
-            {/* OTP Input Fields */}
-            <Slide in direction="up" timeout={600}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: { xs: 1.5, sm: 2 },
-                  mb: 4,
-                  justifyContent: 'center',
-                }}
-              >
-                {otp.map((data, index) => (
-                  <TextField
-                    key={index}
-                    inputRef={(el) => (inputRefs.current[index] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]"
-                    value={data}
-                    onChange={(e) => handleOtpChange(e.target, index)}
-                    onFocus={(e) => e.target.select()}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    variant="outlined"
-                    inputProps={{
-                      maxLength: 1,
-                      style: { textAlign: 'center' }
-                    }}
-                    sx={{
-                      width: { xs: '55px', sm: '64px' },
-                      height: { xs: '55px', sm: '64px' },
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '16px',
-                        background: 'rgba(255, 255, 255, 0.8)',
-                        backdropFilter: 'blur(10px)',
-                        border: '2px solid transparent',
-                        backgroundClip: 'padding-box',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        '& fieldset': { 
-                          border: '2px solid #e2e8f0',
-                          borderRadius: '16px',
-                        },
-                        '&:hover fieldset': { 
-                          borderColor: '#56A9D9',
-                          boxShadow: '0 4px 12px rgba(86, 169, 217, 0.15)',
-                        },
-                        '&.Mui-focused fieldset': { 
-                          borderColor: '#56A9D9',
-                          boxShadow: '0 8px 25px rgba(86, 169, 217, 0.25)',
-                        },
-                        '&.Mui-focused': {
-                          transform: 'translateY(-2px)',
-                        },
-                      },
-                      '& .MuiInputBase-input': {
-                        textAlign: 'center',
-                        color: '#1e293b',
-                        fontSize: { xs: '1.4rem', sm: '1.6rem' },
-                        fontWeight: 600,
-                        py: 0,
-                      },
-                    }}
-                  />
-                ))}
-              </Box>
-            </Slide>
-
-            {/* Timer Section */}
-            <Fade in timeout={1000}>
-              <Box sx={{ mb: 4, textAlign: 'center' }}>
-                {isTiming ? (
-                  <Box
-                    sx={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      px: 3,
-                      py: 1.5,
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
-                      border: '1px solid #e2e8f0',
-                      mb: 2,
-                    }}
-                  >
-                    <Timer sx={{ 
-                      color: '#64748b', 
-                      fontSize: 20 
-                    }} />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: '#64748b',
-                        fontWeight: 600,
-                        fontSize: '0.9rem',
-                      }}
-                    >
-                      Resend in {formatTimer(timer)}
-                    </Typography>
-                  </Box>
-                ) : (
-                  <Button
-                    variant="text"
-                    onClick={handleResendCode}
-                    startIcon={<Refresh />}
-                    sx={{
-                      color: '#56A9D9',
-                      textTransform: 'none',
-                      fontWeight: 600,
-                      fontSize: '0.9rem',
-                      px: 2,
-                      py: 1,
-                      borderRadius: '10px',
-                      background: 'rgba(86, 169, 217, 0.1)',
-                      '&:hover': {
-                        background: 'rgba(86, 169, 217, 0.2)',
-                        transform: 'translateY(-1px)',
-                      },
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    Resend Code
-                  </Button>
-                )}
-              </Box>
-            </Fade>
-
-            {/* Error Message */}
-            {error && (
-              <Fade in>
+                {/* Decorative Icon */}
                 <Box
                   sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 2,
                     mb: 3,
-                    p: 2,
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
-                    border: '1px solid #fecaca',
-                    textAlign: 'center',
                   }}
                 >
-                  <Typography 
-                    sx={{ 
-                      color: '#dc2626', 
-                      fontWeight: 500,
-                      fontSize: '0.9rem',
+                  <Box
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
+                      animation: 'float 3s ease-in-out infinite',
+                      '@keyframes float': {
+                        '0%, 100%': { transform: 'translateY(0px)' },
+                        '50%': { transform: 'translateY(-8px)' },
+                      },
                     }}
                   >
-                    {error}
-                  </Typography>
+                    <FaPhone size={30} color="white" />
+                  </Box>
                 </Box>
-              </Fade>
-            )}
+              </Box>
 
-            {/* Continue Button or Verification Animation */}
-            <Fade in timeout={1200}>
-              <Box sx={{ textAlign: 'center' }}>
-                {verifying ? (
-                  <Box sx={{ py: 3 }}>
-                    {success ? (
-                      <Fade in>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <CheckCircle sx={{ color: '#10b981', fontSize: 48, mb: 2 }} />
-                          <Typography variant="h6" sx={{ color: '#10b981', fontWeight: 600 }}>
-                            Verified Successfully!
-                          </Typography>
-                        </Box>
-                      </Fade>
-                    ) : (
-                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <CircularProgress 
-                          size={40} 
-                          sx={{ 
-                            color: '#56A9D9', 
-                            mb: 2,
-                            '& .MuiCircularProgress-circle': {
-                              strokeLinecap: 'round',
+              {/* Middle Section - Form Content */}
+              <div className="flex flex-col w-full items-center max-w-lg flex-1">
+                {/* OTP Input Fields */}
+                <Slide in direction="up" timeout={600}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: { xs: 1.5, sm: 2 },
+                      mb: 4,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {otp.map((data, index) => (
+                      <TextField
+                        key={index}
+                        inputRef={(el) => (inputRefs.current[index] = el)}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]"
+                        value={data}
+                        onChange={(e) => handleOtpChange(e.target, index)}
+                        onFocus={(e) => e.target.select()}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        variant="outlined"
+                        inputProps={{
+                          maxLength: 1,
+                          style: { textAlign: 'center' }
+                        }}
+                        sx={{
+                          width: { xs: '55px', sm: '64px' },
+                          height: { xs: '55px', sm: '64px' },
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '16px',
+                            background: 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: '2px solid transparent',
+                            backgroundClip: 'padding-box',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            '& fieldset': { 
+                              border: '2px solid #e2e8f0',
+                              borderRadius: '16px',
                             },
-                          }} 
-                        />
-                        <Typography variant="body1" sx={{ color: '#56A9D9', fontWeight: 600 }}>
-                          Verifying your code...
+                            '&:hover fieldset': { 
+                              borderColor: '#56A9D9',
+                              boxShadow: '0 4px 12px rgba(86, 169, 217, 0.15)',
+                            },
+                            '&.Mui-focused fieldset': { 
+                              borderColor: '#56A9D9',
+                              boxShadow: '0 8px 25px rgba(86, 169, 217, 0.25)',
+                            },
+                            '&.Mui-focused': {
+                              transform: 'translateY(-2px)',
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            textAlign: 'center',
+                            color: '#1e293b',
+                            fontSize: { xs: '1.4rem', sm: '1.6rem' },
+                            fontWeight: 600,
+                            py: 0,
+                          },
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Slide>
+
+                {/* Timer Section */}
+                <Fade in timeout={1000}>
+                  <Box sx={{ mb: 4, textAlign: 'center' }}>
+                    {isTiming ? (
+                      <Box
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          px: 3,
+                          py: 1.5,
+                          borderRadius: '12px',
+                          background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+                          border: '1px solid #e2e8f0',
+                          mb: 2,
+                        }}
+                      >
+                        <Timer sx={{ 
+                          color: '#64748b', 
+                          fontSize: 20 
+                        }} />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: '#64748b',
+                            fontWeight: 600,
+                            fontSize: '0.9rem',
+                          }}
+                        >
+                          Resend in {formatTimer(timer)}
                         </Typography>
                       </Box>
+                    ) : (
+                      <Button
+                        variant="text"
+                        onClick={handleResendCode}
+                        startIcon={<Refresh />}
+                        sx={{
+                          color: '#56A9D9',
+                          textTransform: 'none',
+                          fontWeight: 600,
+                          fontSize: '0.9rem',
+                          px: 2,
+                          py: 1,
+                          borderRadius: '10px',
+                          background: 'rgba(86, 169, 217, 0.1)',
+                          '&:hover': {
+                            background: 'rgba(86, 169, 217, 0.2)',
+                            transform: 'translateY(-1px)',
+                          },
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        Resend Code
+                      </Button>
                     )}
                   </Box>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={handleContinue}
-                    disabled={otp.some((digit) => digit === '')}
-                    sx={{
-                      py: 2,
-                      px: 6,
-                      fontSize: '1.1rem',
-                      fontWeight: 600,
-                      borderRadius: '16px',
-                      textTransform: 'none',
-                      background: otp.some((digit) => digit === '') 
-                        ? 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
-                        : 'linear-gradient(135deg, #56A9D9 0%, #4A90E2 100%)',
-                      color: otp.some((digit) => digit === '') ? '#94a3b8' : 'white',
-                      boxShadow: otp.some((digit) => digit === '') 
-                        ? 'none'
-                        : '0 8px 32px rgba(86, 169, 217, 0.4)',
-                      border: 'none',
-                      minWidth: '200px',
-                      '&:hover': {
-                        background: otp.some((digit) => digit === '') 
-                          ? 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
-                          : 'linear-gradient(135deg, #4A90E2 0%, #3b82f6 100%)',
-                        transform: otp.some((digit) => digit === '') ? 'none' : 'translateY(-2px)',
-                        boxShadow: otp.some((digit) => digit === '') 
-                          ? 'none'
-                          : '0 12px 40px rgba(86, 169, 217, 0.5)',
-                      },
-                      '&:disabled': {
-                        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
-                        color: '#94a3b8',
-                      },
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                  >
-                    Continue
-                  </Button>
-                )}
-              </Box>
-            </Fade>
-          </div>
-        </div>
+                </Fade>
 
-        {/* Right Half: Enhanced Image Section */}
-        <div className='flex-1 hidden md:flex flex-col items-center justify-center relative overflow-hidden'>
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              // background: `
-              //   linear-gradient(135deg, rgba(86, 169, 217, 0.1) 0%, rgba(74, 144, 226, 0.05) 100%),
-              //   radial-gradient(circle at 70% 30%, rgba(86, 169, 217, 0.1) 0%, transparent 70%)
-              // `,
-              backgroundColor: 'white',
-              zIndex: 0,
-            }}
-          />
-          <div style={{ position: 'relative', zIndex: 1, padding: '2rem' }}>
-            <img
-              src={verifyNumber}
-              alt="Verify-Number-Illustration"
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-                objectFit: 'contain',
-                // filter: 'drop-shadow(0 20px 40px rgba(86, 169, 217, 0.2))',
-                transform: 'scale(1.05)',
+                {/* Error Message */}
+                {error && (
+                  <Fade in>
+                    <Box
+                      sx={{
+                        mb: 3,
+                        p: 2,
+                        borderRadius: '12px',
+                        background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+                        border: '1px solid #fecaca',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Typography 
+                        sx={{ 
+                          color: '#dc2626', 
+                          fontWeight: 500,
+                          fontSize: '0.9rem',
+                        }}
+                      >
+                        {error}
+                      </Typography>
+                    </Box>
+                  </Fade>
+                )}
+              </div>
+
+              {/* Bottom Section - Continue Button */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, mt: 4 }}>
+                <Fade in timeout={1200}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    {verifying ? (
+                      <Box sx={{ py: 3 }}>
+                        {success ? (
+                          <Fade in>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                              <CheckCircle sx={{ color: '#10b981', fontSize: 48, mb: 2 }} />
+                              <Typography variant="h6" sx={{ color: '#10b981', fontWeight: 600 }}>
+                                Verified Successfully!
+                              </Typography>
+                            </Box>
+                          </Fade>
+                        ) : (
+                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <CircularProgress 
+                              size={40} 
+                              sx={{ 
+                                color: '#56A9D9', 
+                                mb: 2,
+                                '& .MuiCircularProgress-circle': {
+                                  strokeLinecap: 'round',
+                                },
+                              }} 
+                            />
+                            <Typography variant="body1" sx={{ color: '#56A9D9', fontWeight: 600 }}>
+                              Verifying your code...
+                            </Typography>
+                          </Box>
+                        )}
+                      </Box>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={handleContinue}
+                        disabled={otp.some((digit) => digit === '')}
+                        sx={{
+                          py: 2,
+                          px: 5,
+                          background: otp.some((digit) => digit === '') 
+                            ? 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'
+                            : 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
+                          color: otp.some((digit) => digit === '') ? '#9ca3af' : 'white',
+                          fontWeight: '600',
+                          fontSize: '1.1rem',
+                          borderRadius: '12px',
+                          boxShadow: otp.some((digit) => digit === '') 
+                            ? 'none'
+                            : '0 6px 20px rgba(86, 169, 217, 0.3)',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          textTransform: 'none',
+                          minWidth: '200px',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          '&:hover': {
+                            background: otp.some((digit) => digit === '') 
+                              ? 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'
+                              : 'linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)',
+                            boxShadow: otp.some((digit) => digit === '') 
+                              ? 'none'
+                              : '0 8px 28px rgba(86, 169, 217, 0.4)',
+                            transform: otp.some((digit) => digit === '') ? 'none' : 'translateY(-2px)',
+                          },
+                          '&:active': {
+                            transform: otp.some((digit) => digit === '') ? 'none' : 'translateY(-1px)',
+                          },
+                          '&:disabled': {
+                            background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+                            color: '#9ca3af',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                            transition: 'left 0.5s',
+                          },
+                          '&:hover::before': {
+                            left: otp.some((digit) => digit === '') ? '-100%' : '100%',
+                          },
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    )}
+                  </Box>
+                </Fade>
+              </Box>
+            </div>
+          </Fade>
+        </Box>
+
+        {/* Right Half: Pure White Image Section */}
+        <Box
+          sx={{
+            width: '40%',
+            flex: 1,
+            display: { xs: 'none', lg: 'flex' },
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            backgroundColor: '#ffffff',
+            '@media (max-width:1150px)': {
+              display: 'none',
+            },
+          }}
+        >
+          <Fade in timeout={1200}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
               }}
-            />
-          </div>
-        </div>
+            >
+              <img
+                src={verifyNumber}
+                alt="Verify OTP Illustration"
+                style={{
+                  maxWidth: '85%',
+                  height: 'auto',
+                  position: 'relative',
+                  zIndex: 1,
+                  transition: 'transform 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'scale(1.02) translateY(-5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'scale(1) translateY(0px)';
+                }}
+              />
+            </Box>
+          </Fade>
+        </Box>
       </Paper>
     </div>
   );

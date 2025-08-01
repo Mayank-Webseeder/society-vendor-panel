@@ -26,7 +26,7 @@ export const OnboardingProvider = ({ children }) => {
         workExperience: '',
         idProof: '',
         idProofFile: null,
-        payscale: '',
+        // payscale: '',
         preferredPaymentMethod: '',
         lastPayments: '',
         building: '',

@@ -64,7 +64,12 @@ const Step1_Loading = () => {
   }, [showSpinner, navigate]);
 
   return (
-    <div className='relative h-screen w-screen flex items-center justify-center overflow-hidden'>
+    <div className='relative min-h-screen z-20 w-screen flex items-center justify-center overflow-auto' style={{
+      // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
+      WebkitScrollbarWidth: 'none',
+      msOverflowStyle: 'none',
+      scrollbarWidth: 'none'
+    }}>
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
         <div className="absolute inset-0 opacity-30">
@@ -75,7 +80,7 @@ const Step1_Loading = () => {
       </div>
 
       {/* Main content */}
-      <div className='relative z-10 flex flex-col justify-center items-center max-w-2xl mx-auto px-6 pt-2'>
+      <div className='relative z-30 flex flex-col justify-center items-center max-w-2xl mx-auto px-6 pt-2'>
         {/* Hero illustration with enhanced styling */}
         <div className="relative mb-8 group">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-3xl blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-1000"></div>
@@ -190,6 +195,16 @@ const Step1_Loading = () => {
 
       {/* Enhanced styles */}
       <style>{`
+        /* Hide scrollbar for all browsers */
+        *::-webkit-scrollbar {
+          display: none;
+        }
+        
+        * {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        
         .animate-dots {
           font-weight: bold;
           letter-spacing: 2px;

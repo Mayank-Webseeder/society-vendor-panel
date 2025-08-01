@@ -13,7 +13,7 @@ const defaultUser = {
   workExperience: "Less than 1 year",
   idProof: "None",
   idProofFile: null,
-  payscale: '₹10,000 - ₹15,000',
+  // payscale: '₹10,000 - ₹15,000',
   preferredPaymentMethod: 'UPI',
   lastPayments: '0',
   building: "Flat-203/Shanti Residency",
