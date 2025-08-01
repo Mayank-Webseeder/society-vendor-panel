@@ -39,6 +39,8 @@ export const OnboardingProvider = ({ children }) => {
         address:'',
         locationCoordinates: '',
         whatYouOffer: [],
+        servicesCount: 0, // Initialize servicesCount
+        servicesCount: '',
         workingDays: [],
         // workingHours: '',    //ex.'10:00 AM - 7:30 PM'
         phone: '',
@@ -50,6 +52,10 @@ export const OnboardingProvider = ({ children }) => {
         notificationsEnabled: true,
         agreedTermsAndConditions: false,
         agreedPrivacyPolicy: false,
+        serviceBasePrice: 1000, // Base price per service
+        totalCost: 0, // Total cost based on servicesCount
+        discountLowerLimit: 3,
+        discountUpperLimit: 5,
     });
 
     
@@ -68,6 +74,12 @@ export const OnboardingProvider = ({ children }) => {
                 updatedData.country,
                 updatedData.pincode,
             ].filter(Boolean).join(', '); // Filter out empty values and join with commas
+
+            // Dynamically compute servicesCount based on whatYouOffer
+            updatedData.servicesCount = updatedData.whatYouOffer.length;
+
+            // Calculate totalCost based on servicesCount and serviceBasePrice
+            updatedData.totalCost = updatedData.servicesCount * updatedData.serviceBasePrice;
 
             return updatedData;
         });

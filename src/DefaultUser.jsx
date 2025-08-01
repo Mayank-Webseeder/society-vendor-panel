@@ -36,6 +36,9 @@ const defaultUser = {
   },
   locationCoordinates: "N/A",
   whatYouOffer: ["Housekeeping Services", "Pest Control"],
+  get servicesCount() {    // Since servicesCount is defined as a getter in the defaultUser object, you can access it like a regular property, ex, defaultUser.servicesCount. A getter is a special type of property that calculates its value dynamically when accessed.
+    return this.whatYouOffer.length;
+  },
   workingDays: ['Mon', 'Wed', 'Thu', 'Fri', 'Sun'],
   // workingHours: '9 AM - 7 PM',
   phone: "+91 9999999999",
@@ -53,6 +56,10 @@ const defaultUser = {
   membershipEndDate: '2026-04-12',   // YYYY-MM-DD
   membershipEndTime: '11:30',
   testMode: false,
+  serviceBasePrice: 1000, // Base price per service
+  totalCost: 0, // Total cost based on servicesCount
+  discountLowerLimit: 3,
+  discountUpperLimit: 5,
 };
 
 export default defaultUser;

@@ -15,6 +15,7 @@ const TEST_OTP = import.meta.env.VITE_TEST_OTP;
 
 
 const Step8_VerifyOtp = () => {
+
   const { login } = useAuth();
   const { setUser } = useUser();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
@@ -68,6 +69,7 @@ const Step8_VerifyOtp = () => {
 
   const formatTimer = (t) => `${Math.floor(t / 60)}:${(t % 60).toString().padStart(2, '0')}`;
 
+  
   const handleContinue = async () => {
     const enteredOtp = otp.join('');
 
@@ -123,7 +125,7 @@ const Step8_VerifyOtp = () => {
         setVerifying(false);
         login(); // Log in the user
         navigate('/dashboard');
-      }, 1000);
+      }, 2000);
     } catch (error) {
       setError('Failed to create profile. Please try again.');
       console.error('Error creating profile:', error);
@@ -160,7 +162,6 @@ const Step8_VerifyOtp = () => {
           },
         }}
       >
-
         {/* Debugging Purposes */}
         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
@@ -208,7 +209,6 @@ const Step8_VerifyOtp = () => {
               zIndex: 0,
             }}
           />
-
           {/* Decorative corner accents */}
           <div
             style={{
@@ -223,7 +223,6 @@ const Step8_VerifyOtp = () => {
               zIndex: 0,
             }}
           />
-
           <div
             style={{
               position: 'absolute',
@@ -406,6 +405,7 @@ const Step8_VerifyOtp = () => {
                 {/* Timer Section */}
                 <Fade in timeout={1000}>
                   <Box sx={{ mb: 4, textAlign: 'center' }}>
+                    {/* Resend Timer */}
                     {isTiming ? (
                       <Box
                         sx={{
@@ -436,6 +436,7 @@ const Step8_VerifyOtp = () => {
                         </Typography>
                       </Box>
                     ) : (
+                      // Resend Button
                       <Button
                         variant="text"
                         onClick={handleResendCode}
@@ -585,6 +586,7 @@ const Step8_VerifyOtp = () => {
             </div>
           </Fade>
         </Box>
+
 
         {/* Right Half: Pure White Image Section */}
         <Box

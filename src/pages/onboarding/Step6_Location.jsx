@@ -21,7 +21,7 @@ const Step6_Location = () => {
   }, []);
 
 
-  // Function to get address from coordinates using OpenCAge & Nominatim
+  // Function to get address from coordinates using OpenCage & Nominatim(fallback)
   const getAddressFromCoords = async (lat, lng) => {
     // Primary: Try OpenCage first (more accurate)
     const OPENCAGE_API_KEY = import.meta.env.VITE_OPENCAGE_API_KEY;
@@ -155,7 +155,6 @@ const Step6_Location = () => {
           backgroundSize: '40px 40px',
         }}
       />
-
       {/* Subtle geometric accent */}
       <div
         className="absolute top-0 left-0 w-1/2 h-full"
@@ -252,7 +251,6 @@ const Step6_Location = () => {
                 zIndex: 0,
               }}
             />
-
             {/* Decorative corner accents */}
             <div
               style={{

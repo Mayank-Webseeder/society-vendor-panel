@@ -11,7 +11,9 @@ import phonepe from '../../assets/logos/phonepe.svg';
 import amazonpay from '../../assets/logos/amazonpay.svg';
 import gpay from '../../assets/logos/gpay.svg';
 
+
 const PaymentMethod = ({ onUpiClick }) => {
+
   const navigate = useNavigate();
 
   const planBenefits = [

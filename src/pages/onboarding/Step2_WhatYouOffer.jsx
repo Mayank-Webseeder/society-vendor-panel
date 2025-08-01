@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { Paper, Typography, Checkbox, FormControlLabel, Button, Box, Fade, Zoom } from '@mui/material';
+import { Paper, Typography, Checkbox, FormControlLabel, Button, Box, Fade, Zoom, Tooltip } from '@mui/material';
 import { Search, ChevronDown, X, Briefcase } from 'lucide-react';
+import { IoInformationCircleOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import onboardingImage from '../../assets/onboardingImage.png';
 import dummyOffers from '../../static/dummyData_ServicesOffered';
 import { useOnBoarding } from './OnboardingContext';
-
 
 
 const Step2_WhatYouOffer = () => {
@@ -17,6 +17,7 @@ const Step2_WhatYouOffer = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedServices, setSelectedServices] = useState(onboardingData.whatYouOffer || []);
   const [showContent, setShowContent] = useState(false);
+  const [showInfoDialog, setShowInfoDialog] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ const Step2_WhatYouOffer = () => {
       <Paper
         elevation={0}
         sx={{
+          // border: '2px solid green',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -115,7 +117,7 @@ const Step2_WhatYouOffer = () => {
         {/* Left Half: Redesigned Form Content */}
         <Box
           sx={{
-            // border: '2px solid red',
+            // border: '2px solid yellow',
             display: 'flex',
             flex: 1,
             flexDirection: 'column',
@@ -125,8 +127,10 @@ const Step2_WhatYouOffer = () => {
             alignItems: 'center',
             px: { xs: 3, sm: 4, md: 5 },
             py: { xs: 3, sm: 4 },
-            height: '100%',
+            minHeight: '100%',
             backgroundColor: '#ffffff',
+            overflow: 'visible', // Ensure content is visible
+            flexWrap: 'wrap', // Wrap content properly
             '@media (max-width:1200px)': {
               width: '100%',
               alignItems: 'center',
@@ -156,7 +160,6 @@ const Step2_WhatYouOffer = () => {
               zIndex: 0,
             }}
           />
-
           {/* Decorative corner accents */}
           <div
             style={{
@@ -171,7 +174,6 @@ const Step2_WhatYouOffer = () => {
               zIndex: 0,
             }}
           />
-
           <div
             style={{
               position: 'absolute',
@@ -197,11 +199,10 @@ const Step2_WhatYouOffer = () => {
                 position: 'relative', 
                 minWidth: 0,
                 width: '100%',
-                zIndex: 1,
                 textAlign: 'center',
                 minHeight: '100%',
               }}
-              className='w-full h-full rounded-xl flex flex-col'
+              className='w-full h-full rounded-xl z-40 flex flex-col'
             >
               {/* Top Section - Hero */}
               <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
@@ -250,7 +251,7 @@ const Step2_WhatYouOffer = () => {
                   We'll help connect you with the right societies
                 </Typography>
 
-                {/* Decorative Icon */}
+                {/* Briefcase Icon */}
                 <Box
                   sx={{
                     display: 'flex',
@@ -284,9 +285,9 @@ const Step2_WhatYouOffer = () => {
               {/* Middle Section - Form Content */}
               <div className="flex flex-col w-full items-center max-w-lg flex-1">
 
-                {/* Multi-Select Input - Enhanced */}
-                <div className="relative w-full mb-6" ref={dropdownRef}>
-                  <Zoom in={showContent} timeout={800}>
+                {/* Multi-Select Input with Info Icon */}
+                <div className="relative w-full mb-6 flex items-center gap-3" ref={dropdownRef}>
+                  <Zoom in={showContent} timeout={800} style={{ flex: 1 }}>
                     <div
                       className="w-full bg-white rounded-xl py-4 pl-14 pr-4 text-gray-500 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 border-2 border-gray-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-all duration-300 backdrop-blur-sm"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -309,6 +310,87 @@ const Step2_WhatYouOffer = () => {
                     </div>
                   </Zoom>
 
+                  {/* Info Icon with Hover Dialog */}
+                  <div 
+                    className="relative"
+                    onMouseEnter={() => setShowInfoDialog(true)}
+                    onMouseLeave={() => setShowInfoDialog(false)}
+                  >
+                    <Zoom in={showContent} timeout={1000}>
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md">
+                        <IoInformationCircleOutline 
+                          size={20} 
+                          className="text-blue-600 hover:text-blue-700 transition-colors duration-200" 
+                        />
+                      </div>
+                    </Zoom>
+
+                    {/* Info Dialog */}
+                    {showInfoDialog && (
+                      <Fade in={showInfoDialog} timeout={200}>
+                        <div
+                          className="absolute top-12 right-0 w-80 bg-white rounded-xl shadow-2xl border border-blue-100 p-4 z-[999999]"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)',
+                            backdropFilter: 'blur(10px)',
+                            transform: 'translateX(50%)',
+                          }}
+                        >
+                          {/* Arrow pointing up */}
+                          <div 
+                            className="absolute -top-2 right-1/2 transform translate-x-1/2 w-4 h-4 bg-white border-l border-t border-blue-100 rotate-45 z-[999999]"
+                            style={{ 
+                              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)',
+                            }}
+                          />
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: '1rem',
+                                  fontWeight: '600',
+                                  color: '#1e3a8a',
+                                  mb: 1,
+                                  fontFamily: 'Roboto, sans-serif',
+                                }}
+                              >
+                                Service Registration Info
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontSize: '0.875rem',
+                                  color: 'rgba(30, 58, 138, 0.8)',
+                                  lineHeight: 1.5,
+                                  mb: 2,
+                                  fontFamily: 'Roboto, sans-serif',
+                                }}
+                              >
+                                A charge of ₹{onboardingData.serviceBasePrice} is applicable per service being registered.
+                              </Typography>
+                              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    fontSize: '0.85rem',
+                                    color: '#059669',
+                                    fontWeight: '600',
+                                    lineHeight: 1.4,
+                                    fontFamily: 'Roboto, sans-serif',
+                                  }}
+                                >
+                                  💡 Discount: Select at least {onboardingData.discountLowerCount} services to avail special discounts!
+                                </Typography>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Fade>
+                    )}
+                  </div>
+
+                  {/* Services Select Dropdown */}
                   {isDropdownOpen && (
                     <Fade in={isDropdownOpen} timeout={300}>
                       <div
@@ -318,10 +400,10 @@ const Step2_WhatYouOffer = () => {
                           overflowY: 'auto',
                           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%)',
                           backdropFilter: 'blur(10px)',
-                          // Hide scrollbar for webkit browsers
-                          WebkitScrollbarWidth: 'none',
-                          msOverflowStyle: 'none',
-                          scrollbarWidth: 'none',
+                          // // Hide scrollbar for webkit browsers
+                          // WebkitScrollbarWidth: 'none',
+                          // msOverflowStyle: 'none',
+                          // scrollbarWidth: 'none',
                         }}
                       >
                         {dummyOffers.map((offer, index) => (
@@ -362,7 +444,7 @@ const Step2_WhatYouOffer = () => {
                   )}
                 </div>
 
-                {/* Selected Services Tags - Enhanced */}
+                {/* Selected Services Tags */}
                 {selectedServices.length > 0 && (
                   <Fade in={selectedServices.length > 0} timeout={500}>
                     <div className="flex flex-wrap gap-x-3 gap-y-3 w-full">
@@ -490,6 +572,7 @@ const Step2_WhatYouOffer = () => {
         {/* Right Half: Pure White Image Section */}
         <Box
           sx={{
+            // border: '2px solid aqua',
             width: '40%',
             flex: 1,
             display: { xs: 'none', lg: 'flex' },
@@ -520,9 +603,9 @@ const Step2_WhatYouOffer = () => {
                   maxWidth: '85%',
                   height: 'auto',
                   position: 'relative',
-                  zIndex: 1,
                   transition: 'transform 0.3s ease',
                 }}
+                className='z-20'
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.02) translateY(-5px)';
                 }}
@@ -533,6 +616,7 @@ const Step2_WhatYouOffer = () => {
             </Box>
           </Fade>
         </Box>
+
       </Paper>
     </div>
   );

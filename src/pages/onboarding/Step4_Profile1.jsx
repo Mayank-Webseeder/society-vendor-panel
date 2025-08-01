@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton, Fade, Grow, FormControl, Select, MenuItem, Zoom } from '@mui/material';
+import { Paper, Typography, Button, TextField, Box, InputAdornment, IconButton, Fade, Grow, FormControl, Select, MenuItem } from '@mui/material';
 import { Paperclip, User, Building, Briefcase, Shield, CheckCircle, IndianRupee, UserCheck } from 'lucide-react';
 import { MdOutlinePayment } from "react-icons/md";
 import { BiReceipt } from "react-icons/bi";
@@ -49,6 +49,7 @@ const Step4_Profile1 = () => {
       lastPayments,
     });
   }, [yourName, gender, businessName, yourExperience, idProof, idProofFile, preferredPaymentMethod, lastPayments, updateOnboardingData]);
+
 
   // Helper to get initials from name
   const getInitials = (name) => {
@@ -211,7 +212,6 @@ const Step4_Profile1 = () => {
               zIndex: 0,
             }}
           />
-
           {/* Decorative corner accents */}
           <div
             style={{
@@ -226,7 +226,6 @@ const Step4_Profile1 = () => {
               zIndex: 0,
             }}
           />
-
           <div
             style={{
               position: 'absolute',
@@ -713,7 +712,6 @@ const Step4_Profile1 = () => {
                       )}
                     </Box>
                   </Grow>
-                  {/* Empty column */}
                   <Box></Box>
 
 

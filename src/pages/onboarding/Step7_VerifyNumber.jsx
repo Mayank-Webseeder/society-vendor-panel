@@ -70,7 +70,6 @@ const Step7_VerifyNumber = () => {
           },
         }}
       >
-
         {/* Debugging Purposes */}
         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
@@ -438,6 +437,7 @@ const Step7_VerifyNumber = () => {
             </div>
           </Fade>
         </Box>
+
 
         {/* Right Half: Pure White Image Section */}
         <Box

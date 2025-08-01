@@ -151,7 +151,6 @@ const Step5_Profile2 = () => {
               zIndex: 0,
             }}
           />
-
           {/* Decorative corner accents */}
           <div
             style={{
@@ -289,7 +288,7 @@ const Step5_Profile2 = () => {
                     width: '100%',
                   }}
                 >
-                  {/* Row 1: Building/Flat & Locality/Town */}
+                  {/* Row 1: Building/Flat  &  Landmark */}
                   <Grow in={true} timeout={600}>
                     <Box>
                       <Typography
@@ -351,70 +350,6 @@ const Step5_Profile2 = () => {
                       />
                     </Box>
                   </Grow>
-                  <Grow in={true} timeout={700}>
-                    <Box>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: 'rgba(0, 0, 0, 0.8)',
-                          mb: 1.5,
-                          fontSize: '1rem',
-                          fontWeight: 600,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1
-                        }}
-                      >
-                        {getFieldIcon('locality')}
-                        Locality/Town
-                        {isFieldComplete(localityTown) && (
-                          <CheckCircle size={16} style={{ color: '#10B981' }} />
-                        )}
-                      </Typography>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        placeholder="Enter Locality/Town"
-                        value={localityTown}
-                        onChange={(e) => setLocalityTown(e.target.value)}
-                        onFocus={() => setFocusedField('locality')}
-                        onBlur={() => setFocusedField('')}
-                        required
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            backgroundColor: focusedField === 'locality' ? '#f0f9ff' : '#ffffff',
-                            transition: 'all 0.3s ease',
-                            '& fieldset': {
-                              borderColor: focusedField === 'locality' ? '#56A9D9' : '#e2e8f0',
-                              borderWidth: focusedField === 'locality' ? '2px' : '1px',
-                            },
-                            '&:hover fieldset': {
-                              borderColor: '#56A9D9',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#56A9D9',
-                              borderWidth: '2px',
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
-                            fontWeight: 500,
-                          },
-                          '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
-                            opacity: 1,
-                          },
-                        }}
-                      />
-                    </Box>
-                  </Grow>
-
-
-                  {/* Row 2: Landmark & State */}
                   <Grow in={true} timeout={800}>
                     <Box>
                       <Typography
@@ -476,6 +411,134 @@ const Step5_Profile2 = () => {
                       />
                     </Box>
                   </Grow>
+                  
+
+                  {/* Row 2: Locality/Town  &  City */}
+                  <Grow in={true} timeout={700}>
+                    <Box>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: 'rgba(0, 0, 0, 0.8)',
+                          mb: 1.5,
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1
+                        }}
+                      >
+                        {getFieldIcon('locality')}
+                        Locality/Town
+                        {isFieldComplete(localityTown) && (
+                          <CheckCircle size={16} style={{ color: '#10B981' }} />
+                        )}
+                      </Typography>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        placeholder="Enter Locality/Town"
+                        value={localityTown}
+                        onChange={(e) => setLocalityTown(e.target.value)}
+                        onFocus={() => setFocusedField('locality')}
+                        onBlur={() => setFocusedField('')}
+                        required
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '12px',
+                            backgroundColor: focusedField === 'locality' ? '#f0f9ff' : '#ffffff',
+                            transition: 'all 0.3s ease',
+                            '& fieldset': {
+                              borderColor: focusedField === 'locality' ? '#56A9D9' : '#e2e8f0',
+                              borderWidth: focusedField === 'locality' ? '2px' : '1px',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#56A9D9',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#56A9D9',
+                              borderWidth: '2px',
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            color: '#1a1a1a',
+                            fontSize: '1rem',
+                            py: '14px',
+                            px: '16px',
+                            fontWeight: 500,
+                          },
+                          '& .MuiInputBase-input::placeholder': {
+                            color: '#94a3b8',
+                            opacity: 1,
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Grow>
+                  <Grow in={true} timeout={1000}>
+                    <Box>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: 'rgba(0, 0, 0, 0.8)',
+                          mb: 1.5,
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1
+                        }}
+                      >
+                        {getFieldIcon('city')}
+                        City
+                        {isFieldComplete(city) && (
+                          <CheckCircle size={16} style={{ color: '#10B981' }} />
+                        )}
+                      </Typography>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        placeholder="Enter City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        onFocus={() => setFocusedField('city')}
+                        onBlur={() => setFocusedField('')}
+                        required
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '12px',
+                            backgroundColor: focusedField === 'city' ? '#f0f9ff' : '#ffffff',
+                            transition: 'all 0.3s ease',
+                            '& fieldset': {
+                              borderColor: focusedField === 'city' ? '#56A9D9' : '#e2e8f0',
+                              borderWidth: focusedField === 'city' ? '2px' : '1px',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#56A9D9',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#56A9D9',
+                              borderWidth: '2px',
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            color: '#1a1a1a',
+                            fontSize: '1rem',
+                            py: '14px',
+                            px: '16px',
+                            fontWeight: 500,
+                          },
+                          '& .MuiInputBase-input::placeholder': {
+                            color: '#94a3b8',
+                            opacity: 1,
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Grow>
+
+
+                  {/* Row 3: State  &  Pincode */}
                   <Grow in={true} timeout={900}>
                     <Box>
                       <Typography
@@ -553,70 +616,6 @@ const Step5_Profile2 = () => {
                           ))}
                         </Select>
                       </FormControl>
-                    </Box>
-                  </Grow>
-
-
-                  {/* Row 3: City & Pincode */}
-                  <Grow in={true} timeout={1000}>
-                    <Box>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: 'rgba(0, 0, 0, 0.8)',
-                          mb: 1.5,
-                          fontSize: '1rem',
-                          fontWeight: 600,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1
-                        }}
-                      >
-                        {getFieldIcon('city')}
-                        City
-                        {isFieldComplete(city) && (
-                          <CheckCircle size={16} style={{ color: '#10B981' }} />
-                        )}
-                      </Typography>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        placeholder="Enter City"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        onFocus={() => setFocusedField('city')}
-                        onBlur={() => setFocusedField('')}
-                        required
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            backgroundColor: focusedField === 'city' ? '#f0f9ff' : '#ffffff',
-                            transition: 'all 0.3s ease',
-                            '& fieldset': {
-                              borderColor: focusedField === 'city' ? '#56A9D9' : '#e2e8f0',
-                              borderWidth: focusedField === 'city' ? '2px' : '1px',
-                            },
-                            '&:hover fieldset': {
-                              borderColor: '#56A9D9',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#56A9D9',
-                              borderWidth: '2px',
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
-                            fontWeight: 500,
-                          },
-                          '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
-                            opacity: 1,
-                          },
-                        }}
-                      />
                     </Box>
                   </Grow>
                   <Grow in={true} timeout={1100}>

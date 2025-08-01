@@ -43,7 +43,6 @@ const OnboardingLayout = () => {
             transform: 'translate(50%, -50%)',
           }}
         />
-
         <div
           className="absolute bottom-0 left-0 rounded-full"
           style={{
@@ -89,6 +88,8 @@ const OnboardingLayout = () => {
           </h1>
         </div>
 
+
+          
         <Outlet />
 
       </div>
