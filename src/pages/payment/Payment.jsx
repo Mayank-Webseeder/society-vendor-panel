@@ -27,13 +27,13 @@ const Payment = () => {
     <div 
       className="flex flex-col min-h-screen w-full"
       style={{
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)', // Same gradient as MembershipBenefits.jsx
+        background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 30%, #94a3b8 70%, #1e3a8a 100%)',
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
         overflow: 'hidden',
       }}  
     >
-      {/* Background Pattern */}
+      {/* Enhanced Background Pattern */}
       <div
         style={{
           position: 'absolute',
@@ -41,10 +41,8 @@ const Payment = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: `
-            radial-gradient(circle at 25% 25%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(86, 169, 217, 0.02) 0%, transparent 50%)
-          `,
+          backgroundSize: '200px 200px, 300px 300px, 30px 30px, 30px 30px',
+          opacity: 0.8,
           pointerEvents: 'none',
         }}
       />

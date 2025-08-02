@@ -35,7 +35,7 @@ const defaultUser = {
     ].join(', ');
   },
   locationCoordinates: "N/A",
-  whatYouOffer: ["Housekeeping Services", "Pest Control"],
+  whatYouOffer: ["Housekeeping Services", "Pest Control", "Society Office Administration", "Carpentry Work", "Waste Management", "Elevator Maintenance", "Plumbing Services"],
   get servicesCount() {    // Since servicesCount is defined as a getter in the defaultUser object, you can access it like a regular property, ex, defaultUser.servicesCount. A getter is a special type of property that calculates its value dynamically when accessed.
     return this.whatYouOffer.length;
   },
@@ -50,16 +50,19 @@ const defaultUser = {
   agreedTermsAndConditions: false,
   agreedPrivacyPolicy: false,
   membershipActive: false,
-  membershipStatus: "GOLD",
+  membershipStatus: "Premium",
   membershipPrice: 999,
   membershipStartDate: '2025-04-12', // YYYY-MM-DD
   membershipEndDate: '2026-04-12',   // YYYY-MM-DD
   membershipEndTime: '11:30',
   testMode: false,
   serviceBasePrice: 1000, // Base price per service
-  totalCost: 0, // Total cost based on servicesCount
+  get totalCost() {
+    return this.serviceBasePrice * this.servicesCount;
+  },
   discountLowerLimit: 3,
   discountUpperLimit: 5,
+  gstRate: 0.18 // 18% GST for services (standard rate for professional/maintenance services in India)
 };
 
 export default defaultUser;

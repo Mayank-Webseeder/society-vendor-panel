@@ -1,4 +1,4 @@
-import GoldMembershipCard from '../components/GoldMembershipCard';
+import SubscriptionCard from '../components/SubscriptionCard';
 import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useUser } from '../UserContext';
@@ -66,9 +66,9 @@ const MembershipPage = () => {
                     </div>
                 </div>
 
-                {/* Gold Membership Card Component */}
+                {/* Subscription Card Component */}
                 <div className="w-full flex">
-                    <GoldMembershipCard />
+                    <SubscriptionCard />
                 </div>
             </>
         ) : (

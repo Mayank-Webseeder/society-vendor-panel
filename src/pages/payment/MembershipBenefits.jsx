@@ -1,7 +1,13 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Check, Star, Shield, Zap, Users, Award } from 'lucide-react';
+import { useState } from 'react';
+import BillingModal from '../../components/modals/payment/BillingModal';
+
 
 const MembershipBenefits = () => {
+
+  const [billingModalOpen, setBillingModalOpen] = useState(false);
+
   const benefits = [
     {
       icon: <Users size={18} />,
@@ -25,28 +31,36 @@ const MembershipBenefits = () => {
     },
     {
       icon: <Award size={18} />,
-      text: 'Yearly membership at just ₹999',
-      highlight: '₹999'
+      text: 'A customized plan for all your services',
+      highlight: 'customized plan'
     },
   ];
 
   const handleSubscribe = () => {
-    console.log("Subscribe Now clicked!");
+    setBillingModalOpen(true);
   };
+
+  const handleProceedToPayment = () => {
+    setBillingModalOpen(false);
+    // Here you can add navigation to actual payment flow
+    console.log("Proceeding to payment gateway...");
+  };
+
+  
 
   return (
     <Box
       sx={{
-        // border: '2px solid green',
+        border: '1px solid #9ca3af',
         width: '100%',
         height: '100%',
         display: 'flex',
-        borderRadius: 5,
+        borderRadius: '25px',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 30%, #cbd5e1 100%)',
         fontFamily: 'Inter, sans-serif',
-        p: { xs: 3, sm: 4, md: 5 },
+        p: { xs: 3, sm: 4, md: 4 },
         boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
@@ -57,42 +71,49 @@ const MembershipBenefits = () => {
           right: '-50%',
           width: '100%',
           height: '100%',
-          background: 'radial-gradient(circle, rgba(86, 169, 217, 0.05) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
           pointerEvents: 'none',
         }
       }}
     >
-      {/* Background Pattern */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `
-            radial-gradient(circle at 25% 25%, rgba(86, 169, 217, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(86, 169, 217, 0.02) 0%, transparent 50%)
-          `,
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* VELRA Title Section */}
-      <Box sx={{ mb: 4, zIndex: 10 }}>
+      <Box 
+        sx={{ 
+          mb: 4, 
+          zIndex: 10, 
+          display:'inline-flex', 
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
         <Typography
           variant="h2"
+          className='text-blue-500'
           sx={{
-            fontSize: { xs: '3.5rem', sm: '4.5rem', md: '5.5rem' },
-            fontWeight: 800,
-            background: 'linear-gradient(135deg, #56A9D9 0%, #4A8BB0 100%)',
-            backgroundClip: 'text',
+            // border: '2px solid red',
+            display: 'inline',
+            fontWeight: '700',
+            background: 'linear-gradient(90deg, #85aff2, #2b5bab)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            mb: 1,
+            fontSize: { xs: '3rem', md: '5.2rem' },
+            fontFamily: 'Loto, sans-serif',
+            letterSpacing: '0.06em',
             textAlign: 'left',
-            letterSpacing: '-0.02em',
-            textShadow: '0 4px 8px rgba(86, 169, 217, 0.2)',
+            textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+            position: 'relative',
+            mb: 1,
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: '-4px',
+              left: 40,
+              right: 40,
+              // width: '60%',
+              height: '2px',
+              background: 'linear-gradient(90deg, #85aff2, #2b5bab)',
+              borderRadius: '1px',
+            },
           }}
         >
           VELRA
@@ -103,13 +124,14 @@ const MembershipBenefits = () => {
           sx={{
             fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.4rem' },
             color: '#64748b',
-            mb: 1,
+            mt: 3,
+            mb: 0.5,
             textAlign: 'left',
             lineHeight: 1.4,
             fontWeight: 500,
           }}
         >
-          Just ₹999/year. One payment. Full access.
+          Fixed charge/service. One payment.
         </Typography>
         <Typography
           variant="body1"
@@ -120,7 +142,7 @@ const MembershipBenefits = () => {
             fontWeight: 400,
           }}
         >
-          No hassle.
+          Full access. No hassle.
         </Typography>
       </Box>
 
@@ -133,19 +155,19 @@ const MembershipBenefits = () => {
           p: { xs: 3, sm: 4 },
           border: '1px solid rgba(255, 255, 255, 0.2)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06)',
-          mb: 3,
+          mb: 4,
           zIndex: 10,
         }}
       >
         {/* Get Started Section */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography
             variant="h4"
             sx={{
               fontWeight: 700,
-              color: '#1e293b',
+              color: 'rgba(30, 41, 59, 0.8)',
               mb: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
               lineHeight: 1.2,
             }}
@@ -161,7 +183,7 @@ const MembershipBenefits = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Vendor Gold Membership
+              A Premium Subscription.
             </Box>
           </Typography>
           
@@ -175,7 +197,7 @@ const MembershipBenefits = () => {
               fontSize: { xs: '1rem', sm: '1.1rem' },
             }}
           >
-            One plan. All benefits.
+            One customized plan. All benefits.
           </Typography>
         </Box>
 
@@ -185,7 +207,7 @@ const MembershipBenefits = () => {
             variant="h5"
             sx={{
               fontWeight: 600,
-              color: '#1e293b',
+              color: 'rgba(30, 41, 59, 0.8)',
               mb: 3,
               textAlign: 'left',
               fontSize: { xs: '1.25rem', sm: '1.4rem' },
@@ -194,22 +216,10 @@ const MembershipBenefits = () => {
               gap: 1,
             }}
           >
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, #56A9D9 0%, #4A8BB0 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Star size={16} color="white" />
-            </Box>
             Why Join?
           </Typography>
           
+          {/* Benefits section */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {benefits.map((benefit, index) => (
               <Box
@@ -238,6 +248,7 @@ const MembershipBenefits = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: 'white',
                     mr: 3,
                     flexShrink: 0,
                   }}
@@ -266,7 +277,7 @@ const MembershipBenefits = () => {
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            mb: 4,
+            mb: 1.5,
             p: 2,
             borderRadius: '12px',
             background: 'rgba(34, 197, 94, 0.05)',
@@ -287,8 +298,9 @@ const MembershipBenefits = () => {
         </Box>
       </Box>
 
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
-        {/* Subscribe Button */}
+
+      {/* Subscribe Button */}
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button
           variant="contained"
           onClick={handleSubscribe}
@@ -339,7 +351,6 @@ const MembershipBenefits = () => {
         </Button>
       </Box>
       
-
       {/* Bottom decorative elements */}
       <Box
         sx={{
@@ -364,6 +375,14 @@ const MembershipBenefits = () => {
           background: 'rgba(86, 169, 217, 0.1)',
           zIndex: 1,
         }}
+      />
+      
+
+      {/* Billing Modal */}
+      <BillingModal
+        open={billingModalOpen}
+        onClose={() => setBillingModalOpen(false)}
+        onProceedToPayment={handleProceedToPayment}
       />
     </Box>
   );

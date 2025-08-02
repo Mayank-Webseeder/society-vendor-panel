@@ -40,7 +40,6 @@ export const OnboardingProvider = ({ children }) => {
         locationCoordinates: '',
         whatYouOffer: [],
         servicesCount: 0, // Initialize servicesCount
-        servicesCount: '',
         workingDays: [],
         // workingHours: '',    //ex.'10:00 AM - 7:30 PM'
         phone: '',
@@ -56,6 +55,7 @@ export const OnboardingProvider = ({ children }) => {
         totalCost: 0, // Total cost based on servicesCount
         discountLowerLimit: 3,
         discountUpperLimit: 5,
+        gstRate: 0.18,
     });
 
     

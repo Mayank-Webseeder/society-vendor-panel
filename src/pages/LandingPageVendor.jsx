@@ -11,10 +11,12 @@ import {
   Support as SupportIcon,
   Analytics as AnalyticsIcon,
   MonetizationOn as MonetizationOnIcon,
-  Business as BusinessIcon
+  // Business as BusinessIcon
 } from '@mui/icons-material';
 
+
 const LandingPageVendor = () => {
+
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
 
@@ -93,6 +95,8 @@ const LandingPageVendor = () => {
     },
   };
 
+
+
   return (
     <Box
       sx={{
@@ -118,7 +122,6 @@ const LandingPageVendor = () => {
           opacity: 0.5,
         }}
       />
-
       {/* Subtle geometric accent */}
       <Box
         sx={{
@@ -132,7 +135,6 @@ const LandingPageVendor = () => {
           transformOrigin: 'top',
         }}
       />
-
       {/* Professional corner accents */}
       <Box
         sx={{
@@ -146,7 +148,6 @@ const LandingPageVendor = () => {
           transform: 'translate(50%, -50%)',
         }}
       />
-
       <Box
         sx={{
           position: 'absolute',
@@ -172,10 +173,11 @@ const LandingPageVendor = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              py: 3,
-              px: 2,
+              py: { xs: 2, md: 3 },
+              px: { xs: 0.5, md: 2 },
             }}
           >
+            {/* VELRA branding */}
             <Typography
               variant="h4"
               sx={{
@@ -183,7 +185,7 @@ const LandingPageVendor = () => {
                 background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                fontSize: { xs: '2rem', md: '3rem' },
+                fontSize: { xs: '1.5rem', md: '3rem' },
                 fontFamily: 'Roboto, sans-serif',
                 letterSpacing: '0.1em',
                 textAlign: 'center',
@@ -205,6 +207,7 @@ const LandingPageVendor = () => {
               VELRA
             </Typography>
 
+            {/* Login / SignUp buttons */}
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
                 variant="outlined"
@@ -212,8 +215,8 @@ const LandingPageVendor = () => {
                 sx={{
                   borderColor: 'rgba(255,255,255,0.3)',
                   color: 'white',
-                  px: 3,
-                  py: 1,
+                  px: { xs: 2, md: 3 },
+                  py: { xs: 0.5, md: 1 },
                   borderRadius: '8px',
                   backgroundColor: 'rgba(255,255,255,0.05)',
                   fontWeight: '600',
@@ -236,8 +239,8 @@ const LandingPageVendor = () => {
                 sx={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                   color: 'white',
-                  px: 3,
-                  py: 1,
+                  px: { xs: 2, md: 3 },
+                  py: { xs: 0.5, md: 1 },
                   borderRadius: '8px',
                   fontWeight: '600',
                   boxShadow: '0 4px 15px rgba(59,130,246,0.3)',
@@ -249,7 +252,7 @@ const LandingPageVendor = () => {
                   },
                 }}
               >
-                Get Started
+                {window.innerWidth < 600 ? 'SignUp' : 'Get Started'}
               </Button>
             </Box>
           </Box>
@@ -257,22 +260,25 @@ const LandingPageVendor = () => {
       </motion.div>
 
       {/* Main Content */}
-      <Container maxWidth="lg" sx={{ flex: 1, py: 4 }}>
+      <Container sx={{ flex: 1, py: 4 }}>
+        {/* Heading & Subheading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: { xs: 3, sm: 6 }, px: { xs: 1, sm: 2 } }}>
             <Typography
               variant="h2"
               sx={{
+                textAlign: 'center',
                 fontWeight: '700',
                 color: 'white',
-                mb: 3,
-                fontSize: { xs: '2rem', md: '3.5rem' },
-                lineHeight: 1.2,
+                mb: { xs: 1.5, sm: 3 },
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem', xl: '3.5rem' },
+                lineHeight: { xs: 1.3, md: 1.2 },
                 letterSpacing: '-0.02em',
+                maxWidth: { xs: '350px', sm: '600px', md: '800px', xl: '1000px' }
               }}
             >
               Grow Your Business with VELRA
@@ -280,15 +286,18 @@ const LandingPageVendor = () => {
             <Typography
               variant="h6"
               sx={{
+                textAlign: 'center',
                 color: 'rgba(255,255,255,0.8)',
-                maxWidth: '700px',
+                maxWidth: { xs: '280px', sm: '400px', md: '600px', xl: '700px' },
                 mx: 'auto',
-                lineHeight: 1.6,
-                fontSize: { xs: '1.1rem', md: '1.3rem' },
+                lineHeight: { xs: 1.5, md: 1.6 },
+                fontSize: { xs: '0.85rem', sm: '1rem', md: '1.2rem', xl: '1.3rem' },
                 fontWeight: '400',
               }}
             >
-              Partner with us to reach a wider audience, increase your sales, and enhance your brand visibility across residential communities.
+              {window.innerWidth < 600
+                ? 'Partner with us to reach a wider audience and enhance your brand visibility.'
+                : 'Partner with us to reach a wider audience, increase your sales, and enhance your brand visibility across residential communities.'}
             </Typography>
           </Box>
         </motion.div>
@@ -299,26 +308,27 @@ const LandingPageVendor = () => {
           initial="hidden"
           animate={loaded ? "visible" : "hidden"}
         >
-          <Grid container justifyContent='space-between' spacing={7}>
+          <Grid container justifyContent={{ xs: 'center', xl: 'space-around' }} rowSpacing={{ xs: 2, xl: 5 }} columnSpacing={{ xs: 2, xl: 7 }}>
             {benefits.map((benefit, index) => (
-              <Grid item minWidth={485} xs={12} sm={6} md={4} key={index}>
+              <Grid item xs={6} sm={6} md={4} xl={4} key={index}>
                 <motion.div variants={itemVariants} className='flex justify-center items-center'>
                   <Card
                     sx={{
-                      height: '100%',
-                      // width: '100%',
-                      minWidth: 500,
-                      maxWidth: 500,
-                      minHeight: 255,
+                      height: { xs: 145, sm: '100%' },
+                      width: { xs: '100%', sm: 'auto' },
+                      minWidth: { xs: 180, sm: 300, md: 500, xl: 500 },
+                      maxWidth: { xs: 180, sm: 500, xl: 500 },
+                      minHeight: { xs: 140, sm: 180, md: 255, xl: 255 },
                       background: 'linear-gradient(145deg, rgba(245,245,245,1) 0%, rgba(230,230,230,1) 100%)',
                       backdropFilter: 'blur(20px)',
-                      borderRadius: '16px',
+                      borderRadius: { xs: '10px', sm: '12px', md: '16px' },
                       border: '1px solid rgba(148,163,184,0.1)',
                       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                       cursor: 'pointer',
                       boxShadow: '0 4px 25px rgba(15,23,42,0.08), 0 0 0 1px rgba(255,255,255,0.05)',
                       position: 'relative',
                       overflow: 'hidden',
+                      p: { xs: 1, sm: 2, xl: 0 },
                       '&::before': {
                         content: '""',
                         position: 'absolute',
@@ -341,15 +351,15 @@ const LandingPageVendor = () => {
                       },
                     }}
                   >
-                    <CardContent sx={{ p: 4, textAlign: 'center', position: 'relative' }}>
+                    <CardContent sx={{ p: { xs: 1, sm: 4, xl: 4 }, textAlign: 'center', position: 'relative' }}>
                       <Box 
                         sx={{ 
                           mb: 3,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          width: '80px',
-                          height: '80px',
+                          width: { xs: '60px', sm: '80px'},
+                          height: { xs: '60px', sm: '80px'},
                           borderRadius: '20px',
                           background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
                           margin: '0 auto 24px auto',
@@ -364,24 +374,26 @@ const LandingPageVendor = () => {
                           fontWeight: '700',
                           color: '#0f172a',
                           mb: 2,
-                          fontSize: '1.25rem',
+                          fontSize: { xs: '0.85rem', sm: '1rem', md: '1.25rem', xl: '1.25rem' },
                           lineHeight: 1.3,
                           letterSpacing: '-0.01em',
                         }}
                       >
                         {benefit.title}
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: '#64748b',
-                          lineHeight: 1.7,
-                          fontSize: '0.95rem',
-                          fontWeight: '400',
-                        }}
-                      >
-                        {benefit.description}
-                      </Typography>
+                      {window.innerWidth >= 600 && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: '#64748b',
+                            lineHeight: { xs: 1.4, xl: 1.7 },
+                            fontSize: { xs: '0.75rem', sm: '0.85rem', md: '0.95rem', xl: '0.95rem' },
+                            fontWeight: '400',
+                          }}
+                        >
+                          {benefit.description}
+                        </Typography>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -402,8 +414,8 @@ const LandingPageVendor = () => {
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              py: 4,
-              px: 2,
+              py: { xs: 2, sm: 4 },
+              px: { xs: 0.5, sm: 4 },
             }}
           >
             <Button
@@ -412,10 +424,11 @@ const LandingPageVendor = () => {
               sx={{
                 borderColor: 'rgba(255,255,255,0.3)',
                 color: 'white',
-                px: 4,
-                py: 1.5,
+                px: { xs: 2, md: 4 },
+                py: { xs: 1, md: 1.5 },
                 textAlign: 'center',
                 borderRadius: '8px',
+                fontSize: { xs: '0.9rem', md: '1rem' },
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 fontWeight: '600',
                 backdropFilter: 'blur(10px)',
@@ -428,7 +441,7 @@ const LandingPageVendor = () => {
                 },
               }}
             >
-              <span className='mr-2 pb-0.5'>←</span>Explore Society Services
+              <span className='mr-2 pb-0.5'>←</span>{window.innerWidth < 600 ? 'GO BACK' : 'Explore Society Services'}
             </Button>
 
             <Button
@@ -437,10 +450,10 @@ const LandingPageVendor = () => {
               sx={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                 color: 'white',
-                px: 4,
-                py: 1.5,
+                px: { xs: 2, md: 4 },
+                py: { xs: 1, md: 1.5 },
                 borderRadius: '8px',
-                fontSize: '1rem',
+                fontSize: { xs: '0.9rem', md: '1rem' },
                 fontWeight: '600',
                 boxShadow: '0 4px 15px rgba(59,130,246,0.3)',
                 transition: 'all 0.3s ease',
@@ -451,17 +464,11 @@ const LandingPageVendor = () => {
                 },
               }}
             >
-              Start Your Journey <span className='ml-2 pb-0.5'>→</span>
+              {window.innerWidth < 600 ? 'BEGIN JOURNEY' : 'START YOUR JOURNEY'} <span className='ml-2 pb-0.5'>→</span>
             </Button>
           </Box>
         </Container>
       </motion.div>
-
-      <style>
-        {`
-          /* Clean and professional styling */
-        `}
-      </style>
     </Box>
   );
 };
