@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Typography, Box, IconButton, TextField, Collapse, Button } from '@mui/material';
 import { ChevronLeft, Search, Plus, Minus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import dummyData from '../static/dummyData_FAQ';
+import dummyData from '../static/dummyData_SupportFAQ';
 
 
 const FAQS_PER_LOAD = 5; // Number of FAQs to load initially and per 'Load More' click

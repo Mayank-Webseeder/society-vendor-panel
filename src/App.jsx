@@ -21,8 +21,9 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
-import LandingPageSociety from './pages/LandingPageSociety';
-import LandingPageVendor from './pages/LandingPageVendor';
+// import LandingPageSociety from './pages/LandingPageSociety';
+// import LandingPageVendor from './pages/LandingPageVendor';
+import NewLandingPage from "./pages/Landing Page/NewLandingPage";
 import AuthPage from './pages/auth/AuthPage';
 import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -52,10 +53,11 @@ function App() {
 
       <Routes location={location}>
 
+        {/* Root redirect to landing page */}
+        <Route path="/" element={<NewLandingPage />} />
+
         {/* Landing Pages */}
-        <Route path="/" element={<Navigate to="/society-landing" replace={true} />} />
-        <Route path="/society-landing" element={<LandingPageSociety />} />
-        <Route path="/vendor-landing" element={<LandingPageVendor />} />
+        <Route path="/landing" element={<NewLandingPage />} />
 
         {/* Auth flow */}
         <Route path="/auth">
@@ -123,7 +125,6 @@ function App() {
                         <Route path="account-support/privacy-policy" element={<PrivacyPolicy />} />
                       </Route>
 
-                      <Route path="/" element={<Navigate to="/dashboard" replace />} />
                       <Route path="*" element={<Dashboard />} />
                     </Routes>
                   </main>
