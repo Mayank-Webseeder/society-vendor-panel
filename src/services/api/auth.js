@@ -63,3 +63,17 @@ export const createProfile = async (formData) => {
   });
   return response.data;
 };
+
+
+// API 21: Vendor Subscription Purchase
+export const vendorSubscriptionPurchase = async (selectedServicesCount) => {
+  const response = await api.post(`/api/vendor/subscribe`, selectedServicesCount);
+  return response.data;
+};
+
+
+// API 22: Check Vendor Subscription Status
+export const checkSubscriptionStatus = async () => {
+  const response = await api.get(`/api/vendor/subscription-status`);
+  return response.data;
+};

@@ -16,11 +16,32 @@ export const getNearbyJobs = async (latitude, longitude) => {
 };
 
 
-// API 10: Vendor applies for Job
-export const applyToJob = async (jobId, message) => {
-  const response = await api.post(`/jobs/${jobId}/apply`, { message });
+// API 10(A): Vendor applies to Job (with Quotation)
+export const applyToJobWithQuotation = async (jobId, quotationDetails) => {
+  const response = await api.post(`/api/applications/${jobId}/apply`, quotationDetails);
+  return response.data;
+}
+
+
+// API 10(B): Vendor shows Interest (without Quotation)
+export const showInterestInJob = async (jobId) => {
+  const response = await api.post(`/api/applications/${jobId}/interest`, {});
+  return response.data;
+}
+
+
+// API 16: Get Job Details by ID (Society/Vendor)
+export const getJobDetailsById = async (jobId) => {
+  const response = await api.get(`/api/society/jobs/${jobId}`);
   return response.data;
 };
+
+
+// // API 10: Vendor applies for Job
+// export const applyToJob = async (jobId, message) => {
+//   const response = await api.post(`/jobs/${jobId}/apply`, { message });
+//   return response.data;
+// };
 
 
 // // API 11: Society views Vendor Applications

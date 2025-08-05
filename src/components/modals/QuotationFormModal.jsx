@@ -1,7 +1,7 @@
 import { Box, Typography, Button, TextField, MenuItem } from '@mui/material';
 import { IoClose } from "react-icons/io5";
 import { useState } from 'react';
-import { applyToJob } from '../../services/api/jobs';
+// import { applyToJob } from '../../services/api/jobs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,7 +21,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
 
     try {
       // Call the applyToJob API
-      await applyToJob(jobId, message);
+      // await applyToJob(jobId, message);
 
       toast.success('Application submitted successfully!');
 

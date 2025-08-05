@@ -15,31 +15,21 @@ const SUMMARY_API = {
     SEND_EMAIL_VERIFICATION_OTP: `${BASE_URL}/api/vendor/sendOtpEmailVerification`,
     FORGOT_PASSWORD: `${BASE_URL}/api/vendor/forgetPassword`,
     CREATE_PROFILE: `${BASE_URL}/api/vendor/createProfile`,
+    SUBSCRIPTION_PURCHASE: `${BASE_URL}/api/vendor/subscribe`,
+    CHECK_SUBSCRIPTION_STATUS: `${BASE_URL}/api/vendor/subscription-status`,
   },
+  
   JOBS: {
     // CREATE_JOB: `${BASE_URL}/api/jobs/create`,
     GET_NEARBY_JOBS: (lat, lon) => `${BASE_URL}/api/jobs/nearby?latitude=${lat}&longitude=${lon}`,
-    APPLY_TO_JOB: (jobId) => `${BASE_URL}/jobs/${jobId}/apply`,
+    SHOW_INTEREST: (jobId) => `${BASE_URL}/api/applications/${jobId}/interest`,
+    APPLY_TO_JOB_WITH_QUOTATION: (jobId) => `${BASE_URL}/api/applications/${jobId}/apply`,
+    GET_JOB_DETAILS: (jobId) => `${BASE_URL}/api/society/jobs/${jobId}`,
+    // APPLY_TO_JOB: (jobId) => `${BASE_URL}/jobs/${jobId}/apply`,
     // GET_APPLICANTS: (jobId) => `${BASE_URL}/api/applications/${jobId}/applicants`,
   },
 };
 
-
-// const SUMMARY_API = {
-//   AUTH: {
-//     SIGNUP: `/api/vendor/signup`,
-//     LOGIN: `/api/vendor/login`,
-//     SEND_OTP: `/api/vendor/sendOtp`,
-//     VALIDATE_EMAIL: `/api/vendor/validateEmail`,
-//     SEND_EMAIL_VERIFICATION_OTP: `/api/vendor/sendOtpEmailVerification`,
-//     FORGOT_PASSWORD: `/api/vendor/forgetPassword`,
-//     CREATE_PROFILE: `/api/vendor/createProfile`,
-//   },
-//   JOBS: {
-//     GET_NEARBY_JOBS: (lat, lon) => `/api/jobs/nearby?latitude=${lat}&longitude=${lon}`,
-//     APPLY_TO_JOB: (jobId) => `/api/jobs/${jobId}/apply`,
-//   },
-// };
 
 
 // Utility functions
