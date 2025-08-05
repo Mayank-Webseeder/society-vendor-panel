@@ -12,7 +12,7 @@ import LandingFooter from './LandingFooter';
 const NewLandingPage = () => {
   
   return (
-    <Box sx={{border: '2px solid red'}}>
+    <Box>
       <LandingNavbar />
       <LandingIntroSection />
       <AboutUs />

@@ -7,11 +7,14 @@ const HeroSection = () => {
     <Box
       sx={{
         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-        pb:12
+        pb: 7
       }}
     >
       {/* Services Showcase Section */}
       <ServicesShowcase />
+
+      {/* Add spacing between the two components */}
+      <Box sx={{ height: 48 }} />
 
       {/* Platform Features Section */}
       <PlatformFeatures />
