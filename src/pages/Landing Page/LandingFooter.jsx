@@ -71,9 +71,11 @@ const LandingFooter = () => {
       <Container maxWidth="xl">
         <motion.div
           // className='xs:w-[100%] sm:w-[90%]'
+          className='flex flex-col gap-12'
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          
         >
           <Grid 
             container 
@@ -270,17 +272,20 @@ const LandingFooter = () => {
             style={{
               // mt: '3rem',
               // pt: '2rem',
-              // marginTop: { xs: '2rem', md: '3rem' },
-              // paddingTop: { xs: '1.5rem', md: '2rem' },
+              my: '10px',
+              marginTop: { xs: '2rem', md: '3rem' },
+              paddingTop: { xs: '1.5rem', md: '2rem' },
               borderTop: '1px solid #e5e7eb',
             }}
           >
             <Box
               sx={{
                 display: 'flex',
+                // border: '2px solid red',
                 flexDirection: { xs: 'column', sm: 'row' },
                 justifyContent: 'center',
                 alignItems: 'center',
+                mt: '16px',
                 gap: { xs: 0.5, sm: 1 },
                 textAlign: 'center',
               }}

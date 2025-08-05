@@ -108,7 +108,7 @@ const LandingContact = () => {
               display: 'grid',
               gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
               gap: { xs: 3, md: 6 },
-              maxWidth: '1200px',
+              maxWidth: '1300px',
               mx: 'auto',
             }}
           >
