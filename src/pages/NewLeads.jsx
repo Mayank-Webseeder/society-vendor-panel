@@ -619,13 +619,16 @@ const ROWS_PER_PAGE = 10;
 const NewLeads = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive); // Open modal if no membership
+  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive); // Open modal if no subscription
   
   // Redirect to dashboard when access locked modal closes
   const handleModalClose = () => {
     navigate('/dashboard');
+    // setIsModalOpen(false);
   };
 
   // Manage modal states
@@ -716,8 +719,8 @@ const NewLeads = () => {
   return (
     <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
 
-      {/* Render AccessLockedModal as an overlay if membership is inactive */}
-      {!user.membershipActive  && 
+      {/* Render AccessLockedModal as an overlay if subscription is inactive */}
+      {!subscriptionActive  && 
         <AccessLockedModal
           open={isModalOpen}
           onClose={handleModalClose}

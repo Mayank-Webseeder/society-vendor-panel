@@ -13,7 +13,7 @@ const sidebarOptions = [
   { label: 'Security', icon: <LockIcon size={20} />, route: '/my-profile/security-options' },
   { label: 'Work Details', icon: <FaToolbox size={20} />, route: '/my-profile/work-details', isPremium: true },
   { label: 'Documents', icon: <FileText size={20} />, route: '/my-profile/documents-verification' },
-  { label: "Membership", icon: <MdCardMembership size={20} />, route: '/my-profile/membership' },
+  { label: "Subscription", icon: <MdCardMembership size={20} />, route: '/my-profile/subscription-details' },
   { label: 'Support', icon: <BiSupport size={20} />, route: '/my-profile/account-support' },
 ];
 
@@ -117,6 +117,7 @@ const UserProfile = () => {
         </div>
       </motion.div>
 
+
       {/* Main Content: Two Columns */}
       <motion.div 
         className="flex flex-row gap-4 w-full min-h-screen"
@@ -149,7 +150,7 @@ const UserProfile = () => {
                 <span className="flex flex-col items-center text-center xl:flex-row xl:ml-2.5 gap-1">
                   {opt.label}
                   {/* Lock Icon for Premium Options */}
-                  {opt.isPremium  &&  !user.membershipActive  &&  <LockIconMui sx={{ fontSize: 18, color: '#F59E0B' }} />}
+                  {opt.isPremium  &&  !user.velra_subscription_active  &&  <LockIconMui sx={{ fontSize: 18, color: '#F59E0B' }} />}
                 </span>
               </motion.div>
             ))}

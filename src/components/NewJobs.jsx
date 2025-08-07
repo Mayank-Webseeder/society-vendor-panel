@@ -34,7 +34,10 @@ const getTopNewLeads = (data, count = 2) => {
 const NewJobs = () => {
 
   const navigate = useNavigate();
+
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const topLeads = getTopNewLeads(dummyData);
 
   const LeadCard = ({ lead, index }) => (
@@ -124,7 +127,7 @@ const NewJobs = () => {
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">New Leads</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
               {
-                user.membershipActive ?
+                subscriptionActive ?
                   <>
                     {totalNewLeads} {totalNewLeads === 1 ? 'new opportunity' : 'new opportunities'} available
                   </>
@@ -135,24 +138,27 @@ const NewJobs = () => {
               }
             </p>
           </div>
-          <Button 
-            onClick={() => navigate('/new-leads')}
-            sx={{ borderRadius: '8px' }} 
-            variant='outlined' 
-            className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-xs sm:text-sm rounded-xl border border-blue-200 transition-all duration-200 hover:shadow-md"
-          >
-            <span className="hidden sm:inline">View All</span>
-            <span className="sm:hidden">All</span>
-            <ChevronRight size={14} className="sm:w-4 sm:h-4" />
-          </Button>
+          {
+            subscriptionActive  &&
+              <Button 
+                onClick={() => navigate('/new-leads')}
+                sx={{ borderRadius: '8px' }} 
+                variant='outlined' 
+                className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-xs sm:text-sm rounded-xl border border-blue-200 transition-all duration-200 hover:shadow-md"
+              >
+                <span className="hidden sm:inline">View All</span>
+                <span className="sm:hidden">All</span>
+                <ChevronRight size={14} className="sm:w-4 sm:h-4" />
+              </Button>
+          }
         </div>
       </div>
 
       {/* Content */}
       <div className="px-3 sm:px-6 py-1">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:md:grid-cols-2">
-          {topLeads.length === 0  ||  !user.membershipActive ? (
-            <div className="col-span-2 border-solid border border-gray-200 rounded-2xl text-center py-8 sm:py-12">
+          {topLeads.length === 0  ||  !subscriptionActive ? (
+            <div className="col-span-2 border-solid border border-gray-300 mb-4 rounded-2xl text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UpiModal from '../../components/modals/payment/UpiModal';
 import UpiConfirmModal from '../../components/modals/payment/UpiConfirmModal';
 import UpiSuccessModal from '../../components/modals/payment/UpiSuccessModal';
-import MembershipBenefits from './MembershipBenefits';
+import SubscriptionBenefits from './SubscriptionBenefits';
 import PaymentMethod from './PaymentMethod';
 import { CircularProgress } from '@mui/material';
 
@@ -72,7 +72,7 @@ const Payment = () => {
       <div className="flex w-full h-full flex-1">
         {/* Left Half */}
         <div className="flex flex-1 justify-center h-full p-2">
-          <MembershipBenefits />
+          <SubscriptionBenefits />
         </div>
 
         {/* Right Half */}

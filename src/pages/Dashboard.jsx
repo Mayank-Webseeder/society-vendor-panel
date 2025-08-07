@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom';
 import Card1 from '../components/cards/Card1';
 import Card2 from '../components/cards/Card2';
 import Card3 from '../components/cards/Card3';
 import Card4 from '../components/cards/Card4';
 import AvailabilityCalendar from '../components/AvailabilityCalendar';
-import { SparklesIcon } from '@heroicons/react/24/solid';
 import { motion } from 'framer-motion';
 import Notifications from '../components/Notifications';
 import AppliedJobs from '../components/AppliedJobs';
@@ -14,7 +12,8 @@ import HeadingCard from '../components/HeadingCard';
 import NewJobs from '../components/NewJobs';
 import { useUser } from '../UserContext';
 import OngoingJobs from '../components/OngoingJobs';
-import StatusCards from '../components/StatusCards';
+// import StatusCards from '../components/StatusCards';
+import SubscribeStrip from '../components/SubscribeStrip';
 
 
 const containerVariants = {
@@ -33,37 +32,15 @@ const containerVariants = {
 const Dashboard = () => {
 
   const { user } = useUser();
-
+  const subscriptionActive = user.velra_subscription_active;
 
   return (
     <div id='parent-div' className="w-full">
       {
-        !user.membershipActive  &&  (
-          // Subscription Strip
-          <div className="relative w-full bg-gradient-to-r from-blue-100 via-blue-300 to-blue-200 text-blue-700 text-sm sm:text-base font-medium px-4 py-2 flex justify-center items-center gap-2 shadow-md overflow-hidden group">
-
-            {/* This is the shine overlay. It should be behind interactive elements. */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shine z-0"></div>
-
-            {/* Content and button should have a higher z-index to be clickable and visible */}
-            <div className="relative flex justify-center items-center gap-2 z-10">
-              <SparklesIcon className="h-5 w-5 text-blue-500 flex-shrink-0" aria-hidden="true" />
-              <span className="text-center">Subscribe to unlock all premium features!</span>
-              <Link
-                to="/payment"
-                className="no-underline ml-2 px-4 py-1.5 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out text-sm flex-shrink-0
-                hover:bg-blue-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-                aria-label="Subscribe Now to unlock features"
-              >
-                Subscribe Now
-              </Link>
-            </div>
-          </div>
-        )
+        !subscriptionActive  &&  <SubscribeStrip /> 
       }
       
-
-
+      
       <div className='w-full h-full flex pt-3 pb-5 gap-3'>
         {/* Left Side */}
         <div id='child-1' className='flex flex-col gap-6 px-4 w-full lg:w-[70%] xl:w-[77%]'>

@@ -5,9 +5,11 @@ import { FaRegBell } from "react-icons/fa";
 import { Button } from '@mui/material';
 import { useUser } from '../UserContext';
 
+
 const BellNotification = ({ mobile = false }) => {
 
     const { user } = useUser();
+    const subscriptionActive = user.velra_subscription_active;
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
@@ -70,7 +72,7 @@ const BellNotification = ({ mobile = false }) => {
         );
     }
 
-    if (!user.notificationsEnabled || !user.membershipActive) {
+    if (!user.notificationsEnabled || !subscriptionActive) {
         return (
             <div className="relative">
                 <button
@@ -103,7 +105,7 @@ const BellNotification = ({ mobile = false }) => {
                 type="button"
             >
                 <FaRegBell size={mobile ? 18 : 30} />
-                {notificationCount() > 0 && (
+                {notificationCount() > 0  &&  (
                     <span className={`absolute bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium ${mobile ? '-top-0.5 -right-0.5 w-4 h-4' : '-top-1 -right-1 w-5 h-5'}`}>
                         <span className='block'>{notificationCount()}</span>
                     </span>

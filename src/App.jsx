@@ -1,4 +1,5 @@
 import { Route, Routes, useLocation, Navigate, replace } from "react-router-dom";
+import { useEffect } from 'react';
 import ProtectedRoute from "./ProtectedRoute";
 // import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -12,7 +13,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import SecurityOptions from "./pages/SecurityOptions";
 import WorkDetails from './pages/WorkDetails';
 import DocumentAndVerification from "./pages/DocumentAndVerification";
-import MembershipPage from "./pages/MembershipPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
 import AccountAndSupport from './pages/AccountAndSupport';
 import HelpAndSupport from './pages/HelpAndSupport';
 import FAQ from './pages/FAQ';
@@ -21,9 +22,6 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
-// import LandingPageSociety from './pages/LandingPageSociety';
-// import LandingPageVendor from './pages/LandingPageVendor';
-// import NewLandingPage from "./pages/Landing Page/NewLandingPage";
 import AuthPage from './pages/auth/AuthPage';
 import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -40,12 +38,34 @@ import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
 import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { checkSubscriptionStatus } from './services/api/auth';
 
 
 
 function App() {
+
   const location = useLocation();
 
+  useEffect(() => {
+    // Check subscription status on app mount
+    const fetchSubscriptionStatus = async () => {
+      try {
+        const res = await checkSubscriptionStatus();
+        localStorage.setItem('velra_subscription_active', res.active ? 'true' : 'false');
+        localStorage.setItem('velra_subscription_validTill', res.validTill || '');
+        localStorage.setItem('velra_subscription_referenceId', res.referenceId || '');
+      } catch (err) {
+        // If API fails, set as inactive
+        localStorage.setItem('velra_subscription_active', 'false');
+        localStorage.setItem('velra_subscription_validTill', '');
+        localStorage.setItem('velra_subscription_referenceId', '');
+      }
+    };
+    fetchSubscriptionStatus();
+  }, []);
+
+
+  
   return (
     <>
       {/* ToastContainer for notifications */}
@@ -117,7 +137,7 @@ function App() {
                         <Route path="security-options" element={<SecurityOptions />} />
                         <Route path="work-details" element={<WorkDetails />} />
                         <Route path="documents-verification" element={<DocumentAndVerification />} />
-                        <Route path="membership" element={<MembershipPage />} />
+                        <Route path="subscription-details" element={<SubscriptionPage />} />
                         <Route path="account-support" element={<AccountAndSupport />} />
                         <Route path="account-support/help-support" element={<HelpAndSupport />} />
                         <Route path="account-support/faq" element={<FAQ />} />

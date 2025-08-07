@@ -42,10 +42,12 @@ const parsePostedOn = (str) => {
 const MyJobs = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive); // Open modal if no membership
+  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive); // Open modal if no subscription
 
   // Redirect to dashboard when access locked modal closes
   const handleModalClose = () => {
@@ -101,13 +103,8 @@ const MyJobs = () => {
     lead.work.toLowerCase().includes(searchWork.toLowerCase())
   );
 
-  // Restrict table entries if membership is inactive
-  const restrictedLeads = user.membershipActive
-    ? filteredLeads
-    : filteredLeads.filter((lead) => lead.status === "New" || lead.status === "Ongoing");
 
-
-  const sortedLeads = [...restrictedLeads].sort((a, b) => {
+  const sortedLeads = [...filteredLeads].sort((a, b) => {
     const dateA = parsePostedOn(a.postedOn);
     const dateB = parsePostedOn(b.postedOn);
     return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
@@ -171,8 +168,8 @@ const MyJobs = () => {
   return (
     <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
 
-      {/* Render AccessLockedModal as an overlay if membership is inactive */}
-      {!user.membershipActive  &&  
+      {/* Render AccessLockedModal as an overlay if subscription is inactive */}
+      {!subscriptionActive  &&  
         <AccessLockedModal 
           open={isModalOpen}
           onClose={handleModalClose}
@@ -459,7 +456,7 @@ const MyJobs = () => {
                               : lead.status === "Ongoing"
                               ? "bg-yellow-100 text-yellow-700"
                               : lead.status === "New"
-                              ? (user.membershipActive ? "bg-gray-100 text-gray-700" : "bg-green-100 text-green-700")
+                              ? "bg-gray-100 text-gray-700"
                               : "bg-gray-50 text-gray-500"
                           }`}>
                             {lead.status} {lead.status === 'New' ? '!' : ''}

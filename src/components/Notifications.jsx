@@ -89,6 +89,7 @@ const NotificationItem = ({ notification, index, onNotificationClick }) => {
 const Notifications = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
 
   const [showAll, setShowAll] = useState(false);
   const containerRef = useRef(null);
@@ -156,7 +157,7 @@ const Notifications = () => {
               whileHover={{ scale: 1.05 }}
             >
               {
-                user.membershipActive  &&  user.notificationsEnabled  &&  (
+                subscriptionActive  &&  user.notificationsEnabled  &&  (
                   <>
                     <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
                       <span className="text-xs text-white font-bold">{count}</span>
@@ -174,7 +175,7 @@ const Notifications = () => {
         {/* Content */}
         <div className="p-4">
           <div className="space-y-3">
-            {!user.membershipActive ? (
+            {!subscriptionActive ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                   <Bell className="w-8 h-8 text-gray-400" />
@@ -203,7 +204,7 @@ const Notifications = () => {
           </div>
 
           {/* Action Buttons */}
-          {(!showAll && count > 3 && user.notificationsEnabled && user.membershipActive) && (
+          {(!showAll  &&  count > 3  &&  user.notificationsEnabled  &&  subscriptionActive) && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -237,7 +238,7 @@ const Notifications = () => {
             </motion.div>
           )}
           
-          {(showAll && count > 3 && user.notificationsEnabled && user.membershipActive) && (
+          {(showAll  &&  count > 3  &&  user.notificationsEnabled  &&  subscriptionActive) && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

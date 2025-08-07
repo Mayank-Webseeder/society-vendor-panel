@@ -34,7 +34,7 @@ const SubscriptionCard = () => {
   // Function to calculate the time left
   const calculateTimeLeft = () => {
     const now = new Date();
-    const endDate = new Date(user.membershipEndDate);
+    const endDate = new Date(user.velra_subscription_validTill);
     endDate.setHours(11, 30, 0, 0); // Set expiry time to 11:30 AM
 
     const diff = endDate - now; // Difference in milliseconds
@@ -235,7 +235,7 @@ const SubscriptionCard = () => {
             </div>
             <div>
               <span className="text-gray-500 text-xs font-medium block">Valid until</span>
-              <span className="text-slate-700 text-sm font-bold">{user.membershipEndDate}</span>
+              <span className="text-slate-700 text-sm font-bold">{user.velra_subscription_validTill}</span>
             </div>
           </div>
 

@@ -39,7 +39,7 @@ const dummyData = [
     {
         id: 8,
         question: 'Is there a fee to use the app?',
-        answer: 'Basic features of the app are free to use. However, certain premium features or membership levels, like the Vendor Gold Membership, may require a subscription fee. Details are available in the "Membership" section.',
+        answer: 'Basic features of the app are free to use. However, certain premium features or to offer servics on the app as a vendor, you would require an yearly subscription fee that is charged per service. Details are available in the "Subscription" section.',
     },
 ];
 

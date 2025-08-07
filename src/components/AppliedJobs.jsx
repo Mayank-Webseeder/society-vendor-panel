@@ -45,6 +45,8 @@ const approvedJobs = dummyData.filter(lead => lead.pendingStatus === 'Approved')
 const AppliedJobs = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -79,11 +81,20 @@ const AppliedJobs = () => {
           <div>
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">Applied Jobs</h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2 ml-1">
-              {jobs.length} {jobs.length === 1 ? 'job' : 'jobs'} scheduled
+              {
+                subscriptionActive ?
+                  <>
+                    {jobs.length} {jobs.length === 1 ? 'job' : 'jobs'} scheduled
+                  </>
+                  :
+                  <>
+                    No applied jobs available
+                  </>
+              }
             </p>
           </div>
           {
-            user.membershipActive  &&
+            subscriptionActive  &&
               <Button
                 onClick={() => navigate('/my-jobs', { state: { filter: 'Applied' } })}
                 sx={{ borderRadius: '8px' }} 
@@ -102,7 +113,7 @@ const AppliedJobs = () => {
       <div className="border-none px-3 sm:px-6 py-1">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:md:grid-cols-2">
           {jobs.length === 0 ? (
-            <div className="col-span-2 border-solid border border-gray-200 rounded-2xl text-center py-8 sm:py-12">
+            <div className="col-span-2 border-solid border border-gray-300 mb-4 rounded-2xl text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>

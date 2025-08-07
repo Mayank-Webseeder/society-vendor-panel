@@ -7,14 +7,14 @@ import { useUser } from '../../UserContext';
 const Card1 = () => {
 
   const { user } = useUser();    // Get context data
-
+  const subscriptionActive = user.velra_subscription_active;
   
   return (
     <div className="relative bg-[#5CA7D3] w-60 rounded-2xl h-40 overflow-hidden hover:scale-105 transition-transform duration-300">
       <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">Avg. Response Time</p>
       <p className="relative font-semibold text-white text-4xl z-30 pt-12 pl-5">
         {
-          user.membershipActive ?
+           subscriptionActive?
             <>
               {user.avgResponseTime} min
             </>

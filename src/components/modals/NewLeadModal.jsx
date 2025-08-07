@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useUser } from '../../UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { showInterestInJob } from '../../services/api/jobs';
 
 
 const CURRENT_YEAR = 25;
@@ -26,24 +27,33 @@ const NewLeadModal = ({
   const safe = (val) => (val !== undefined && val !== null && val !== '' ? val : 'N/A');
 
 
-  const handleShowInterest = () => {
-    // Mark the vendor as interested
-    lead.interested = true;
+  const handleShowInterest = async () => {
+    try {
+      // Call API 10(B) to show interest in the job
+      const response = await showInterestInJob(lead.id);
+      console.log('API Response:', response);
 
-    // Set proceed to true to start from 'Fill Quotation and Apply'
-    onApplyClick();
+      // Prepare the vendor object using user-context
+      const vendorDetails = {
+        name: user.name,
+        email: user.email,
+        contact: user.phone,
+      };
 
-    // Prepare the vendor object using user-context
-    const vendorDetails = {
-      name: user.name,
-      email: user.email,
-      contact: user.phone,
-    };
+      // Mark the vendor as interested
+      lead.interested = true;
 
-    // Show success toast
-    toast.success("Marked as Interested!");
+      // Set proceed to true to start from 'Fill Quotation and Apply'
+      onApplyClick();
 
-    console.log("Vendor Details:", vendorDetails);
+      // Show success toast
+      toast.success("Interested Shown!");
+
+      console.log("Vendor Details:", vendorDetails);
+    } catch (error) {
+      console.error('Error showing interest:', error);
+      toast.error("Failed to show interest. Please try again.");
+    }
   };
 
   useEffect(() => {
@@ -415,14 +425,11 @@ const NewLeadModal = ({
           ) : (
             <Button
               variant="contained"
-              onClick={() => {
-                handleShowInterest();
-                onApplyClick();
-              }}
+              onClick={handleShowInterest}
               sx={{
                 width: '100%',
-                padding: '12px 24px',
-                fontSize: '16px',
+                padding: '10px 24px',
+                fontSize: '20px',
                 fontWeight: '600',
                 borderRadius: '8px',
                 backgroundColor: '#10b981',
@@ -443,14 +450,14 @@ const NewLeadModal = ({
         {proceed && (
           <Typography 
             sx={{ 
-              color: '#9ca3af', 
+              color: '#6b7280', 
               fontSize: '13px',
               fontStyle: 'italic',
               marginTop: '12px',
               // opacity: 0.8,
             }}
           >
-            * Quotation needed to proceed
+            * Quotation needed to apply
           </Typography>
         )}
       </Box>

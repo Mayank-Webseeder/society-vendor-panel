@@ -126,8 +126,10 @@ const StarRating = ({ rating, size = 'w-5 h-5' }) => (
 const MyStats = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive);
+  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);
 
   const handleModalClose = () => {
     navigate('/dashboard');
@@ -136,6 +138,8 @@ const MyStats = () => {
   const totalRatings = ratingsCount;
   const positiveRatings = ratingBreakdown[5] + ratingBreakdown[4];
   const positivePercentage = ((positiveRatings / totalRatings) * 100).toFixed(1);
+
+
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 px-4 pt-3 pb-5">
@@ -503,14 +507,16 @@ const MyStats = () => {
             </motion.div>
           </motion.div>
         </motion.div>
-        {!user.membershipActive && (
-        <AccessLockedModal
-          open={isModalOpen}
-          onClose={handleModalClose}
-          heading="Access Restricted"
-          subheading="Subscribe to unlock detailed statistics and premium insights."
-        />
-      )}
+
+
+        {!subscriptionActive && (
+          <AccessLockedModal
+            open={isModalOpen}
+            onClose={handleModalClose}
+            heading="Access Restricted"
+            subheading="Subscribe to unlock detailed statistics and premium insights."
+          />
+        )}
     </div>
   );
 };

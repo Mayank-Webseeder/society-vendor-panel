@@ -2,7 +2,9 @@ import { Box, Typography, Button } from '@mui/material';
 import { IoClose, IoLockClosed } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 
+
 const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
+  
   const navigate = useNavigate();
 
   if (!open) return null;
@@ -28,7 +30,7 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
           zIndex: 0,
         }}
         onClick={onClose}

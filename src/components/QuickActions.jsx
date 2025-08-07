@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FileText, Calendar, MessageSquare, ArrowRight } from 'lucide-react';
+import { FileText, Calendar, MessageSquare, UserPen, ArrowRight } from 'lucide-react';
+
 
 const actions = [
   {
@@ -21,12 +22,12 @@ const actions = [
     redirect: '/my-profile/work-details'
   },
   {
-    icon: MessageSquare,
-    label: 'View Messages',
-    description: 'Check your conversations',
+    icon: UserPen,
+    label: 'Update Profile',
+    description: 'Make changes to your profile',
     gradient: 'from-purple-500 to-purple-600',
     shadowColor: 'shadow-purple-500/25',
-    redirect: ''
+    redirect: '/my-profile'
   }
 ];
 
@@ -75,10 +76,11 @@ const QuickActions = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
+      {/* Heading */}
       <div className="flex items-center justify-between mb-3 sm:mb-5">
         <div>
           <h2 className="text-lg sm:text-2xl font-semibold text-gray-900 tracking-tight">Quick Actions</h2>
-          <p className="text-gray-500 mt-0.5 sm:mt-1 text-xs sm:text-sm">Get things done faster</p>
+          <p className="text-gray-500 mt-0.5 sm:mt-2 ml-2 text-xs sm:text-sm">Get things done faster</p>
         </div>
       </div>
 
@@ -168,7 +170,7 @@ const QuickActions = () => {
       </motion.div>
 
       {/* Bottom accent */}
-      {/* <div className="mt-8 pt-6 border-t border-gray-100">
+      <div className="mt-0 pt-6">
         <div className="flex items-center justify-center">
           <div className="flex space-x-1">
             {[0, 1, 2].map((dot) => (
@@ -188,7 +190,7 @@ const QuickActions = () => {
             ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </motion.div>
   );
 };

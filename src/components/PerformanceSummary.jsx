@@ -8,6 +8,8 @@ import { finalRating } from '../static/dummyData_MyStats';
 const PerformanceSummary = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const jobsCompleted = dummyData.filter(lead => lead.status === "Completed").length;
 
   const summary = {
@@ -20,37 +22,37 @@ const PerformanceSummary = () => {
   const metrics = [
     {
       label: 'Jobs Completed',
-      value: user.membershipActive ? summary.jobsCompleted : <LockIcon className="text-yellow-500" />,
-      color: user.membershipActive ? 'text-emerald-600' : 'text-gray-400',
-      bgColor: user.membershipActive ? 'bg-emerald-50' : 'bg-gray-200',
-      iconBg: user.membershipActive ? 'bg-emerald-100' : 'bg-gray-100',
+      value: subscriptionActive ? summary.jobsCompleted : <LockIcon className="text-yellow-500" />,
+      color: subscriptionActive ? 'text-emerald-600' : 'text-gray-400',
+      bgColor: subscriptionActive ? 'bg-emerald-50' : 'bg-gray-200',
+      iconBg: subscriptionActive ? 'bg-emerald-100' : 'bg-gray-100',
       icon: '✓'
     },
     {
       label: 'Earnings',
-      value: user.membershipActive ? `$${summary.earnings}` : <LockIcon className="text-yellow-500" />,
-      color: user.membershipActive ? 'text-green-600' : 'text-gray-400',
-      bgColor: user.membershipActive ? 'bg-green-50' : 'bg-gray-200',
-      iconBg: user.membershipActive ? 'bg-green-100' : 'bg-gray-100',
+      value: subscriptionActive ? `$${summary.earnings}` : <LockIcon className="text-yellow-500" />,
+      color: subscriptionActive ? 'text-green-600' : 'text-gray-400',
+      bgColor: subscriptionActive ? 'bg-green-50' : 'bg-gray-200',
+      iconBg: subscriptionActive ? 'bg-green-100' : 'bg-gray-100',
       icon: '$'
     },
     {
       label: 'Avg Rating',
-      value: user.membershipActive ? `${summary.avgRating}` : <LockIcon className="text-yellow-500" />,
-      color: user.membershipActive ? 'text-amber-600' : 'text-gray-400',
-      bgColor: user.membershipActive ? 'bg-amber-50' : 'bg-gray-200',
-      iconBg: user.membershipActive ? 'bg-amber-100' : 'bg-gray-100',
+      value: subscriptionActive ? `${summary.avgRating}` : <LockIcon className="text-yellow-500" />,
+      color: subscriptionActive ? 'text-amber-600' : 'text-gray-400',
+      bgColor: subscriptionActive ? 'bg-amber-50' : 'bg-gray-200',
+      iconBg: subscriptionActive ? 'bg-amber-100' : 'bg-gray-100',
       icon: '★',
-      suffix: user.membershipActive
+      suffix: subscriptionActive
     },
     {
       label: 'Response Time',
-      value: user.membershipActive ? `${summary.responseTime}` : <LockIcon className="text-yellow-500" />,
-      color: user.membershipActive ? 'text-blue-600' : 'text-gray-400',
-      bgColor: user.membershipActive ? 'bg-blue-50' : 'bg-gray-200',
-      iconBg: user.membershipActive ? 'bg-blue-100' : 'bg-gray-100',
+      value: subscriptionActive ? `${summary.responseTime}` : <LockIcon className="text-yellow-500" />,
+      color: subscriptionActive ? 'text-blue-600' : 'text-gray-400',
+      bgColor: subscriptionActive ? 'bg-blue-50' : 'bg-gray-200',
+      iconBg: subscriptionActive ? 'bg-blue-100' : 'bg-gray-100',
       icon: '⏱',
-      unit: user.membershipActive ? 'min' : null
+      unit: subscriptionActive ? 'min' : null
     }
   ];
 
@@ -111,8 +113,18 @@ const PerformanceSummary = () => {
 
         <div className="mt-4 pt-3 border-t border-gray-100">
           <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span>Live metrics updated</span>
+            {
+              subscriptionActive?
+              <>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>Live Metrics Updated</span>
+              </>
+              :
+              <>
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                <span>Live Metrics Unavailable</span>
+              </>
+            }
           </div>
         </div>
       </motion.div>

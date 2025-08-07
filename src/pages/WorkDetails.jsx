@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, TextField, Button, Box, IconButton } from '@mui/material';
 import { Search, X } from 'lucide-react';
@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dummyOffers from '../static/dummyData_ServicesOffered'
 import { useUser } from '../UserContext';
 import LockIcon from '@mui/icons-material/Lock';
-import AccessLockedModal from '../components/modals/AccessLockedModal';
+import AccessLockedModal_WorkDetails from '../components/modals/AccessLockedModal_WorkDetails';
 
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -23,8 +23,10 @@ const contentVariants = {
 const WorkDetails = () => {
 
   const { user } = useUser();
+  const subscriptionActive = user.velra_subscription_active;
+
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(!user.membershipActive); // Open modal if no membership
+  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive); // Open modal if no subscription
 
   const [selectedServices, setSelectedServices] = useState([
     dummyOffers[0], // Housekeeping Services
@@ -58,14 +60,14 @@ const WorkDetails = () => {
 
   // Redirect to dashboard when modal closes
   const handleModalClose = () => {
-    navigate('/dashboard');
+    navigate('/my-profile');
   };
 
 
   return (
-    <Box className='p-5 sm:p-8 w-full h-full'>
+    <Box className='relative p-5 sm:p-8 w-full h-full'>
       {/* Access Locked Modal */}
-      <AccessLockedModal
+      <AccessLockedModal_WorkDetails
         open={isModalOpen}
         onClose={handleModalClose}
         heading="Access Restricted"
@@ -89,7 +91,7 @@ const WorkDetails = () => {
         </Typography>
         {/* Yellow Lock Icon */}
         {
-          !user.membershipActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} />
+          !subscriptionActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} />
         }
       </Box >
 
@@ -377,7 +379,7 @@ const WorkDetails = () => {
               </Box>
             </Box>
 
-            {/* Footer */}
+            {/* Save button */}
             <Box sx={{ 
               mt: 2,
               width: '95%',

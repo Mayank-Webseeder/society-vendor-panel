@@ -1,15 +1,18 @@
 import { Box, Typography, Button, TextField, MenuItem } from '@mui/material';
 import { IoClose } from "react-icons/io5";
 import { useState } from 'react';
-// import { applyToJob } from '../../services/api/jobs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { applyToJobWithQuotation } from '../../services/api/jobs';
 
 
 const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
 
-  const [charge, setCharge] = useState('');
   const [message, setMessage] = useState('');
+  const [quotedPrice, setQuotedPrice] = useState('');
+  const [hours, setHours] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [additionalNotes, setAdditionalNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -20,8 +23,22 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
     setError('');
 
     try {
-      // Call the applyToJob API
-      // await applyToJob(jobId, message);
+      // Prepare the quotationDetails object as required by API 10(A)
+      const quotationDetails = {
+        message,
+        quotedPrice,
+        estimatedTime: {
+          hours,
+          minutes,
+        },
+        additionalNotes,
+      };
+
+      // console.log(quotationDetails);
+
+      // Make the api call
+      const response = await applyToJobWithQuotation(jobId, quotationDetails);
+      console.log(response);
 
       toast.success('Application submitted successfully!');
 
@@ -106,6 +123,41 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
 
         {/* Form Fields */}
         <Box sx={{ marginBottom: '24px' }}>
+          {/* Message Field */}
+          <Typography
+            variant="body1"
+            sx={{
+              marginBottom: '8px',
+              color: '#6b7280',
+              fontSize: '14px',
+              fontWeight: '500',
+            }}
+          >
+            Write a message
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder="Write a message to the society."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            sx={{
+              marginBottom: '16px',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': {
+                  borderColor: '#d1d5db',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#9ca3af',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#3b82f6',
+                },
+              },
+            }}
+          />
+
+          {/* Price Quote */}
           <Typography
             variant="body1"
             sx={{
@@ -120,8 +172,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
           <TextField
             fullWidth
             placeholder="Enter your quotation"
-            value={charge}
-            onChange={(e) => setCharge(e.target.value)}
+            value={quotedPrice}
+            onChange={(e) => setQuotedPrice(e.target.value)}
             InputProps={{
               startAdornment: (
                 <Typography sx={{ marginRight: '8px', color: '#6b7280' }}>₹</Typography>
@@ -141,8 +193,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                   borderColor: '#3b82f6',
                 },
               },
-            }}
-          />
+            }} />
 
           {/* Time Estimation */}
           <Typography
@@ -160,7 +211,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             <TextField
               select
               label="Hours"
-              defaultValue=""
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
               InputLabelProps={{ shrink: true }}
               SelectProps={{
                 MenuProps: {
@@ -194,7 +246,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             <TextField
               select
               label="Minutes"
-              defaultValue=""
+              value={minutes}
+              onChange={(e) => setMinutes(e.target.value)}
               InputLabelProps={{ shrink: true }}
               SelectProps={{
                 MenuProps: {
@@ -227,6 +280,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             </TextField>
           </Box>
 
+          {/* Additional Details */}
           <Typography
             variant="body1"
             sx={{
@@ -243,8 +297,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             multiline
             rows={4}
             placeholder="Enter additional details"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={additionalNotes}
+            onChange={(e) => setAdditionalNotes(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: '8px',

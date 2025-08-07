@@ -14,6 +14,7 @@ import { useUser } from '../UserContext';
 const PersonalInformation = () => {
 
   const {user, setUser} = useUser();    // get context data
+  const subscriptionActive = user.velra_subscription_active;
 
   const [tempUser, setTempUser] = useState({ ...user });
   const [isEditing, setIsEditing] = useState(false);
@@ -280,6 +281,8 @@ const PersonalInformation = () => {
     );
   };
 
+
+
   return (
     <div className='p-5 sm:p-8 w-full h-full relative'>
       {/* Header */}
@@ -420,7 +423,7 @@ const PersonalInformation = () => {
           <Typography
             sx={{
               fontSize: '1.2rem',
-              color: user.membershipActive ? '#4A5568' : '#A0AEC0', // Faded color when disabled
+              color: subscriptionActive ? '#4A5568' : '#A0AEC0', // Faded color when disabled
               fontWeight: 500,
               mr: 1,
             }}
@@ -428,17 +431,17 @@ const PersonalInformation = () => {
             Notifications
           </Typography>
           <IOSSwitch
-            checked={user.notificationsEnabled && user.membershipActive}
+            checked={user.notificationsEnabled  &&  subscriptionActive}
             onChange={() => setUser({ ...user, notificationsEnabled: !user.notificationsEnabled })}
-            inputProps={{ 'aria-label': 'Enable notifications', disabled: !user.membershipActive }}
+            inputProps={{ 'aria-label': 'Enable notifications', disabled: !subscriptionActive }}
             sx={{
-              pointerEvents: user.membershipActive ? 'auto' : 'none',
-              cursor: user.membershipActive ? 'pointer' : 'default',
+              pointerEvents: subscriptionActive ? 'auto' : 'none',
+              cursor: subscriptionActive ? 'pointer' : 'default',
               '& .MuiSwitch-thumb': {
-                cursor: user.membershipActive ? 'pointer' : 'default',
+                cursor: subscriptionActive ? 'pointer' : 'default',
               },
               '& .MuiSwitch-track': {
-                cursor: user.membershipActive ? 'pointer' : 'default',
+                cursor: subscriptionActive ? 'pointer' : 'default',
               },
             }}
           />

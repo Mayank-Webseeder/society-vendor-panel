@@ -3,22 +3,12 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { useUser } from '../UserContext';
 import { Switch } from '@mui/material';
 
-// // Mock icon component (replace with your actual Material-UI import)
-// const PermIdentityIcon = ({ className }) => (
-//   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-//     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-//   </svg>
-// );
-
-// Mock user context (replace with your actual context)
-// const useUser = () => ({
-//   user: { name: 'John Doe', membershipActive: true }
-// });
 
 const HeadingCard = () => {
+
   const { user, setUser } = useUser();
 
-  const membershipActive = user?.membershipActive;
+  const subscriptionActive = user?.velra_subscription_active;
   const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
@@ -34,10 +24,10 @@ const HeadingCard = () => {
     }
   }, []);
 
-  const handleToggleMembership = () => {
+  const handleToggleSubscription = () => {
     setUser({
       ...user,
-      membershipActive: !user.membershipActive,
+      velra_subscription_active: !user.velra_subscription_active,
     });
   };
 
@@ -79,8 +69,8 @@ const HeadingCard = () => {
               </div>
             </div>
 
-            {/* Membership badge */}
-            {membershipActive && (
+            {/* Subscription badge */}
+            {subscriptionActive && (
               <div className="flex-shrink-0 ml-4">
                 <div className="relative">
                   <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-4 py-2.5 text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
@@ -125,12 +115,12 @@ const HeadingCard = () => {
               Test Mode Active
             </div>
             
-            {/* Toggle Switch for Membership */}
+            {/* Toggle Switch for Subscription */}
             <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-2 ring-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300">
-              <span>Membership</span>
+              <span>Subscription</span>
               <Switch
-                checked={membershipActive}
-                onChange={handleToggleMembership}
+                checked={subscriptionActive}
+                onChange={handleToggleSubscription}
                 color="primary"
                 size="small"
               />

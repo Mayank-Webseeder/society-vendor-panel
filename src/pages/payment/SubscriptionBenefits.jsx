@@ -4,7 +4,7 @@ import { useState } from 'react';
 import BillingModal from '../../components/modals/payment/BillingModal';
 
 
-const MembershipBenefits = () => {
+const SubscriptionBenefits = () => {
 
   const [billingModalOpen, setBillingModalOpen] = useState(false);
 
@@ -388,4 +388,4 @@ const MembershipBenefits = () => {
   );
 };
 
-export default MembershipBenefits;
+export default SubscriptionBenefits;

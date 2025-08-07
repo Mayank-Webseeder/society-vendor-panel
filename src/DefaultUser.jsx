@@ -49,12 +49,12 @@ const defaultUser = {
   notificationsEnabled: true,
   agreedTermsAndConditions: false,
   agreedPrivacyPolicy: false,
-  membershipActive: false,
-  membershipStatus: "Premium",
-  membershipPrice: 999,
-  membershipStartDate: '2025-04-12', // YYYY-MM-DD
-  membershipEndDate: '2026-04-12',   // YYYY-MM-DD
-  membershipEndTime: '11:30',
+  velra_subscription_active: false,
+  velra_subscription_status: "Premium",
+  velra_subscription_validFrom: '2025-04-12', // YYYY-MM-DD
+  velra_subscription_validTill: '2026-04-12',   // YYYY-MM-DD
+  velra_subscription_endTime: '11:30',
+  velra_subscription_referenceId: 'N/A',
   testMode: false,
   serviceBasePrice: 1000, // Base price per service
   get totalCost() {

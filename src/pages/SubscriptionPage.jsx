@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useUser } from '../UserContext';
 
 
-const MembershipPage = () => {
+const SubscriptionPage = () => {
 
   const { user } = useUser();
 
@@ -24,7 +24,7 @@ const MembershipPage = () => {
             }}
         >
             <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
-                Membership Details
+                Subscription Details
             </Typography>
 
             <Typography
@@ -34,17 +34,17 @@ const MembershipPage = () => {
                     color: '#718096',
                 }}
             >
-              Here's a comprehensive overview of your current membership.
+              Here's a comprehensive overview of your current subscription.
             </Typography>
         </Box >
 
-        {/* Conditional Content based on memberShipActive status */}
-        {user.membershipActive? (
+        {/* Conditional Content based on subscription-active status */}
+        {user.velra_subscription_active? (
             <>
-                {/* Membership Overview Card */}
+                {/* Subscription Overview Card */}
                 <div className="w-full bg-white rounded-xl shadow-lg p-6 sm:p-8 mb-8 border-solid border border-gray-300">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-7">
-                    Membership Overview
+                    Subscription Overview
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 text-gray-700">
                     <div className="flex items-center gap-3">
@@ -52,16 +52,16 @@ const MembershipPage = () => {
                         <span>{user.name}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="font-semibold text-gray-900">Membership Status:</span>
-                        <span className="font-bold text-amber-600">{user.membershipStatus}</span>
+                        <span className="font-semibold text-gray-900">Reference Number:</span>
+                        <span className="font-bold text-amber-600">{user.velra_subscription_referenceId}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="font-semibold text-gray-900">Membership Start Date:</span>
-                        <span>{user.membershipStartDate}</span>
+                        <span className="font-semibold text-gray-900">Subscription Start Date:</span>
+                        <span>{user.velra_subscription_validFrom}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="font-semibold text-gray-900">Membership End Date:</span>
-                        <span>{user.membershipEndDate}</span>
+                        <span className="font-semibold text-gray-900">Subscription End Date:</span>
+                        <span>{user.velra_subscription_validTill}</span>
                     </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ const MembershipPage = () => {
                 </div>
             </>
         ) : (
-            // "No Active Membership" message card
+            // "No Active Subscription" message card
             <div className='flex justify-center'>
                 <motion.div
                 className="w-full max-w-2xl bg-gradient-to-br from-red-50 to-orange-50 rounded-xl shadow-lg p-8 text-center border border-red-100 flex flex-col items-center"
@@ -80,7 +80,7 @@ const MembershipPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                {/* Icon for "No Membership" - Changed to an exclamation mark */}
+                {/* Icon for "No Subscription" - Changed to an exclamation mark */}
                 <div className="mb-6 w-16 h-16 bg-red-100 rounded-full flex items-center justify-center shadow-md">
                     <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -88,10 +88,10 @@ const MembershipPage = () => {
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">
-                    No Active Membership Found !
+                    No Active Subscription Found !
                 </h2>
                 <p className="text-base text-gray-400 mb-8 max-w-md">
-                    It looks like you don't have an active premium membership.
+                    It looks like you don't have an active subscription for any service.
                     Subscribe today to unlock exclusive features and elevate your experience!
                 </p>
                 <a
@@ -111,4 +111,4 @@ const MembershipPage = () => {
   );
 };
 
-export default MembershipPage;
+export default SubscriptionPage;
