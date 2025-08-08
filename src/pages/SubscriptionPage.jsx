@@ -10,7 +10,7 @@ const SubscriptionPage = () => {
 
   return (
     <div className='w-full h-full p-5 sm:p-8'>
-      {/* Page Title Section */}
+      {/* Heading */}
        <Box 
             sx={{
                 display: 'flex',

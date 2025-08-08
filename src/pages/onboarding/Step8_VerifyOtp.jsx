@@ -113,7 +113,7 @@ const Step8_VerifyOtp = () => {
     }
 
     try {
-      // Make API call to createProfile
+      // Make API 5 call to createProfile
       const response = await createProfile(formData);
 
       // If successful, update local storage and context

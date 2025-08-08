@@ -4,6 +4,7 @@ const defaultUser = {
   name: "User",
   initials: 'U',
   id: '#User132175',
+  role: 'vendor',
   bio: 'Working to cater to willing professionals.',
   dateOfBirth: '2000-01-01',    // YYYY-MM-DD
   gender: 'Male',
@@ -35,7 +36,7 @@ const defaultUser = {
     ].join(', ');
   },
   locationCoordinates: "N/A",
-  whatYouOffer: ["Housekeeping Services", "Pest Control", "Society Office Administration", "Carpentry Work", "Waste Management", "Elevator Maintenance", "Plumbing Services"],
+  whatYouOffer: ["Housekeeping Services", "Waste Management", "Elevator Maintenance", "Plumbing Services"],
   get servicesCount() {    // Since servicesCount is defined as a getter in the defaultUser object, you can access it like a regular property, ex, defaultUser.servicesCount. A getter is a special type of property that calculates its value dynamically when accessed.
     return this.whatYouOffer.length;
   },

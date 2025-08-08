@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
-import { validateEmail } from '../../services/api/auth'; // API 4
+import { validateEmail } from '../../services/api/auth';
 
 
 const VerifyOtpForgotPassword = () => {
+
   const location = useLocation();
   const navigate = useNavigate();
 

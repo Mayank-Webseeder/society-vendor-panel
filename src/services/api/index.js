@@ -12,21 +12,23 @@ const SUMMARY_API = {
     LOGIN: `${BASE_URL}/api/vendor/login`,
     SEND_OTP: `${BASE_URL}/api/vendor/sendOtp`,
     VALIDATE_EMAIL: `${BASE_URL}/api/vendor/validateEmail`,
+    CREATE_PROFILE: `${BASE_URL}/api/vendor/createProfile`,
     SEND_EMAIL_VERIFICATION_OTP: `${BASE_URL}/api/vendor/sendOtpEmailVerification`,
     FORGOT_PASSWORD: `${BASE_URL}/api/vendor/forgetPassword`,
-    CREATE_PROFILE: `${BASE_URL}/api/vendor/createProfile`,
     SUBSCRIPTION_PURCHASE: `${BASE_URL}/api/vendor/subscribe`,
     CHECK_SUBSCRIPTION_STATUS: `${BASE_URL}/api/vendor/subscription-status`,
+    ADD_SERVICE: `${BASE_URL}/api/vendor/add-service`,
+    DASHBOARD_ACCESS: `${BASE_URL}/api/vendor/dashboard`,
+    VIEW_PROFILE: `${BASE_URL}/api/vendor/profile`,
+    UPDATE_PROFILE: `${BASE_URL}/api/vendor/profile`,
   },
   
   JOBS: {
-    // CREATE_JOB: `${BASE_URL}/api/jobs/create`,
     GET_NEARBY_JOBS: (lat, lon) => `${BASE_URL}/api/jobs/nearby?latitude=${lat}&longitude=${lon}`,
-    SHOW_INTEREST: (jobId) => `${BASE_URL}/api/applications/${jobId}/interest`,
     APPLY_TO_JOB_WITH_QUOTATION: (jobId) => `${BASE_URL}/api/applications/${jobId}/apply`,
+    SHOW_INTEREST: (jobId) => `${BASE_URL}/api/applications/${jobId}/interest`,
     GET_JOB_DETAILS: (jobId) => `${BASE_URL}/api/society/jobs/${jobId}`,
-    // APPLY_TO_JOB: (jobId) => `${BASE_URL}/jobs/${jobId}/apply`,
-    // GET_APPLICANTS: (jobId) => `${BASE_URL}/api/applications/${jobId}/applicants`,
+    VIEW_MY_APPLICATIONS: `${BASE_URL}/api/vendor/my-applications`,
   },
 };
 

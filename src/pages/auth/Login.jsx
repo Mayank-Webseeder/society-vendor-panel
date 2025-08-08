@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { loginVendor } from '../../services/api/auth';
+import { loginVendor, checkSubscriptionStatus, getVendorDashboard } from '../../services/api/auth';
 import { useUser } from '../../UserContext';
 import defaultUser from '../../DefaultUser';
 
@@ -27,14 +27,11 @@ const Login = ({ onSwitch, onLogin }) => {
     // Check for test credentials
     if (email === TEST_EMAIL && password === TEST_PASSWORD) {
       console.log('✅ Logged in with test credentials');
-
       // Set testMode to true in defaultUser and store it in localStorage
       const testUser = { ...defaultUser, testMode: true };
       localStorage.setItem('velra_user', JSON.stringify(testUser));
-
       // Update the user context immediately
       setUser(testUser);
-
       // Store a mock token for test login
       localStorage.setItem('authToken', 'TEST_AUTH_TOKEN');
 
@@ -43,22 +40,48 @@ const Login = ({ onSwitch, onLogin }) => {
       return;
     }
 
+
+    // Normal API call for login
     // Basic validation
     if (!email.trim() || !password.trim()) {
       setError('Please fill in all fields');
       return;
     }
-
     setError('');
 
     try {
       // Call the loginVendor API (API 2)
       const result = await loginVendor(email.trim(), password.trim());
-
       console.log('✅ Login successful:', result);
-
       // Store the authToken in localStorage
       localStorage.setItem('authToken', result.authToken);
+
+
+      // Fetch subscription status after login
+      try {
+        const res = await checkSubscriptionStatus();
+        localStorage.setItem('velra_subscription_active', res.active ? 'true' : 'false');
+        localStorage.setItem('velra_subscription_validTill', res.validTill || '');
+        localStorage.setItem('velra_subscription_referenceId', res.referenceId || '');
+      } catch (err) {
+        localStorage.setItem('velra_subscription_active', 'false');
+        localStorage.setItem('velra_subscription_validTill', '');
+        localStorage.setItem('velra_subscription_referenceId', '');
+      }
+
+
+      // Fetch dashboard details after login
+      try {
+        const dashboard = await getVendorDashboard();
+        // Update user context and localStorage with dashboard user info
+        if (dashboard.user) {
+          setUser(dashboard.user); // This will merge with DefaultUser via safeSetUser
+        }
+        localStorage.setItem('velra_dashboard', JSON.stringify(dashboard));
+      } catch (err) {
+        localStorage.removeItem('velra_dashboard');
+      }
+
 
       // Trigger the onLogin callback
       if (onLogin) onLogin();

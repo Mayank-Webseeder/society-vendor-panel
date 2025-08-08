@@ -33,12 +33,14 @@ const ValidateEmail = () => {
     try {
       // Step 1: Validate Email (API 4)
       console.log('Validating OTP:', otp);
-      const emailValidationResult = await validateEmail(email, otp); // Pass email and OTP
+      const emailValidationResult = await validateEmail(email, otp);
       console.log('✅ Email validated successfully:', emailValidationResult);
 
       // Step 2: Signup Vendor (API 1)
       const signupResult = await signupVendor(fullName, email, password)
       console.log('✅ Signup successful:', signupResult);
+
+      alert("Email Validated succesfully!");
 
       // Redirect to onboarding page
       navigate('/auth/onboarding');
@@ -75,11 +77,11 @@ const ValidateEmail = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.2 } },
   };
 
+
   return (
     <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden"
-         style={{
-           background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-         }}>
+      style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)' }}
+    >
       {/* Left: Form Section */}
       <motion.div
         className="relative flex flex-col justify-center items-center p-6 md:px-12
@@ -288,6 +290,7 @@ const ValidateEmail = () => {
           )}
         </div>
       </motion.div>
+
 
       {/* Right: Image Section */}
       <motion.div

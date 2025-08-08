@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { viewVendorProfile } from '../services/api/auth';
+import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Edit as EditIcon } from 'lucide-react';
 import { FormControl, Select, MenuItem, Button, Box, Typography } from '@mui/material';
@@ -13,13 +15,29 @@ import { useUser } from '../UserContext';
 
 const PersonalInformation = () => {
 
+
   const {user, setUser} = useUser();    // get context data
   const subscriptionActive = user.velra_subscription_active;
 
   const [tempUser, setTempUser] = useState({ ...user });
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  console.log(tempUser);
+  // Fetch profile data on mount
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    viewVendorProfile()
+      .then((profile) => {
+        if (mounted && profile) {
+          setUser(profile); // merge with defaultUser via safeSetUser
+          setTempUser({ ...profile });
+        }
+      })
+      .catch(() => {})
+      .finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, [setUser]);
 
   // Handlers for My Profile fields
   const handleChange = (e) => {
@@ -282,6 +300,17 @@ const PersonalInformation = () => {
   };
 
 
+  if (loading) {
+    // Skeleton UI for loading state
+    return (
+      <div className='p-5 sm:p-8 w-full h-full relative'>
+        <Skeleton variant="text" width={220} height={40} sx={{ mb: 2 }} />
+        <Skeleton variant="rectangular" width="100%" height={120} sx={{ mb: 3, borderRadius: 2 }} />
+        <Skeleton variant="rectangular" width="100%" height={220} sx={{ mb: 3, borderRadius: 2 }} />
+        <Skeleton variant="rectangular" width="100%" height={180} sx={{ borderRadius: 2 }} />
+      </div>
+    );
+  }
 
   return (
     <div className='p-5 sm:p-8 w-full h-full relative'>

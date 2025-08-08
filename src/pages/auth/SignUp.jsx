@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { sendOtpEmailVerification } from '../../services/api/auth';    // Import the API function
+import { sendOtpEmailVerification } from '../../services/api/auth';
 
 
 const SignUp = ({ onSwitch }) => {
@@ -34,10 +34,10 @@ const SignUp = ({ onSwitch }) => {
     console.log("Entered email: ", email)
 
     try {
-      // Call the sendOtpEmailVerification API (API 5)
+      // Call the sendOtpEmailVerification API (API 6)
       const result = await sendOtpEmailVerification(email.trim());
       
-      // console.log('✅ OTP sent successfully:', result);
+      console.log('✅ OTP sent successfully:', result);
       
       // Show success message
       alert('OTP sent successfully! Please check your email for verification.');

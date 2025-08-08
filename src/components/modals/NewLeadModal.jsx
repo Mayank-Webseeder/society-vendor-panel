@@ -47,7 +47,7 @@ const NewLeadModal = ({
       onApplyClick();
 
       // Show success toast
-      toast.success("Interested Shown!");
+      toast.success("Interested shown successfully!");
 
       console.log("Vendor Details:", vendorDetails);
     } catch (error) {

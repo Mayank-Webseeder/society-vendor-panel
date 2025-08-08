@@ -10,11 +10,13 @@ const RESEND_TIME = 59;    // seconds
 
 
 const ForgotPassword = () => {
+
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [showResend, setShowResend] = useState(false);
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isTiming, setIsTiming] = useState(false);
+  const [buttonText, setButtonText] = useState('Send OTP');
   const timerRef = useRef();
 
   useEffect(() => {
@@ -42,17 +44,33 @@ const ForgotPassword = () => {
       // Call API 3 to send OTP
       await sendOtp(email);
       console.log("OTP sent successfully to:", email);
-      
-      // Show resend option and start timer
+
+      // Update button text and start timer
+      setButtonText('Proceed to Verify');
       setShowResend(true);
       setIsTiming(true);
       setTimer(RESEND_TIME);
-
-      // Redirect to VerifyOtpForgotPassword page with email as state
-      navigate('/auth/forgot-password/verify-otp', { state: { email } });
     } catch (error) {
       console.error("Failed to send OTP:", error);
       alert("Failed to send OTP. Please try again.");
+    }
+  };
+
+
+  const handleResend = async () => {
+    if (isTiming) return; // Disable if timer is running
+
+    try {
+      // Call API 3 to resend otp 
+      await sendOtp(email);
+      console.log("OTP resent successfully to:", email);
+
+      // Restart timer without changing button text
+      setIsTiming(true);
+      setTimer(RESEND_TIME);
+    } catch (error) {
+      console.error("Failed to resend OTP:", error);
+      alert("Failed to resend OTP. Please try again.");
     }
   };
 
@@ -69,15 +87,15 @@ const ForgotPassword = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.2 } },
   };
 
+
+
   return (
     <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden"
-         style={{
-           background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-         }}>
+      style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)' }}
+    >
       {/* Left: Form Section */}
       <motion.div
-        className="relative flex flex-col justify-center items-center p-6 md:px-12
-                   flex-1 md:w-1/2 min-h-screen z-10"
+        className="relative flex flex-col justify-center items-center p-6 md:px-12 flex-1 md:w-1/2 min-h-screen z-10"
         variants={formPanelVariants}
         initial="hidden"
         animate="visible"
@@ -115,7 +133,6 @@ const ForgotPassword = () => {
             transform: 'translate(50%, -50%)'
           }}
         ></div>
-
         <div
           className="absolute bottom-0 left-0 w-72 h-72 z-0"
           style={{
@@ -179,7 +196,7 @@ const ForgotPassword = () => {
             Reset Password
           </motion.h2>
 
-          <form onSubmit={handleFormSubmit} className="space-y-6">
+          <form onSubmit={buttonText === 'Send OTP' ? handleFormSubmit : () => navigate('/auth/forgot-password/verify-otp', { state: { email } })} className="space-y-6">
             <motion.div
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -190,9 +207,11 @@ const ForgotPassword = () => {
                 type="email"
                 id="email"
                 placeholder="your.email@example.com"
-                className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
+                className={`w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
                            focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                           text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+                            backdrop-blur transition-all duration-200 text-base
+                           ${isTiming ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'text-gray-800 bg-white/90'}`
+                }
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -217,7 +236,13 @@ const ForgotPassword = () => {
                 transition={{ delay: 0.7, duration: 0.5 }}
               >
                 <span className="text-sm font-medium text-white/70">
-                  Didn't receive the email? Click Resend.
+                  Didn't receive the email? Click{' '}
+                  <span
+                    onClick={handleResend}
+                    className={`underline ${isTiming ? 'text-gray-500 cursor-not-allowed' : 'text-blue-400 hover:text-blue-500 cursor-pointer'}`}
+                  >
+                    Resend
+                  </span>
                 </span>
                 <span className="text-sm text-white font-semibold min-w-[40px] text-right">
                   {isTiming ? formatTimer(timer) : '0:00'}
@@ -228,20 +253,21 @@ const ForgotPassword = () => {
             <motion.button
               type="submit"
               className={`w-full border-none py-3 px-6 rounded-lg font-semibold transition-all duration-200 text-base
-                         ${(isTiming || email.trim() === '') 
+                         ${(email.trim() === '') 
                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed' 
                            : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer'}
                          shadow-md`}
-              disabled={isTiming || email.trim() === ''}
+              disabled={email.trim() === ''}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
-              {showResend && !isTiming ? 'Resend Link' : 'Send OTP'}
+              {buttonText}
             </motion.button>
           </form>
         </div>
       </motion.div>
+
 
       {/* Right: Image Section */}
       <motion.div

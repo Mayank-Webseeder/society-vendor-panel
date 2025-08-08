@@ -10,6 +10,7 @@ const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[@#$])[A-Za-z\d@#$]{8,}$/
 
 
 const ResetPassword = () => {
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -17,13 +18,15 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
+
   const handleSubmit = async(e) => {
     e.preventDefault();
 
     // Validate password
     if (!passwordRequirements.test(password)) {
       setError(
-        'Password must be at least 8 characters, include one uppercase letter, one number, and one special character (@, #, $).'
+        // 'Password must be at least 8 characters, include one uppercase letter, one number, and one special character (@, #, $).'
+        'Entered password does not meet the mentioned criteria.'
       );
       return;
     }
@@ -35,26 +38,28 @@ const ResetPassword = () => {
     }
 
     setError('');
+
     try {
       // Extract email and otp from state
       const { email, otp } = location.state || {};
 
       if (!email || !otp) {
-        setError('Invalid request. Please try again.');
+        setError('Invalid request. Please try again later.');
         return;
       }
 
-      // Call API 6: forgetPassword
+      // Call API 7 to reset password
       await forgetPassword(email, otp, password);
       console.log('✅ Password reset successful');
 
       // Redirect to login page after successful password reset
-      navigate('/auth/login', { replace: true });
+      navigate('/auth', { replace: true });
     } catch (error) {
       console.error('❌ Password reset failed:', error);
       setError(error.response?.data?.message || 'Failed to reset password. Please try again.');
     }
   };
+
 
   const formPanelVariants = {
     hidden: { opacity: 0, x: -50 },
