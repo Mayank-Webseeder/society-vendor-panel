@@ -13,18 +13,18 @@ export const AuthProvider = ({ children }) => {
   const { resetUser } = useUser();
 
   // For demo: use localStorage so refresh persists login
-  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("velra_logged_in"));
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("user_logged_in"));
 
 
   const login = () => {
-    localStorage.setItem("velra_logged_in", "true");
+    localStorage.setItem("user_logged_in", "true");
     setIsLoggedIn(true);
     navigate('/dashboard', {replace: true});
   };
 
 
   const logout = () => {
-    localStorage.removeItem("velra_logged_in");
+    localStorage.removeItem("user_logged_in");
     resetUser();    // Resets both state & localStorage for user
     setIsLoggedIn(false);
     navigate('/auth', {replace: true});

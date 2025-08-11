@@ -57,7 +57,7 @@ const Payment = () => {
 
       {/* Navbar */}
       {/* <div className='border-solid w-full h-16 px-10 flex justify-between items-center'>
-        <img src={Logo} alt="velra-logo" />
+        <img src={Logo} alt="mysocietyneeds-logo" />
         <button
           className='h-fit bg-[#56A9D9] border-none p-1 flex justify-center items-center rounded-full transition-colors duration-200 hover:bg-[#3577a3]'
           onClick={handleClose}

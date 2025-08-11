@@ -596,7 +596,7 @@
 
 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, IconButton, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -608,6 +608,7 @@ import { motion } from 'framer-motion';
 import NewLeadModal from '../components/modals/NewLeadModal';
 import QuotationFormModal from '../components/modals/QuotationFormModal';
 import dummyData from '../static/dummyData_Leads';
+import { getNearbyJobs } from '../services/api/jobs'; // Import the API
 import AccessLockedModal from '../components/modals/AccessLockedModal';
 import { useUser } from '../UserContext';
 
@@ -619,7 +620,7 @@ const ROWS_PER_PAGE = 10;
 const NewLeads = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const navigate = useNavigate();
 
@@ -638,8 +639,40 @@ const NewLeads = () => {
   const [showQuotationForm, setShowQuotationForm] = useState(false);
   
 
+  // State for jobs
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+
+  // Fetch nearby jobs on component mount
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        // Replace with actual latitude and longitude
+        const latitude = 28.7041; // Example latitude
+        const longitude = 77.1025; // Example longitude
+
+        const fetchedJobs = await getNearbyJobs(latitude, longitude);
+        setJobs(fetchedJobs);
+      } catch (err) {
+        console.error('Error fetching nearby jobs:', err);
+        setError('Failed to fetch jobs. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+
   // Filter leads with status "New"
-  const newLeadsAll = dummyData.filter(lead => lead.status === "New");
+  // const newLeadsAll = dummyData.filter(lead => lead.status === "New");
+  const newLeadsAll = jobs.filter(lead => lead.status === "New");
   
   // Search state
   const [search, setSearch] = useState('');

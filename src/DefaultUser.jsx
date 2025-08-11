@@ -9,8 +9,8 @@ const defaultUser = {
   dateOfBirth: '2000-01-01',    // YYYY-MM-DD
   gender: 'Male',
   jobTitle: 'Service Provider',
-  email: 'velra@business.com',
-  businessName: "Velra Pvt. Ltd.",
+  email: 'mysocietyneeds@business.com',
+  businessName: "MySocietyNeeds Pvt. Ltd.",
   workExperience: "Less than 1 year",
   idProof: "None",
   idProofFile: null,
@@ -50,12 +50,12 @@ const defaultUser = {
   notificationsEnabled: true,
   agreedTermsAndConditions: false,
   agreedPrivacyPolicy: false,
-  velra_subscription_active: false,
-  velra_subscription_status: "Premium",
-  velra_subscription_validFrom: '2025-04-12', // YYYY-MM-DD
-  velra_subscription_validTill: '2026-04-12',   // YYYY-MM-DD
-  velra_subscription_endTime: '11:30',
-  velra_subscription_referenceId: 'N/A',
+  subscription_active: false,
+  subscription_status: "Premium",
+  subscription_validFrom: '2025-04-12', // YYYY-MM-DD
+  subscription_validTill: '2026-04-12',   // YYYY-MM-DD
+  subscription_endTime: '11:30',
+  subscription_referenceId: 'N/A',
   testMode: false,
   serviceBasePrice: 1000, // Base price per service
   get totalCost() {

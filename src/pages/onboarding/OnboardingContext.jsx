@@ -1,5 +1,5 @@
 // Primary task is just to collect onboarding data, which is saved to local storage 
-// at final onboarding step(Step8_VerifyOtp.jsx) by name of 'velra_user'
+// at final onboarding step(Step8_VerifyOtp.jsx) by name of 'mysocietyneeds_user'
 
 
 import { createContext, useContext, useState, useCallback } from "react";

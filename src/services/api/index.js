@@ -37,7 +37,7 @@ const SUMMARY_API = {
 // Utility functions
 export const logout = () => {
   localStorage.removeItem('authToken');
-  localStorage.removeItem('velra_user');
+  localStorage.removeItem('mysocietyneeds_user');
 };
 
 export const isLoggedIn = () => {

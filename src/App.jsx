@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation, Navigate, replace } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-// import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import NewLeads from './pages/NewLeads';

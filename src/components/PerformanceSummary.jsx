@@ -8,7 +8,7 @@ import { finalRating } from '../static/dummyData_MyStats';
 const PerformanceSummary = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const jobsCompleted = dummyData.filter(lead => lead.status === "Completed").length;
 

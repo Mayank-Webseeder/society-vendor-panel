@@ -18,6 +18,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
 
   if (!open) return null;
 
+
   const handleApply = async () => {
     setLoading(true);
     setError('');
@@ -33,8 +34,6 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         },
         additionalNotes,
       };
-
-      // console.log(quotationDetails);
 
       // Make the api call
       const response = await applyToJobWithQuotation(jobId, quotationDetails);
@@ -52,6 +51,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
       setLoading(false);
     }
   };
+
 
   return (
     <Box

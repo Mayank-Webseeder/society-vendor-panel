@@ -67,7 +67,7 @@ const UpiSuccessModal = ({ onGoToDashboard }) => {
 
         {/* Descriptive Text */}
         <p className="text-center text-lg mb-8 max-w-xl leading-relaxed" style={{ color: 'rgba(0,0,0,0.59)' }}>
-          Welcome to Velra! You're now ready to start pitching to verified society requirements.
+          Welcome to My Society Needs! You're now ready to start pitching to verified society requirements.
         </p>
 
         {/* Go to Dashboard Button */}

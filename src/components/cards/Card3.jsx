@@ -11,7 +11,7 @@ const Card3 = () => {
 
   const navigate = useNavigate();
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   // Generate an array of stars based on user.rating
   const renderStars = () => {

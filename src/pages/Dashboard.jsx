@@ -32,7 +32,7 @@ const containerVariants = {
 const Dashboard = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   return (
     <div id='parent-div' className="w-full">

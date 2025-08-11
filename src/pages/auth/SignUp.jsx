@@ -129,7 +129,7 @@ const SignUp = ({ onSwitch }) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.5 }}
       >
-        Join Velra Today!
+        Join Today!
       </motion.h2>
 
       {/* Error Message */}

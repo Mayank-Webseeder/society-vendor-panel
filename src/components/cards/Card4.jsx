@@ -9,7 +9,7 @@ import { useUser } from '../../UserContext';
 const Card4 = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const navigate = useNavigate();
 

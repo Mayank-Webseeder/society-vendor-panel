@@ -4,7 +4,7 @@ const dummyReviews = [
         name: "Rajesh Kumar",
         position: "Society Secretary",
         company: "Green Valley Apartments",
-        review: "VELRA has transformed how we manage our society operations. The platform makes it easy for residents to book services and track maintenance requests. It's incredibly user-friendly and has saved us countless hours of manual coordination.",
+        review: "My Society Needs has transformed how we manage our society operations. The platform makes it easy for residents to book services and track maintenance requests. It's incredibly user-friendly and has saved us countless hours of manual coordination.",
         avatar: "RK"
     },
     {
@@ -12,7 +12,7 @@ const dummyReviews = [
         name: "Priya Sharma",
         position: "Facilities Manager",
         company: "Sunrise Heights Society",
-        review: "VELRA and our vendor network together have saved us almost 20 hours a week. We've honestly saved ₹50,000 over a year in operational costs and improved resident satisfaction significantly.",
+        review: "My Society Needs and our vendor network together have saved us almost 20 hours a week. We've honestly saved ₹50,000 over a year in operational costs and improved resident satisfaction significantly.",
         avatar: "PS"
     },
     {
@@ -20,7 +20,7 @@ const dummyReviews = [
         name: "Amit Patel",
         position: "Managing Director",
         company: "Premium Cleaning Services",
-        review: "VELRA was easy to learn and start using for everyone at our company. It made it easy to be in compliance with society requirements and manage our workforce efficiently.",
+        review: "My Society Needs was easy to learn and start using for everyone at our company. It made it easy to be in compliance with society requirements and manage our workforce efficiently.",
         avatar: "AP"
     },
     {
@@ -36,7 +36,7 @@ const dummyReviews = [
         name: "Vikram Singh",
         position: "Resident Welfare President",
         company: "Royal Gardens Complex",
-        review: "I'd absolutely recommend VELRA Management System. It's a great platform that does exactly what you need it to do for society administration and resident services.",
+        review: "I'd absolutely recommend My Society Needs Management System. It's a great platform that does exactly what you need it to do for society administration and resident services.",
         avatar: "VS"
     },
     {
@@ -44,7 +44,7 @@ const dummyReviews = [
         name: "Meera Krishnan",
         position: "Property Manager",
         company: "Oceana Residences",
-        review: "We have been using VELRA for 2.5 years and have seen a 95.5% satisfaction rate with residents. It is so easy to coordinate services and track performance with vendors.",
+        review: "We have been using My Society Needs for 2.5 years and have seen a 95.5% satisfaction rate with residents. It is so easy to coordinate services and track performance with vendors.",
         avatar: "MK"
     },
     {
@@ -52,7 +52,7 @@ const dummyReviews = [
         name: "Arjun Kapoor",
         position: "Operations Head",
         company: "SecureGuard Services",
-        review: "VELRA is easy to use, and the support is excellent. And that's what security service professionals want - simplicity and reliability in managing society contracts.",
+        review: "My Society Needs is easy to use, and the support is excellent. And that's what security service professionals want - simplicity and reliability in managing society contracts.",
         avatar: "AK"
     },
     {
@@ -60,7 +60,7 @@ const dummyReviews = [
         name: "Kavya Nair",
         position: "Business Development Manager",
         company: "HomeCare Solutions",
-        review: "The way VELRA has designed the platform has been very thoughtful. They've really understood the needs of both societies and service providers in the residential sector.",
+        review: "The way My Society Needs has designed the platform has been very thoughtful. They've really understood the needs of both societies and service providers in the residential sector.",
         avatar: "KN"
     },
     {
@@ -68,7 +68,7 @@ const dummyReviews = [
         name: "Rohit Gupta",
         position: "Vendor Relations Manager",
         company: "Metropolitan Societies Group",
-        review: "VELRA saves us from having an entire team of coordinators. It saves time in managing multiple vendors and compiling performance reports for society committees.",
+        review: "My Society Needs saves us from having an entire team of coordinators. It saves time in managing multiple vendors and compiling performance reports for society committees.",
         avatar: "RG"
     },
     {
@@ -84,7 +84,7 @@ const dummyReviews = [
         name: "Suresh Menon",
         position: "Treasurer",
         company: "Lakeview Residency",
-        review: "VELRA has made financial tracking and vendor payments seamless. The transparency and reporting features are a huge plus for our committee.",
+        review: "My Society Needs has made financial tracking and vendor payments seamless. The transparency and reporting features are a huge plus for our committee.",
         avatar: "SM"
     },
     {
@@ -92,7 +92,7 @@ const dummyReviews = [
         name: "Divya Bansal",
         position: "Community Manager",
         company: "Urban Nest Society",
-        review: "With VELRA, resident communication and event management have become so much easier. The feedback from residents has been overwhelmingly positive.",
+        review: "With My Society Needs, resident communication and event management have become so much easier. The feedback from residents has been overwhelmingly positive.",
         avatar: "DB"
     }
 ];

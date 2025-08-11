@@ -7,7 +7,7 @@ import { useUser } from '../../UserContext';
 const Card1 = () => {
 
   const { user } = useUser();    // Get context data
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
   
   return (
     <div className="relative bg-[#5CA7D3] w-60 rounded-2xl h-40 overflow-hidden hover:scale-105 transition-transform duration-300">

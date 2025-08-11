@@ -1,5 +1,5 @@
 // This is used to store the onboarding data in global state, and merge with DefaultUser in case localStorage 
-// does not have 'velra_user'(set by Onboarding-context during onboarding)
+// does not have 'mysocietyneeds_user'(set by Onboarding-context during onboarding)
 import { createContext, useContext, useState, useEffect } from "react";
 import defaultUser from "./DefaultUser";
 
@@ -29,7 +29,7 @@ function mergeWithDefaults(defaults, data) {
 export const UserProvider = ({ children }) => {
 
     const [user, setUser] = useState(() => {    // setUser can be used to update user details
-        const stored = localStorage.getItem('velra_user');
+        const stored = localStorage.getItem('mysocietyneeds_user');
 
         // Merge with defaultUser to ensure all fields are present
         return stored?  mergeWithDefaults(defaultUser, JSON.parse(stored)) : defaultUser;
@@ -38,7 +38,7 @@ export const UserProvider = ({ children }) => {
 
     // Hydrate(extract data) from localStorage on app load (in case localStorage changes after mount)
     useEffect(() => {
-        const stored = localStorage.getItem('velra_user');
+        const stored = localStorage.getItem('mysocietyneeds_user');
         if(stored) setUser(mergeWithDefaults(defaultUser, JSON.parse(stored)));
     }, []);
 
@@ -47,14 +47,14 @@ export const UserProvider = ({ children }) => {
     const safeSetUser = (newUser) => {
         const merged = mergeWithDefaults(defaultUser, newUser);
         setUser(merged);
-        localStorage.setItem('velra_user', JSON.stringify(merged));
+        localStorage.setItem('mysocietyneeds_user', JSON.stringify(merged));
     };
 
 
     // Function to reset user-context data on logout
     const resetUser = () => {
       setUser(defaultUser);
-      localStorage.removeItem('velra_user');
+      localStorage.removeItem('mysocietyneeds_user');
     };
 
 

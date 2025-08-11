@@ -126,7 +126,7 @@ const StarRating = ({ rating, size = 'w-5 h-5' }) => (
 const MyStats = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);

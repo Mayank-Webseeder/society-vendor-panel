@@ -79,7 +79,7 @@ const Step8_VerifyOtp = () => {
 
       // Set testMode to true in onboardingData and store it in localStorage
       const testUser = { ...onboardingData, testMode: true };
-      localStorage.setItem('velra_user', JSON.stringify(testUser));
+      localStorage.setItem('mysocietyneeds_user', JSON.stringify(testUser));
 
       // Update the user context immediately
       setUser(testUser);
@@ -117,7 +117,7 @@ const Step8_VerifyOtp = () => {
       const response = await createProfile(formData);
 
       // If successful, update local storage and context
-      localStorage.setItem('velra_user', JSON.stringify(onboardingData));
+      localStorage.setItem('mysocietyneeds_user', JSON.stringify(onboardingData));
       setUser(onboardingData);
       setSuccess(true);
 

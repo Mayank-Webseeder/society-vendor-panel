@@ -39,7 +39,7 @@ const SubscriptionPage = () => {
         </Box >
 
         {/* Conditional Content based on subscription-active status */}
-        {user.velra_subscription_active? (
+        {user.subscription_active? (
             <>
                 {/* Subscription Overview Card */}
                 <div className="w-full bg-white rounded-xl shadow-lg p-6 sm:p-8 mb-8 border-solid border border-gray-300">
@@ -53,15 +53,15 @@ const SubscriptionPage = () => {
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="font-semibold text-gray-900">Reference Number:</span>
-                        <span className="font-bold text-amber-600">{user.velra_subscription_referenceId}</span>
+                        <span className="font-bold text-amber-600">{user.subscription_referenceId}</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="font-semibold text-gray-900">Subscription Start Date:</span>
-                        <span>{user.velra_subscription_validFrom}</span>
+                        <span>{user.subscription_validFrom}</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="font-semibold text-gray-900">Subscription End Date:</span>
-                        <span>{user.velra_subscription_validTill}</span>
+                        <span>{user.subscription_validTill}</span>
                     </div>
                     </div>
                 </div>

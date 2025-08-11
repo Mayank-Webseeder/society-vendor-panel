@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { viewVendorProfile } from '../services/api/auth';
+import { viewVendorProfile, updateVendorProfile } from '../services/api/auth';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Edit as EditIcon } from 'lucide-react';
-import { FormControl, Select, MenuItem, Button, Box, Typography } from '@mui/material';
+import { FormControl, Select, MenuItem, Button, Box, Typography, ListItemText, Checkbox } from '@mui/material';
 import IOSSwitch from '../components/IOSSwitch';
 import indianStates from '../static/dummyData_IndianStates';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -12,17 +12,16 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useUser } from '../UserContext';
 
 
-
 const PersonalInformation = () => {
 
-
   const {user, setUser} = useUser();    // get context data
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const [tempUser, setTempUser] = useState({ ...user });
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  
   // Fetch profile data on mount
   useEffect(() => {
     let mounted = true;
@@ -38,6 +37,7 @@ const PersonalInformation = () => {
       .finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; };
   }, [setUser]);
+
 
   // Handlers for My Profile fields
   const handleChange = (e) => {
@@ -56,11 +56,21 @@ const PersonalInformation = () => {
     }));
   };
 
-  const handleEditToggle = () => {
+  const handleEditToggle = async () => {
     if (isEditing) {
-      // Save changes
-      setUser({ ...tempUser });
-      console.log('Profile Saved:', tempUser);
+      try {
+        // Save changes
+        const formData = new FormData();
+        Object.keys(tempUser).forEach((key) => {
+          formData.append(key, tempUser[key]);
+        });
+
+        await updateVendorProfile(formData);
+        setUser({ ...tempUser });
+        console.log('Profile Saved:', tempUser);
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
     } else {
       // Enter edit mode
       setTempUser({ ...user }); // Reset tempUser to current user data
@@ -170,7 +180,7 @@ const PersonalInformation = () => {
               >
                 <Select
                   name={name}
-                  value={tempUser[name] || ''}
+                  value={tempUser[name] || user[name] || ''}
                   onChange={handleChange}
                   displayEmpty
                   inputProps={{ 'aria-label': 'Select State' }}
@@ -268,6 +278,73 @@ const PersonalInformation = () => {
       );
     }
 
+    // Special handling for working days field
+    if (name === 'workingDays') {
+      return (
+        <div className="flex flex-col mb-4">
+          <label className="text-xs font-medium text-gray-500 uppercase mb-1">{label}</label>
+          {isEditing ? (
+            <FormControl
+              fullWidth
+              variant="outlined"
+              size="small"
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '6px',
+                  backgroundColor: '#F3F4F6',
+                  '& fieldset': {
+                    borderColor: '#767676',
+                    borderWidth: '1px',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#767676',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#3B82F6',
+                    borderWidth: '2px',
+                  },
+                },
+                '& .MuiSelect-select': {
+                  padding: '7px 12px',
+                  color: '#4A5568',
+                },
+                '& .MuiSvgIcon-root': {
+                  color: '#4A5568',
+                },
+              }}
+            >
+              <Select
+                name={name}
+                value={tempUser[name] || user[name] || []}
+                onChange={(e) =>
+                  setTempUser((prevTempUser) => ({
+                    ...prevTempUser,
+                    [name]: e.target.value,
+                  }))
+                }
+                multiple
+                displayEmpty
+                renderValue={(selected) =>
+                  selected.length === 0 ? 'Select Working Days' : selected.join(', ')
+                }
+              >
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+                  <MenuItem key={day} value={day}>
+                    <Checkbox checked={(tempUser[name] || user[name] || []).includes(day)} />
+                    <ListItemText primary={day} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <p className="text-gray-800 border-solid border border-gray-200 text-sm py-2 px-2 bg-gray-100 rounded-md pointer-events-none">
+              {value?.join(', ') || 'Not specified'}
+            </p>
+          )}
+        </div>
+      );
+    }
+
     // Existing rendering for other fields (default text input or textarea)
     return (
       <div className="flex flex-col mb-4">
@@ -311,6 +388,8 @@ const PersonalInformation = () => {
       </div>
     );
   }
+
+
 
   return (
     <div className='p-5 sm:p-8 w-full h-full relative'>
@@ -425,8 +504,8 @@ const PersonalInformation = () => {
                       {tempUser.name}
                     </Typography>
                     <Typography variant="p" sx={{ fontSize: '1rem', color: '#718096' }}>
-                      {tempUser.jobTitle}
-                    </Typography>
+                      {tempUser.id}
+                  </Typography>
                   </Box>
                 </Box>
             </Box>
@@ -496,7 +575,7 @@ const PersonalInformation = () => {
             {renderField('Gender', 'gender', tempUser.gender)}
             {renderField('Work Experience', 'workExperience', tempUser.workExperience, 'text')}
             {renderField('Date of Birth', 'dateOfBirth', tempUser.dateOfBirth, 'date')}
-            {renderField('Bio', 'bio', tempUser.bio, 'text', true)}
+            {renderField('Working Days', 'workingDays', tempUser.workingDays, 'text')}
           </div>
         </motion.div>
       </AnimatePresence>

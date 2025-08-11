@@ -25,7 +25,7 @@ export const showInterestInJob = async (jobId) => {
 }
 
 
-// API 16: Get Job Details by ID (Society/Vendor)
+// API 16: Get Job Details by ID
 export const getJobDetailsById = async (jobId) => {
   const response = await api.get(SUMMARY_API.JOBS.GET_JOB_DETAILS(jobId));
   return response.data;

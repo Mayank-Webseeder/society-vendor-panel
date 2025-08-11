@@ -8,7 +8,7 @@ const HeadingCard = () => {
 
   const { user, setUser } = useUser();
 
-  const subscriptionActive = user?.velra_subscription_active;
+  const subscriptionActive = user?.subscription_active;
   const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const HeadingCard = () => {
   const handleToggleSubscription = () => {
     setUser({
       ...user,
-      velra_subscription_active: !user.velra_subscription_active,
+      subscription_active: !user.subscription_active,
     });
   };
 

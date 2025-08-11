@@ -127,7 +127,7 @@ const ResetPassword = () => {
           }}
         ></div>
 
-        {/* VELRA logo & Title */}
+        {/* Logo & Title */}
         <div className='flex flex-col items-center mb-14 px-4 text-center z-10'>
           <Typography
             variant="h1"
@@ -156,7 +156,7 @@ const ResetPassword = () => {
               },
             }}
           >
-            VELRA
+            My Society Needs
           </Typography>
           <motion.p
             className="text-base text-center text-white/60 mt-2 max-w-sm"
@@ -282,7 +282,7 @@ const ResetPassword = () => {
           transition={{ delay: 0.8, duration: 0.7, ease: "easeOut" }}
         >
           <p className="font-semibold text-5xl text-white text-center leading-tight drop-shadow-lg">
-            You bring the expertise.<br /> Velra brings the exposure.
+            You bring the expertise.<br /> We bring the exposure.
           </p>
         </motion.div>
       </motion.div>

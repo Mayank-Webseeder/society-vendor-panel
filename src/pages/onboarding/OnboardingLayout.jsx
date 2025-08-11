@@ -53,7 +53,7 @@ const OnboardingLayout = () => {
           }}
         />
 
-        {/* VELRA Branding - Top Left */}
+        {/* Branding - Top Left */}
         <div
           className="absolute top-3 left-[10%] z-10"
         >
@@ -71,7 +71,7 @@ const OnboardingLayout = () => {
               margin: 0,
             }}
           >
-            VELRA
+            My Society Needs
             <div
               style={{
                 content: '""',

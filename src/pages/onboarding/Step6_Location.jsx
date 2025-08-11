@@ -53,7 +53,7 @@ const Step6_Location = () => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`,
         {
           headers: {
-            'User-Agent': 'Velra-App/1.0' // Required for Nominatim
+            'User-Agent': 'MySocietyNeeds-App/1.0' // Required for Nominatim
           }
         }
       );

@@ -29,7 +29,7 @@ const Login = ({ onSwitch, onLogin }) => {
       console.log('✅ Logged in with test credentials');
       // Set testMode to true in defaultUser and store it in localStorage
       const testUser = { ...defaultUser, testMode: true };
-      localStorage.setItem('velra_user', JSON.stringify(testUser));
+      localStorage.setItem('mysocietyneeds_user', JSON.stringify(testUser));
       // Update the user context immediately
       setUser(testUser);
       // Store a mock token for test login
@@ -60,13 +60,13 @@ const Login = ({ onSwitch, onLogin }) => {
       // Fetch subscription status after login
       try {
         const res = await checkSubscriptionStatus();
-        localStorage.setItem('velra_subscription_active', res.active ? 'true' : 'false');
-        localStorage.setItem('velra_subscription_validTill', res.validTill || '');
-        localStorage.setItem('velra_subscription_referenceId', res.referenceId || '');
+        localStorage.setItem('subscription_active', res.active ? 'true' : 'false');
+        localStorage.setItem('subscription_validTill', res.validTill || '');
+        localStorage.setItem('subscription_referenceId', res.referenceId || '');
       } catch (err) {
-        localStorage.setItem('velra_subscription_active', 'false');
-        localStorage.setItem('velra_subscription_validTill', '');
-        localStorage.setItem('velra_subscription_referenceId', '');
+        localStorage.setItem('subscription_active', 'false');
+        localStorage.setItem('subscription_validTill', '');
+        localStorage.setItem('subscription_referenceId', '');
       }
 
 
@@ -77,9 +77,9 @@ const Login = ({ onSwitch, onLogin }) => {
         if (dashboard.user) {
           setUser(dashboard.user); // This will merge with DefaultUser via safeSetUser
         }
-        localStorage.setItem('velra_dashboard', JSON.stringify(dashboard));
+        localStorage.setItem('user_dashboard', JSON.stringify(dashboard));
       } catch (err) {
-        localStorage.removeItem('velra_dashboard');
+        localStorage.removeItem('user_dashboard');
       }
 
 

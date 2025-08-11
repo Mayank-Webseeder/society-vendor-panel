@@ -68,7 +68,7 @@ const Step1_Loading = () => {
       className='relative z-10 min-h-screen w-screen flex items-center justify-center overflow-auto'
       style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)' }}
     >
-      {/* Velra Branding */}
+      {/* Branding */}
       <div className="absolute top-5 left-[2.5%] z-10">
         <h1
           style={{
@@ -84,7 +84,7 @@ const Step1_Loading = () => {
             margin: 0,
           }}
         >
-          VELRA
+          My Society Needs
           <div
             style={{
               content: '""',
@@ -199,7 +199,7 @@ const Step1_Loading = () => {
           <h1 className='font-bold text-4xl md:text-6xl text-white mb-6 tracking-wide'>
             Welcome to{' '}
             <span className="bg-gradient-to-r from-blue-300 via-cyan-300 to-indigo-300 bg-clip-text text-transparent">
-              Velra Services
+              My Society Needs
             </span>
           </h1>
           

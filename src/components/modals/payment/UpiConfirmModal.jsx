@@ -10,9 +10,9 @@ const UpiConfirmModal = ({ onProceed, onClose }) => {
   const [approved, setApproved] = useState(false);
   const [proceeding, setProceeding] = useState(false);
 
-  const startDate = user.velra_subscription_validFrom;
-  const endDate = user.velra_subscription_validTill;
-  const expiresOn = user.velra_subscription_endTime;
+  const startDate = user.subscription_validFrom;
+  const endDate = user.subscription_validTill;
+  const expiresOn = user.subscription_endTime;
 
   // Utility function to convert 24-hour time to 12-hour format
   const convertTo12HourFormat = (time24) => {

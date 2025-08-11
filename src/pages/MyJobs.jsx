@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuItem, Button, TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, Close as CloseIcon, BusinessCenter as BusinessCenterIcon } from '@mui/icons-material';
@@ -15,6 +15,8 @@ import WithdrawApplicationModal from "../components/modals/WithdrawApplicationMo
 import CancelJobModal from '../components/modals/CancelJobModal';
 import { useUser } from "../UserContext";
 import AccessLockedModal from "../components/modals/AccessLockedModal";
+import { getMyAppliedJobs } from '../services/api/jobs';
+import { getJobDetailsById } from '../services/api/jobs';
 
 
 const MotionButton = motion(Button);
@@ -42,7 +44,7 @@ const parsePostedOn = (str) => {
 const MyJobs = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -69,6 +71,10 @@ const MyJobs = () => {
   const [searchWork, setSearchWork] = useState('');
   const [sortOrder, setSortOrder] = useState('desc');
 
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const jobStatuses = [
     { name: "New", color: "text-blue-600", icon: FileText, count: dummyData.filter(lead => lead.status === "New").length },
     { name: "Ongoing", color: "text-yellow-600", icon: Hourglass, count: dummyData.filter(lead => lead.status === "Ongoing").length },
@@ -94,12 +100,34 @@ const MyJobs = () => {
   };
 
 
+  useEffect(() => {
+    const fetchAppliedJobs = async () => {
+      if (selectedStatus === 'Applied') {
+        try {
+          setLoading(true);
+          setError('');
+
+          const appliedJobs = await getMyAppliedJobs();
+          setJobs(appliedJobs);
+        } catch (err) {
+          console.error('Error fetching applied jobs:', err);
+          setError('Failed to fetch applied jobs. Please try again later.');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchAppliedJobs();
+  }, [selectedStatus]);
+
+
   // Filtered leads (add search filter)
-  const filteredLeads = (selectedStatus === "All"
-    ? dummyData
-    : dummyData.filter((lead) => lead.status === selectedStatus)
-  ).filter(lead =>
-    lead.name.toLowerCase().includes(search.toLowerCase())  &&
+  const filteredLeads = (selectedStatus === 'All'
+    ? jobs
+    : jobs.filter((lead) => lead.status === selectedStatus)
+  ).filter((lead) =>
+    lead.name.toLowerCase().includes(search.toLowerCase()) &&
     lead.work.toLowerCase().includes(searchWork.toLowerCase())
   );
 
@@ -124,12 +152,26 @@ const MyJobs = () => {
   };
 
   // Modal logic
-  const handleView = (lead) => {
-    setModalLead(lead);
-    setModalOpen(true);
-    setProceed(false);
-    setShowQuotationForm(false);
+  // const handleView = (lead) => {
+  //   setModalLead(lead);
+  //   setModalOpen(true);
+  //   setProceed(false);
+  //   setShowQuotationForm(false);
+  // };
+
+  const handleView = async (lead) => {
+    try {
+      const jobDetails = await getJobDetailsById(lead.id);
+      console.log('Job Details:', jobDetails);
+      setModalLead(jobDetails);
+      setModalOpen(true);
+      setProceed(false);
+      setShowQuotationForm(false);
+    } catch (error) {
+      console.error('Error fetching job details:', error);
+    }
   };
+
 
   // Close modal handler
   const handleCloseModal = () => {

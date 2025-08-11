@@ -9,7 +9,7 @@ import { useUser } from '../UserContext';
 const BellNotification = ({ mobile = false }) => {
 
     const { user } = useUser();
-    const subscriptionActive = user.velra_subscription_active;
+    const subscriptionActive = user.subscription_active;
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);

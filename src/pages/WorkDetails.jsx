@@ -8,6 +8,7 @@ import dummyOffers from '../static/dummyData_ServicesOffered'
 import { useUser } from '../UserContext';
 import LockIcon from '@mui/icons-material/Lock';
 import AccessLockedModal_WorkDetails from '../components/modals/AccessLockedModal_WorkDetails';
+import { addServiceToSubscription } from '../services/api/auth';
 
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -23,7 +24,7 @@ const contentVariants = {
 const WorkDetails = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive); // Open modal if no subscription
@@ -52,9 +53,19 @@ const WorkDetails = () => {
     console.log('Collected Work Details:', formData);
   };
 
-  // Redirect to dashboard when modal closes
   const handleModalClose = () => {
     navigate('/my-profile');
+  };
+
+  const handleAddService = async (newService) => {
+    try {
+      const response = await addServiceToSubscription(newService);
+      console.log('Service added successfully:', response);
+      // Optionally, update the UI or state based on the response
+    } catch (error) {
+      console.error('Error adding service:', error);
+      // Handle error (e.g., show a notification to the user)
+    }
   };
 
 
@@ -310,10 +321,8 @@ const WorkDetails = () => {
 
 
 
-
-
               {/* Working Days */}
-              <Box>
+              {/* <Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Box sx={{
                     width: 40,
@@ -337,7 +346,6 @@ const WorkDetails = () => {
                   </Typography>
                 </Box>
                 
-                {/* Display current working days */}
                 {user?.workingDays && user.workingDays.length > 0 && (
                   <Box sx={{ 
                     mb: 3, 
@@ -414,11 +422,11 @@ const WorkDetails = () => {
                     </Button>
                   ))}
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
 
             {/* Save button */}
-            <Box sx={{ 
+            {/* <Box sx={{ 
               mt: 2,
               width: '95%',
               display: 'flex',
@@ -443,9 +451,32 @@ const WorkDetails = () => {
               >
                 Save Changes
               </Button>
-            </Box>
+            </Box> */}
           </motion.div>
         </AnimatePresence>
+
+        {/* Add Service button - Example */}
+        <Box sx={{ mt: 2, width: '95%', display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            onClick={() => handleAddService('Painter')} // Example service
+            sx={{
+              backgroundColor: '#3B82F6',
+              color: 'white',
+              fontWeight: 600,
+              borderRadius: '8px',
+              py: { xs: '6px', sm: '8px' },
+              px: { xs: '16px', sm: '24px' },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: '#2563EB',
+              },
+            }}
+          >
+            Add Service
+          </Button>
+        </Box>
     </Box>
   );
 };

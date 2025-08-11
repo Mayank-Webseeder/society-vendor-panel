@@ -76,7 +76,7 @@ const SubscriptionBenefits = () => {
         }
       }}
     >
-      {/* VELRA Title Section */}
+      {/* Title Section */}
       <Box 
         sx={{ 
           mb: 4, 
@@ -116,7 +116,7 @@ const SubscriptionBenefits = () => {
             },
           }}
         >
-          VELRA
+          My Society Needs
         </Typography>
 
         <Typography

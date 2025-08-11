@@ -1,33 +1,33 @@
 const dummyFAQs = [
   {
     id: 1,
-    question: "What does VELRA do?",
-    answer: "VELRA is a comprehensive platform that connects residential societies with verified service providers. We streamline society management, vendor coordination, and resident services through our digital platform, making community living more efficient and hassle-free."
+    question: "What does My Society Needs do?",
+    answer: "My Society Needs is a comprehensive platform that connects residential societies with verified service providers. We streamline society management, vendor coordination, and resident services through our digital platform, making community living more efficient and hassle-free."
   },
   {
     id: 2,
-    question: "Does VELRA handle society management?",
-    answer: "Yes, VELRA provides complete society management solutions including maintenance tracking, vendor management, resident communication, financial management, security coordination, and administrative tools to help societies operate smoothly and efficiently."
+    question: "Does My Society Needs handle society management?",
+    answer: "Yes, My Society Needs provides complete society management solutions including maintenance tracking, vendor management, resident communication, financial management, security coordination, and administrative tools to help societies operate smoothly and efficiently."
   },
   {
     id: 3,
-    question: "How much does VELRA cost?",
-    answer: "VELRA offers flexible pricing plans based on society size and requirements. We have basic plans starting from ₹2,999/month for small societies and enterprise solutions for larger communities. Contact us for a customized quote based on your specific needs."
+    question: "How much does My Society Needs cost?",
+    answer: "My Society Needs offers flexible pricing plans based on society size and requirements. We have basic plans starting from ₹2,999/month for small societies and enterprise solutions for larger communities. Contact us for a customized quote based on your specific needs."
   },
   {
     id: 4,
-    question: "How many cities is VELRA available in?",
-    answer: "VELRA currently operates in 15+ major cities across India including Delhi NCR, Mumbai, Bangalore, Pune, Hyderabad, Chennai, Kolkata, and Bhopal. We're rapidly expanding to more cities based on demand and are planning to cover 50+ cities by 2025."
+    question: "How many cities is My Society Needs available in?",
+    answer: "My Society Needs currently operates in 15+ major cities across India including Delhi NCR, Mumbai, Bangalore, Pune, Hyderabad, Chennai, Kolkata, and Bhopal. We're rapidly expanding to more cities based on demand and are planning to cover 50+ cities by 2025."
   },
   {
     id: 5,
     question: "Is your support team in-house?",
-    answer: "Yes, VELRA has a dedicated in-house support team available 6 days a week from 10AM to 6PM. Our support includes phone, email, and chat assistance, plus on-site support for society onboarding and training. We also provide 24/7 emergency support for critical issues."
+    answer: "Yes, My Society Needs has a dedicated in-house support team available 6 days a week from 10AM to 6PM. Our support includes phone, email, and chat assistance, plus on-site support for society onboarding and training. We also provide 24/7 emergency support for critical issues."
   },
   {
     id: 6,
-    question: "Is VELRA a verified platform?",
-    answer: "Absolutely! VELRA is a registered company with proper licensing and certifications. All our vendor partners go through thorough background verification, and we maintain strict quality standards. We're also compliant with data protection regulations and maintain high security standards."
+    question: "Is My Society Needs a verified platform?",
+    answer: "Absolutely! My Society Needs is a registered company with proper licensing and certifications. All our vendor partners go through thorough background verification, and we maintain strict quality standards. We're also compliant with data protection regulations and maintain high security standards."
   },
   {
     id: 7,

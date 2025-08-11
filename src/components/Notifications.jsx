@@ -89,7 +89,7 @@ const NotificationItem = ({ notification, index, onNotificationClick }) => {
 const Notifications = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const [showAll, setShowAll] = useState(false);
   const containerRef = useRef(null);

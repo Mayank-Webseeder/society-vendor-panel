@@ -45,7 +45,7 @@ const approvedJobs = dummyData.filter(lead => lead.pendingStatus === 'Approved')
 const AppliedJobs = () => {
 
   const { user } = useUser();
-  const subscriptionActive = user.velra_subscription_active;
+  const subscriptionActive = user.subscription_active;
 
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);

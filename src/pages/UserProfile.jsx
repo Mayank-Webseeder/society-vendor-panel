@@ -150,7 +150,7 @@ const UserProfile = () => {
                 <span className="flex flex-col items-center text-center xl:flex-row xl:ml-2.5 gap-1">
                   {opt.label}
                   {/* Lock Icon for Premium Options */}
-                  {opt.isPremium  &&  !user.velra_subscription_active  &&  <LockIconMui sx={{ fontSize: 18, color: '#F59E0B' }} />}
+                  {opt.isPremium  &&  !user.subscription_active  &&  <LockIconMui sx={{ fontSize: 18, color: '#F59E0B' }} />}
                 </span>
               </motion.div>
             ))}
