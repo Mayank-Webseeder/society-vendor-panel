@@ -101,25 +101,8 @@ const MyJobs = () => {
 
 
   useEffect(() => {
-    const fetchAppliedJobs = async () => {
-      if (selectedStatus === 'Applied') {
-        try {
-          setLoading(true);
-          setError('');
-
-          const appliedJobs = await getMyAppliedJobs();
-          setJobs(appliedJobs);
-        } catch (err) {
-          console.error('Error fetching applied jobs:', err);
-          setError('Failed to fetch applied jobs. Please try again later.');
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchAppliedJobs();
-  }, [selectedStatus]);
+    setJobs(dummyData); // Use dummyData directly
+  }, []);
 
 
   // Filtered leads (add search filter)

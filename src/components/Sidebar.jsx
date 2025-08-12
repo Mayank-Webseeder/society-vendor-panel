@@ -76,9 +76,9 @@ const Sidebar = ({ mobileTopBar = false }) => {
     <nav className="flex flex-col items-center w-full h-full justify-between">
       {/* Top menu items */}
       <div className="flex flex-col items-center gap-5 w-full mt-1">
-        <Link to='/dashboard' className='hidden sm:block no-underline'>
+        {/* <Link to='/dashboard' className='hidden sm:block no-underline'>
           <p className='text-xl text-[#56A9D9]' style={{ fontFamily: 'Parisienne, cursive' }}>Velra</p>
-        </Link>
+        </Link> */}
         {topMenuItems.map((item, idx) => {
           const isActive = location.pathname === item.redirect;
           const Icon = item.icon;

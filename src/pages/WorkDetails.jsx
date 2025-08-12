@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { motion, AnimatePresence } from 'framer-motion';
 import dummyOffers from '../static/dummyData_ServicesOffered'
 import { useUser } from '../UserContext';
-import LockIcon from '@mui/icons-material/Lock';
+// import LockIcon from '@mui/icons-material/Lock';
 import AccessLockedModal_WorkDetails from '../components/modals/AccessLockedModal_WorkDetails';
 import { addServiceToSubscription } from '../services/api/auth';
 
@@ -107,9 +107,7 @@ const WorkDetails = () => {
         </Typography>
 
         {/* Yellow Lock Icon */}
-        {/* {
-          !subscriptionActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} />
-        } */}
+        {/* { !subscriptionActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} /> } */}
       </Box >
 
         {/* Animated Content */}
@@ -192,16 +190,18 @@ const WorkDetails = () => {
                     </Typography>
                     
                     {/* Services Grid */}
-                    <Box sx={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: 'repeat(3, 1fr)', 
-                      gap: 1.5,
-                      pl: 1,
-                      '@media (max-width: 600px)': {
-                        gridTemplateColumns: 'repeat(2, 1fr)',
-                        gap: 1
-                      }
-                    }}>
+                    <Box 
+                      sx={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(3, 1fr)', 
+                        gap: 1.5,
+                        pl: 1,
+                        '@media (max-width: 600px)': {
+                          gridTemplateColumns: 'repeat(2, 1fr)',
+                          gap: 1
+                        }
+                      }}
+                    >
                       {user.whatYouOffer.map((service, index) => (
                         <Box
                           key={index}
@@ -318,144 +318,12 @@ const WorkDetails = () => {
                   ))}
                 </Box>
               </Box>
-
-
-
-              {/* Working Days */}
-              {/* <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Box sx={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <Typography sx={{ color: '#D97706', fontWeight: 600 }}>📅</Typography>
-                  </Box>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      fontWeight: 500, 
-                      color: 'rgba(0,0,0,0.7)',
-                      fontSize: '1.125rem'
-                    }}
-                  >
-                    Working Days
-                  </Typography>
-                </Box>
-                
-                {user?.workingDays && user.workingDays.length > 0 && (
-                  <Box sx={{ 
-                    mb: 3, 
-                    p: 3, 
-                    backgroundColor: 'linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 100%)', 
-                    borderRadius: '12px', 
-                    border: '1px solid #F3E8AA',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '4px',
-                      height: '100%',
-                      backgroundColor: '#D97706',
-                      borderRadius: '0 4px 4px 0'
-                    }
-                  }}>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        color: '#92400e',
-                        fontSize: '0.9rem',
-                        lineHeight: 1.6,
-                        pl: 1
-                      }}
-                    >
-                      <Typography component="span" sx={{ 
-                        fontWeight: 700, 
-                        color: '#78350f',
-                        fontSize: '0.95rem'
-                      }}>
-                        📅 Current working days are:
-                      </Typography>
-                      <br />
-                      <Typography component="span" sx={{ 
-                        color: '#a16207', 
-                        fontStyle: 'italic',
-                        mt: 0.5,
-                        display: 'inline-block'
-                      }}>
-                        {user.workingDays.join(' • ')}
-                      </Typography>
-                    </Typography>
-                  </Box>
-                )}
-                
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
-                  {daysOfWeek.map(day => (
-                    <Button
-                      key={day}
-                      variant={selectedDays.includes(day) ? 'contained' : 'outlined'}
-                      onClick={() => handleDayToggle(day)}
-                      sx={{
-                        minWidth: { xs: '55px', sm: '70px' },
-                        height: { xs: '38px', sm: '48px' },
-                        borderRadius: '12px',
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                        fontWeight: 600,
-                        textTransform: 'none',
-                        backgroundColor: selectedDays.includes(day) ? 'transparent' : '#2563EB',
-                        color: selectedDays.includes(day) ? '#6B7280' : 'white',
-                        borderColor: selectedDays.includes(day) ? '#D1D5DB' : '#2563EB',
-                        '&:hover': {
-                          backgroundColor: selectedDays.includes(day) ? '#F3F4F6' : '#1D4ED8',
-                          borderColor: selectedDays.includes(day) ? '#9CA3AF' : '#1D4ED8',
-                        },
-                      }}
-                    >
-                      {day}
-                    </Button>
-                  ))}
-                </Box>
-              </Box> */}
             </Box>
-
-            {/* Save button */}
-            {/* <Box sx={{ 
-              mt: 2,
-              width: '95%',
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}>
-              <Button
-                variant="contained"
-                onClick={handleEdit}
-                sx={{
-                  backgroundColor: '#3B82F6',
-                  color: 'white',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  py: { xs: '6px', sm: '8px' },
-                  px: { xs: '16px', sm: '24px' },
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: '#2563EB',
-                  },
-                }}
-              >
-                Save Changes
-              </Button>
-            </Box> */}
           </motion.div>
         </AnimatePresence>
 
-        {/* Add Service button - Example */}
+
+        {/* Add Service button */}
         <Box sx={{ mt: 2, width: '95%', display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="contained"

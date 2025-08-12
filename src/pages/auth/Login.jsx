@@ -28,7 +28,7 @@ const Login = ({ onSwitch, onLogin }) => {
     if (email === TEST_EMAIL && password === TEST_PASSWORD) {
       console.log('✅ Logged in with test credentials');
       // Set testMode to true in defaultUser and store it in localStorage
-      const testUser = { ...defaultUser, testMode: true };
+      const testUser = { ...defaultUser, testMode: true, subscription_active: true };
       localStorage.setItem('mysocietyneeds_user', JSON.stringify(testUser));
       // Update the user context immediately
       setUser(testUser);

@@ -660,7 +660,8 @@ const NewLeads = () => {
         setJobs(fetchedJobs);
       } catch (err) {
         console.error('Error fetching nearby jobs:', err);
-        setError('Failed to fetch jobs. Please try again later.');
+        setError('Failed to fetch jobs. Using dummy data.');
+        setJobs(dummyData.filter(lead => lead.status === 'New'));
       } finally {
         setLoading(false);
       }

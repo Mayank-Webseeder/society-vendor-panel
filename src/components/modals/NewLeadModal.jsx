@@ -30,8 +30,8 @@ const NewLeadModal = ({
   const handleShowInterest = async () => {
     try {
       // Call API 10(B) to show interest in the job
-      const response = await showInterestInJob(lead.id);
-      console.log('API Response:', response);
+      // const response = await showInterestInJob(lead.id);
+      // console.log('API Response:', response);
 
       // Prepare the vendor object using user-context
       const vendorDetails = {
