@@ -11,32 +11,41 @@ const SubscriptionPage = () => {
   return (
     <div className='w-full h-full p-5 sm:p-8'>
       {/* Heading */}
-       <Box 
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                borderBottom: '1px solid #E0E0E0',
-                gap: 2,
-                pb: 2,
-                mb: 5
-            }}
-        >
-            <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
-                Subscription Details
-            </Typography>
+             <Box 
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        borderBottom: '1px solid #E0E0E0',
+                        gap: { xs: 1.25, sm: 2 },
+                        pb: { xs: 0.75, sm: 1 },
+                        mb: { xs: 3.5, sm: 5 }
+                    }}
+                >
+                    <Typography 
+                        variant="h2" 
+                        sx={{ 
+                            fontSize: { xs: '1.55rem', sm: '2rem' },
+                            fontWeight: 'semibold', 
+                            color: '#4A5568',
+                            lineHeight: { xs: 1.25, sm: 1.3 }
+                        }}
+                    >
+                        Subscription Details
+                    </Typography>
 
-            <Typography
-                variant="body2"
-                sx={{
-                    fontSize: '0.875rem',
-                    color: '#718096',
-                }}
-            >
-              Here's a comprehensive overview of your current subscription.
-            </Typography>
-        </Box >
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                            color: '#718096',
+                            maxWidth: { xs: '95%', sm: '100%' }
+                        }}
+                    >
+                        Overview of your current subscription.
+                    </Typography>
+                </Box >
 
         {/* Conditional Content based on subscription-active status */}
         {user.subscription_active? (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, TrendingUp, Users, Award, BarChart3 } from 'lucide-react';
-import { ChartNoAxesCombined } from 'lucide-react';
+import { Star, TrendingUp, Users, Award, BarChart3, ChartNoAxesCombined, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { IconButton } from '@mui/material';
 import { ratingsData, ratingsCount, finalRating } from '../static/dummyData_MyStats';
 import AccessLockedModal from '../components/modals/AccessLockedModal';
 import { useUser } from '../UserContext';
@@ -130,6 +130,7 @@ const MyStats = () => {
 
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);
+  const [refreshTick, setRefreshTick] = useState(0);
 
   const handleModalClose = () => {
     navigate('/dashboard');
@@ -149,21 +150,32 @@ const MyStats = () => {
           initial="hidden"
           animate="visible"
         >
-          {/* Header */}
+          {/* Header (corporate) */}
           <motion.div
-            className="flex flex-col shadow-md hover:shadow-lg border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-4 sm:px-6 py-3 sm:py-4"
+            className="flex flex-col sm:flex-row border-solid items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
             variants={itemVariants}
           >
-            <div className="flex gap-3 sm:gap-5">
-              <div className="flex justify-center items-center p-2 sm:p-3 rounded-xl bg-green-500 shadow-md">
-                <ChartNoAxesCombined color='white' size={28} className="sm:w-[34px] sm:h-[34px]" />
+            <div className="flex items-start sm:items-center gap-4">
+              <div className="flex-shrink-0 rounded-lg p-2 bg-[#ECFDF5]">
+                <ChartNoAxesCombined color='#059669' size={26} className="sm:w-[32px] sm:h-[32px]" />
               </div>
-              <div className="flex flex-col gap-0.5">
-                <h2 style={{ fontFamily:'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/75">Ratings & Reviews</h2>
-                <p style={{ fontFamily:'Lato' }} className="text-xs sm:text-sm text-gray-700/60 mt-1">Discover what customers say about their experience</p>
+              <div className="flex flex-col gap-1">
+                <h1 style={{ fontFamily:'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/80">Ratings & Reviews</h1>
+                <p style={{ fontFamily:'Lato' }} className="text-xs sm:text-sm text-gray-500 mt-0.5">Discover what customers say about their experience</p>
               </div>
-          </div>
-        </motion.div>
+            </div>
+
+            {/* <div className="mt-3 sm:mt-0 flex items-center gap-3">
+              <div className="text-right hidden sm:block">
+                <div className="text-xs text-gray-500">Last updated</div>
+                <div className="text-sm text-gray-700 font-medium">{new Date().toLocaleString()}</div>
+              </div>
+
+              <IconButton size="small" onClick={() => setRefreshTick(t => t + 1)} sx={{ borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }} aria-label="Refresh stats">
+                <RefreshCw size={16} />
+              </IconButton>
+            </div> */}
+          </motion.div>
 
           {/* <motion.div className="text-center mb-12" variants={itemVariants}>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">

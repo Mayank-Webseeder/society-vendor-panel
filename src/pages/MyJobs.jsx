@@ -213,7 +213,7 @@ const MyJobs = () => {
 
         {/* Header Section */}
         <motion.div
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
+          className="flex flex-col border-solid sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
           variants={itemVariants}
         >
           <div className="flex items-start sm:items-center gap-4">
@@ -256,7 +256,7 @@ const MyJobs = () => {
           {jobStatuses.map((status) => (
             <motion.div
               key={status.name}
-              className="bg-white w-full sm:w-56 p-3 sm:p-4 border border-gray-100 rounded-lg sm:shadow-sm flex items-center gap-3 transition-transform duration-150 hover:scale-[1.02] cursor-pointer"
+              className="bg-white w-full sm:w-52 p-3 sm:p-4 border border-gray-100 rounded-xl sm:shadow-sm flex items-center gap-3 transition-transform duration-150 hover:scale-[1.02] cursor-pointer"
               variants={itemVariants}
               whileHover={{ y: -4 }}
             >
@@ -296,61 +296,102 @@ const MyJobs = () => {
                 {/* Search Row */}
                 <tr>
                   <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
-                    <div className="flex justify-start gap-8 px-4 py-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
-                      <TextField
-                        value={search}
-                        onChange={e => { setSearch(e.target.value); setPage(1); }}
-                        placeholder="Search by lead name"
-                        size="small"
-                        variant="outlined"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon color="action" />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            search && (
-                              <InputAdornment position="end">
-                                <CloseIcon
-                                  fontSize="small"
-                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                  onClick={() => { setSearch(''); setPage(1); }}
-                                />
+                    <div className="flex flex-col gap-3 px-4 py-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
+                      <div className="flex flex-wrap gap-6">
+                        <TextField
+                          value={search}
+                          onChange={e => { setSearch(e.target.value); setPage(1); }}
+                          placeholder="Search by lead name"
+                          size="small"
+                          variant="outlined"
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon color="action" />
                               </InputAdornment>
-                            )
-                          ),
-                          style: { borderRadius: 8, background: "white" }
-                        }}
-                        sx={{ width: 220 }}
-                      />
-                      <TextField
-                        value={searchWork}
-                        onChange={e => { setSearchWork(e.target.value); setPage(1); }}
-                        placeholder="Search by work"
-                        size="small"
-                        variant="outlined"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon color="action" />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            searchWork && (
-                              <InputAdornment position="end">
-                                <CloseIcon
-                                  fontSize="small"
-                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                  onClick={() => { setSearchWork(''); setPage(1); }}
-                                />
+                            ),
+                            endAdornment: (
+                              search && (
+                                <InputAdornment position="end">
+                                  <CloseIcon
+                                    fontSize="small"
+                                    className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                    onClick={() => { setSearch(''); setPage(1); }}
+                                  />
+                                </InputAdornment>
+                              )
+                            ),
+                            style: { borderRadius: 8, background: "white" }
+                          }}
+                          sx={{ width: 220 }}
+                        />
+                        <TextField
+                          value={searchWork}
+                          onChange={e => { setSearchWork(e.target.value); setPage(1); }}
+                          placeholder="Search by work"
+                          size="small"
+                          variant="outlined"
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon color="action" />
                               </InputAdornment>
-                            )
-                          ),
-                          style: { borderRadius: 8, background: "white" }
-                        }}
-                        sx={{ width: 220 }}
-                      />
+                            ),
+                            endAdornment: (
+                              searchWork && (
+                                <InputAdornment position="end">
+                                  <CloseIcon
+                                    fontSize="small"
+                                    className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                    onClick={() => { setSearchWork(''); setPage(1); }}
+                                  />
+                                </InputAdornment>
+                              )
+                            ),
+                            style: { borderRadius: 8, background: "white" }
+                          }}
+                          sx={{ width: 220 }}
+                        />
+                      </div>
+                      {/* New filter & sort row */}
+                      <div className="flex items-center gap-4 flex-wrap">
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={handleStatusClick}
+                          sx={{
+                            textTransform: 'none',
+                            borderRadius: 2,
+                            fontWeight: 600,
+                            color: '#0f172a',
+                            borderColor: 'rgba(15,23,42,0.15)',
+                            background: '#FFFFFF',
+                            '&:hover': { borderColor: '#1976D2', background: '#F1F5F9' }
+                          }}
+                        >
+                          Status: {selectedStatus}
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="ml-1" aria-hidden>
+                            <path d="M6 9l6 6 6-6" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={handleSortToggle}
+                          sx={{
+                            textTransform: 'none',
+                            borderRadius: 2,
+                            fontWeight: 600,
+                            color: '#1976D2',
+                            borderColor: '#1976D2',
+                            '&:hover': { background: '#EFF6FF', borderColor: '#1976D2' }
+                          }}
+                          aria-label={`Sort by posted date ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
+                        >
+                          Sort: {sortOrder === 'asc' ? 'Oldest' : 'Newest'}
+                          {sortOrder === 'asc' ? <ArrowUp size={16} className="ml-1" /> : <ArrowDown size={16} className="ml-1" />}
+                        </Button>
+                      </div>
                     </div>
                   </th>
                   {/* Status options menu (opens when statusAnchorEl is set) */}
@@ -376,30 +417,8 @@ const MyJobs = () => {
                 <tr className="bg-[#F9FAFB] text-gray-500">
                   <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
                   <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
-                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-44">
-                    <span className="select-none text-center flex justify-center items-center gap-0">
-                      STATUS
-                      <IconButton size="small" onClick={handleStatusClick} sx={{ ml: 2, p: 0.5, color: '#1976D2' }} aria-label="Open status options">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" onClick={handleStatusClick} style={{ cursor: 'pointer' }}>
-                          <path d="M6 9l6 6 6-6" stroke="#1976D2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </IconButton>
-                      <span className="ml-1 text-xs text-[#1976D2] font-medium">{selectedStatus}</span>
-                    </span>
-                  </th>
-                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
-                    <span className="gap-1 select-none">
-                      POSTED ON
-                      <Button
-                        size="small"
-                        onClick={handleSortToggle}
-                        sx={{ minWidth: 0, ml: 1, color: '#1976D2', p: 0.5 }}
-                        aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
-                      >
-                        {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-                      </Button>
-                    </span>
-                  </th>
+                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-44">STATUS</th>
+                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">POSTED ON</th>
                   <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32 rounded-tr-xl">ACTION</th>
                 </tr>
               </thead>
@@ -607,8 +626,8 @@ const MyJobs = () => {
           <div className="flex flex-col gap-3">
             {/* Mobile search card */}
             <div className="bg-white rounded-xl border border-gray-100 p-3 mb-2">
-              <div className="flex items-center gap-2">
-                <div className="flex-1 min-w-0 flex gap-2">
+              <div className="flex flex-col gap-3">
+                <div className="flex-1 min-w-0 flex gap-4">
                   <TextField
                     value={search}
                     onChange={e => { setSearch(e.target.value); setPage(1); }}
@@ -640,18 +659,35 @@ const MyJobs = () => {
                     }}
                   />
                 </div>
-
-                <div className="flex-shrink-0">
-                  <IconButton size="small" onClick={() => { handleSortToggle(); setPage(1); }} sx={{ ml: 1, borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }} aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}>
-                    {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-                  </IconButton>
+                {/* New filter & sort row (mobile) */}
+                <div className="flex items-center gap-4">
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={handleStatusClick}
+                    sx={{ flex: 1, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#0f172a', borderColor: 'rgba(15,23,42,0.15)', background: '#FFFFFF', '&:hover': { borderColor: '#1976D2', background: '#F1F5F9' } }}
+                  >
+                    Status: {selectedStatus}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="ml-1" aria-hidden>
+                      <path d="M6 9l6 6 6-6" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={handleSortToggle}
+                    sx={{ flex: 1, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#1976D2', borderColor: '#1976D2', '&:hover': { background: '#EFF6FF', borderColor: '#1976D2' } }}
+                    aria-label={`Sort by posted date ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
+                  >
+                    Sort: {sortOrder === 'asc' ? 'Oldest' : 'Newest'} {sortOrder === 'asc' ? <ArrowUp size={16} className="ml-1" /> : <ArrowDown size={16} className="ml-1" />}
+                  </Button>
                 </div>
               </div>
             </div>
             <div className='flex flex-col gap-5 px-3'>
               {paginatedLeads.length > 0 ? (
                 paginatedLeads.map(lead => (
-                  <div key={lead.id} className="bg-white rounded-xl shadow-md border border-gray-100 p-4 hover:shadow-lg transition-shadow">
+                  <div key={lead.id} className="bg-white rounded-xl shadow-md border-solid border border-gray-100 p-4 hover:shadow-lg transition-shadow">
                     <div className="flex gap-3">
                       <div className="flex-shrink-0">
                         <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-gray-100">
@@ -726,11 +762,11 @@ const MyJobs = () => {
             <div className="flex items-center justify-between px-4 py-3">
               <span className="text-gray-600 text-sm">{totalResults === 0 ? "Showing 0 results" : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}</span>
               <div className="flex items-center gap-2">
-                <Button variant="outlined" size="small" onClick={handlePrevPage} disabled={page === 1} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === 1 ? '#bdbdbd' : '#1976D2', borderColor: page === 1 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                <Button variant="outlined" size="small" onClick={handlePrevPage} disabled={page === 1} sx={{ minWidth: 0, borderRadius: 2, px: 0.5, fontWeight: 600, color: page === 1 ? '#bdbdbd' : '#1976D2', borderColor: page === 1 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
                   <ChevronLeft size={18} />
                 </Button>
                 <span className="text-gray-700 text-sm font-medium">Page {page} of {totalPages || 1}</span>
-                <Button variant="outlined" size="small" onClick={handleNextPage} disabled={page === totalPages || totalResults === 0} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2', borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                <Button variant="outlined" size="small" onClick={handleNextPage} disabled={page === totalPages || totalResults === 0} sx={{ minWidth: 0, borderRadius: 2, px: 0.5, fontWeight: 600, color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2', borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
                   <ChevronRight size={18} />
                 </Button>
               </div>

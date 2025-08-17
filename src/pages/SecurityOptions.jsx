@@ -37,9 +37,9 @@ const SecurityOptions = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        pb: 2
+        pb: 1
       }}>
-        <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'semibold', color: '#4A5568' }}>
+        <Typography variant="h2" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 'semibold', color: '#4A5568', lineHeight: { xs: 1.25, sm: 1.3 } }}>
           Security Options
         </Typography>
       </Box>
@@ -47,9 +47,10 @@ const SecurityOptions = () => {
       <Typography
         variant="body2"
         sx={{
-          fontSize: '0.875rem',
+          fontSize: { xs: '0.75rem', sm: '0.875rem' },
           color: '#718096',
-          mb: 5,
+          maxWidth: { xs: '95%', sm: '100%' },
+          mb: 4
         }}
       >
         Manage your account's security settings.

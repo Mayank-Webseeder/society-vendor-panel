@@ -50,20 +50,35 @@ const UserProfile = () => {
      initial='hidden'
      animate='visible' 
     >
-      {/* Header */}
+      {/* Header Section (corporate) */}
       <motion.div
-       className="flex shadow-md hover:shadow-lg gap-3 sm:gap-5 items-center border-solid border border-gray-400 bg-white rounded-2xl px-4 sm:px-6 py-3 sm:py-4 mb-2"
+       className="flex flex-col border-solid sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm mb-2"
        variants={itemVariants}
       >
-        <div className="flex justify-center items-center p-2 sm:p-3 rounded-xl bg-blue-400 shadow-md">
-          <UserIcon size={28} className="sm:w-[34px] sm:h-[34px]" color="white" />
+        <div className="flex items-start sm:items-center gap-4">
+          <div className="flex-shrink-0 rounded-lg p-3 bg-[#E8F3FB]">
+            <UserIcon size={22} className="text-[#1976D2]" />
+          </div>
+          <div className="flex flex-col gap-1">
+            <h1 style={{fontFamily: 'Manrope'}} className="text-xl sm:text-2xl font-normal text-black/75">User Profile</h1>
+            <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-gray-500 mt-0.5">View all user profile details</p>
+          </div>
         </div>
-        <div className="flex flex-col gap-0.5">
-          <h2 style={{fontFamily: 'Manrope'}} className="text-xl sm:text-2xl font-normal text-black/75">User Profile</h2>
-          <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-gray-700/60 mt-1">
-            View all user profile details
-          </p>
-        </div>
+
+        {/* <div className="mt-3 sm:mt-0 flex items-center gap-3">
+          <div className="text-right hidden sm:block">
+            <div className="text-xs text-gray-500">Last updated</div>
+            <div className="text-sm text-gray-700 font-medium">{new Date().toLocaleString()}</div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => navigate('/my-profile/edit')}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F8FAFC] border border-gray-200 text-sm text-[#0f172a] hover:shadow-sm"
+          >
+            Edit Profile
+          </button>
+        </div> */}
       </motion.div>
 
       {/* Compact Mobile Menu - Visible on screens < md */}
@@ -71,7 +86,7 @@ const UserProfile = () => {
         className="md:hidden w-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-2 shadow-sm"
         variants={itemVariants}
       >
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex justify-between items-center gap-1">
           {sidebarOptions.map((opt, index) => (
             <motion.div
               key={opt.label}
@@ -90,13 +105,13 @@ const UserProfile = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.05 }}
             >
-              <div className={`p-1.5 rounded-lg ${
+              <div className={`p-1.5 flex items-center justify-center rounded-lg ${
                 (opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) ||
                 location.pathname === opt.route
                   ? 'bg-white/20'
                   : 'bg-blue-100'
               }`}>
-                <span className={`text-sm ${
+                <span className={`text-sm flex justify-center items-center ${
                   (opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) ||
                   location.pathname === opt.route
                     ? 'text-white'
@@ -106,7 +121,7 @@ const UserProfile = () => {
                 </span>
               </div>
               <span className="text-[10px] font-medium text-center leading-tight whitespace-nowrap">
-                {opt.label === 'Work Details' ? 'Work' : opt.label === 'Documents' ? 'Docs' : opt.label}
+                {opt.label === 'Work Details' ? 'Work' : opt.label === 'Documents' ? 'Docs' : opt.label == 'My Profile' ? 'Profile' : opt.label}
               </span>
               {/* {((opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) ||
                 location.pathname === opt.route) && (

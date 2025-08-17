@@ -31,9 +31,11 @@ const Logout = () => {
       sx={{
         position: 'fixed',
         top: 0,
-        left: { xs: '3rem', sm: '4rem', md: '5rem' },
-        width: { xs: 'calc(100vw - 3rem)', sm: 'calc(100vw - 4rem)', md: 'calc(100vw - 5rem)' },
-        height: '100vh',
+        bottom: 0,
+        left: { xs: '0', sm: '4rem', md: '5rem' },
+        right: 0,
+        width: { xs: '100%', sm: 'calc(100vw - 4rem)', md: 'calc(100vw - 5rem)' },
+        height: { xs: 'calc(100vh - 3.5rem)', sm: '100vh' },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -47,18 +49,18 @@ const Logout = () => {
         <Box
           sx={{
             background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
-            borderRadius: 4,
+            borderRadius: { xs: 3, sm: 4 },
             boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1)',
             border: '1px solid rgba(255, 255, 255, 0.2)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            p: 5,
-            minWidth: 420,
-            maxWidth: 480,
+            p: { xs: 3.25, sm: 5 },
+            minWidth: { xs: '88%', sm: 420 },
+            maxWidth: { xs: '92%', sm: 480 },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 3,
+            gap: { xs: 2.5, sm: 3 },
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
@@ -162,7 +164,7 @@ const Logout = () => {
             </Slide>
           ) : (
             <Slide direction="up" in timeout={300}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: { xs: 3.5, sm: 4 }, width: '100%' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                   <Box 
                     sx={{ 
@@ -183,8 +185,8 @@ const Logout = () => {
                     sx={{ 
                       textAlign: 'center', 
                       fontWeight: 600,
-                      color: '#1A1A1A',
-                      fontSize: '1.4rem'
+          color: '#1A1A1A',
+          fontSize: { xs: '1.25rem', sm: '1.4rem' }
                     }}
                   >
                     Confirm Logout
@@ -194,7 +196,7 @@ const Logout = () => {
                     sx={{ 
                       textAlign: 'center', 
                       color: '#666',
-                      fontSize: '1rem',
+          fontSize: { xs: '0.9rem', sm: '1rem' },
                       lineHeight: 1.5,
                       maxWidth: '320px'
                     }}
@@ -203,19 +205,19 @@ const Logout = () => {
                   </Typography>
                 </Box>
                 
-                <Box sx={{ display: 'flex', gap: 2, width: '100%', mt: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1.5, sm: 2 }, width: '100%', mt: 1 }}>
                   <Button 
                     variant="contained"
                     onClick={handleYes}
                     sx={{
-                      flex: 1,
+          flex: 1,
                       background: 'linear-gradient(135deg, #56A9D9 0%, #1976D2 100%)',
                       color: 'white',
                       fontWeight: 600,
-                      py: 1.5,
-                      borderRadius: 2,
-                      textTransform: 'none',
-                      fontSize: '1rem',
+          py: { xs: 1.25, sm: 1.5 },
+          borderRadius: 2,
+          textTransform: 'none',
+          fontSize: { xs: '0.95rem', sm: '1rem' },
                       boxShadow: '0 8px 16px rgba(86, 169, 217, 0.3)',
                       '&:hover': {
                         background: 'linear-gradient(135deg, #1976D2 0%, #1565C0 100%)',
@@ -236,10 +238,10 @@ const Logout = () => {
                       borderColor: 'rgba(86, 169, 217, 0.3)',
                       color: '#56A9D9',
                       fontWeight: 600,
-                      py: 1.5,
-                      borderRadius: 2,
-                      textTransform: 'none',
-                      fontSize: '1rem',
+          py: { xs: 1.25, sm: 1.5 },
+          borderRadius: 2,
+          textTransform: 'none',
+          fontSize: { xs: '0.95rem', sm: '1rem' },
                       borderWidth: '2px',
                       '&:hover': {
                         borderColor: '#56A9D9',
