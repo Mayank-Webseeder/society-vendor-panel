@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, MenuItem, Button, TextField, InputAdornment } from '@mui/material';
+import { Menu, MenuItem, Button, IconButton, TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, Close as CloseIcon, BusinessCenter as BusinessCenterIcon } from '@mui/icons-material';
-import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, RefreshCw } from 'lucide-react';
 import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import { FileText, Hourglass, CheckSquare, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -191,7 +191,7 @@ const MyJobs = () => {
 
 
   return (
-    <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
+    <div className="relative flex flex-col gap-8 px-2 pt-3 pb-5 w-full">
 
       {/* Render AccessLockedModal as an overlay if subscription is inactive */}
       {!subscriptionActive  &&  
@@ -213,164 +213,153 @@ const MyJobs = () => {
 
         {/* Header Section */}
         <motion.div
-          className="flex flex-col shadow-md hover:shadow-lg border-solid border border-gray-400 w-full justify-start bg-white rounded-2xl px-4 sm:px-6 py-3 sm:py-4"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
           variants={itemVariants}
         >
-          <div className="flex gap-3 sm:gap-5">
-            {/* Briefcase icon container with specified color and shadow */}
-            <div className="flex justify-center items-center p-2 sm:p-3 rounded-xl bg-[#56A9D9] shadow-md">
-              <BusinessCenterIcon sx={{ color: "white", fontSize: { xs: 28, sm: 34 } }} />
+          <div className="flex items-start sm:items-center gap-4">
+            <div className="flex-shrink-0 rounded-lg p-2 bg-[#E8F3FB]">
+              <BusinessCenterIcon sx={{ color: '#1976D2', fontSize: { xs: 26, sm: 32 } }} />
             </div>
-            <div className="flex flex-col gap-0.5">
-              <h2 style={{fontFamily:'Manrope'}} className="text-xl sm:text-2xl font-normal text-black/75">My Jobs</h2>
-              <p style={{fontFamily:'Lato'}} className="text-xs sm:text-sm text-gray-700/60 mt-1">View and manage all available leads</p>
+            <div className="flex flex-col gap-1">
+              <h1 style={{ fontFamily: 'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/80">My Jobs</h1>
+              <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-gray-500 mt-0.5">Manage leads, applications and job progress</p>
             </div>
           </div>
+
+          {/* <div className="mt-3 sm:mt-0 flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <div className="text-xs text-gray-500">Last updated</div>
+              <div className="text-sm text-gray-700 font-medium">{new Date().toLocaleString()}</div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleStatusClick}
+              aria-haspopup="true"
+              aria-expanded={Boolean(statusAnchorEl)}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F8FAFC] border border-gray-200 text-sm text-[#0f172a] hover:shadow-sm"
+            >
+              <span className="font-medium">{selectedStatus}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M6 9l6 6 6-6" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <IconButton size="small" onClick={() => { setJobs(dummyData); setPage(1); }} sx={{ borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }} aria-label="Refresh jobs">
+              <RefreshCw size={16} />
+            </IconButton>
+          </div> */}
         </motion.div>
 
-        {/* Job Status Cards Section */}
-        <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-12 sm:justify-start sm:items-center">
+        {/* Job Status Cards Section (corporate look on desktop) */}
+        <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-6 sm:justify-start sm:items-center">
           {jobStatuses.map((status) => (
             <motion.div
               key={status.name}
-              className={`
-                bg-white rounded-xl w-full sm:w-52 p-3 sm:p-3 shadow-sm border-solid border border-gray-300
-                flex flex-col items-start transition-all duration-200
-                transform hover:scale-[1.03] hover:shadow-lg cursor-pointer
-              `}
+              className="bg-white w-full sm:w-56 p-3 sm:p-4 border border-gray-100 rounded-lg sm:shadow-sm flex items-center gap-3 transition-transform duration-150 hover:scale-[1.02] cursor-pointer"
               variants={itemVariants}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -4 }}
             >
-              <div className="flex items-center mb-1 sm:mb-2">
-                <status.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${status.color} mr-1 sm:mr-2`} />
-                <p style={{ fontFamily: 'Lato' }} className="text-sm sm:text-base font-bold text-gray-700">
-                  {status.name}
-                </p>
+              <div className="flex-shrink-0">
+                <div className={`w-11 h-11 rounded-full flex items-center justify-center ${status.name === 'New' ? 'bg-blue-50' : status.name === 'Ongoing' ? 'bg-yellow-50' : status.name === 'Completed' ? 'bg-green-50' : 'bg-purple-50'}`}>
+                  <status.icon className={`w-5 h-5 ${status.color}`} />
+                </div>
               </div>
-              <div className="min-h-9 flex items-center">
-                <p
-                  style={{ fontFamily: 'Lato' }}
-                  className={`text-2xl sm:text-3xl font-bold ${status.color} leading-none`}
-                >
-                  {status.count}
-                </p>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0">
+                    <p style={{ fontFamily: 'Lato' }} className="text-sm text-gray-700 font-semibold truncate">{status.name}</p>
+                    <p style={{ fontFamily: 'Lato' }} className="text-xs text-gray-500 mt-0.5">Overview</p>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-2xl font-bold ${status.color}`}>{status.count}</p>
+                  </div>
+                </div>
               </div>
-              
             </motion.div>
           ))}
         </div>
       </motion.div>
 
 
-        {/* Table */}
+        {/* Table - Desktop (sm+) */}
         <motion.div
-          className="border-solid border border-gray-300 rounded-xl mx-2 overflow-x-auto"
+          className="hidden sm:block border-solid border border-gray-300 rounded-xl mx-2"
           variants={itemVariants}
           initial='hidden'
           animate='visible'
         >
-          <table className="w-full bg-white shadow border rounded-xl table-fixed border-collapse">
-            <thead>
-              {/* Search Row */}
-              <tr>
-                <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
-                  <div className="flex justify-start gap-8 px-4 py-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
-                    <TextField
-                      value={search}
-                      onChange={e => {
-                        setSearch(e.target.value);
-                        setPage(1);
-                      }}
-                      placeholder="Search by lead name"
-                      size="small"
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon color="action" />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
-                          search && (
-                            <InputAdornment position="end">
-                              <CloseIcon
-                                fontSize="small"
-                                className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                onClick={() => {
-                                  setSearch('');
-                                  setPage(1);
-                                }}
-                              />
+          <div className="w-full overflow-x-auto rounded-xl">
+            <table className="min-w-[1000px] w-full bg-white shadow border rounded-xl table-fixed border-collapse" style={{ minWidth: '900px' }}>
+              <thead>
+                {/* Search Row */}
+                <tr>
+                  <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
+                    <div className="flex justify-start gap-8 px-4 py-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
+                      <TextField
+                        value={search}
+                        onChange={e => { setSearch(e.target.value); setPage(1); }}
+                        placeholder="Search by lead name"
+                        size="small"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon color="action" />
                             </InputAdornment>
-                          )
-                        ),
-                        style: { borderRadius: 8, background: "white" }
-                      }}
-                      sx={{ width: 220 }}
-                    />
-                    <TextField
-                      value={searchWork}
-                      onChange={e => {
-                        setSearchWork(e.target.value);
-                        setPage(1);
-                      }}
-                      placeholder="Search by work"
-                      size="small"
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon color="action" />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
-                          searchWork && (
-                            <InputAdornment position="end">
-                              <CloseIcon
-                                fontSize="small"
-                                className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                onClick={() => {
-                                  setSearchWork('');
-                                  setPage(1);
-                                }}
-                              />
+                          ),
+                          endAdornment: (
+                            search && (
+                              <InputAdornment position="end">
+                                <CloseIcon
+                                  fontSize="small"
+                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                  onClick={() => { setSearch(''); setPage(1); }}
+                                />
+                              </InputAdornment>
+                            )
+                          ),
+                          style: { borderRadius: 8, background: "white" }
+                        }}
+                        sx={{ width: 220 }}
+                      />
+                      <TextField
+                        value={searchWork}
+                        onChange={e => { setSearchWork(e.target.value); setPage(1); }}
+                        placeholder="Search by work"
+                        size="small"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon color="action" />
                             </InputAdornment>
-                          )
-                        ),
-                        style: { borderRadius: 8, background: "white" }
-                      }}
-                      sx={{ width: 220 }}
-                    />
-                  </div>
-                </th>
-              </tr>
-              {/* Table Head Row */}
-              <tr className="bg-[#F9FAFB] text-gray-500">
-                <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
-                <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
-                <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-44">
-                  <span
-                    className="cursor-pointer select-none text-center flex justify-center items-center gap-1"
-                    onClick={handleStatusClick}
-                  >
-                    STATUS
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                      <path d="M6 9l6 6 6-6" stroke="#1976D2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span className="ml-1 text-xs text-[#1976D2] font-medium">{selectedStatus}</span>
-                  </span>
+                          ),
+                          endAdornment: (
+                            searchWork && (
+                              <InputAdornment position="end">
+                                <CloseIcon
+                                  fontSize="small"
+                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                  onClick={() => { setSearchWork(''); setPage(1); }}
+                                />
+                              </InputAdornment>
+                            )
+                          ),
+                          style: { borderRadius: 8, background: "white" }
+                        }}
+                        sx={{ width: 220 }}
+                      />
+                    </div>
+                  </th>
+                  {/* Status options menu (opens when statusAnchorEl is set) */}
                   <Menu
                     anchorEl={statusAnchorEl}
                     open={Boolean(statusAnchorEl)}
                     onClose={handleStatusClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right', // Aligns the menu to the right of the button
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right', // Ensures the menu opens from the right
-                    }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                   >
                     {statusOptions.map(option => (
                       <MenuItem
@@ -382,29 +371,43 @@ const MyJobs = () => {
                       </MenuItem>
                     ))}
                   </Menu>
-                </th>
-                <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
-                  <span className="gap-1 select-none">
-                    POSTED ON
-                    <Button
-                      size="small"
-                      onClick={handleSortToggle}
-                      sx={{ minWidth: 0, ml: 1, color: '#1976D2', p: 0.5 }}
-                      aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
-                    >
-                      {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-                    </Button>
-                  </span>
-                </th>
-                <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32 rounded-tr-xl">ACTION</th>
-              </tr>
-            </thead>
+                </tr>
+                {/* Table Head Row */}
+                <tr className="bg-[#F9FAFB] text-gray-500">
+                  <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
+                  <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
+                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-44">
+                    <span className="select-none text-center flex justify-center items-center gap-0">
+                      STATUS
+                      <IconButton size="small" onClick={handleStatusClick} sx={{ ml: 2, p: 0.5, color: '#1976D2' }} aria-label="Open status options">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" onClick={handleStatusClick} style={{ cursor: 'pointer' }}>
+                          <path d="M6 9l6 6 6-6" stroke="#1976D2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </IconButton>
+                      <span className="ml-1 text-xs text-[#1976D2] font-medium">{selectedStatus}</span>
+                    </span>
+                  </th>
+                  <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
+                    <span className="gap-1 select-none">
+                      POSTED ON
+                      <Button
+                        size="small"
+                        onClick={handleSortToggle}
+                        sx={{ minWidth: 0, ml: 1, color: '#1976D2', p: 0.5 }}
+                        aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
+                      >
+                        {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+                      </Button>
+                    </span>
+                  </th>
+                  <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32 rounded-tr-xl">ACTION</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {paginatedLeads.length > 0 ? (
-                <>
-                  {paginatedLeads.map(lead => {
-                    return (
+              <tbody>
+                {paginatedLeads.length > 0 ? (
+                  <>
+                    {paginatedLeads.map(lead => (
                       <tr
                         key={lead.id}
                         className="hover:bg-blue-50 transition"
@@ -413,43 +416,7 @@ const MyJobs = () => {
                         <td className="py-3 px-4">
                           {lead.name}
                           {lead.interested && (
-                            <span
-                              style={{
-                                marginLeft: '8px',
-                                color: '#16a34a',
-                                fontWeight: '600',
-                                fontSize: '0.8rem',
-                                border: '1px solid #86efac',
-                                borderRadius: '12px',
-                                padding: '3px 8px',
-                                backgroundColor: '#f0fdf4',
-                                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                transition: 'all 0.2s ease',
-                                cursor: 'default',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.backgroundColor = '#dcfce7';
-                                e.target.style.borderColor = '#4ade80';
-                                e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.backgroundColor = '#f0fdf4';
-                                e.target.style.borderColor = '#86efac';
-                                e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                              }}
-                            >
-                              <span style={{
-                                width: '6px',
-                                height: '6px',
-                                backgroundColor: '#16a34a',
-                                borderRadius: '50%',
-                                display: 'inline-block',
-                              }}></span>
-                              Interested
-                            </span>
+                            <span className="ml-2 inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-md text-green-800 bg-green-50" style={{ border: '1px solid #86efac' }}>Interested</span>
                           )}
                         </td>
                         <td className="py-3 px-4 text-center">
@@ -466,27 +433,22 @@ const MyJobs = () => {
                                 : lead.pendingStatus === "Approved"
                                 ? "bg-green-100 text-green-700"
                                 : "bg-blue-100 text-blue-700"}
-                          `}>
-                            {lead.pendingStatus === "Approved" && (
-                              <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                              </svg>
-                            )}
-                            {lead.pendingStatus}
-                          </span>
-                        ) : (
-                          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                            lead.status === "Completed"
-                              ? "bg-green-100 text-green-700"
-                              : lead.status === "Ongoing"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : lead.status === "New"
-                              ? "bg-gray-100 text-gray-700"
-                              : "bg-gray-50 text-gray-500"
-                          }`}>
-                            {lead.status} {lead.status === 'New' ? '!' : ''}
-                          </span>
-                        )}
+                            `}>
+                              {lead.pendingStatus}
+                            </span>
+                          ) : (
+                            <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                              lead.status === "Completed"
+                                ? "bg-green-100 text-green-700"
+                                : lead.status === "Ongoing"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : lead.status === "New"
+                                ? "bg-gray-100 text-gray-700"
+                                : "bg-gray-50 text-gray-500"
+                            }`}>
+                              {lead.status} {lead.status === 'New' ? '!' : ''}
+                            </span>
+                          )}
                         </td>
                         <td className="py-3 text-center">{lead.postedOn}</td>
                         <td className="py-3 px-4 text-center">
@@ -505,17 +467,8 @@ const MyJobs = () => {
                                   fontWeight: 600,
                                   color: 'green',
                                   borderColor: 'green',
-                                  '&:hover': { 
-                                    borderColor: 'darkgreen', 
-                                    background: '#F0FFF4',
-                                    // textDecoration:'underline',
-                                  },
                                 }}
-                                onClick={() => {
-                                  setModalLead(lead);
-                                  setModalOpen(true);
-                                  setProceed(true);
-                                }}
+                                onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(true); }}
                               >
                                 Fill Quotation
                               </MotionButton>
@@ -526,24 +479,8 @@ const MyJobs = () => {
                                 transition={{ type: 'tween' }}
                                 variant="outlined"
                                 size="small"
-                                sx={{ 
-                                  minWidth: 100, 
-                                  textTransform: 'none', 
-                                  borderRadius: 2, 
-                                  fontWeight: 800,
-                                  color: '#1976D2',
-                                  borderColor: '#1976D2',
-                                  '&:hover': {
-                                    borderColor: '#1565C0',
-                                    background: '#E3F2FD',
-                                    // textDecoration: 'underline',
-                                  },
-                                }}
-                                onClick={() => {
-                                  setModalLead(lead);
-                                  setModalOpen(true);
-                                  setProceed(false);
-                                }}
+                                sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 800, color: '#1976D2', borderColor: '#1976D2' }}
+                                onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(false); }}
                               >
                                 Apply
                               </MotionButton>
@@ -556,19 +493,7 @@ const MyJobs = () => {
                                 transition={{ type: 'tween' }}
                                 variant="outlined"
                                 size="small"
-                                sx={{
-                                  minWidth: 100,
-                                  textTransform: 'none',
-                                  borderRadius: 2,
-                                  fontWeight: 600,
-                                  color: '#ff9800',
-                                  borderColor: '#ff9800',
-                                  '&:hover': {
-                                    borderColor: '#f57c00',
-                                    background: '#FFF3E0',
-                                    // textDecoration: 'underline',
-                                  },
-                                }}
+                                sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#ff9800', borderColor: '#ff9800' }}
                                 onClick={() => handleWithdraw(lead)}
                               >
                                 Withdraw
@@ -580,19 +505,7 @@ const MyJobs = () => {
                                 transition={{ type: 'tween' }}
                                 variant="outlined"
                                 size="small"
-                                sx={{
-                                  minWidth: 100,
-                                  textTransform: 'none',
-                                  borderRadius: 2,
-                                  fontWeight: 600,
-                                  color: '#e53935',
-                                  borderColor: '#e53935',
-                                  '&:hover': {
-                                    borderColor: '#b71c1c',
-                                    background: '#FFEBEE',
-                                    // textDecoration: 'underline',
-                                  },
-                                }}
+                                sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#e53935', borderColor: '#e53935' }}
                                 onClick={() => handleCancel(lead)}
                               >
                                 Cancel
@@ -604,20 +517,7 @@ const MyJobs = () => {
                                 transition={{ type: 'tween' }}
                                 variant="outlined"
                                 size="small"
-                                sx={{
-                                  minWidth: 100,
-                                  textTransform: 'none',
-                                  borderRadius: 2,
-                                  fontWeight: 600,
-                                  color: '#FFB300',
-                                  borderColor: '#FFB300',
-                                  background: '#FFF8E1',
-                                  '&:hover': {
-                                    borderColor: '#FFA000',
-                                    background: '#FFE0B2',
-                                    // textDecoration: 'underline',
-                                  },
-                                }}
+                                sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#FFB300', borderColor: '#FFB300', background: '#FFF8E1' }}
                                 onClick={() => handleView(lead)}
                               >
                                 View
@@ -630,20 +530,7 @@ const MyJobs = () => {
                               transition={{ type: 'tween' }}
                               variant="outlined"
                               size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: 'none',
-                                borderRadius: 2,
-                                fontWeight: 500,
-                                color: 'green',
-                                borderColor: 'green',
-                                // background: '#E3F2FD',
-                                '&:hover': {
-                                  borderColor: 'darkgreen',
-                                  background: '#F0FFF4',
-                                  // textDecoration: 'underline',
-                                },
-                              }}
+                              sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 500, color: 'green', borderColor: 'green' }}
                               onClick={() => handleView(lead)}
                             >
                               Ratings
@@ -655,20 +542,7 @@ const MyJobs = () => {
                               transition={{ type: 'tween' }}
                               variant="outlined"
                               size="small"
-                              sx={{ 
-                                minWidth: 100, 
-                                textTransform: 'none', 
-                                borderRadius: 2, 
-                                fontWeight: 600,
-                                color: '#FFB300',
-                                borderColor: '#FFB300',
-                                // background: '#FFF8E1',
-                                '&:hover': {
-                                  borderColor: '#FFA000',
-                                  background: 'rgba(255, 160, 0, 0.1)',
-                                  // textDecoration: 'underline',
-                                },
-                              }}
+                              sx={{ minWidth: 100, textTransform: 'none', borderRadius: 2, fontWeight: 600, color: '#FFB300', borderColor: '#FFB300' }}
                               onClick={() => handleView(lead)}
                             >
                               View
@@ -676,94 +550,192 @@ const MyJobs = () => {
                           )}
                         </td>
                       </tr>
-                    );
-                  })}
-                  {/* Add empty rows if less than 10 entries on this page */}
-                  {Array.from({ length: ROWS_PER_PAGE - paginatedLeads.length }).map((_, idx) => (
-                    <tr key={`empty-${idx}`}>
-                      <td
-                        colSpan={5}
-                        className="py-3 px-4"
-                        style={{
-                          background: "#fff",
-                          borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none",
-                          height: 56 // 56px matches the height of .py-3 (24px top + 24px bottom + 8px line height)
-                        }}
-                      />
-                    </tr>
-                  ))}
-                </>
-              ) : (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center text-gray-400 bg-white rounded-b-xl"
-                    style={{
-                      height: ROWS_PER_PAGE * 56,
-                      minHeight: 560,
-                      verticalAlign: 'middle'
-                    }}
-                  >
-                    No leads found for "{selectedStatus}".
+                    ))}
+
+                    {/* Add empty rows if less than 10 entries on this page */}
+                    {Array.from({ length: ROWS_PER_PAGE - paginatedLeads.length }).map((_, idx) => (
+                      <tr key={`empty-${idx}`}>
+                        <td
+                          colSpan={5}
+                          className="py-3 px-4"
+                          style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }}
+                        />
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="text-center text-gray-400 bg-white rounded-b-xl" style={{ height: ROWS_PER_PAGE * 56, minHeight: 560, verticalAlign: 'middle' }}>
+                      No leads found for "{selectedStatus}".
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+
+              {/* Pagination Row */}
+              <tfoot>
+                <tr className="">
+                  <td colSpan={5} className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-xl rounded-br-xl border-gray-200">
+                    <div className="flex items-center justify-between px-4 py-3">
+                      <span className="text-gray-600 text-sm">
+                        {totalResults === 0 ? "Showing 0 results" : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outlined" size="small" onClick={handlePrevPage} disabled={page === 1} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === 1 ? '#bdbdbd' : '#1976D2', borderColor: page === 1 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                          <ChevronLeft size={18} />
+                        </Button>
+                        <span className="text-gray-700 text-sm font-medium">Page {page} of {totalPages || 1}</span>
+                        <Button variant="outlined" size="small" onClick={handleNextPage} disabled={page === totalPages || totalResults === 0} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2', borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                          <ChevronRight size={18} />
+                        </Button>
+                      </div>
+                    </div>
                   </td>
                 </tr>
-              )}
-            </tbody>
+              </tfoot>
+            </table>
+          </div>
+        </motion.div>
 
-            {/* Pagination Row */}
-            <tfoot>
-              <tr className="">
-                <td colSpan={5} className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-xl rounded-br-xl border-gray-200">
-                  <div className="flex items-center justify-between px-4 py-3">
-                    <span className="text-gray-600 text-sm">
-                      {totalResults === 0
-                        ? "Showing 0 results"
-                        : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={handlePrevPage}
-                        disabled={page === 1}
-                        sx={{
-                          minWidth: 0,
-                          borderRadius: 2,
-                          px: 1.5,
-                          fontWeight: 600,
-                          color: page === 1 ? '#bdbdbd' : '#1976D2',
-                          borderColor: page === 1 ? '#e0e0e0' : '#1976D2',
-                          '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
-                        }}
-                      >
-                        <ChevronLeft size={18} />
-                      </Button>
-                      <span className="text-gray-700 text-sm font-medium">
-                        Page {page} of {totalPages || 1}
-                      </span>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={handleNextPage}
-                        disabled={page === totalPages || totalResults === 0}
-                        sx={{
-                          minWidth: 0,
-                          borderRadius: 2,
-                          px: 1.5,
-                          fontWeight: 600,
-                          color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2',
-                          borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2',
-                          '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
-                        }}
-                      >
-                        <ChevronRight size={18} />
-                      </Button>
+        {/* Mobile list view for jobs (<sm) - stacked cards */}
+        <motion.div
+          className="sm:hidden border-none bg-white rounded-xl mx-2"
+          variants={itemVariants}
+          initial='hidden'
+          animate='visible'
+        >
+          <div className="flex flex-col gap-3">
+            {/* Mobile search card */}
+            <div className="bg-white rounded-xl border border-gray-100 p-3 mb-2">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 min-w-0 flex gap-2">
+                  <TextField
+                    value={search}
+                    onChange={e => { setSearch(e.target.value); setPage(1); }}
+                    placeholder="Name"
+                    size="small"
+                    variant="outlined"
+                    sx={{ flex: 1, minWidth: 0 }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start"><SearchIcon color="action" /></InputAdornment>
+                      ),
+                      endAdornment: (search && (<InputAdornment position="end"><CloseIcon fontSize="small" className="cursor-pointer text-gray-400 hover:text-gray-600" onClick={() => { setSearch(''); setPage(1); }} /></InputAdornment>)),
+                      style: { borderRadius: 8, background: 'white' }
+                    }}
+                  />
+                  <TextField
+                    value={searchWork}
+                    onChange={e => { setSearchWork(e.target.value); setPage(1); }}
+                    placeholder="Work"
+                    size="small"
+                    variant="outlined"
+                    sx={{ flex: 1, minWidth: 0 }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start"><SearchIcon color="action" /></InputAdornment>
+                      ),
+                      endAdornment: (searchWork && (<InputAdornment position="end"><CloseIcon fontSize="small" className="cursor-pointer text-gray-400 hover:text-gray-600" onClick={() => { setSearchWork(''); setPage(1); }} /></InputAdornment>)),
+                      style: { borderRadius: 8, background: 'white' }
+                    }}
+                  />
+                </div>
+
+                <div className="flex-shrink-0">
+                  <IconButton size="small" onClick={() => { handleSortToggle(); setPage(1); }} sx={{ ml: 1, borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }} aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}>
+                    {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+            <div className='flex flex-col gap-5 px-3'>
+              {paginatedLeads.length > 0 ? (
+                paginatedLeads.map(lead => (
+                  <div key={lead.id} className="bg-white rounded-xl shadow-md border border-gray-100 p-4 hover:shadow-lg transition-shadow">
+                    <div className="flex gap-3">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-gray-100">
+                          <WrenchScrewdriverIcon className="w-5 h-5 text-indigo-600" />
+                        </div>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-sm font-semibold text-slate-800 truncate">{lead.name}</h3>
+                              {lead.interested && (<span className="text-xs font-semibold text-green-800 bg-green-50 px-2 py-0.5 rounded">Interested</span>)}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1 truncate">{lead.work}</div>
+                          </div>
+
+                          <div className="text-right text-xs text-gray-400">
+                            <div className="font-medium text-gray-500">{lead.postedOn}</div>
+                            <div className="mt-1">{lead.time}</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    <div className="my-6 border-solid border border-t border-gray-100" />
+                    <div className="flex mt-1 justify-center">
+                          {/* Mobile action buttons centered & responsive */}
+                          {lead.status === "New" ? (
+                            lead.interested ? (
+                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: 'green', borderColor: 'green', boxShadow: '0 2px 6px rgba(16,185,129,0.06)', '&:hover': { borderColor: 'darkgreen', background: '#F0FFF4' } }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(true); }}>
+                                Fill Quotation
+                              </Button>
+                            ) : (
+                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 800, width: 'min(350px,62%)', color: '#1976D2', borderColor: '#1976D2' }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(false); }}>
+                                Apply
+                              </Button>
+                            )
+                          ) : lead.status === "Applied" ? (
+                            lead.pendingStatus === "Approval Pending" ? (
+                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#ff9800', borderColor: '#ff9800' }} onClick={() => handleWithdraw(lead)}>
+                                Withdraw
+                              </Button>
+                            ) : lead.pendingStatus === "Approved" ? (
+                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#e53935', borderColor: '#e53935' }} onClick={() => handleCancel(lead)}>
+                                Cancel
+                              </Button>
+                            ) : (
+                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300', background: '#FFF8E1' }} onClick={() => handleView(lead)}>
+                                View
+                              </Button>
+                            )
+                          ) : lead.status === "Completed" ? (
+                            <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 500, width: 'min(350px,62%)', color: 'green', borderColor: 'green' }} onClick={() => handleView(lead)}>
+                              Ratings
+                            </Button>
+                          ) : (
+                            <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300' }} onClick={() => handleView(lead)}>
+                              View
+                            </Button>
+                          )}
+                        </div>
                   </div>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+                ))
+              ) : (
+                <div className="flex justify-center items-center text-center py-8 min-h-96 text-gray-400">No jobs found.</div>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile pagination controls */}
+          <div className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200 mt-3">
+            <div className="flex items-center justify-between px-4 py-3">
+              <span className="text-gray-600 text-sm">{totalResults === 0 ? "Showing 0 results" : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}</span>
+              <div className="flex items-center gap-2">
+                <Button variant="outlined" size="small" onClick={handlePrevPage} disabled={page === 1} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === 1 ? '#bdbdbd' : '#1976D2', borderColor: page === 1 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                  <ChevronLeft size={18} />
+                </Button>
+                <span className="text-gray-700 text-sm font-medium">Page {page} of {totalPages || 1}</span>
+                <Button variant="outlined" size="small" onClick={handleNextPage} disabled={page === totalPages || totalResults === 0} sx={{ minWidth: 0, borderRadius: 2, px: 1.5, fontWeight: 600, color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2', borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2', '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' }, }}>
+                  <ChevronRight size={18} />
+                </Button>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
 

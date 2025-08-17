@@ -87,7 +87,7 @@ const QuickActions = () => {
       {/* Mobile Design */}
       <div className="block sm:hidden">
         <motion.div
-          className="flex gap-2 overflow-x-auto pb-1"
+          className="flex justify-between px-4 gap-2 overflow-x-auto pb-1"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -104,11 +104,11 @@ const QuickActions = () => {
                 onClick={() => handleActionClick(action)}
               >
                 {/* Icon container */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
                   <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mb-1">
                     <IconComponent className="w-4 h-4 text-white" strokeWidth={1.5} />
                   </div>
-                  <span className="text-white text-xs font-medium leading-tight px-1">
+                  <span className="text-white text-[10px] font-medium leading-tight px-1">
                     {action.label}
                   </span>
                 </div>

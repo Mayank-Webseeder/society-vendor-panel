@@ -39,15 +39,15 @@ const HeadingCard = () => {
 
         {/* Content container */}
         <div className="relative px-6 py-4 sm:px-7 sm:py-5">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-row sm:flex-row justify-between items-start sm:items-start gap-3 sm:gap-0">
             {/* Main content area */}
-            <div className="flex items-center gap-5 sm:gap-6 flex-1">
+            <div className="flex sm:flex-row items-center sm:items-center gap-4 sm:gap-6 flex-1">
               {/* Enhanced avatar section */}
-              <div className="relative">
-                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-4 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
+              <div className="relative flex-shrink-0">
+        <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-3 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
                   <PermIdentityIcon
                     sx={{ fontSize: 34 }}
-                    className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10"
+          className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10"
                   />
                 </div>
                 {/* Subtle glow effect */}
@@ -55,7 +55,7 @@ const HeadingCard = () => {
               </div>
 
               {/* Greeting text */}
-              <div className="flex-1">
+        <div className="flex-1 mt-2 sm:mt-0">
                 <div className="space-y-1">
                   <h1 className="text-xl sm:text-3xl font-semibold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent leading-tight">
                     {greeting}
@@ -71,9 +71,9 @@ const HeadingCard = () => {
 
             {/* Subscription badge */}
             {subscriptionActive && (
-              <div className="flex-shrink-0 ml-4">
+        <div className="flex-shrink-0 ml-0 sm:ml-4 mt-3 sm:mt-0 self-center sm:self-auto">
                 <div className="relative">
-                  <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-4 py-2.5 text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
+          <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-3 py-1.5 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
                     {/* Premium icon */}
                     <svg
                       className="w-4 h-4 text-amber-500"
@@ -86,8 +86,8 @@ const HeadingCard = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="inline">Subscription Active</span>
-                    {/* <span className="sm:hidden">Subscription </span> */}
+                    <span className="hidden sm:inline">Subscription Active</span>
+                    <span className="sm:hidden">Subscription </span>
                   </span>
                   {/* Subtle shimmer effect */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover/badge:opacity-100 group-hover/badge:animate-pulse transition-opacity duration-500"></div>

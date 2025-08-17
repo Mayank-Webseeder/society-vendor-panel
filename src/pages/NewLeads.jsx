@@ -751,7 +751,7 @@ const NewLeads = () => {
 
 
   return (
-    <div className="relative flex flex-col gap-8 px-4 pt-3 pb-5 w-full">
+    <div className="relative flex flex-col gap-8 px-2 pt-3 pb-5 w-full">
 
       {/* Render AccessLockedModal as an overlay if subscription is inactive */}
       {!subscriptionActive  && 
@@ -816,18 +816,20 @@ const NewLeads = () => {
       </motion.div>
 
 
-      {/* Table */}
+      {/* Table - Desktop (sm+) */}
       <motion.div
-       className="border-solid border border-gray-300 rounded-xl mx-2 overflow-x-auto"
+       className="hidden sm:block border-solid border border-gray-300 rounded-xl mx-2"
         variants={itemVariants}
         initial='hidden'
         animate='visible'
       >
-        <table className="w-full bg-white shadow rounded-xl table-fixed border-collapse">
+        {/* Scroll container: table has a fixed min-width and will scroll horizontally when it exceeds container width */}
+        <div className="w-full overflow-x-auto rounded-xl">
+          <table className="min-w-[1000px] w-full bg-white shadow rounded-xl table-fixed border-collapse" style={{minWidth: '900px'}}>
           <thead>
             {/* Search Row */}
             <tr>
-              <th colSpan={4} className="lg:hidden bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
+              <th colSpan={4} className="hidden bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
                 <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
                   <TextField
                     value={search}
@@ -898,7 +900,7 @@ const NewLeads = () => {
                 </div>
               </th>
 
-              <th colSpan={5} className="hidden lg:table-cell bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
+              <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
                 <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
                   <TextField
                     value={search}
@@ -986,7 +988,8 @@ const NewLeads = () => {
                   </IconButton>
                 </span>
               </th>
-              <th className="hidden lg:table-cell py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th>
+              {/* <th className="hidden lg:table-cell py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th> */}
+              <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th>
               <th className="py-4 text-center font-normal w-16 sm:w-20 md:w-24 rounded-tr-xl">ACTION</th>
             </tr>
           </thead>
@@ -1053,7 +1056,8 @@ const NewLeads = () => {
                       </td>
 
                       <td className="py-3 text-center">{lead.postedOn}</td>
-                      <td className="hidden lg:table-cell py-3 text-center">{lead.time}</td>
+                      {/* <td className="hidden lg:table-cell py-3 text-center">{lead.time}</td> */}
+                      <td className="py-3 text-center">{lead.time}</td>
                       <td className="py-3 text-center">
                         {lead.interested ? (
                           <MotionButton
@@ -1259,6 +1263,212 @@ const NewLeads = () => {
             </tr>
           </tfoot>
         </table>
+        </div>
+      </motion.div>
+
+      {/* Mobile list view for leads (<sm) - stacked cards */}
+      <motion.div
+        className="sm:hidden border-none bg-white rounded-xl mx-2"
+        variants={itemVariants}
+        initial='hidden'
+        animate='visible'
+      >
+        <div className="flex flex-col gap-3">
+          {/* Mobile search fields (compact row) */}
+          {/* Mobile search card (corporate style) */}
+          <div className="bg-white rounded-xl border border-gray-100 p-3 mb-2">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 min-w-0 flex gap-2">
+                <TextField
+                  value={search}
+                  onChange={e => { setSearch(e.target.value); setPage(1); }}
+                  placeholder="Name"
+                  size="small"
+                  variant="outlined"
+                  sx={{ flex: 1, minWidth: 0 }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon color="action" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      search && (
+                        <InputAdornment position="end">
+                          <CloseIcon
+                            fontSize="small"
+                            className="cursor-pointer text-gray-400 hover:text-gray-600"
+                            onClick={() => { setSearch(''); setPage(1); }}
+                          />
+                        </InputAdornment>
+                      )
+                    ),
+                    style: { borderRadius: 8, background: 'white' }
+                  }}
+                />
+
+                <TextField
+                  value={searchWork}
+                  onChange={e => { setSearchWork(e.target.value); setPage(1); }}
+                  placeholder="Work"
+                  size="small"
+                  variant="outlined"
+                  sx={{ flex: 1, minWidth: 0 }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon color="action" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      searchWork && (
+                        <InputAdornment position="end">
+                          <CloseIcon
+                            fontSize="small"
+                            className="cursor-pointer text-gray-400 hover:text-gray-600"
+                            onClick={() => { setSearchWork(''); setPage(1); }}
+                          />
+                        </InputAdornment>
+                      )
+                    ),
+                    style: { borderRadius: 8, background: 'white' }
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0">
+                {/* <div className="text-xs text-gray-500 mb-1 text-right">Sort</div> */}
+                <IconButton
+                  size="small"
+                  onClick={() => { handleSortToggle(); setPage(1); }}
+                  sx={{ ml: 1, borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }}
+                  aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
+                >
+                  {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+                </IconButton>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col gap-5 px-3'>
+            {paginatedLeads.length > 0 ? (
+              paginatedLeads.map(lead => (
+                <div key={lead.id} className="bg-white border-solid rounded-xl shadow-md border border-gray-100 p-4 hover:shadow-lg transition-shadow">
+                  <div className="flex gap-3">
+                    {/* Icon / avatar column */}
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-gray-100">
+                        <WrenchScrewdriverIcon className="w-5 h-5 text-indigo-600" />
+                      </div>
+                    </div>
+
+                    {/* Content column */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-semibold text-slate-800 truncate">{lead.name}</h3>
+                            {lead.interested && (
+                              <span className="text-xs font-semibold text-green-800 bg-green-50 px-2 py-0.5 rounded">Interested</span>
+                            )}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1 truncate">{lead.work}</div>
+                        </div>
+
+                        <div className="text-right text-xs text-gray-400">
+                          <div className="font-medium text-gray-500">{lead.postedOn}</div>
+                          <div className="mt-1">{lead.time}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Divider */}
+                      <div className="my-6 border-solid border border-t border-gray-100" />
+
+                      {/* Action buttons */}
+                      <div className="flex justify-center">
+                        {lead.interested ? (
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(300px,62%)', color: 'green', borderColor: 'green', boxShadow: '0 2px 6px rgba(16,185,129,0.06)', '&:hover': { borderColor: 'darkgreen', background: '#F0FFF4' } }}
+                            onClick={() => {
+                              setModalLead(lead);
+                              setModalOpen(true);
+                              setProceed(true);
+                            }}
+                          >
+                            Fill Quotation
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 800, color: '#1976D2', borderColor: '#1976D2', width: 'min(300px,62%)' }}
+                            onClick={() => {
+                              setModalLead(lead);
+                              setModalOpen(true);
+                              setProceed(false);
+                            }}
+                          >
+                            Apply
+                          </Button>
+                        )}
+                      </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex justify-center items-center text-center py-8 min-h-96 text-gray-400">No new leads found.</div>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile pagination controls */}
+        <div className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200 mt-3">
+          <div className="flex items-center justify-between px-4 py-3">
+            <span className="text-gray-600 text-sm">
+              {totalResults === 0
+                ? "Showing 0 results"
+                : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handlePrevPage}
+                disabled={page === 1}
+                sx={{
+                  minWidth: 0,
+                  borderRadius: 2,
+                  px: 1.5,
+                  fontWeight: 600,
+                  color: page === 1 ? '#bdbdbd' : '#1976D2',
+                  borderColor: page === 1 ? '#e0e0e0' : '#1976D2',
+                  '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
+                }}
+              >
+                <ChevronLeft size={18} />
+              </Button>
+              <span className="text-gray-700 text-sm font-medium">Page {page} of {totalPages || 1}</span>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handleNextPage}
+                disabled={page === totalPages || totalResults === 0}
+                sx={{
+                  minWidth: 0,
+                  borderRadius: 2,
+                  px: 1.5,
+                  fontWeight: 600,
+                  color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2',
+                  borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2',
+                  '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
+                }}
+              >
+                <ChevronRight size={18} />
+              </Button>
+            </div>
+          </div>
+        </div>
       </motion.div>
 
 
