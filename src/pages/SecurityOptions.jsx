@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, Box, Typography } from '@mui/material';
+import { Shield, Lock } from 'lucide-react';
 
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -31,30 +32,14 @@ const SecurityOptions = () => {
   };
 
   return (
-    <Box className='p-5 sm:p-8 w-full h-full'>
-      {/* Header for Security Options */}
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        pb: 1
-      }}>
-        <Typography variant="h2" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 'semibold', color: '#4A5568', lineHeight: { xs: 1.25, sm: 1.3 } }}>
-          Security Options
-        </Typography>
-      </Box>
-
-      <Typography
-        variant="body2"
-        sx={{
-          fontSize: { xs: '0.75rem', sm: '0.875rem' },
-          color: '#718096',
-          maxWidth: { xs: '95%', sm: '100%' },
-          mb: 4
-        }}
-      >
-        Manage your account's security settings.
-      </Typography>
+    <div className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-10'>
+      {/* Heading */}
+      <div className="flex items-start sm:items-center justify-between mb-8 gap-4">
+        <div className="flex flex-col gap-1">
+          <h2 style={{ fontFamily: 'Manrope' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Security Options</h2>
+          <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage your account security settings</p>
+        </div>
+      </div>
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -63,97 +48,114 @@ const SecurityOptions = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="w-full"
+          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-4 sm:px-8 pt-6 pb-8 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden max-w-3xl"
         >
-          <Box sx={{ bgcolor: 'white', borderRadius: '0.5rem', px: 0.5 }}>
-            <Box sx={{ mb: 2, pb: 1, maxWidth: '100%', borderBottom: '1px solid #E0E0E0' }}>
-              <Typography variant="body1" sx={{ fontSize: '1.20rem', fontWeight: 'semibold', color: '#64748B' }}>
-                Change Password
-              </Typography>
-            </Box>
+          <div className="absolute -top-12 -right-10 w-64 h-64 bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
+          <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-indigo-500 via-blue-500 to-transparent rounded-br-full" />
 
-            <div className="flex flex-col gap-3 mt-4 w-full sm:max-w-[60%]">
-              {/* Current Password */}
-              <div className="flex flex-col mb-2">
-                <label className="text-sm font-medium text-gray-500 mb-1">Current Password</label>
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={currentPassword}
-                  onChange={e => setCurrentPassword(e.target.value)}
-                  className="w-full p-2 border-solid border border-gray-300 bg-gray-100 text-gray-800 text-sm rounded-md focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              {/* New Password */}
-              <div className="flex flex-col mb-2">
-                <label className="text-sm font-medium text-gray-500 mb-1">New Password</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  className="w-full p-2 border-solid border border-gray-300 bg-gray-100 text-gray-800 text-sm rounded-md focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              {/* Confirm New Password */}
-              <div className="flex flex-col mb-2">
-                <label className="text-sm font-medium text-gray-500 mb-1">Confirm New Password</label>
-                <input
-                  type="password"
-                  name="confirmNewPassword"
-                  value={confirmNewPassword}
-                  onChange={e => setConfirmNewPassword(e.target.value)}
-                  className="w-full p-2 border-solid border border-gray-300 bg-gray-100 text-gray-800 text-sm rounded-md focus:outline-none focus:border-blue-500"
-                />
-              </div>
+          <div className="flex items-start gap-4 mb-6">
+            <div className="flex-shrink-0 p-3.5 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white shadow-inner ring-1 ring-white/30">
+              <Lock size={22} />
             </div>
+            <div className="flex flex-col">
+              <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">Change Password</h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">Use a strong password with a mix of letters, numbers & symbols.</p>
+            </div>
+          </div>
 
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', maxWidth: { sm: '60%' }, mt: 5, gap: { xs: 1.5, sm: 3 } }}>
-              <Button
-                variant="outlined"
-                onClick={handleClearPasswords}
-                sx={{
-                  py: { xs: '6px', sm: '8px' },
-                  px: { xs: '16px', sm: '24px' },
-                  bgcolor: 'white',
-                  color: '#616161',
-                  borderColor: '#D1D5DB',
-                  fontWeight: 'semibold',
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  '&:hover': {
-                    bgcolor: '#F3F4F6',
-                    borderColor: '#9CA3AF',
-                  },
-                }}
-              >
-                Clear
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleChangePassword}
-                sx={{
-                  py: { xs: '6px', sm: '8px' },
-                  px: { xs: '16px', sm: '24px' },
-                  bgcolor: '#3B82F6',
-                  color: 'white',
-                  fontWeight: 'semibold',
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  '&:hover': {
-                    bgcolor: '#2563EB',
-                  },
-                }}
-              >
-                Change Password
-              </Button>
-            </Box>
-          </Box>
+          {/* Form Fields */}
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-x-10 gap-y-4 w-full">
+            <div className="flex flex-col">
+              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">Current Password</label>
+              <input
+                type="password"
+                name="currentPassword"
+                value={currentPassword}
+                onChange={e => setCurrentPassword(e.target.value)}
+                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">New Password</label>
+              <input
+                type="password"
+                name="newPassword"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">Confirm New Password</label>
+              <input
+                type="password"
+                name="confirmNewPassword"
+                value={confirmNewPassword}
+                onChange={e => setConfirmNewPassword(e.target.value)}
+                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8 text-[11px] sm:text-xs text-slate-500/80">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-indigo-500" /> At least 8 characters
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500" /> Mix upper & lower case
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-500" /> Include a number or symbol
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-10">
+            <Button
+              variant="outlined"
+              onClick={handleClearPasswords}
+              sx={{
+                px: 3.5,
+                py: 1.1,
+                bgcolor: 'rgba(255,255,255,0.85)',
+                color: '#475569',
+                borderColor: 'rgba(148,163,184,0.5)',
+                fontWeight: 600,
+                borderRadius: '10px',
+                textTransform: 'none',
+                fontSize: '0.78rem',
+                letterSpacing: 0.3,
+                backdropFilter: 'blur(8px)',
+                '&:hover': {
+                  bgcolor: 'rgba(241,245,249,0.9)',
+                  borderColor: 'rgba(100,116,139,0.6)'
+                }
+              }}
+            >
+              Clear
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleChangePassword}
+              sx={{
+                px: 3.8,
+                py: 1.15,
+                background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
+                color: 'white',
+                fontWeight: 600,
+                borderRadius: '10px',
+                textTransform: 'none',
+                fontSize: '0.78rem',
+                letterSpacing: 0.3,
+                boxShadow: '0 6px 18px -6px rgba(59,130,246,0.5),0 2px 6px rgba(0,0,0,0.08)',
+                '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 24px -6px rgba(59,130,246,0.55),0 3px 8px rgba(0,0,0,0.10)' }
+              }}
+            >
+              Change Password
+            </Button>
+          </div>
         </motion.div>
       </AnimatePresence>
-    </Box>
+    </div>
   );
 };
 

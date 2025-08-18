@@ -173,27 +173,27 @@ const NewLeads = () => {
         animate="visible"
       >
       
-        {/* Header Section (match MyJobs styling) */}
+        {/* Header Section */}
         <motion.div
-          className="flex flex-col border-solid sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
+          className="relative border-solid flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-5 sm:px-7 py-5 border border-slate-200 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] mb-1 overflow-hidden"
           variants={itemVariants}
         >
-          <div className="flex items-start sm:items-center gap-4">
-            <div className="flex-shrink-0 rounded-lg p-2 bg-[#FFF4EB]">
-              <FiberNewIcon sx={{ color: '#F86B0F', fontSize: { xs: 26, sm: 32 } }} />
+          {/* Overlay gradients */}
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-50/50 via-transparent to-amber-50/70" />
+            <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-orange-500 via-amber-500 to-transparent rounded-br-full" />
+          <div className="relative w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div className="flex items-start sm:items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl p-3 bg-gradient-to-tr from-orange-500 to-amber-400 shadow-inner shadow-amber-800/10 ring-1 ring-white/30">
+                <FiberNewIcon sx={{ color: '#FFFFFF', fontSize: { xs: 26, sm: 30 } }} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <h1 style={{ fontFamily: 'Manrope' }} className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 tracking-tight">New Leads</h1>
+                <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500 mt-0.5">View all newly available leads</p>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <h1 style={{ fontFamily: 'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/80">New Leads</h1>
-              <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-gray-500 mt-0.5">View all newly available leads</p>
-            </div>
+            {/* Reserved space for future actions */}
+            {/* <div className="flex items-center gap-4 self-stretch sm:self-auto" /> */}
           </div>
-
-          {/* <div className="mt-3 sm:mt-0 flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <div className="text-xs text-gray-500">Last updated</div>
-              <div className="text-sm text-gray-700 font-medium">{new Date().toLocaleString()}</div>
-            </div>
-          </div> */}
         </motion.div>
 
         {/* New status card below header (match MyJobs styling) */}

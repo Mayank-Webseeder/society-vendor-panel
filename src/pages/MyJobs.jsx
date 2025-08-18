@@ -210,42 +210,25 @@ const MyJobs = () => {
 
         {/* Header Section */}
         <motion.div
-          className="flex flex-col border-solid sm:flex-row items-start sm:items-center justify-between bg-white rounded-2xl px-4 sm:px-6 py-4 border border-gray-200 shadow-sm"
+          className="relative border-solid flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-5 sm:px-7 py-5 border border-slate-200 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] mb-1 overflow-hidden"
           variants={itemVariants}
         >
-          <div className="flex items-start sm:items-center gap-4">
-            <div className="flex-shrink-0 rounded-lg p-2 bg-[#E8F3FB]">
-              <BusinessCenterIcon sx={{ color: '#1976D2', fontSize: { xs: 26, sm: 32 } }} />
+          {/* Overlay gradients & accent bar */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-50/60 via-transparent to-indigo-50/60" />
+          <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-blue-500 via-indigo-500 to-transparent rounded-br-full" />
+          <div className="relative w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div className="flex items-start sm:items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl p-3 bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-inner shadow-blue-800/10 ring-1 ring-white/30">
+                <BusinessCenterIcon sx={{ color: '#FFFFFF', fontSize: { xs: 26, sm: 30 } }} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <h1 style={{ fontFamily: 'Manrope' }} className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 tracking-tight">My Jobs</h1>
+                <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500 mt-0.5">Manage leads, applications and job progress</p>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <h1 style={{ fontFamily: 'Manrope' }} className="text-xl sm:text-2xl font-normal text-black/80">My Jobs</h1>
-              <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-gray-500 mt-0.5">Manage leads, applications and job progress</p>
-            </div>
+            {/* Reserved space for future actions / filters */}
+            {/* <div className="flex items-center gap-4 self-stretch sm:self-auto" /> */}
           </div>
-
-          {/* <div className="mt-3 sm:mt-0 flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <div className="text-xs text-gray-500">Last updated</div>
-              <div className="text-sm text-gray-700 font-medium">{new Date().toLocaleString()}</div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleStatusClick}
-              aria-haspopup="true"
-              aria-expanded={Boolean(statusAnchorEl)}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F8FAFC] border border-gray-200 text-sm text-[#0f172a] hover:shadow-sm"
-            >
-              <span className="font-medium">{selectedStatus}</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M6 9l6 6 6-6" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-
-            <IconButton size="small" onClick={() => { setJobs(dummyData); setPage(1); }} sx={{ borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }} aria-label="Refresh jobs">
-              <RefreshCw size={16} />
-            </IconButton>
-          </div> */}
         </motion.div>
 
         {/* Job Status Cards Section (corporate look on desktop) */}

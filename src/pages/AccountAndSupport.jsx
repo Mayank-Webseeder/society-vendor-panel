@@ -1,203 +1,285 @@
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, HelpCircle, BookOpen, FileText, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Expanded support options enriched with icon + gradient tokens
 const supportOptions = [
-  {
-    id: 'help-support',
-    title: 'Help and Support',
-    bgColor: '#B5E3FD',
-    hoverColor: '#CFE2F3',
-    route: 'help-support'
-  },
-  {
-    id: 'faq',
-    title: 'FAQ',
-    bgColor: '#B5CBFD',
-    hoverColor: '#CFE2F3',
-    route: 'faq'
-  },
-  {
-    id: 'terms',
-    title: 'Terms and Conditions',
-    bgColor: '#BAB5FD',
-    hoverColor: '#E0D8F1',
-    route: 'terms-conditions'
-  },
-  {
-    id: 'privacy',
-    title: 'Privacy Policy',
-    bgColor: '#D4B5FD',
-    hoverColor: '#E0D8F1',
-    route: 'privacy-policy'
-  }
+    {
+        id: 'help-support',
+        title: 'Help & Support',
+        description: 'Contact & ticket centre',
+        route: 'help-support',
+        icon: HelpCircle,
+        gradient: 'linear-gradient(135deg,#60a5fa,#2563eb)'
+    },
+    {
+        id: 'faq',
+        title: 'FAQ',
+        description: 'Common questions answered',
+        route: 'faq',
+        icon: BookOpen,
+        gradient: 'linear-gradient(135deg,#818cf8,#4f46e5)'
+    },
+    {
+        id: 'terms',
+        title: 'Terms & Conditions',
+        description: 'Usage & service agreement',
+        route: 'terms-conditions',
+        icon: FileText,
+        gradient: 'linear-gradient(135deg,#a78bfa,#7c3aed)'
+    },
+    {
+        id: 'privacy',
+        title: 'Privacy Policy',
+        description: 'Data handling & security',
+        route: 'privacy-policy',
+        icon: Shield,
+        gradient: 'linear-gradient(135deg,#c084fc,#9333ea)'
+    }
 ];
 
+// Animation variants (page + items)
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   exit: { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeIn" } },
 };
 
-
-const AccountAndSupport = () => {
-
-    const navigate = useNavigate();
-
-    const handleClick = (route) => {
-        navigate(route);
-    }
-
-
-
-    return (
-        <AnimatePresence mode='wait'>
-            <Box className='p-5 sm:p-8 w-full h-full'>
-                {/* Header */}
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    borderBottom: '1px solid #E0E0E0',
-                    pb: { xs: 0.75, sm: 2 },
-                    mb: { xs: 3.5, sm: 5 }
-                }}>
-                    <Typography 
-                        variant="h2" 
-                            sx={{ 
-                                fontSize: { xs: '1.55rem', sm: '2rem' },
-                                fontWeight: 'semibold', 
-                                color: '#4A5568',
-                                lineHeight: { xs: 1.25, sm: 1.3 }
-                            }}
-                    >
-                        Account & Support
-                        
-                        {/* <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-                            Account & Support
-                        </Box> */}
-                    </Typography>
-                </Box>
-
-                {/* Grid of Support Options */}
-                <motion.div
-                    key="account-support-content"
-                    variants={contentVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                >
-                    <Box
-                        sx={{
-                            display: 'grid',
-                            gridTemplateColumns: {
-                                xs: '1fr',
-                                sm: '1fr 1fr',
-                            },
-                            gap: { xs: 2.2, sm: 3.5 },
-                            mx: { xs: 0.5, sm: 1 },
-                        }}
-                    >
-                        {supportOptions.map((option, idx) => (
-                            <Box
-                                key={option.id}
-                                onClick={() => handleClick(option.route)}
-                                sx={{
-                                    position: 'relative',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    gap: 2,
-                                    p: { xs: 1.75, sm: 2.5 },
-                                    borderRadius: '16px',
-                                    cursor: 'pointer',
-                                    overflow: 'hidden',
-                                    background: `linear-gradient(135deg, #ffffff 0%, ${option.bgColor} 95%)`,
-                                    border: '1px solid rgba(100,116,139,0.15)',
-                                    boxShadow: '0 4px 14px -2px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)',
-                                    backdropFilter: 'blur(4px)',
-                                    WebkitBackdropFilter: 'blur(4px)',
-                                    transition: 'all 0.35s cubic-bezier(.4,.2,.2,1)',
-                                    '&::before': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        inset: 0,
-                                        background: 'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%)',
-                                        opacity: 0,
-                                        transition: 'opacity .4s'
-                                    },
-                                    '&::after': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        height: '100%',
-                                        width: '5px',
-                                        borderRadius: '0 4px 4px 0',
-                                        background: `linear-gradient(180deg, ${option.bgColor} 0%, ${option.hoverColor} 100%)`,
-                                        boxShadow: '0 0 0 1px rgba(255,255,255,0.4) inset'
-                                    },
-                                    '&:hover': {
-                                        transform: 'translateY(-4px) scale(1.015)',
-                                        boxShadow: '0 10px 22px -6px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.08)',
-                                        borderColor: 'rgba(59,130,246,0.35)'
-                                    },
-                                    '&:hover::before': {
-                                        opacity: 1
-                                    },
-                                    '&:active': {
-                                        transform: 'translateY(-1px) scale(0.995)'
-                                    }
-                                }}
-                            >
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pr: 1, flex: 1, minWidth: 0 }}>
-                                    <Typography
-                                        variant="body1"
-                                        sx={{
-                                            fontSize: { xs: '0.95rem', sm: '1.05rem' },
-                                            fontWeight: 600,
-                                            letterSpacing: '.25px',
-                                            color: 'rgba(15,23,42,0.85)',
-                                            textShadow: '0 1px 0 rgba(255,255,255,0.5)',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    >
-                                        {option.title}
-                                    </Typography>
-                                    {/* <Box sx={{
-                                        height: '3px',
-                                        width: { xs: '42%', sm: '38%' },
-                                        background: 'linear-gradient(90deg, rgba(59,130,246,0.55), rgba(59,130,246,0))',
-                                        borderRadius: '2px'
-                                    }} /> */}
-                                </Box>
-                                <Box sx={{
-                                    position: 'relative',
-                                    flexShrink: 0,
-                                    width: { xs: 40, sm: 46 },
-                                    height: { xs: 40, sm: 46 },
-                                    borderRadius: '14px',
-                                    background: `linear-gradient(145deg, ${option.hoverColor} 0%, ${option.bgColor} 90%)`,
-                                    border: '1px solid rgba(255,255,255,0.6)',
-                                    boxShadow: '0 4px 10px -3px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.1)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'all .35s'
-                                }}>
-                                    <ChevronRight size={22} strokeWidth={3} color="rgba(15,23,42,0.7)" />
-                                </Box>
-                            </Box>
-                        ))}
-                    </Box>
-                </motion.div>
-            </Box>
-        </AnimatePresence>
-    );
+const listVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } }
 };
 
+const itemVariants = {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' } }
+};
+
+const AccountAndSupport = () => {
+    const navigate = useNavigate();
+
+    const handleClick = (route) => navigate(route);
+
+    return (
+        <Box className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-12'>
+            {/* Heading */}
+                        <div className="flex flex-col gap-1 mb-8">
+                            <h2 style={{ fontFamily: 'Manrope' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Account & Support</h2>
+                            <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage & refine the services you provide</p>
+                        </div>
+                        
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key="work-details-content"
+                                variants={contentVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                className="w-full overflow-visible"
+                            >
+                                <Box
+                                    className="relative pt-1.5 w-full h-full overflow-x-hidden"
+                                    sx={{
+                                        // Hide scrollbar for Webkit browsers
+                                        '&::-webkit-scrollbar': { display: 'none' },
+                                        // Hide scrollbar for Firefox
+                                        scrollbarWidth: 'none',
+                                        // Hide scrollbar for IE/Edge
+                                        msOverflowStyle: 'none',
+                                    }}
+                                >
+                                    
+
+                        {/* Support Option Grid */}
+                        <motion.div
+                            key="account-support-cards"
+                            variants={listVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                        >
+                            <Box
+                                component={motion.div}
+                                variants={itemVariants}
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(auto-fill,minmax(300px,1fr))' },
+                                    gap: { xs: 2.2, sm: 3 },
+                                    position: 'relative'
+                                }}
+                            >
+                                {supportOptions.map((opt, i) => {
+                                    const Icon = opt.icon;
+                                    return (
+                                        <motion.button
+                                            key={opt.id}
+                                            type="button"
+                                            variants={itemVariants}
+                                            onClick={() => handleClick(opt.route)}
+                                            whileHover={{ y: -6 }}
+                                            whileTap={{ scale: 0.985 }}
+                                            style={{
+                                                textAlign: 'left',
+                                                border: 'none',
+                                                background: 'transparent',
+                                                cursor: 'pointer',
+                                                position: 'relative'
+                                            }}
+                                            className="group"
+                                            aria-label={opt.title}
+                                        >
+                                            <Box sx={{
+                                                position: 'relative',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 1.4,
+                                                height: '100%',
+                                                p: { xs: 2.2, sm: 2.8 },
+                                                borderRadius: '22px',
+                                                background: 'linear-gradient(140deg,rgba(255,255,255,0.78),rgba(255,255,255,0.65))',
+                                                border: '1px solid rgba(148,163,184,0.22)',
+                                                boxShadow: '0 4px 12px -2px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06)',
+                                                backdropFilter: 'blur(14px)',
+                                                WebkitBackdropFilter: 'blur(14px)',
+                                                overflow: 'hidden',
+                                                transition: 'border-color .4s, box-shadow .45s'
+                                            }}>
+                                                {/* Soft gradient overlay */}
+                                                <Box sx={{
+                                                    position: 'absolute',
+                                                    inset: 0,
+                                                    background: `${opt.gradient}`,
+                                                    opacity: 0.08,
+                                                    transition: 'opacity .5s',
+                                                    pointerEvents: 'none'
+                                                }} className="group-hover:opacity-20" />
+                                                {/* Accent bar */}
+                                                <Box sx={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    height: '100%',
+                                                    width: 6,
+                                                    background: opt.gradient,
+                                                    opacity: 0.85,
+                                                    borderRadius: '0 6px 6px 0'
+                                                }} />
+                                                {/* Shine */}
+                                                <Box sx={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 40,
+                                                    right: 0,
+                                                    height: 80,
+                                                    background: 'linear-gradient(90deg,rgba(255,255,255,0.35),rgba(255,255,255,0))',
+                                                    opacity: 0.4,
+                                                    mixBlendMode: 'overlay'
+                                                }} />
+                                                {/* Icon */}
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                                    <Box sx={{
+                                                        position: 'relative',
+                                                        width: 54,
+                                                        height: 54,
+                                                        borderRadius: '18px',
+                                                        background: opt.gradient,
+                                                        boxShadow: '0 6px 14px -3px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.12)',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        border: '1px solid rgba(255,255,255,0.55)',
+                                                        overflow: 'hidden'
+                                                    }}>
+                                                        <Icon size={28} color="#ffffff" strokeWidth={2.4} />
+                                                        <Box sx={{
+                                                            position: 'absolute',
+                                                            inset: 0,
+                                                            background: 'radial-gradient(circle at 30% 25%,rgba(255,255,255,0.45),rgba(255,255,255,0))'
+                                                        }} />
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: .5, flex: 1, minWidth: 0 }}>
+                                                        <Typography sx={{
+                                                            fontSize: { xs: '1.05rem', sm: '1.1rem' },
+                                                            fontWeight: 600,
+                                                            letterSpacing: '.2px',
+                                                            color: '#0f172a',
+                                                            display: 'flex',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            {opt.title}
+                                                        </Typography>
+                                                        <Typography sx={{
+                                                            fontSize: { xs: '.72rem', sm: '.74rem' },
+                                                            fontWeight: 500,
+                                                            letterSpacing: '.35px',
+                                                            color: 'rgba(15,23,42,.6)',
+                                                            textTransform: 'uppercase',
+                                                            whiteSpace: 'nowrap',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis'
+                                                        }}>
+                                                            {opt.description}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                                {/* Footer row / arrow */}
+                                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: .5 }}>
+                                                    <Box sx={{ display: 'flex', gap: 1.25 }}>
+                                                        <Box sx={{
+                                                            px: 1.15,
+                                                            py: .45,
+                                                            fontSize: '.65rem',
+                                                            fontWeight: 600,
+                                                            letterSpacing: '.6px',
+                                                            color: 'rgba(15,23,42,.65)',
+                                                            background: 'linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.5))',
+                                                            border: '1px solid rgba(148,163,184,.35)',
+                                                            borderRadius: '999px',
+                                                            backdropFilter: 'blur(4px)'
+                                                        }}>
+                                                            OPEN
+                                                        </Box>
+                                                    </Box>
+                                                    <Box sx={{
+                                                        width: 46,
+                                                        height: 46,
+                                                        borderRadius: '16px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        background: 'linear-gradient(135deg,rgba(255,255,255,0.9),rgba(255,255,255,0.55))',
+                                                        border: '1px solid rgba(148,163,184,0.35)',
+                                                        boxShadow: '0 3px 8px -2px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.08)',
+                                                        transition: 'all .4s'
+                                                    }} className="group-hover:shadow-xl group-hover:translate-x-0.5">
+                                                        <ChevronRight size={24} strokeWidth={3} color="#334155" />
+                                                    </Box>
+                                                </Box>
+                                                {/* Hover ring */}
+                                                <Box sx={{
+                                                    position: 'absolute',
+                                                    inset: 0,
+                                                    borderRadius: '22px',
+                                                    padding: '1px',
+                                                    background: 'linear-gradient(140deg,rgba(59,130,246,0.55),rgba(99,102,241,0.4),rgba(59,130,246,0))',
+                                                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                                    WebkitMaskComposite: 'xor',
+                                                    maskComposite: 'exclude',
+                                                    opacity: 0,
+                                                    transition: 'opacity .55s'
+                                                }} className="group-hover:opacity-100" />
+                                            </Box>
+                                        </motion.button>
+                                    );
+                                })}
+                            </Box>
+                        </motion.div>
+                    </Box>
+                </motion.div>
+            </AnimatePresence>
+        </Box>
+    );
+};
 
 export default AccountAndSupport;

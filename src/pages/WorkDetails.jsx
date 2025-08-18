@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Typography, TextField, Button, Box, IconButton } from '@mui/material';
-import { Search, X } from 'lucide-react';
+import { Search, X, Wrench } from 'lucide-react';
 import Autocomplete from '@mui/material/Autocomplete';
 import { motion, AnimatePresence } from 'framer-motion';
 import dummyOffers from '../static/dummyData_ServicesOffered'
@@ -73,7 +73,7 @@ const WorkDetails = () => {
 
 
   return (
-    <Box className='relative p-5 sm:p-8 w-full h-full'>
+    <Box className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-12'>
       {/* Access Locked Modal */}
       <AccessLockedModal_WorkDetails
         open={isModalOpen}
@@ -81,38 +81,11 @@ const WorkDetails = () => {
         heading="Access Restricted"
         subheading="Subscribe to update your availability and unlock premium features."
       />
-
-
       {/* Heading */}
-      <Box 
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          borderBottom: '1px solid #E0E0E0',
-          gap: { xs: 1.25, sm: 2 },
-          pb: { xs: 0.75, sm: 1 },
-          mb: { xs: 2, sm: 3 }
-        }}
-      >
-        <Typography variant="h2" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 'semibold', color: '#4A5568', lineHeight: { xs: 1.25, sm: 1.3 } }}>
-          Work Details
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            fontSize: { xs: '0.75rem', sm: '0.875rem' },
-            color: '#718096',
-            maxWidth: { xs: '95%', sm: '100%' }
-          }}
-        >
-          You can update your offered services here.
-        </Typography>
-
-        {/* Yellow Lock Icon */}
-        {/* { !subscriptionActive  &&  <LockIcon sx={{ fontSize: 24, color: '#F59E0B' }} /> } */}
-      </Box >
+      <div className="flex flex-col gap-1 mb-8">
+        <h2 style={{ fontFamily: 'Manrope' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Work Details</h2>
+        <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage & refine the services you provide</p>
+      </div>
 
         {/* Animated Content */}
         <AnimatePresence mode="wait">
@@ -124,295 +97,187 @@ const WorkDetails = () => {
             exit="exit"
             className="w-full"
           >
-            <Box sx={{ 
-              p: { xs: 0.5, sm: 1 }, 
-              display: 'flex', 
-              maxWidth: { xs: '100%', sm: '80%' }, 
-              flexDirection: 'column', 
-              gap: { xs: 3, sm: 7 }, 
-              flex: 1, 
-              overflow: 'auto',
-              scrollbarWidth: 'none',
-              '&::-webkit-scrollbar': { display: 'none' }
-            }}>
-              
-              {/* Services Offered */}
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{
-                    width: { xs: 32, sm: 40 },
-                    height: { xs: 32, sm: 40 },
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    pb: 0.5,
-                    transition: 'width 0.2s ease, height 0.2s ease'
-                  }}>
-                    <Search size={20} color="#2563EB" style={{ display: 'block' }} />
-                  </Box>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      fontWeight: 500, 
-                      color: 'rgba(0,0,0,0.7)',
-                      fontSize: { xs: '0.95rem', sm: '1.125rem' },
-                      ml: 0.5
-                    }}
-                  >
-                    Services Offered
-                  </Typography>
-                </Box>
-                
-                {/* Display current services */}
-                {user?.whatYouOffer && user.whatYouOffer.length > 0 && (
-                  <Box sx={{ 
-                    mb: { xs: 2.25, sm: 3 }, 
-                    p: { xs: 2, sm: 3 }, 
-                    background: 'linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%)', 
-                    borderRadius: '12px', 
-                    border: '1px solid #E2E8F0',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '4px',
-                      height: '100%',
-                      backgroundColor: '#2563EB',
-                      borderRadius: '0 4px 4px 0'
-                    },
-                    // subtle tighter spacing on mobile
-                    '@media (max-width:600px)': {
-                      borderRadius: '10px'
-                    }
-                  }}>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        color: '#475569',
-                        fontSize: { xs: '0.75rem', sm: '0.9rem' },
-                        lineHeight: 1.55,
-                        pl: 1,
-                        mb: { xs: 1.25, sm: 2 }
-                      }}
-                    >
-                      <Typography component="span" sx={{ 
-                        fontWeight: 700, 
-                        color: '#1e293b',
-                        fontSize: { xs: '0.8rem', sm: '0.95rem' }
-                      }}>
-                        🔧 Currently offered services include:
-                      </Typography>
-                    </Typography>
-                    
-                    {/* Services Grid */}
+            <Box className="flex flex-col gap-10 max-w-5xl pr-1">
+              {/* Services Offered Card */}
+              <div className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-5 sm:px-8 pt-6 pb-8 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden">
+                <div className="absolute -top-14 -right-10 w-64 h-64 bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
+                <div className="absolute top-0 left-0 h-1.5 w-40 bg-gradient-to-r from-blue-600 via-indigo-500 to-transparent rounded-br-full" />
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="flex-shrink-0 p-3 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-inner ring-1 ring-white/30">
+                    <Wrench size={22} />
+                  </div>
+                  <div className="flex flex-col">
+                    <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">Services Offered</h3>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">Overview of services currently on your profile</p>
+                  </div>
+                </div>
+                {user?.whatYouOffer && user.whatYouOffer.length > 0 ? (
+                  <div className="relative mb-12">
+                    <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2"><span className="inline-block w-1.5 h-1.5 rounded-full bg-indigo-500" /> Active Services ({user.whatYouOffer.length})</p>
                     {(() => {
                       const total = user.whatYouOffer.length;
-                      const limit = 6; // show first 6 on mobile before expand
+                      const limit = 6;
                       const truncated = isMobile && !showAllServices && total > limit;
                       const list = truncated ? user.whatYouOffer.slice(0, limit) : user.whatYouOffer;
                       return (
-                    <Box 
-                      sx={{ 
-                        display: 'grid', 
-                        gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }, 
-                        gap: { xs: 1, sm: 1.5 },
-                        pl: 1,
-                        transition: 'max-height 0.3s ease',
-                        position: 'relative'
-                      }}
-                    >
-                      {list.map((service, index) => (
-                        <Box
-                          key={index}
-                          sx={{
-                            backgroundColor: '#ffffff',
-                            borderRadius: '8px',
-                            padding: { xs: '6px 10px', sm: '8px 12px' },
-                            border: '1px solid #E2E8F0',
-                            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-                            transition: 'all 0.2s ease',
-                            '&:hover': {
-                              transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                              borderColor: '#2563EB'
-                            }
-                          }}
-                        >
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              color: '#374151',
-                              fontSize: { xs: '0.65rem', sm: '0.8rem' },
-                              fontWeight: 500,
-                              textAlign: 'center',
-                              lineHeight: 1.3
-                            }}
-                          >
-                            {service}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
+                        <>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3" aria-label="Active services list" role="list">
+                            {list.map((service, i) => (
+                              <div
+                                key={i}
+                                role="listitem"
+                                className="group relative px-3 py-2 rounded-xl border-solid border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden"
+                              >
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-indigo-50/80 via-blue-50/60 to-sky-50/70" />
+                                <div className="relative flex flex-col items-center justify-center gap-1">
+                                  <span className="text-[0.55rem] sm:text-[0.6rem] font-semibold tracking-wider text-indigo-500/80 group-hover:text-indigo-600 uppercase">{String(i+1).padStart(2,'0')}</span>
+                                  <span className="text-[0.65rem] sm:text-[0.7rem] font-medium text-slate-600 group-hover:text-slate-800 text-center leading-tight line-clamp-2">{service}</span>
+                                  <span className="absolute -bottom-1px left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-gradient-to-r from-indigo-400/40 via-blue-400/30 to-indigo-400/40 opacity-0 group-hover:opacity-100 transition" />
+                                </div>
+                                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-tr from-indigo-500 to-blue-500 opacity-70 group-hover:opacity-100 shadow" />
+                                <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-transparent group-hover:ring-indigo-300/60 transition" />
+                              </div>
+                            ))}
+                          </div>
+                          {truncated && (
+                            <div className="pointer-events-none absolute bottom-16 left-0 right-0 h-20 bg-gradient-to-t from-white/90 to-transparent" />
+                          )}
+                          {isMobile && user.whatYouOffer.length > 6 && (
+                            <div className="mt-4 flex justify-center">
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={() => setShowAllServices(s => !s)}
+                                sx={{
+                                  textTransform: 'none',
+                                  fontSize: '0.65rem',
+                                  py: 0.6,
+                                  px: 1.7,
+                                  borderRadius: '20px',
+                                  borderColor: '#2563EB',
+                                  color: '#2563EB',
+                                  background: 'rgba(255,255,255,0.6)',
+                                  backdropFilter: 'blur(6px)',
+                                  '&:hover': { borderColor: '#1D4ED8', backgroundColor: '#EFF6FF' }
+                                }}
+                              >
+                                {showAllServices ? 'Show Less' : `Show All (${user.whatYouOffer.length})`}
+                              </Button>
+                            </div>
+                          )}
+                        </>
                       );
                     })()}
-                    {/* Gradient fade when truncated */}
-                    {isMobile && !showAllServices && user.whatYouOffer.length > 6 && (
-                      <Box sx={{
-                        position: 'absolute',
-                        bottom: 48,
-                        left: 0,
-                        right: 0,
-                        height: 50,
-                        background: 'linear-gradient(to top, rgba(248,250,252,1) 10%, rgba(248,250,252,0))',
-                        pointerEvents: 'none'
-                      }} />
+                  </div>
+                ) : (
+                  <div className="mb-12 -mt-2 text-xs text-slate-500 italic">You haven't added any services yet.</div>
+                )}
+                {/* Selection Input */}
+                <div className="relative z-10">
+                  <Autocomplete
+                    multiple
+                    options={dummyOffers}
+                    getOptionLabel={(option) => option.label}
+                    value={selectedServices}
+                    onChange={(event, newValue) => setSelectedServices(newValue)}
+                    disableCloseOnSelect
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        placeholder={
+                          selectedServices.length === 0
+                            ? 'Search and select services to add...'
+                            : `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`
+                        }
+                        variant="outlined"
+                        sx={{
+                          mb: 2,
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '14px',
+                            backgroundColor: 'rgba(248,250,252,0.9)',
+                            backdropFilter: 'blur(4px)',
+                            '& fieldset': {
+                              borderColor: '#CBD5E1',
+                              borderWidth: '1px'
+                            },
+                            '&:hover fieldset': { borderColor: '#94A3B8' },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#2563EB',
+                              borderWidth: '2px'
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            color: '#1E293B',
+                            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                            py: { xs: '9px', sm: '13px' },
+                          },
+                        }}
+                      />
                     )}
-                    {isMobile && user.whatYouOffer.length > 6 && (
-                      <Box sx={{ mt: 1.5, display: 'flex', justifyContent: 'center' }}>
-                        <Button
-                          variant="outlined"
+                    sx={{
+                      '& .MuiAutocomplete-paper': {
+                        borderRadius: '14px',
+                        boxShadow: '0 12px 28px -8px rgba(0,0,0,0.18),0 4px 10px rgba(0,0,0,0.08)'
+                      }
+                    }}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {selectedServices.map(service => (
+                      <div
+                        key={service.value}
+                        className="group relative flex items-center bg-gradient-to-tr from-blue-600 to-indigo-600 text-white/90 px-3 py-1.5 rounded-full text-[0.65rem] sm:text-xs font-medium tracking-wide shadow hover:shadow-md transition"
+                      >
+                        {service.label}
+                        <IconButton
                           size="small"
-                          onClick={() => setShowAllServices(s => !s)}
+                          onClick={() => handleServiceRemove(service)}
                           sx={{
-                            textTransform: 'none',
-                            fontSize: '0.65rem',
-                            py: 0.5,
-                            px: 1.5,
-                            borderRadius: '20px',
-                            borderColor: '#2563EB',
-                            color: '#2563EB',
-                            '&:hover': { borderColor: '#1D4ED8', backgroundColor: '#EFF6FF' }
+                            ml: 0.5,
+                            p: 0.3,
+                            color: 'white',
+                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.15)' }
                           }}
                         >
-                          {showAllServices ? 'Show Less' : `Show All (${user.whatYouOffer.length})`}
-                        </Button>
-                      </Box>
-                    )}
-                  </Box>
-                )}
-                
-                <Autocomplete
-                  multiple
-                  options={dummyOffers}
-                  getOptionLabel={(option) => option.label}
-                  value={selectedServices}
-                  onChange={(event, newValue) => setSelectedServices(newValue)}
-                  disableCloseOnSelect
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder={
-                        selectedServices.length === 0
-                          ? "Search and select services..."
-                          : `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`
-                      }
-                      variant="outlined"
-                      sx={{
-                        mb: 2,
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: '12px',
-                          backgroundColor: '#F9FAFB',
-                          '& fieldset': { 
-                            borderColor: '#D1D5DB',
-                            borderWidth: '1px'
-                          },
-                          '&:hover fieldset': { borderColor: '#9CA3AF' },
-                          '&.Mui-focused fieldset': { 
-                            borderColor: '#2563EB',
-                            borderWidth: '2px'
-                          },
-                        },
-                        '& .MuiInputBase-input': {
-                          color: '#374151',
-                          fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                          py: { xs: '8px', sm: '12px' },
-                        },
-                      }}
-                    />
-                  )}
-                  sx={{
-                    '& .MuiAutocomplete-paper': {
-                      borderRadius: '12px',
-                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                    }
-                  }}
-                />
-                
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 1.5 } }}>
-                  {selectedServices.map(service => (
-                    <Box
-                      key={service.value}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: '#EFF6FF',
-                        borderRadius: '8px',
-                        px: { xs: 1.25, sm: 2 },
-                        py: { xs: 0.75, sm: 1 },
-                        fontSize: { xs: '0.7rem', sm: '0.875rem' },
-                        color: '#1D4ED8',
-                        fontWeight: 500,
-                        border: '1px solid #DBEAFE',
-                      }}
-                    >
-                      {service.label}
-                      <IconButton
-                        size="small"
-                        onClick={() => handleServiceRemove(service)}
-                        sx={{ 
-                          ml: 0.75, 
-                          p: { xs: 0.25, sm: 0.5 }, 
-                          color: '#1D4ED8',
-                          '&:hover': { backgroundColor: '#DBEAFE' }
-                        }}
-                      >
-                        <X size={14} style={{ transform: 'translateY(-1px)' }} />
-                      </IconButton>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
+                          <X size={14} style={{ transform: 'translateY(-1px)' }} />
+                        </IconButton>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </Box>
           </motion.div>
         </AnimatePresence>
 
 
         {/* Add Service button */}
-        <Box sx={{ 
-          mt: 2, 
-          width: '100%', 
-          display: 'flex', 
+        <Box sx={{
+          mt: 4,
+          width: '100%',
+          display: 'flex',
           justifyContent: { xs: 'center', sm: 'flex-end' },
           position: { xs: 'sticky', sm: 'static' },
-          bottom: { xs: 0, sm: 'auto' },
+          bottom: { xs: 10, sm: 'auto' },
           left: 0,
           right: 0,
-          background: { xs: 'linear-gradient(to top, rgba(255,255,255,0.96) 60%, rgba(255,255,255,0.8) 100%)', sm: 'transparent' },
-          pb: { xs: 1, sm: 0 },
-          pt: { xs: 0.5, sm: 0 }
+          pb: { xs: 0.5, sm: 0 }
         }}>
           <Button
             variant="contained"
-            onClick={() => handleAddService('Painter')} // Example service
+            onClick={() => handleAddService('Painter')}
             sx={{
-              backgroundColor: '#3B82F6',
+              background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
               color: 'white',
               fontWeight: 600,
-              borderRadius: '10px',
-              width: { xs: '92%', sm: 'auto' },
-              py: { xs: '10px', sm: '8px' },
-              px: { xs: '20px', sm: '24px' },
-              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              borderRadius: '28px',
+              width: { xs: '88%', sm: 'auto' },
+              py: { xs: '11px', sm: '10px' },
+              px: { xs: '26px', sm: '30px' },
+              fontSize: { xs: '0.8rem', sm: '0.85rem' },
               textTransform: 'none',
-              boxShadow: { xs: '0 4px 10px rgba(59,130,246,0.25)', sm: 'none' },
-              '&:hover': {
-                backgroundColor: '#2563EB',
-              },
+              letterSpacing: 0.4,
+              boxShadow: '0 6px 20px -4px rgba(79,70,229,0.45)',
+              '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 30px -6px rgba(79,70,229,0.55)' }
             }}
           >
             Add Service

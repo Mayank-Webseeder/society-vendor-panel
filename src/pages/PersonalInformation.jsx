@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { viewVendorProfile, updateVendorProfile } from '../services/api/auth';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Edit as EditIcon } from 'lucide-react';
+import { Edit as EditIcon, User as UserIcon } from 'lucide-react';
 import { FormControl, Select, MenuItem, Button, Box, Typography, ListItemText, Checkbox } from '@mui/material';
 import IOSSwitch from '../components/IOSSwitch';
 import indianStates from '../static/dummyData_IndianStates';
@@ -392,170 +392,78 @@ const PersonalInformation = () => {
 
 
   return (
-    <div className='p-5 sm:p-8 w-full h-full relative'>
-      {/* Header */}
-      <Box sx={{
-        display: 'flex',
-        justifyContent: { xs: 'flex-start', sm: 'space-between' },
-        alignItems: 'flex-start',
-        borderBottom: '1px solid #E0E0E0',
-        gap: { xs: 1.25, sm: 2 },
-        pb: { xs: 0.75, sm: 2 },
-        mb: { xs: 1, sm: 3 }
-      }}>
-        <Typography variant="h2" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 'semibold', color: '#4A5568' }}>
-          Profile Information
-        </Typography>
-        {/* Desktop Edit Button */}
+    <div className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-3 sm:pb-8'>
+      {/* Simple Heading (no box) */}
+      <div className="flex items-start sm:items-center justify-between mb-8 gap-4">
+        <div className="flex flex-col gap-1">
+          <h2 style={{ fontFamily: 'Manrope' }} className="text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Profile Information</h2>
+          <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage and keep your personal details up to date</p>
+        </div>
         <Button
           onClick={handleEditToggle}
           sx={{
             display: { xs: 'none', sm: 'flex' },
             alignItems: 'center',
-            px: 2,
-            py: 1,
-            width: 92,
-            bgcolor: '#3B82F6',
+            px: 2.5,
+            py: 1.1,
+            zIndex: 20,
+            background: isEditing ? 'linear-gradient(90deg,#059669,#10B981)' : 'linear-gradient(90deg,#2563EB,#4F46E5)',
             color: 'white',
-            borderRadius: '0.375rem',
-            '&:hover': {
-              bgcolor: '#2563EB',
-            },
-            transition: 'background-color 0.15s ease-in-out',
+            borderRadius: '10px',
+            boxShadow: '0 4px 12px -2px rgba(0,0,0,0.12),0 2px 4px rgba(0,0,0,0.06)',
             textTransform: 'none',
-            fontSize: '0.875rem',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            letterSpacing: 0.3,
+            '&:hover': {
+              filter: 'brightness(1.05)',
+              boxShadow: '0 6px 16px -2px rgba(0,0,0,0.15),0 3px 6px rgba(0,0,0,0.08)'
+            }
           }}
         >
-          {!isEditing  &&  <EditIcon size={14} style={{ marginRight: '0.25rem' }} />}
-          {isEditing ? 'Save' : 'Edit'}
+          {!isEditing && <EditIcon size={14} style={{ marginRight: '0.4rem' }} />}
+          {isEditing ? 'Save Changes' : 'Edit'}
         </Button>
-      </Box>
+      </div>
 
-      {/* Mobile Edit Button - Fixed at bottom-right */}
-      <Button
-        onClick={handleEditToggle}
-        sx={{
-          display: { xs: 'flex', sm: 'none' },
-          position: 'fixed',
-          bottom: 80, // Above mobile navigation
-          right: 20,
-          zIndex: 40,
-          alignItems: 'center',
-          px: 3,
-          py: 1.5,
-          minWidth: 100,
-          bgcolor: '#3B82F6',
-          color: 'white',
-          borderRadius: '25px',
-          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-          '&:hover': {
-            bgcolor: '#2563EB',
-            boxShadow: '0 6px 16px rgba(59, 130, 246, 0.5)',
-          },
-          transition: 'all 0.2s ease-in-out',
-          textTransform: 'none',
-          fontSize: '0.875rem',
-          fontWeight: 600,
-        }}
-      >
-        {!isEditing  &&  <EditIcon size={16} style={{ marginRight: '0.5rem' }} />}
-        {isEditing ? 'Save' : 'Edit'}
-      </Button>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {/* Company Info */}
-        <AnimatePresence mode='wait'>
-          <motion.div
-            key={isEditing? 'edit-mode-company' : 'view-mode-company'}
-            variants={contentVariants}
+      {/* Profile summary card with integrated notifications toggle */}
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={isEditing ? 'edit-mode-company' : 'view-mode-company'}
+          variants={contentVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-          >
-            <Box sx={{
-              bgcolor: 'white',
-              // border: '2px solid red',
-              borderRadius: '0.5rem',
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              // boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-              p: 2,
-              // mb: 4
-            }}>
-                <Box sx={{display: 'flex', alignItems: 'center', mb: 3}}>
-                  <Box sx={{
-                    width: 16 * 6,
-                    height: 16 * 6,
-                    bgcolor: '#FFEDD5',
-                    // border: '2px solid black',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#EA580C',
-                    fontWeight: 'bold',
-                    fontSize: '2.5rem',
-                    mr: 3
-                  }}>
-                    {user.initials}
-                  </Box>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Typography variant="p" sx={{ fontSize: '1.8rem', fontWeight: 'semibold', color: '#4A5568' }}>
-                      {tempUser.name}
-                    </Typography>
-                    <Typography variant="p" sx={{ fontSize: '1rem', color: '#718096' }}>
-                      {tempUser.id}
-                  </Typography>
-                  </Box>
-                </Box>
-            </Box>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Notification toggle */}
-        <Box 
-          sx={{ 
-            display: { xs: 'none', sm: 'flex' }, 
-            alignItems: 'center',
-            flexDirection: { xs: 'column', md: 'row' },
-            justifyContent: 'center',
-            // border: '2px solid green',
-            // width: 'fit-content',
-            height: 'fit-content',
-            mt: 2,
-            // mb: 3,
-            // pr: 1, 
-            gap: 1 
-          }}
+            className="relative max-w-xl bg-white/75 backdrop-blur-lg border border-slate-200 rounded-2xl p-5 mb-8 sm:mb-12 shadow-[0_4px_14px_-4px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden"
         >
-          <Typography
-            sx={{
-              fontSize: '1.2rem',
-              color: subscriptionActive ? '#4A5568' : '#A0AEC0', // Faded color when disabled
-              fontWeight: 500,
-              mr: 1,
-            }}
-          >
-            Notifications
-          </Typography>
-          <IOSSwitch
-            checked={user.notificationsEnabled  &&  subscriptionActive}
-            onChange={() => setUser({ ...user, notificationsEnabled: !user.notificationsEnabled })}
-            inputProps={{ 'aria-label': 'Enable notifications', disabled: !subscriptionActive }}
-            sx={{
-              pointerEvents: subscriptionActive ? 'auto' : 'none',
-              cursor: subscriptionActive ? 'pointer' : 'default',
-              '& .MuiSwitch-thumb': {
-                cursor: subscriptionActive ? 'pointer' : 'default',
-              },
-              '& .MuiSwitch-track': {
-                cursor: subscriptionActive ? 'pointer' : 'default',
-              },
-            }}
-          />
-        </Box>
-      </Box>
+          <div className="absolute -top-10 -right-14 w-56 h-56 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
+          <div className="relative flex items-start gap-5">
+            <div className="relative w-24 h-24 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-3xl shadow-inner ring-2 ring-white/40">
+              {user.initials}
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-amber-500 flex items-center justify-center text-[10px] font-semibold text-white shadow ring-2 ring-white">
+                {user.subscription_active ? 'PRO' : 'STD'}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 flex-1">
+              <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">{tempUser.name}</h3>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium">ID: {tempUser.id}</p>
+              <div className="flex items-center flex-wrap gap-3 mt-1">
+                <div className={`px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide shadow-inner border ${subscriptionActive ? 'bg-emerald-50/80 text-emerald-600 border-emerald-300/60' : 'bg-slate-50/70 text-slate-500 border-slate-200'}`}>{subscriptionActive ? 'Subscription Active' : 'Free Tier'}</div>
+                {isEditing && <div className="px-2 py-1 rounded-md bg-amber-50 text-amber-600 text-[11px] font-medium border border-amber-200">Editing</div>}
+                <div className="hidden sm:flex items-center gap-2 ml-auto pr-1">
+                  <span className={`text-[13px] sm:text-[16px] font-medium ${subscriptionActive ? 'text-slate-600' : 'text-slate-400'}`}>Notifications</span>
+                  <IOSSwitch
+                    checked={user.notificationsEnabled && subscriptionActive}
+                    onChange={() => setUser({ ...user, notificationsEnabled: !user.notificationsEnabled })}
+                    inputProps={{ 'aria-label': 'Enable notifications', disabled: !subscriptionActive }}
+                    sx={{ pointerEvents: subscriptionActive ? 'auto' : 'none' }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
       
 
       {/* Personal Details Section */}
@@ -563,13 +471,15 @@ const PersonalInformation = () => {
         <motion.div
           key={isEditing ? "edit-mode" : "view-mode"}
           variants={contentVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="bg-white rounded-lg px-1 sm:px-6 mb-8"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="relative bg-white/75 backdrop-blur-lg rounded-2xl border-solid border border-slate-200 px-3 sm:px-6 pt-5 pb-5 mb-10 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-clip"
         >
-          <h3 className="text-xl font-normal text-gray-800 mb-4">Personal Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+          <div className="absolute -top-10 -left-10 w-48 h-48 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
+          <div className="absolute top-0 left-0 h-1 w-32 bg-gradient-to-r from-blue-500 via-indigo-500 to-transparent rounded-br-full" />
+          <h3 className="text-lg z-10 sm:text-xl font-semibold text-slate-800 mb-5 tracking-tight">Personal Details</h3>
+          <div className="grid z-10 grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
             {renderField('Full Name', 'name', tempUser.name)}
             {renderField('Email address', 'email', tempUser.email, 'email')}
             {renderField('Phone', 'phone', tempUser.phone, 'tel')}
@@ -589,9 +499,10 @@ const PersonalInformation = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="bg-white rounded-lg px-1 sm:px-6 border border-gray-200"
+          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border-solid border border-slate-200 px-3 sm:px-6 pt-5 pb-5 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-clip"
         >
-          <h3 className="text-xl font-normal text-gray-800 mb-4">Address</h3>
+          <div className="absolute top-0 left-0 h-1 w-28 bg-gradient-to-r from-amber-500 via-orange-500 to-transparent rounded-br-full" />
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-800 mb-5 tracking-tight">Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
             {renderField('Flat/Building', 'building', tempUser.building)}
             {renderField('Locality', 'locality', tempUser.locality)}
@@ -603,6 +514,36 @@ const PersonalInformation = () => {
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Mobile Edit Button - Sticky at bottom-right */}
+      <Button
+        onClick={handleEditToggle}
+        sx={{
+          display: { xs: 'flex', sm: 'none' },
+          position: 'sticky',
+          bottom: 20,
+          ml: 'auto',
+          mt: 2,
+          zIndex: 50,
+          alignItems: 'center',
+          px: 3.2,
+          py: 1.4,
+          minWidth: 110,
+          background: isEditing ? 'linear-gradient(90deg,#059669,#10B981)' : 'linear-gradient(90deg,#2563EB,#4F46E5)',
+          color: 'white',
+          borderRadius: '28px',
+          boxShadow: '0 6px 20px -4px rgba(37,99,235,0.5)',
+          '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 28px -4px rgba(37,99,235,0.55)' },
+          transition: 'all 0.25s cubic-bezier(.4,0,.2,1)',
+          textTransform: 'none',
+          fontSize: '0.82rem',
+          fontWeight: 600,
+          letterSpacing: 0.4
+        }}
+      >
+        {!isEditing && <EditIcon size={16} style={{ marginRight: '0.5rem' }} />}
+        {isEditing ? 'Save' : 'Edit'}
+      </Button>
     </div>
   );
 };
