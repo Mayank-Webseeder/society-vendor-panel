@@ -800,7 +800,7 @@ const NewLeads = () => {
                         {lead.interested ? (
                           <Button
                             variant="outlined"
-                            size="small"
+                            size="medium"
                             sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(300px,62%)', color: 'green', borderColor: 'green', boxShadow: '0 2px 6px rgba(16,185,129,0.06)', '&:hover': { borderColor: 'darkgreen', background: '#F0FFF4' } }}
                             onClick={() => {
                               setModalLead(lead);
@@ -813,7 +813,7 @@ const NewLeads = () => {
                         ) : (
                           <Button
                             variant="outlined"
-                            size="small"
+                            size="medium"
                             sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 800, color: '#1976D2', borderColor: '#1976D2', width: 'min(300px,62%)' }}
                             onClick={() => {
                               setModalLead(lead);

@@ -92,41 +92,104 @@ const AccountAndSupport = () => {
                         sx={{
                             display: 'grid',
                             gridTemplateColumns: {
-                                xs: '1fr', // Single column on extra small screens
-                                sm: '1fr 1fr', // Two columns on small and up
+                                xs: '1fr',
+                                sm: '1fr 1fr',
                             },
-                            gap: { xs: 2, sm: 3.5 }, // Reduced gap between grid items
-                            mx: { xs: 1, sm: 1 }, // Responsive margins
+                            gap: { xs: 2.2, sm: 3.5 },
+                            mx: { xs: 0.5, sm: 1 },
                         }}
                     >
-                        {supportOptions.map((option) => (
+                        {supportOptions.map((option, idx) => (
                             <Box
                                 key={option.id}
                                 onClick={() => handleClick(option.route)}
                                 sx={{
+                                    position: 'relative',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    p: { xs: 2, sm: 2.5 },
-                                    bgcolor: option.bgColor,
-                                    borderRadius: '12px',
+                                    gap: 2,
+                                    p: { xs: 1.75, sm: 2.5 },
+                                    borderRadius: '16px',
                                     cursor: 'pointer',
-                                    border: '2px solid white',
-                                    boxShadow: '0px 2px 8px rgba(0,0,0,0.10)',
-                                    transition: 'background-color 0.3s ease',
-                                    '&:hover': {
-                                        bgcolor: option.hoverColor,
+                                    overflow: 'hidden',
+                                    background: `linear-gradient(135deg, #ffffff 0%, ${option.bgColor} 95%)`,
+                                    border: '1px solid rgba(100,116,139,0.15)',
+                                    boxShadow: '0 4px 14px -2px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)',
+                                    backdropFilter: 'blur(4px)',
+                                    WebkitBackdropFilter: 'blur(4px)',
+                                    transition: 'all 0.35s cubic-bezier(.4,.2,.2,1)',
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        inset: 0,
+                                        background: 'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%)',
+                                        opacity: 0,
+                                        transition: 'opacity .4s'
                                     },
+                                    '&::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        height: '100%',
+                                        width: '5px',
+                                        borderRadius: '0 4px 4px 0',
+                                        background: `linear-gradient(180deg, ${option.bgColor} 0%, ${option.hoverColor} 100%)`,
+                                        boxShadow: '0 0 0 1px rgba(255,255,255,0.4) inset'
+                                    },
+                                    '&:hover': {
+                                        transform: 'translateY(-4px) scale(1.015)',
+                                        boxShadow: '0 10px 22px -6px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.08)',
+                                        borderColor: 'rgba(59,130,246,0.35)'
+                                    },
+                                    '&:hover::before': {
+                                        opacity: 1
+                                    },
+                                    '&:active': {
+                                        transform: 'translateY(-1px) scale(0.995)'
+                                    }
                                 }}
                             >
-                                <Typography variant="body1" sx={{ 
-                                    fontSize: { xs: '1rem', sm: '1.125rem' }, 
-                                    fontWeight: '800', 
-                                    color: 'rgb(0,0,0,0.59)' 
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pr: 1, flex: 1, minWidth: 0 }}>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{
+                                            fontSize: { xs: '0.95rem', sm: '1.05rem' },
+                                            fontWeight: 600,
+                                            letterSpacing: '.25px',
+                                            color: 'rgba(15,23,42,0.85)',
+                                            textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis'
+                                        }}
+                                    >
+                                        {option.title}
+                                    </Typography>
+                                    {/* <Box sx={{
+                                        height: '3px',
+                                        width: { xs: '42%', sm: '38%' },
+                                        background: 'linear-gradient(90deg, rgba(59,130,246,0.55), rgba(59,130,246,0))',
+                                        borderRadius: '2px'
+                                    }} /> */}
+                                </Box>
+                                <Box sx={{
+                                    position: 'relative',
+                                    flexShrink: 0,
+                                    width: { xs: 40, sm: 46 },
+                                    height: { xs: 40, sm: 46 },
+                                    borderRadius: '14px',
+                                    background: `linear-gradient(145deg, ${option.hoverColor} 0%, ${option.bgColor} 90%)`,
+                                    border: '1px solid rgba(255,255,255,0.6)',
+                                    boxShadow: '0 4px 10px -3px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.1)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all .35s'
                                 }}>
-                                    {option.title}
-                                </Typography>
-                                <ChevronRight size={26} strokeWidth={3} color="rgb(0,0,0,0.59)" />
+                                    <ChevronRight size={22} strokeWidth={3} color="rgba(15,23,42,0.7)" />
+                                </Box>
                             </Box>
                         ))}
                     </Box>

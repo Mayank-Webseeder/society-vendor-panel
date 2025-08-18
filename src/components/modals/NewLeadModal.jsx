@@ -83,15 +83,19 @@ const NewLeadModal = ({
         sx={{
           position: 'relative',
           backgroundColor: 'white',
-          borderRadius: '16px',
+            borderRadius: { xs: '14px', sm: '16px' },
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-          paddingX: { xs: '24px', md: '32px' },
-          paddingY: { xs: '24px', md: '32px' },
+          paddingX: { xs: '18px', sm: '24px', md: '32px' },
+          paddingY: { xs: '18px', sm: '24px', md: '32px' },
           zIndex: 10,
-          width: '100%',
+          width: { xs: '90%', sm: '100%' },
+          mx: 'auto',
           maxWidth: '500px',
-          maxHeight: '95vh',
+          maxHeight: { xs: '83vh', sm: '95vh' },
           overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          '&::-webkit-scrollbar': { width: 0 },
+          scrollBehavior: 'smooth'
         }}
       >
         {/* Close icon */}
@@ -128,7 +132,8 @@ const NewLeadModal = ({
               sx={{
                 fontWeight: '600',
                 color: '#111827',
-                fontSize: '24px',
+                fontSize: { xs: '20px', sm: '22px', md: '24px' },
+                lineHeight: 1.25
               }}
             >
               Job Details
@@ -178,7 +183,7 @@ const NewLeadModal = ({
             variant="body2"
             sx={{
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '12px', sm: '13px', md: '14px' },
               marginTop: '4px',
             }}
           >
@@ -190,6 +195,8 @@ const NewLeadModal = ({
         <Box
           sx={{
             display: 'flex',
+            // Keep Date and Time on the same line even on mobile
+            flexDirection: 'row',
             gap: '16px',
             marginBottom: '24px',
           }}
@@ -199,7 +206,7 @@ const NewLeadModal = ({
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -216,7 +223,7 @@ const NewLeadModal = ({
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -226,7 +233,7 @@ const NewLeadModal = ({
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -241,7 +248,7 @@ const NewLeadModal = ({
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -258,7 +265,7 @@ const NewLeadModal = ({
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -268,7 +275,7 @@ const NewLeadModal = ({
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -285,9 +292,10 @@ const NewLeadModal = ({
             variant="h6"
             sx={{
               fontWeight: '600',
-              fontSize: '18px',
+              fontSize: { xs: '16px', sm: '18px' },
               color: '#111827',
               marginBottom: '4px',
+              lineHeight: 1.3
             }}
           >
             {safe(lead.name)}
@@ -296,8 +304,8 @@ const NewLeadModal = ({
             variant="body2"
             sx={{
               color: '#6b7280',
-              lineHeight: '1.5',
-              fontSize: '14px',
+              lineHeight: 1.45,
+              fontSize: { xs: '13px', sm: '14px' },
             }}
           >
             {safe(lead.address)}
@@ -309,7 +317,7 @@ const NewLeadModal = ({
           <Typography
             variant="h6"
             sx={{
-              fontSize: '16px',
+              fontSize: { xs: '15px', sm: '16px' },
               fontWeight: '600',
               color: '#111827',
               marginBottom: '16px',
@@ -357,7 +365,7 @@ const NewLeadModal = ({
                 variant="body1"
                 sx={{
                   color: '#111827',
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '500',
                 }}
               >
@@ -390,8 +398,8 @@ const NewLeadModal = ({
               variant="body1"
               sx={{
                 color: '#111827',
-                lineHeight: '1.5',
-                fontSize: '14px',
+                lineHeight: 1.5,
+                fontSize: { xs: '13px', sm: '14px' },
               }}
             >
               {safe(lead.issueDescription)}
@@ -399,16 +407,16 @@ const NewLeadModal = ({
           </Box>
         </Box>
 
-        {/* Action Button */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        {/* Action Button (sticky on mobile) */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', position: { xs: 'sticky', sm: 'static' }, bottom: { xs: 0, sm: 'auto' }, left: 0, right: 0, background: { xs: 'linear-gradient(to top, rgba(255,255,255,0.95) 60%, rgba(255,255,255,0.7) 100%)', sm: 'transparent' }, pt: { xs: 0, sm: 0 }, pb: { xs: 1, sm: 0 } }}>
           {proceed ? (
             <Button
               variant="contained"
               onClick={onFillQuotation}
               sx={{
                 width: '100%',
-                padding: '12px 24px',
-                fontSize: '16px',
+                padding: { xs: '11px 20px', sm: '12px 24px' },
+                fontSize: { xs: '15px', sm: '16px' },
                 fontWeight: '600',
                 borderRadius: '8px',
                 backgroundColor: '#3b82f6',
@@ -428,8 +436,8 @@ const NewLeadModal = ({
               onClick={handleShowInterest}
               sx={{
                 width: '100%',
-                padding: '10px 24px',
-                fontSize: '20px',
+                padding: { xs: '11px 20px', sm: '10px 24px' },
+                fontSize: { xs: '16px', sm: '20px' },
                 fontWeight: '600',
                 borderRadius: '8px',
                 backgroundColor: '#10b981',
@@ -451,10 +459,9 @@ const NewLeadModal = ({
           <Typography 
             sx={{ 
               color: '#6b7280', 
-              fontSize: '13px',
+              fontSize: { xs: '12px', sm: '13px' },
               fontStyle: 'italic',
-              marginTop: '12px',
-              // opacity: 0.8,
+              marginTop: '10px',
             }}
           >
             * Quotation needed to apply

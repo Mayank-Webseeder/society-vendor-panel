@@ -65,9 +65,9 @@ const SecurityOptions = () => {
           exit="exit"
           className="w-full"
         >
-          <Box sx={{ bgcolor: 'white', borderRadius: '0.5rem', px: 1 }}>
+          <Box sx={{ bgcolor: 'white', borderRadius: '0.5rem', px: 0.5 }}>
             <Box sx={{ mb: 2, pb: 1, maxWidth: '100%', borderBottom: '1px solid #E0E0E0' }}>
-              <Typography variant="body1" sx={{ fontSize: '1.20rem', fontWeight: 'semibold', color: '#4A5568' }}>
+              <Typography variant="body1" sx={{ fontSize: '1.20rem', fontWeight: 'semibold', color: '#64748B' }}>
                 Change Password
               </Typography>
             </Box>

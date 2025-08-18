@@ -23,7 +23,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        left: { xs: '0rem', sm: '4rem', md: '5rem' },
+        left: { xs: 0, sm: '4rem', md: '5rem' },
         right: 0,
         bottom: 0,
         width: '100%',
@@ -38,15 +38,19 @@ const CompletedModal = ({ open, onClose, lead }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
-          borderRadius: '16px',
+          borderRadius: { xs: '14px', sm: '16px' },
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-          paddingX: { xs: '24px', md: '32px' },
-          paddingY: { xs: '24px', md: '32px' },
+          px: { xs: '18px', sm: '26px', md: '32px' },
+          py: { xs: '18px', sm: '28px', md: '32px' },
           zIndex: 10,
-          width: '100%',
+          width: { xs: '90%', sm: '100%' },
+          mx: 'auto',
           maxWidth: '600px',
-          maxHeight: '95vh',
+          maxHeight: { xs: '83vh', sm: '95vh' },
           overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollBehavior: 'smooth',
+          '&::-webkit-scrollbar': { width: 0 },
         }}
       >
         {/* Close icon */}
@@ -83,7 +87,8 @@ const CompletedModal = ({ open, onClose, lead }) => {
               sx={{
                 fontWeight: '600',
                 color: '#111827',
-                fontSize: '24px',
+                fontSize: { xs: '20px', sm: '22px', md: '24px' },
+                lineHeight: 1.25
               }}
             >
               Job Completed
@@ -111,7 +116,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
             variant="body2"
             sx={{
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '12px', sm: '13px', md: '14px' },
               marginTop: '4px',
             }}
           >
@@ -127,7 +132,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
             <Typography
               variant="h6"
               sx={{
-                fontSize: '16px',
+                fontSize: { xs: '15px', sm: '16px' },
                 fontWeight: '600',
                 color: '#111827',
               }}
@@ -156,7 +161,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
                   >
                     {Number(lead.rating)}
                   </Typography>
-                  <Typography sx={{ color: '#6b7280', fontSize: '14px' }}>
+                  <Typography sx={{ color: '#6b7280', fontSize: { xs: '13px', sm: '14px' } }}>
                     /5.0
                   </Typography>
                 </Box>
@@ -167,8 +172,8 @@ const CompletedModal = ({ open, onClose, lead }) => {
                 <Typography
                   sx={{
                     color: '#6b7280',
-                    fontSize: '14px',
-                    lineHeight: '1.5',
+                    fontSize: { xs: '13px', sm: '14px' },
+                    lineHeight: 1.5,
                     fontStyle: 'italic',
                   }}
                 >
@@ -183,8 +188,10 @@ const CompletedModal = ({ open, onClose, lead }) => {
         <Box
           sx={{
             display: 'flex',
-            gap: '16px',
+            flexDirection: 'row',
+            gap: '12px',
             marginBottom: '24px',
+            '& > div': { flex: 1, minWidth: 0 }
           }}
         >
           <Box
@@ -192,7 +199,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -209,7 +216,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -219,7 +226,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -234,7 +241,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -251,7 +258,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -261,7 +268,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -276,8 +283,10 @@ const CompletedModal = ({ open, onClose, lead }) => {
         <Box
           sx={{
             display: 'flex',
-            gap: '16px',
+            flexDirection: 'row',
+            gap: '12px',
             marginBottom: '24px',
+            '& > div': { flex: 1, minWidth: 0 }
           }}
         >
           <Box
@@ -285,7 +294,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               flex: 1,
               backgroundColor: '#ecfdf5',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -303,7 +312,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#065f46',
                   fontWeight: '500',
                 }}
@@ -313,7 +322,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -328,7 +337,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               flex: 1,
               backgroundColor: '#ecfdf5',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -346,7 +355,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#065f46',
                   fontWeight: '500',
                 }}
@@ -356,7 +365,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -374,9 +383,10 @@ const CompletedModal = ({ open, onClose, lead }) => {
             variant="h6"
             sx={{
               fontWeight: '600',
-              fontSize: '18px',
+              fontSize: { xs: '16px', sm: '18px' },
               color: '#111827',
               marginBottom: '4px',
+              lineHeight: 1.3
             }}
           >
             {safe(lead.name)}
@@ -385,8 +395,8 @@ const CompletedModal = ({ open, onClose, lead }) => {
             variant="body2"
             sx={{
               color: '#6b7280',
-              lineHeight: '1.5',
-              fontSize: '14px',
+              lineHeight: 1.45,
+              fontSize: { xs: '13px', sm: '14px' },
             }}
           >
             {safe(lead.address)}
@@ -398,7 +408,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
           <Typography
             variant="h6"
             sx={{
-              fontSize: '16px',
+              fontSize: { xs: '15px', sm: '16px' },
               fontWeight: '600',
               color: '#111827',
               marginBottom: '16px',
@@ -446,7 +456,7 @@ const CompletedModal = ({ open, onClose, lead }) => {
                 variant="body1"
                 sx={{
                   color: '#111827',
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '500',
                 }}
               >
@@ -479,8 +489,8 @@ const CompletedModal = ({ open, onClose, lead }) => {
               variant="body1"
               sx={{
                 color: '#111827',
-                lineHeight: '1.5',
-                fontSize: '14px',
+                lineHeight: 1.5,
+                fontSize: { xs: '13px', sm: '14px' },
               }}
             >
               {safe(lead.issueDescription)}

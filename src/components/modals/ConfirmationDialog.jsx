@@ -29,14 +29,18 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
-          borderRadius: '16px',
+          borderRadius: { xs: '14px', sm: '16px' },
           boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25)',
-          padding: '32px',
+          padding: { xs: '20px', sm: '28px', md: '32px' },
           zIndex: 10,
-          width: '100%',
+          width: { xs: '90%', sm: '100%' },
           maxWidth: '400px',
-          margin: '16px',
+          margin: { xs: '10px', sm: '16px' },
           textAlign: 'center',
+          maxHeight: { xs: '85vh', sm: 'none' },
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          '&::-webkit-scrollbar': { width: 0 },
         }}
       >
         {/* Warning Icon */}
@@ -44,13 +48,13 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            marginBottom: '20px',
+            marginBottom: { xs: '16px', sm: '20px' },
           }}
         >
           <Box
             sx={{
-              width: '64px',
-              height: '64px',
+              width: { xs: '56px', sm: '64px' },
+              height: { xs: '56px', sm: '64px' },
               borderRadius: '50%',
               backgroundColor: '#fef3c7',
               display: 'flex',
@@ -59,7 +63,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
               border: '3px solid #fbbf24',
             }}
           >
-            <IoWarning size={32} color="#f59e0b" />
+            <IoWarning size={28} color="#f59e0b" />
           </Box>
         </Box>
 
@@ -70,7 +74,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
             marginBottom: '12px',
             fontWeight: '600',
             color: '#111827',
-            fontSize: '20px',
+            fontSize: { xs: '18px', sm: '19px', md: '20px' },
           }}
         >
           {title}
@@ -80,9 +84,9 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
         <Typography
           variant="body1"
           sx={{
-            marginBottom: '32px',
+            marginBottom: { xs: '24px', sm: '28px', md: '32px' },
             color: '#6b7280',
-            fontSize: '16px',
+            fontSize: { xs: '14px', sm: '15px', md: '16px' },
             lineHeight: '1.5',
           }}
         >
@@ -102,9 +106,9 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
             variant="contained"
             sx={{
               flex: 1,
-              maxWidth: '140px',
-              padding: '12px 24px',
-              fontSize: '14px',
+              maxWidth: { xs: '100%', sm: '140px' },
+              padding: { xs: '11px 20px', sm: '12px 24px' },
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '600',
               borderRadius: '10px',
               textTransform: 'none',
@@ -131,9 +135,9 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
             variant="outlined"
             sx={{
               flex: 1,
-              maxWidth: '140px',
-              padding: '12px 24px',
-              fontSize: '14px',
+              maxWidth: { xs: '100%', sm: '140px' },
+              padding: { xs: '11px 20px', sm: '12px 24px' },
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '600',
               borderRadius: '10px',
               textTransform: 'none',

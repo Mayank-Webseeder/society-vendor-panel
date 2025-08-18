@@ -41,15 +41,19 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
-          borderRadius: '16px',
+          borderRadius: { xs: '14px', sm: '16px' },
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-          paddingX: { xs: '24px', md: '32px' },
-          paddingY: { xs: '24px', md: '32px' },
+          paddingX: { xs: '18px', sm: '24px', md: '32px' },
+          paddingY: { xs: '18px', sm: '24px', md: '32px' },
           zIndex: 10,
-          width: '100%',
+          width: { xs: '90%', sm: '100%' },
+          mx: 'auto',
           maxWidth: '500px',
-          maxHeight: '95vh',
+          maxHeight: { xs: '83vh', sm: '95vh' },
           overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          '&::-webkit-scrollbar': { width: 0 },
+          scrollBehavior: 'smooth'
         }}
       >
         {/* Close icon */}
@@ -86,7 +90,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               sx={{
                 fontWeight: '600',
                 color: '#111827',
-                fontSize: '24px',
+                fontSize: { xs: '20px', sm: '22px', md: '24px' },
               }}
             >
               Cancel Job
@@ -114,7 +118,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
             variant="body2"
             sx={{
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '12px', sm: '13px', md: '14px' },
               marginTop: '4px',
             }}
           >
@@ -135,7 +139,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -152,7 +156,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -162,7 +166,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -177,7 +181,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               flex: 1,
               backgroundColor: '#f9fafb',
               borderRadius: '8px',
-              padding: '12px',
+              padding: { xs: '10px', sm: '12px' },
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -194,7 +198,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '12px',
+                  fontSize: { xs: '11px', sm: '12px' },
                   color: '#6b7280',
                   fontWeight: '500',
                 }}
@@ -204,7 +208,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '600',
                   color: '#111827',
                 }}
@@ -221,7 +225,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
             variant="h6"
             sx={{
               fontWeight: '600',
-              fontSize: '18px',
+              fontSize: { xs: '16px', sm: '18px' },
               color: '#111827',
               marginBottom: '4px',
             }}
@@ -233,7 +237,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
             sx={{
               color: '#6b7280',
               lineHeight: '1.5',
-              fontSize: '14px',
+              fontSize: { xs: '13px', sm: '14px' },
             }}
           >
             {safe(lead.address)}
@@ -245,7 +249,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
           <Typography
             variant="h6"
             sx={{
-              fontSize: '16px',
+              fontSize: { xs: '15px', sm: '16px' },
               fontWeight: '600',
               color: '#111827',
               marginBottom: '16px',
@@ -293,7 +297,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
                 variant="body1"
                 sx={{
                   color: '#111827',
-                  fontSize: '14px',
+                  fontSize: { xs: '13px', sm: '14px' },
                   fontWeight: '500',
                 }}
               >
@@ -327,7 +331,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
               sx={{
                 color: '#111827',
                 lineHeight: '1.5',
-                fontSize: '14px',
+                fontSize: { xs: '13px', sm: '14px' },
               }}
             >
               {safe(lead.issueDescription)}
@@ -336,21 +340,27 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
         </Box>
 
         {/* Cancel Job Button */}
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
             width: '100%',
             marginTop: '24px',
+            position: { xs: 'sticky', sm: 'static' },
+            bottom: { xs: 0, sm: 'auto' },
+            left: 0,
+            right: 0,
+            background: { xs: 'linear-gradient(to top, rgba(255,255,255,0.95) 60%, rgba(255,255,255,0.7) 100%)', sm: 'transparent' },
+            pb: { xs: 1, sm: 0 },
           }}
         >
           <Button
             variant="contained"
             sx={{
               width: '100%',
-              maxWidth: '300px',
-              padding: '12px 24px',
-              fontSize: '16px',
+              maxWidth: '320px',
+              padding: { xs: '11px 20px', sm: '12px 24px' },
+              fontSize: { xs: '15px', sm: '16px' },
               fontWeight: '600',
               borderRadius: '12px',
               textTransform: 'none',
@@ -364,7 +374,7 @@ const CancelJobModal = ({ open, onClose, lead, onCancel }) => {
                 transform: 'translateY(-2px)',
               },
               '&:active': {
-                transform: 'translateY(0px)',
+                transform: 'translateY(0px)'
               },
             }}
             onClick={() => setShowConfirm(true)}

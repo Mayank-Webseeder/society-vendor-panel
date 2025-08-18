@@ -401,7 +401,7 @@ const PersonalInformation = () => {
         borderBottom: '1px solid #E0E0E0',
         gap: { xs: 1.25, sm: 2 },
         pb: { xs: 0.75, sm: 2 },
-        mb: { xs: 3.5, sm: 5 }
+        mb: { xs: 1, sm: 3 }
       }}>
         <Typography variant="h2" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 'semibold', color: '#4A5568' }}>
           Profile Information

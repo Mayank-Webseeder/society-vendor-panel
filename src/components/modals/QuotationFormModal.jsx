@@ -59,7 +59,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        left: { xs: '0rem', sm: '4rem', md: '5rem' },
+        left: { xs: 0, sm: '4rem', md: '5rem' },
         right: 0,
         bottom: 0,
         width: '100%',
@@ -74,13 +74,18 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         sx={{
           position: 'relative',
           backgroundColor: 'white',
-          borderRadius: '16px',
+          borderRadius: { xs: '14px', sm: '16px' },
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-          padding: '32px',
-          width: '100%',
+          px: { xs: '18px', sm: '26px', md: '32px' },
+          py: { xs: '18px', sm: '28px', md: '32px' },
+          width: { xs: '90%', sm: '100%' },
+          mx: 'auto',
           maxWidth: '500px',
-          maxHeight: '95vh',
+          maxHeight: { xs: '83vh', sm: '95vh' },
           overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollBehavior: 'smooth',
+          '&::-webkit-scrollbar': { width: 0 },
         }}
       >
         {/* Close Button */}
@@ -114,7 +119,8 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
           sx={{
             fontWeight: '600',
             color: '#111827',
-            fontSize: '24px',
+            fontSize: { xs: '20px', sm: '22px', md: '24px' },
+            lineHeight: 1.25,
             marginBottom: '16px',
           }}
         >
@@ -122,14 +128,14 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         </Typography>
 
         {/* Form Fields */}
-        <Box sx={{ marginBottom: '24px' }}>
+        <Box sx={{ px: { xs: 0.5, sm: 0 }, marginBottom: '24px' }}>
           {/* Message Field */}
           <Typography
             variant="body1"
             sx={{
               marginBottom: '8px',
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '500',
             }}
           >
@@ -153,6 +159,10 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                 '&.Mui-focused fieldset': {
                   borderColor: '#3b82f6',
                 },
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                '& .MuiInputBase-input': {
+                  paddingY: { xs: '8px !important', sm: '12px !important' },
+                },
               },
             }}
           />
@@ -163,7 +173,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             sx={{
               marginBottom: '8px',
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '500',
             }}
           >
@@ -192,6 +202,10 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                 '&.Mui-focused fieldset': {
                   borderColor: '#3b82f6',
                 },
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                '& .MuiInputBase-input': {
+                  paddingY: { xs: '8px !important', sm: '12px !important' },
+                },
               },
             }} />
 
@@ -201,13 +215,13 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             sx={{
               marginBottom: '14px',
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '500',
             }}
           >
             How much time do you think this job will take?
           </Typography>
-          <Box sx={{ display: 'flex', gap: '20px', marginBottom: '16px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: '12px', sm: '20px' }, marginBottom: '16px' }}>
             <TextField
               select
               label="Hours"
@@ -222,7 +236,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                 },
               }}
               sx={{
-                width: '100px',
+                width: '90px',
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
                   '& fieldset': {
@@ -233,6 +247,10 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                   },
                   '&.Mui-focused fieldset': {
                     borderColor: '#3b82f6',
+                  },
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  '& .MuiSelect-select': {
+                    paddingY: { xs: '10px !important', sm: '12px !important' },
                   },
                 },
               }}
@@ -257,7 +275,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                 },
               }}
               sx={{
-                width: '100px',
+                width: '90px',
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '8px',
                   '& fieldset': {
@@ -268,6 +286,10 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                   },
                   '&.Mui-focused fieldset': {
                     borderColor: '#3b82f6',
+                  },
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  '& .MuiSelect-select': {
+                    paddingY: { xs: '10px !important', sm: '12px !important' },
                   },
                 },
               }}
@@ -286,7 +308,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
             sx={{
               marginBottom: '8px',
               color: '#6b7280',
-              fontSize: '14px',
+              fontSize: { xs: '13px', sm: '14px' },
               fontWeight: '500',
             }}
           >
@@ -311,6 +333,12 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
                 '&.Mui-focused fieldset': {
                   borderColor: '#3b82f6',
                 },
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                '& textarea': {
+                  lineHeight: 1.4,
+                  padding: 0,
+                  marginTop: '4px',
+                },
               },
             }}
           />
@@ -327,27 +355,29 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         )}
 
         {/* Submit Button */}
-        <Button
-          variant="contained"
-          onClick={handleApply}
-          disabled={loading}
-          sx={{
-            width: '100%',
-            padding: '12px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderRadius: '8px',
-            backgroundColor: '#3b82f6',
-            textTransform: 'none',
-            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)',
-            '&:hover': {
-              backgroundColor: '#2563eb',
-              boxShadow: '0 6px 16px rgba(59, 130, 246, 0.3)',
-            },
-          }}
-        >
-          {loading ? 'Submitting...' : 'Submit and Apply'}
-        </Button>
+        <Box sx={{ position: { xs: 'sticky', sm: 'static' }, bottom: { xs: 0, sm: 'auto' }, left: 0, right: 0, pt: { xs: 1, sm: 0 }, background: { xs: 'linear-gradient(to top, rgba(255,255,255,0.95) 60%, rgba(255,255,255,0.7) 100%)', sm: 'transparent' } }}>
+          <Button
+            variant="contained"
+            onClick={handleApply}
+            disabled={loading}
+            sx={{
+              width: '100%',
+              padding: { xs: '11px 18px', sm: '12px' },
+              fontSize: { xs: '15px', sm: '16px' },
+              fontWeight: '600',
+              borderRadius: '8px',
+              backgroundColor: '#3b82f6',
+              textTransform: 'none',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)',
+              '&:hover': {
+                backgroundColor: '#2563eb',
+                boxShadow: '0 6px 16px rgba(59, 130, 246, 0.3)',
+              },
+            }}
+          >
+            {loading ? 'Submitting...' : 'Submit and Apply'}
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

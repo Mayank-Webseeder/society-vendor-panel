@@ -143,16 +143,13 @@ const MyJobs = () => {
   // };
 
   const handleView = async (lead) => {
-    try {
-      const jobDetails = await getJobDetailsById(lead.id);
-      console.log('Job Details:', jobDetails);
-      setModalLead(jobDetails);
-      setModalOpen(true);
-      setProceed(false);
-      setShowQuotationForm(false);
-    } catch (error) {
-      console.error('Error fetching job details:', error);
-    }
+    // Temporarily using local/dummy lead data instead of API response
+    // const jobDetails = await getJobDetailsById(lead.id);
+    // console.log('Job Details:', jobDetails);
+    setModalLead(lead); // use the passed-in lead directly
+    setModalOpen(true);
+    setProceed(false);
+    setShowQuotationForm(false);
   };
 
 
@@ -616,6 +613,7 @@ const MyJobs = () => {
           </div>
         </motion.div>
 
+
         {/* Mobile list view for jobs (<sm) - stacked cards */}
         <motion.div
           className="sm:hidden border-none bg-white rounded-xl mx-2"
@@ -717,34 +715,34 @@ const MyJobs = () => {
                           {/* Mobile action buttons centered & responsive */}
                           {lead.status === "New" ? (
                             lead.interested ? (
-                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: 'green', borderColor: 'green', boxShadow: '0 2px 6px rgba(16,185,129,0.06)', '&:hover': { borderColor: 'darkgreen', background: '#F0FFF4' } }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(true); }}>
+                              <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: 'green', borderColor: 'green', boxShadow: '0 2px 6px rgba(16,185,129,0.06)', '&:hover': { borderColor: 'darkgreen', background: '#F0FFF4' } }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(true); }}>
                                 Fill Quotation
                               </Button>
                             ) : (
-                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 800, width: 'min(350px,62%)', color: '#1976D2', borderColor: '#1976D2' }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(false); }}>
+                              <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 800, width: 'min(350px,62%)', color: '#1976D2', borderColor: '#1976D2' }} onClick={() => { setModalLead(lead); setModalOpen(true); setProceed(false); }}>
                                 Apply
                               </Button>
                             )
                           ) : lead.status === "Applied" ? (
                             lead.pendingStatus === "Approval Pending" ? (
-                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#ff9800', borderColor: '#ff9800' }} onClick={() => handleWithdraw(lead)}>
+                              <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#ff9800', borderColor: '#ff9800' }} onClick={() => handleWithdraw(lead)}>
                                 Withdraw
                               </Button>
                             ) : lead.pendingStatus === "Approved" ? (
-                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#e53935', borderColor: '#e53935' }} onClick={() => handleCancel(lead)}>
+                              <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#e53935', borderColor: '#e53935' }} onClick={() => handleCancel(lead)}>
                                 Cancel
                               </Button>
                             ) : (
-                              <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300', background: '#FFF8E1' }} onClick={() => handleView(lead)}>
+                              <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300', background: '#FFF8E1' }} onClick={() => handleView(lead)}>
                                 View
                               </Button>
                             )
                           ) : lead.status === "Completed" ? (
-                            <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 500, width: 'min(350px,62%)', color: 'green', borderColor: 'green' }} onClick={() => handleView(lead)}>
+                            <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 500, width: 'min(350px,62%)', color: 'green', borderColor: 'green' }} onClick={() => handleView(lead)}>
                               Ratings
                             </Button>
                           ) : (
-                            <Button variant="outlined" size="small" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300' }} onClick={() => handleView(lead)}>
+                            <Button variant="outlined" size="medium" sx={{ display: 'block', mx: 'auto', textTransform: 'none', borderRadius: 2, fontWeight: 600, width: 'min(350px,62%)', color: '#FFB300', borderColor: '#FFB300' }} onClick={() => handleView(lead)}>
                               View
                             </Button>
                           )}
