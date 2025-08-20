@@ -162,7 +162,7 @@ const UserProfile = () => {
                   {opt.icon}
                 </span>
                 <span className="flex flex-col items-center text-center xl:flex-row xl:ml-1.5 gap-1 tracking-tight leading-tight text-sm xl:text-[0.95rem]">
-                  <span className="flex items-center gap-1">
+                  <span style={{ fontFamily: 'Manrope' }} className="flex items-center gap-1">
                     {opt.label}
                     {opt.isPremium  &&  !user.subscription_active  &&  <LockIconMui sx={{ fontSize: 16, color: '#F59E0B' }} />}
                   </span>

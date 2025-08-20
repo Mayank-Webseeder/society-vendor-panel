@@ -99,7 +99,7 @@ const HeadingCard = () => {
 
         {/* Test Mode Badge */}
         {user?.testMode && (
-          <div className="hidden absolute bottom-4 right-4 flex-col items-end gap-2">
+          <div className="absolute bottom-4 right-4 flex-col items-end gap-2">
           {/* <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2"> */}
             <div className="inline-flex items-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-800 ring-2 ring-red-200/60 shadow-md hover:shadow-lg transition-all duration-300">
               <svg

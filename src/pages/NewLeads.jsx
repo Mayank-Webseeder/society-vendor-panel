@@ -179,7 +179,7 @@ const NewLeads = () => {
           variants={itemVariants}
         >
           {/* Overlay gradients */}
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-50/50 via-transparent to-amber-50/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-50/30 via-transparent to-amber-50/70" />
             <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-orange-500 via-amber-500 to-transparent rounded-br-full" />
           <div className="relative w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div className="flex items-start sm:items-center gap-4">
