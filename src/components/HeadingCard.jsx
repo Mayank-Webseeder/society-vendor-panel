@@ -38,7 +38,7 @@ const HeadingCard = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
 
         {/* Content container */}
-        <div className="relative px-6 py-4 sm:px-7 sm:py-5">
+        <div className="relative px-6 py-3 sm:px-7 sm:py-5">
           <div className="flex flex-row sm:flex-row justify-between items-start sm:items-start gap-3 sm:gap-0">
             {/* Main content area */}
             <div className="flex sm:flex-row items-center sm:items-center gap-4 sm:gap-6 flex-1">
@@ -71,7 +71,7 @@ const HeadingCard = () => {
 
             {/* Subscription badge */}
             {subscriptionActive && (
-        <div className="flex-shrink-0 ml-0 sm:ml-4 mt-3 sm:mt-0 self-center sm:self-auto">
+        <div className="flex-shrink-0 ml-0 sm:ml-4 mt-8 sm:mt-5 self-center sm:self-auto">
                 <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-3 py-1.5 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
                     {/* Premium icon */}
@@ -98,9 +98,9 @@ const HeadingCard = () => {
         </div>
 
         {/* Test Mode Badge */}
-        {user?.testMode && (
-          <div className="absolute bottom-4 right-4 flex-col items-end gap-2">
-          {/* <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2"> */}
+        {/* {user?.testMode && (
+          // <div className="absolute bottom-4 right-4 flex-col items-end gap-2">
+          <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <div className="inline-flex items-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-800 ring-2 ring-red-200/60 shadow-md hover:shadow-lg transition-all duration-300">
               <svg
                 className="w-4 h-4 text-red-500"
@@ -114,10 +114,10 @@ const HeadingCard = () => {
                 />
               </svg>
               Test Mode Active
-            </div>
+            </div> */}
             
             {/* Toggle Switch for Subscription */}
-            <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-2 ring-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300">
+            {/* <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-2 ring-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300">
               <span>Subscription</span>
               <Switch
                 checked={subscriptionActive}
@@ -127,7 +127,7 @@ const HeadingCard = () => {
               />
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Bottom accent line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>

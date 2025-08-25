@@ -28,12 +28,21 @@ const TermsAndConditions = () => {
   return (
     <AnimatePresence mode="wait">
       <Box className='p-3 sm:p-8 w-full h-full'>
-        {/* Header (NOT animated) */}
+        {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', pt:{ xs: 1, sm: 0 }, mb: { xs: 3, sm: 4 } }}>
-          <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
-            <ChevronLeft size={25} strokeWidth={3} color="rgb(0,0,0,0.65)" />
+          <IconButton
+            onClick={() => navigate('/my-profile/account-support')}
+            sx={{
+              mr: 1,
+              p: 0,
+              color: '#334155',
+              transition: 'color .2s ease',
+              '&:hover': { color: '#1D4ED8', backgroundColor: 'transparent' }
+            }}
+          >
+            <ChevronLeft size={25} strokeWidth={3} />
           </IconButton>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgb(0,0,0,0.65)', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, color: '#334155', letterSpacing: 0.2, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Terms & Conditions
           </Typography>
         </Box>
@@ -47,7 +56,8 @@ const TermsAndConditions = () => {
           exit="exit"
         >
           <Box sx={{ mx: { xs: 1, sm: 4 }, px: { xs: 1, sm: 0 } }}>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ 
+            <Typography variant="subtitle2" sx={{ 
+              color: '#64748B',
               mb: { xs: 1, sm: 2 },
               fontSize: { xs: '0.75rem', sm: '0.875rem' }
             }}>
@@ -55,15 +65,15 @@ const TermsAndConditions = () => {
             </Typography>
 
             <Typography variant="body1" sx={{ 
-              mb: { xs: 1, sm: 2 }, 
-              color: 'rgb(0,0,0,0.65)',
-              fontSize: { xs: '0.875rem', sm: '1rem' }
+              mb: { xs: 1.5, sm: 2 }, 
+              color: '#334155',
+              fontSize: { xs: '0.9rem', sm: '1rem' }
             }}>
               By using this app, you agree to the following:
             </Typography>
 
             {/* Terms List */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2.5 }, px: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.25, sm: 1.75 }, px: 1 }}>
               <AnimatePresence>
                 {termsData.map((term) => (
                   <motion.div
@@ -74,21 +84,27 @@ const TermsAndConditions = () => {
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Box>
-                      <Typography variant='button' sx={{ 
-                        fontWeight: 'bold', 
-                        mb: 0.5, 
-                        color: 'rgb(0,0,0,0.55)',
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                    <Box sx={{
+                      border: '1px solid rgba(148,163,184,0.35)',
+                      borderStyle: 'solid',
+                      borderRadius: '12px',
+                      bgcolor: 'rgba(255,255,255,0.65)',
+                      backdropFilter: 'blur(8px)',
+                      boxShadow: '0 10px 30px rgba(2, 8, 23, 0.06)',
+                      p: { xs: 1.25, sm: 1.75 }
+                    }}>
+                      <Typography variant='subtitle2' sx={{ 
+                        fontWeight: 600, 
+                        mb: 0.75, 
+                        color: '#334155',
+                        fontSize: { xs: '0.8rem', sm: '0.95rem' }
                       }}>
                         {term.id}. {term.heading}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ 
-                        pl: { xs: 1, sm: 2 }, 
-                        lineHeight: 1.6, 
-                        pr: { xs: 1, sm: 3 }, 
-                        color:'rgb(0,0,0,0.59)',
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                      <Typography variant="body2" sx={{ 
+                        lineHeight: 1.7, 
+                        color:'#475569',
+                        fontSize: { xs: '0.85rem', sm: '0.9rem' }
                       }}>
                         {term.content}
                       </Typography>
@@ -98,10 +114,11 @@ const TermsAndConditions = () => {
               </AnimatePresence>
             </Box>
 
-            <Typography variant="body2" color="text.secondary" sx={{ 
+            <Typography variant="body2" sx={{ 
+              color: '#64748B',
               mt: { xs: 2, sm: 4 }, 
               mb: 4,
-              fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              fontSize: { xs: '0.8rem', sm: '0.9rem' }
             }}>
               For support, visit the Help & Support section.
             </Typography>
@@ -113,17 +130,17 @@ const TermsAndConditions = () => {
                   checked={user.agreedTermsAndConditions}
                   onChange={handleCheckboxChange}
                   sx={{
-                    color: '#4487AE',
+                    color: '#2563EB',
                     '&.Mui-checked': {
-                      color: '#4487AE',
+                      color: '#2563EB',
                     },
                   }}
                 />
               }
               label={
                 <Typography variant="body2" sx={{ 
-                  color: '#4487AE',
-                  fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  color: '#334155',
+                  fontSize: { xs: '0.8rem', sm: '0.9rem' }
                 }}>
                   By continuing, you agree to our Terms & Conditions.
                 </Typography>

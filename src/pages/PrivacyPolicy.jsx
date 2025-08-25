@@ -30,10 +30,19 @@ const PrivacyPolicy = () => {
       <Box className='p-3 sm:p-8 w-full h-full'>
         {/* Header (NOT animated) */}
         <Box sx={{ display: 'flex', alignItems: 'center', pt:{ xs: 1, sm: 0 }, mb: { xs: 3, sm: 4 } }}>
-          <IconButton onClick={() => navigate('/my-profile/account-support')} sx={{ mr: 1, p: 0 }}>
-            <ChevronLeft size={25} strokeWidth={3} color="rgba(0,0,0,0.65)" />
+          <IconButton
+            onClick={() => navigate('/my-profile/account-support')}
+            sx={{
+              mr: 1,
+              p: 0,
+              color: '#334155',
+              transition: 'color .2s ease',
+              '&:hover': { color: '#1D4ED8', backgroundColor: 'transparent' }
+            }}
+          >
+            <ChevronLeft size={25} strokeWidth={3} />
           </IconButton>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0,0,0,0.65)', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 0.2, color: '#334155', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Privacy Policy
           </Typography>
         </Box>
@@ -47,7 +56,8 @@ const PrivacyPolicy = () => {
           exit="exit"
         >
           <Box sx={{ mx: { xs: 1, sm: 4 }, px: { xs: 1, sm: 0 } }}>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ 
+            <Typography variant="subtitle2" sx={{ 
+              color: '#64748B',
               mb: { xs: 1, sm: 2 },
               fontSize: { xs: '0.75rem', sm: '0.875rem' }
             }}>
@@ -55,15 +65,15 @@ const PrivacyPolicy = () => {
             </Typography>
 
             <Typography variant="body1" sx={{ 
-              mb: { xs: 1, sm: 2 }, 
-              color: 'rgb(0,0,0,0.65)',
-              fontSize: { xs: '0.8rem', sm: '1rem' }
+              mb: { xs: 1.5, sm: 2 }, 
+              color: '#334155',
+              fontSize: { xs: '0.9rem', sm: '1rem' }
             }}>
               We respect your privacy. By using this app, you agree to how we collect and use your information.
             </Typography>
 
             {/* Policy Sections */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2.5 }, px: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.25, sm: 1.75 }, px: 1 }}>
               <AnimatePresence>
                 {policyData.map((section) => (
                   <motion.div
@@ -74,24 +84,32 @@ const PrivacyPolicy = () => {
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Box>
-                      <Typography variant="button" sx={{ 
-                        fontWeight: 'bold', 
-                        mb: 0.5, 
-                        color: 'rgb(0,0,0,0.55)',
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                    <Box sx={{
+                      border: '1px solid rgba(148,163,184,0.35)',
+                      borderStyle: 'solid',
+                      borderRadius: '12px',
+                      bgcolor: 'rgba(255,255,255,0.65)',
+                      backdropFilter: 'blur(8px)',
+                      boxShadow: '0 10px 30px rgba(2, 8, 23, 0.06)',
+                      p: { xs: 1.25, sm: 1.75 }
+                    }}>
+                      <Typography variant="subtitle2" sx={{ 
+                        fontWeight: 600, 
+                        mb: 0.75, 
+                        color: '#334155',
+                        fontSize: { xs: '0.8rem', sm: '0.95rem' }
                       }}>
                         {section.id}. {section.heading}
                       </Typography>
                       {section.type === 'list' && (
-                        <Box component="ul" sx={{ pl: { xs: 2, sm: 4 }, mt: 0, mb: 0 }}>
+                        <Box component="ul" sx={{ pl: { xs: 2, sm: 3 }, mt: 0, mb: 0 }}>
                           {section.items.map((item, index) => (
-                            <Typography component="li" key={index} variant="body2" color="text.secondary" sx={{ 
-                              lineHeight: 1.6, 
+                            <Typography component="li" key={index} variant="body2" sx={{ 
+                              lineHeight: 1.7, 
                               mb: 0.5, 
-                              pr: { xs: 1, sm: 4 }, 
-                              color: 'rgb(0,0,0,0.55)',
-                              fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                              pr: { xs: 1, sm: 3 }, 
+                              color: '#475569',
+                              fontSize: { xs: '0.85rem', sm: '0.9rem' }
                             }}>
                               {item}
                             </Typography>
@@ -100,20 +118,22 @@ const PrivacyPolicy = () => {
                       )}
                       {section.type === 'text' && (
                         <>
-                          <Typography variant="body2" color="text.secondary" sx={{ 
-                            pl: { xs: 1, sm: 2 }, 
-                            lineHeight: 1.6,
-                            fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                          <Typography variant="body2" sx={{ 
+                            pl: { xs: 1, sm: 1.25 }, 
+                            lineHeight: 1.7,
+                            color: '#475569',
+                            fontSize: { xs: '0.85rem', sm: '0.9rem' }
                           }}>
                             {section.content}
                           </Typography>
                           {section.subItems && (
-                            <Box component="ul" sx={{ pl: { xs: 2, sm: 4 }, mt: 0, mb: 0 }}>
+                            <Box component="ul" sx={{ pl: { xs: 2, sm: 3 }, mt: 0.75, mb: 0 }}>
                               {section.subItems.map((item, index) => (
-                                <Typography component="li" key={index} variant="body2" color="text.secondary" sx={{ 
-                                  lineHeight: 1.6, 
+                                <Typography component="li" key={index} variant="body2" sx={{ 
+                                  lineHeight: 1.7, 
                                   mb: 0.5,
-                                  fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                                  color: '#475569',
+                                  fontSize: { xs: '0.85rem', sm: '0.9rem' }
                                 }}>
                                   {item}
                                 </Typography>
@@ -135,19 +155,17 @@ const PrivacyPolicy = () => {
                   checked={user.agreedPrivacyPolicy}
                   onChange={handleCheckboxChange}
                   sx={{
-                    mt: 4,
-                    color: '#4487AE',
+                    color: '#2563EB',
                     '&.Mui-checked': {
-                      color: '#4487AE',
+                      color: '#2563EB',
                     },
                   }}
                 />
               }
               label={
                 <Typography variant="body2" sx={{ 
-                  color: '#4487AE', 
-                  mt: 4,
-                  fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  color: '#334155', 
+                  fontSize: { xs: '0.8rem', sm: '0.9rem' }
                 }}>
                   By continuing, you agree to our Terms & Conditions.
                 </Typography>

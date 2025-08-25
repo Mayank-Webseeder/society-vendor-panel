@@ -134,7 +134,7 @@ const UserProfile = () => {
 
       {/* Main Content: Two Columns */}
       <motion.div 
-        className="flex flex-row gap-6 w-full min-h-screen"
+        className="flex flex-row gap-6 w-full sm:min-h-screen"
         variants={itemVariants}
       >
         {/* Left Sidebar --> Fixed - Hidden on mobile */}
@@ -182,7 +182,7 @@ const UserProfile = () => {
           className="w-full md:w-[80%] lg:w-[84%] bg-white/85 backdrop-blur-xl rounded-2xl border border-slate-200 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)]"
           variants={itemVariants}
         >
-          <div className="p-0 rounded-2xl h-full">
+          <div className="p-0 rounded-2xl">
             {/* Nested route content */}
             <Outlet />
           </div>

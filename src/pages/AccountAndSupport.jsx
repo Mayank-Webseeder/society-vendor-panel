@@ -99,13 +99,13 @@ const AccountAndSupport = () => {
                             animate="visible"
                             exit="hidden"
                         >
-                            <Box
+                <Box
                                 component={motion.div}
                                 variants={itemVariants}
                                 sx={{
                                     display: 'grid',
-                                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(auto-fill,minmax(300px,1fr))' },
-                                    gap: { xs: 2.2, sm: 3 },
+                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(auto-fill,minmax(300px,1fr))' },
+                    gap: { xs: 2, sm: 3 },
                                     position: 'relative'
                                 }}
                             >
@@ -133,15 +133,15 @@ const AccountAndSupport = () => {
                                                 position: 'relative',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                gap: 1.4,
+                                                gap: { xs: 1.2, sm: 1.4 },
                                                 height: '100%',
-                                                p: { xs: 2.2, sm: 2.8 },
-                                                borderRadius: '22px',
+                                                p: { xs: 2, sm: 2.8 },
+                                                borderRadius: { xs: '18px', sm: '22px' },
                                                 background: 'linear-gradient(140deg,rgba(255,255,255,0.78),rgba(255,255,255,0.65))',
                                                 border: '1px solid rgba(148,163,184,0.22)',
-                                                boxShadow: '0 4px 12px -2px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06)',
-                                                backdropFilter: 'blur(14px)',
-                                                WebkitBackdropFilter: 'blur(14px)',
+                                                boxShadow: '0 4px 10px -3px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)',
+                                                backdropFilter: 'blur(12px)',
+                                                WebkitBackdropFilter: 'blur(12px)',
                                                 overflow: 'hidden',
                                                 transition: 'border-color .4s, box-shadow .45s'
                                             }}>
@@ -150,7 +150,7 @@ const AccountAndSupport = () => {
                                                     position: 'absolute',
                                                     inset: 0,
                                                     background: `${opt.gradient}`,
-                                                    opacity: 0.08,
+                                                    opacity: { xs: 0.06, sm: 0.08 },
                                                     transition: 'opacity .5s',
                                                     pointerEvents: 'none'
                                                 }} className="group-hover:opacity-20" />
@@ -160,7 +160,7 @@ const AccountAndSupport = () => {
                                                     top: 0,
                                                     left: 0,
                                                     height: '100%',
-                                                    width: 6,
+                                                    width: { xs: 4, sm: 6 },
                                                     background: opt.gradient,
                                                     opacity: 0.85,
                                                     borderRadius: '0 6px 6px 0'
@@ -169,9 +169,9 @@ const AccountAndSupport = () => {
                                                 <Box sx={{
                                                     position: 'absolute',
                                                     top: 0,
-                                                    left: 40,
+                                                    left: { xs: 28, sm: 40 },
                                                     right: 0,
-                                                    height: 80,
+                                                    height: { xs: 56, sm: 80 },
                                                     background: 'linear-gradient(90deg,rgba(255,255,255,0.35),rgba(255,255,255,0))',
                                                     opacity: 0.4,
                                                     mixBlendMode: 'overlay'
@@ -180,18 +180,18 @@ const AccountAndSupport = () => {
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                                     <Box sx={{
                                                         position: 'relative',
-                                                        width: 54,
-                                                        height: 54,
-                                                        borderRadius: '18px',
+                                                        width: { xs: 48, sm: 54 },
+                                                        height: { xs: 48, sm: 54 },
+                                                        borderRadius: { xs: '16px', sm: '18px' },
                                                         background: opt.gradient,
-                                                        boxShadow: '0 6px 14px -3px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.12)',
+                                                        boxShadow: '0 6px 12px -4px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.10)',
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
                                                         border: '1px solid rgba(255,255,255,0.55)',
                                                         overflow: 'hidden'
                                                     }}>
-                                                        <Icon size={28} color="#ffffff" strokeWidth={2.4} />
+                                                        <Icon size={24} color="#ffffff" strokeWidth={2.4} />
                                                         <Box sx={{
                                                             position: 'absolute',
                                                             inset: 0,
@@ -200,7 +200,7 @@ const AccountAndSupport = () => {
                                                     </Box>
                                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: .5, flex: 1, minWidth: 0 }}>
                                                         <Typography sx={{
-                                                            fontSize: { xs: '1.05rem', sm: '1.1rem' },
+                                                            fontSize: { xs: '1rem', sm: '1.1rem' },
                                                             fontWeight: 600,
                                                             letterSpacing: '.2px',
                                                             color: '#0f172a',
@@ -210,7 +210,7 @@ const AccountAndSupport = () => {
                                                             {opt.title}
                                                         </Typography>
                                                         <Typography sx={{
-                                                            fontSize: { xs: '.72rem', sm: '.74rem' },
+                                                            fontSize: { xs: '.7rem', sm: '.74rem' },
                                                             fontWeight: 500,
                                                             letterSpacing: '.35px',
                                                             color: 'rgba(15,23,42,.6)',
@@ -227,9 +227,9 @@ const AccountAndSupport = () => {
                                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: .5 }}>
                                                     <Box sx={{ display: 'flex', gap: 1.25 }}>
                                                         <Box sx={{
-                                                            px: 1.15,
-                                                            py: .45,
-                                                            fontSize: '.65rem',
+                                                            px: { xs: 1, sm: 1.15 },
+                                                            py: { xs: .4, sm: .45 },
+                                                            fontSize: { xs: '.62rem', sm: '.65rem' },
                                                             fontWeight: 600,
                                                             letterSpacing: '.6px',
                                                             color: 'rgba(15,23,42,.65)',
@@ -242,25 +242,25 @@ const AccountAndSupport = () => {
                                                         </Box>
                                                     </Box>
                                                     <Box sx={{
-                                                        width: 46,
-                                                        height: 46,
-                                                        borderRadius: '16px',
+                                                        width: { xs: 40, sm: 46 },
+                                                        height: { xs: 40, sm: 46 },
+                                                        borderRadius: { xs: '14px', sm: '16px' },
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
                                                         background: 'linear-gradient(135deg,rgba(255,255,255,0.9),rgba(255,255,255,0.55))',
                                                         border: '1px solid rgba(148,163,184,0.35)',
-                                                        boxShadow: '0 3px 8px -2px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.08)',
+                                                        boxShadow: '0 3px 7px -3px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.08)',
                                                         transition: 'all .4s'
                                                     }} className="group-hover:shadow-xl group-hover:translate-x-0.5">
-                                                        <ChevronRight size={24} strokeWidth={3} color="#334155" />
+                                                        <ChevronRight size={22} strokeWidth={3} color="#334155" />
                                                     </Box>
                                                 </Box>
                                                 {/* Hover ring */}
                                                 <Box sx={{
                                                     position: 'absolute',
                                                     inset: 0,
-                                                    borderRadius: '22px',
+                                                    borderRadius: { xs: '18px', sm: '22px' },
                                                     padding: '1px',
                                                     background: 'linear-gradient(140deg,rgba(59,130,246,0.55),rgba(99,102,241,0.4),rgba(59,130,246,0))',
                                                     WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
