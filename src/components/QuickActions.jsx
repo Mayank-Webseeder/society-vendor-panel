@@ -101,7 +101,7 @@ const QuickActions = () => {
                       ${accent === 'violet' ? 'text-violet-600' : ''}
                     `} strokeWidth={1.6} />
                   </div>
-                  <span className="text-[11px] font-semibold text-slate-800 text-center leading-snug px-1 line-clamp-2">
+                  <span className="text-[12px] font-semibold text-slate-800 text-center leading-snug px-1 line-clamp-2">
                     {action.label}
                   </span>
                 </div>
@@ -118,7 +118,7 @@ const QuickActions = () => {
 
       {/* Desktop Design */}
       <motion.div
-        className="hidden sm:grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+        className="hidden sm:grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -130,7 +130,7 @@ const QuickActions = () => {
             <motion.button
               key={action.label}
               variants={itemVariants}
-              className={`group relative overflow-hidden rounded-2xl bg-white/75 backdrop-blur-md p-5 flex flex-col border border-solid border-slate-200/70 text-left cursor-pointer transition-all duration-400 shadow-[0_5px_14px_-5px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_28px_-8px_rgba(0,0,0,0.28),0_4px_10px_rgba(0,0,0,0.12)] hover:-translate-y-1`}
+              className={`group relative overflow-hidden rounded-2xl bg-white/75 backdrop-blur-md p-4 flex flex-col border border-solid border-slate-200/70 text-left cursor-pointer transition-all duration-300 shadow-[0_4px_10px_-4px_rgba(0,0,0,0.16),0_2px_5px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_18px_-8px_rgba(0,0,0,0.24),0_3px_8px_rgba(0,0,0,0.10)] hover:-translate-y-0.5`}
               whileTap={{ scale: 0.97 }}
               onClick={() => handleActionClick(action)}
             >
@@ -148,13 +148,13 @@ const QuickActions = () => {
                 `} /> */}
               </div>
               {/* Icon */}
-              <div className="flex justify-center w-full mb-4">
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
+              <div className="flex justify-center w-full mb-3">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
                   ${accent === 'blue' ? 'border-blue-200/70 group-hover:border-blue-300/80' : ''}
                   ${accent === 'emerald' ? 'border-emerald-200/70 group-hover:border-emerald-300/80' : ''}
                   ${accent === 'violet' ? 'border-violet-200/70 group-hover:border-violet-300/80' : ''}
                 `}>
-                  <IconComponent className={`w-8 h-8
+                  <IconComponent className={`w-6 h-6
                     ${accent === 'blue' ? 'text-blue-600' : ''}
                     ${accent === 'emerald' ? 'text-emerald-600' : ''}
                     ${accent === 'violet' ? 'text-violet-600' : ''}
@@ -162,23 +162,23 @@ const QuickActions = () => {
                 </div>
               </div>
               {/* Title */}
-              <h3 className="text-slate-800 font-semibold text-base sm:text-lg mb-2 tracking-tight group-hover:translate-x-0.5 transition-transform">
+              <h3 className="text-slate-800 font-semibold text-sm sm:text-base mb-1.5 tracking-tight group-hover:translate-x-0.5 transition-transform">
                 {action.label}
               </h3>
               {/* Description */}
-              <p className="text-slate-500 text-sm leading-relaxed mb-5 line-clamp-2">
+              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-2">
                 {action.description}
               </p>
               {/* CTA */}
               <div className="mt-auto flex items-center justify-between pt-2">
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full border border-solid backdrop-blur-sm shadow-sm
+                <span className={`text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full border border-solid backdrop-blur-sm shadow-sm
                   ${accent === 'blue' ? 'text-blue-700 border-blue-200/70 bg-blue-50/60 group-hover:bg-blue-100/60' : ''}
                   ${accent === 'emerald' ? 'text-emerald-700 border-emerald-200/70 bg-emerald-50/60 group-hover:bg-emerald-100/60' : ''}
                   ${accent === 'violet' ? 'text-violet-700 border-violet-200/70 bg-violet-50/60 group-hover:bg-violet-100/60' : ''}
                 `}>
                   Go
                 </span>
-                <ArrowRight className={`w-5 h-5 transition-transform duration-300 group-hover:translate-x-1
+                <ArrowRight className={`w-4 h-4 transition-transform duration-300 group-hover:translate-x-1
                   ${accent === 'blue' ? 'text-blue-500' : ''}
                   ${accent === 'emerald' ? 'text-emerald-500' : ''}
                   ${accent === 'violet' ? 'text-violet-500' : ''}
