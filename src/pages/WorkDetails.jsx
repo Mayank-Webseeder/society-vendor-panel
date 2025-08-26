@@ -244,45 +244,34 @@ const WorkDetails = () => {
                     ))}
                   </div>
                 </div>
+                {/* Add Service button moved inside the Services Offered box */}
+                <div className="mt-6 flex justify-center sm:justify-end">
+                  <Button
+                    variant="contained"
+                    onClick={() => handleAddService('Painter')}
+                    sx={{
+                      background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
+                      color: 'white',
+                      fontWeight: 600,
+                      borderRadius: '28px',
+                      width: { xs: '100%', sm: 'auto' },
+                      maxWidth: { xs: 480, sm: 'none' },
+                      py: { xs: '11px', sm: '10px' },
+                      px: { xs: '26px', sm: '30px' },
+                      fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                      textTransform: 'none',
+                      letterSpacing: 0.4,
+                      boxShadow: '0 6px 20px -4px rgba(79,70,229,0.45)',
+                      '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 30px -6px rgba(79,70,229,0.55)' }
+                    }}
+                  >
+                    Add Service
+                  </Button>
+                </div>
               </div>
             </Box>
           </motion.div>
         </AnimatePresence>
-
-
-        {/* Add Service button */}
-        <Box sx={{
-          mt: 4,
-          width: '100%',
-          display: 'flex',
-          justifyContent: { xs: 'center', sm: 'flex-end' },
-          position: { xs: 'sticky', sm: 'static' },
-          bottom: { xs: 10, sm: 'auto' },
-          left: 0,
-          right: 0,
-          pb: { xs: 0.5, sm: 0 }
-        }}>
-          <Button
-            variant="contained"
-            onClick={() => handleAddService('Painter')}
-            sx={{
-              background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
-              color: 'white',
-              fontWeight: 600,
-              borderRadius: '28px',
-              width: { xs: '88%', sm: 'auto' },
-              py: { xs: '11px', sm: '10px' },
-              px: { xs: '26px', sm: '30px' },
-              fontSize: { xs: '0.8rem', sm: '0.85rem' },
-              textTransform: 'none',
-              letterSpacing: 0.4,
-              boxShadow: '0 6px 20px -4px rgba(79,70,229,0.45)',
-              '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 30px -6px rgba(79,70,229,0.55)' }
-            }}
-          >
-            Add Service
-          </Button>
-        </Box>
     </Box>
   );
 };

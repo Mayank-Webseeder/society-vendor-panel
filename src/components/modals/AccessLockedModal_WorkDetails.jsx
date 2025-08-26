@@ -1,39 +1,49 @@
 import { Box, Typography, Button } from '@mui/material';
 import { IoClose, IoLockClosed } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) => {
   
   const navigate = useNavigate();
 
+  // Prevent background scroll while modal is open
+  useEffect(() => {
+    if (open) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = original; };
+    }
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <Box
+  <Box
       sx={{
-        position: 'absolute',
+    position: 'fixed',
         zIndex: 50,
         top: 0,
         bottom: 0,
-        left: 0,
-        // left: { xs: '0rem', sm: '4rem', md: '5rem' },
+    left: 0,
         right: 0,
         width: '100%',
         height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    p: { xs: 1.5, sm: 0 },
       }}
     >
       {/* Overlay */}
-      <Box
+  <Box
         sx={{
           position: 'absolute',
           inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
           zIndex: 0,
-          borderRadius: '16px',
+          borderRadius: '16px'
         }}
         onClick={onClose}
       />
@@ -46,15 +56,23 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
           border: '1px solid #e5e7eb',
           borderRadius: '12px',
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-          paddingX: { xs: '24px', md: '28px' },
-          paddingY: { xs: '20px', md: '24px' },
+          paddingX: { xs: '20px', md: '28px' },
+          paddingY: { xs: '16px', md: '24px' },
           zIndex: 10,
           width: '100%',
-          maxWidth: '28rem',
+          maxWidth: { xs: '100%', sm: '28rem' },
           overflowY: 'auto',
           maxHeight: '90vh',
-          // overflow:'visible'
+          // Centered pop animation
+          animation: 'modalPop 200ms ease-out',
+          '@keyframes modalPop': {
+            '0%': { transform: 'scale(0.98)', opacity: 0 },
+            '100%': { transform: 'scale(1)', opacity: 1 },
+          },
         }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="access-locked-wd-title"
       >
         {/* Lock Icon and Title */}
         <Box
@@ -72,21 +90,22 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
             sx={{
               fontWeight: '700',
               color: '#111827',
-              fontSize: '1.75rem',
+              fontSize: { xs: '1.35rem', sm: '1.5rem', md: '1.75rem' },
             }}
+            id="access-locked-wd-title"
           >
             {heading}
           </Typography>
         </Box>
 
         {/* Modal Body */}
-        <Typography
+    <Typography
           variant="body1"
           sx={{
-            marginBottom: '28px',
+      marginBottom: { xs: '20px', md: '28px' },
             color: '#4b5563',
-            lineHeight: '1.6',
-            fontSize: '16px',
+      lineHeight: 1.6,
+      fontSize: { xs: '14px', md: '16px' },
             textAlign: 'center',
             fontWeight: '500',
           }}
@@ -95,14 +114,14 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
         </Typography>
 
         {/* What you'll get section */}
-        <Box sx={{ marginBottom: '32px' }}>
+    <Box sx={{ marginBottom: { xs: '24px', md: '32px' } }}>
           <Typography
             variant="h6"
             sx={{
               fontWeight: '700',
               color: '#111827',
-              marginBottom: '16px',
-              fontSize: '18px',
+      marginBottom: { xs: '12px', md: '16px' },
+      fontSize: { xs: '16px', md: '18px' },
             }}
           >
             What you'll get
@@ -112,8 +131,8 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
               variant="body2"
               sx={{
                 color: '#6b7280',
-                marginBottom: '8px',
-                fontSize: '14px',
+        marginBottom: '8px',
+        fontSize: { xs: '13px', md: '14px' },
                 display: 'flex',
                 alignItems: 'flex-start',
                 '&:before': {
@@ -130,8 +149,8 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
               variant="body2"
               sx={{
                 color: '#6b7280',
-                marginBottom: '8px',
-                fontSize: '14px',
+        marginBottom: '8px',
+        fontSize: { xs: '13px', md: '14px' },
                 display: 'flex',
                 alignItems: 'flex-start',
                 '&:before': {
@@ -148,7 +167,7 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
               variant="body2"
               sx={{
                 color: '#6b7280',
-                fontSize: '14px',
+        fontSize: { xs: '13px', md: '14px' },
                 display: 'flex',
                 alignItems: 'flex-start',
                 '&:before': {
@@ -164,12 +183,13 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
           </Box>
         </Box>
 
-        {/* Action Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+    {/* Action Buttons */}
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: 1.5 }}>
           <Button
             variant="outlined"
             sx={{ 
-              flex: 1,
+      flex: 1,
+      width: { xs: '100%', sm: 'auto' },
               color: '#6b7280',
               borderRadius: '10px',
               borderColor: '#d1d5db',
@@ -185,7 +205,8 @@ const AccessLockedModal_WorkDetails = ({ open, onClose , heading, subheading }) 
           <Button
             variant="contained"
             sx={{ 
-              flex: 1,
+      flex: 1,
+      width: { xs: '100%', sm: 'auto' },
               borderRadius: '10px',
               backgroundColor: '#3b82f6',
               '&:hover': {

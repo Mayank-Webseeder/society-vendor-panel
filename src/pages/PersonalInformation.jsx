@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { viewVendorProfile, updateVendorProfile } from '../services/api/auth';
+import { /* viewVendorProfile, */ updateVendorProfile } from '../services/api/auth';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Edit as EditIcon, User as UserIcon } from 'lucide-react';
@@ -22,21 +22,11 @@ const PersonalInformation = () => {
   const [loading, setLoading] = useState(true);
 
   
-  // Fetch profile data on mount
+  // Use UserContext only (API disabled for now)
   useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    viewVendorProfile()
-      .then((profile) => {
-        if (mounted && profile) {
-          setUser(profile); // merge with defaultUser via safeSetUser
-          setTempUser({ ...profile });
-        }
-      })
-      .catch(() => {})
-      .finally(() => { if (mounted) setLoading(false); });
-    return () => { mounted = false; };
-  }, [setUser]);
+    setTempUser({ ...user });
+    setLoading(false);
+  }, [user]);
 
 
   // Handlers for My Profile fields
@@ -48,13 +38,13 @@ const PersonalInformation = () => {
     }));
   };
 
-  const handleDateChange = (e) => {
-    const { value } = e.target;
-    setTempUser((prevTempUser) => ({
-      ...prevTempUser,
-      dateOfBirth: value, // Value from input type="date" is already YYYY-MM-DD
-    }));
-  };
+  // const handleDateChange = (e) => {
+  //   const { value } = e.target;
+  //   setTempUser((prevTempUser) => ({
+  //     ...prevTempUser,
+  //     dateOfBirth: value, // Value from input type="date" is already YYYY-MM-DD
+  //   }));
+  // };
 
   const handleEditToggle = async () => {
     if (isEditing) {

@@ -76,7 +76,7 @@ const BellNotification = ({ mobile = false }) => {
         return (
             <div className="relative">
                 <button
-                    className="p-2 rounded-full hover:bg-gray-500 transition-colors duration-200 opacity-50 cursor-not-allowed"
+                    className={`flex justify-center items-center ${mobile? 'p-1.5' : 'p-2'} border-none rounded-full hover:bg-gray-500 transition-colors duration-200 opacity-50 cursor-not-allowed`}
                     disabled={true}
                     title="Notifications are disabled"
                 >
@@ -101,14 +101,14 @@ const BellNotification = ({ mobile = false }) => {
                 ref={bellRef}
                 onClick={handleBellClick}
                 aria-label="Notifications"
-                className={`flex justify-center items-center rounded-lg border-none transition-all duration-200 text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${clicked ? 'bg-slate-900' : 'bg-transparent hover:bg-[#1E3A8A]/90'} ${mobile ? 'p-2' : 'p-2'} shadow-sm`}
+                className={`flex justify-center border-none items-center rounded-md transition-all duration-200 text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${clicked ? 'bg-slate-900' : 'bg-transparent hover:bg-[#1E3A8A]/90'} ${mobile ? 'p-1.5' : 'p-2'} shadow-sm`}
                 title="Notifications"
                 type="button"
             >
                 <FaRegBell size={mobile ? 18 : 30} />
                 {notificationCount() > 0  &&  (
-                    <span className={`absolute -top-1 -right-1 border-none rounded-full flex items-center justify-center font-semibold text-white shadow-sm ${mobile ? 'w-4 h-4 text-[10px]' : 'w-5 h-5 text-[10px]'} bg-red-500`}> 
-                        <span className='block leading-none'>{notificationCount()}</span>
+                    <span className={`absolute -top-1 -right-1 rounded-full flex items-center justify-center font-semibold text-white shadow-sm ${mobile ? 'w-4 h-4 text-[10px]' : 'w-5 h-5 text-[10px]'} bg-red-500`}> 
+                        <span className={`leading-none ${mobile? 'pr-[1px]' : 'pr-[0px]'}`}>{notificationCount()}</span>
                     </span>
                 )}
             </button>
@@ -123,10 +123,10 @@ const BellNotification = ({ mobile = false }) => {
                     
                     <div
                         ref={popupRef}
-                        className={`${mobile ? 'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : 'absolute left-12 sm:left-14 md:left-16 bottom-0'} w-80 rounded-2xl border border-solid border-slate-200/70 bg-white/80 backdrop-blur-xl shadow-[0_12px_30px_-12px_rgba(0,0,0,0.35),0_4px_12px_rgba(0,0,0,0.08)] z-50 overflow-hidden`}
+                        className={`${mobile ? 'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : 'absolute left-12 sm:left-14 md:left-16 bottom-0'} w-80 rounded-2xl bg-slate-300/80 backdrop-blur-xl shadow-[0_12px_30px_-12px_rgba(0,0,0,0.35),0_4px_12px_rgba(0,0,0,0.08)] z-50 overflow-hidden`}
                     >
                     {/* Header */}
-                    <div className="flex items-center justify-between bg-white/70 backdrop-blur-sm border-b border-solid border-slate-200/70">
+                    <div className="flex items-center justify-between bg-slate-100/70 backdrop-blur-sm">
                         <div className="flex items-center gap-2.5 px-3 py-2.5">
                             <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center shadow-inner">
                                 <Bell className="w-3.5 h-3.5" />
@@ -183,7 +183,7 @@ const BellNotification = ({ mobile = false }) => {
 
                     {/* Footer */}
                     {notifications.length > 4 && (
-                        <div className="p-3 bg-white/70 backdrop-blur-sm border-t border-solid border-slate-200/70">
+                        <div className="p-3 bg-slate-100/70 backdrop-blur-sm">
                             {!showAll ? (
                                 <Button
                                     variant='outlined'

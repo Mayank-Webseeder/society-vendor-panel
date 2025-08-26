@@ -1,26 +1,24 @@
-import { useState, useEffect } from 'react';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import { useUser } from '../UserContext';
-import { Switch } from '@mui/material';
-
+import { useState, useEffect } from "react";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { useUser } from "../UserContext";
+import { Switch } from "@mui/material";
 
 const HeadingCard = () => {
-
   const { user, setUser } = useUser();
 
   const subscriptionActive = user?.subscription_active;
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
     const now = new Date();
     const hour = now.getHours();
 
     if (hour < 12) {
-      setGreeting('Good Morning');
+      setGreeting("Good Morning");
     } else if (hour < 18) {
-      setGreeting('Good Afternoon');
+      setGreeting("Good Afternoon");
     } else {
-      setGreeting('Good Evening');
+      setGreeting("Good Evening");
     }
   }, []);
 
@@ -44,10 +42,10 @@ const HeadingCard = () => {
             <div className="flex sm:flex-row items-center sm:items-center gap-4 sm:gap-6 flex-1">
               {/* Enhanced avatar section */}
               <div className="relative flex-shrink-0">
-        <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-3 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
+                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-3 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
                   <PermIdentityIcon
                     sx={{ fontSize: 34 }}
-          className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10"
+                    className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10"
                   />
                 </div>
                 {/* Subtle glow effect */}
@@ -55,13 +53,13 @@ const HeadingCard = () => {
               </div>
 
               {/* Greeting text */}
-        <div className="flex-1 mt-2 sm:mt-0">
+              <div className="flex-1 mt-2 sm:mt-0">
                 <div className="space-y-1">
                   <h1 className="text-xl sm:text-3xl font-semibold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent leading-tight">
                     {greeting}
                   </h1>
                   <p className="text-lg sm:text-xl text-slate-600 font-medium">
-                    {user?.name ? user.name.split(' ')[0] : 'User'} !
+                    {user?.name ? user.name.split(" ")[0] : "User"} !
                   </p>
                 </div>
                 {/* Subtle underline accent */}
@@ -71,9 +69,9 @@ const HeadingCard = () => {
 
             {/* Subscription badge */}
             {subscriptionActive && (
-        <div className="flex-shrink-0 ml-0 sm:ml-4 mt-8 sm:mt-5 self-center sm:self-auto">
+              <div className="flex-shrink-0 ml-0 sm:ml-4 mt-8 sm:mt-5 self-center sm:self-auto">
                 <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-3 py-1.5 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
+                  <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-2 py-1.5 text-xs sm:px-2.5 sm:py-2.5 sm:text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
                     {/* Premium icon */}
                     <svg
                       className="w-4 h-4 text-amber-500"
@@ -86,8 +84,10 @@ const HeadingCard = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="hidden sm:inline">Subscription Active</span>
-                    <span className="sm:hidden">Subscription </span>
+                    <span className="hidden sm:inline">
+                      Subscription Active
+                    </span>
+                    {/* <span className="sm:hidden">Subscription </span> */}
                   </span>
                   {/* Subtle shimmer effect */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover/badge:opacity-100 group-hover/badge:animate-pulse transition-opacity duration-500"></div>
@@ -115,7 +115,7 @@ const HeadingCard = () => {
               </svg>
               Test Mode Active
             </div> */}
-            
+
             {/* Toggle Switch for Subscription */}
             {/* <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-2 ring-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300">
               <span>Subscription</span>
@@ -135,6 +135,5 @@ const HeadingCard = () => {
     </div>
   );
 };
-
 
 export default HeadingCard;

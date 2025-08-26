@@ -48,7 +48,7 @@ const SecurityOptions = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-4 sm:px-8 pt-6 pb-8 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden max-w-3xl"
+          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-4 sm:px-8 pt-6 pb-8 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden max-w-4xl"
         >
           <div className="absolute -top-12 -right-10 w-64 h-64 bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
           <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-indigo-500 via-blue-500 to-transparent rounded-br-full" />
@@ -72,7 +72,7 @@ const SecurityOptions = () => {
                 name="currentPassword"
                 value={currentPassword}
                 onChange={e => setCurrentPassword(e.target.value)}
-                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
               />
             </div>
             <div className="flex flex-col">
@@ -82,7 +82,7 @@ const SecurityOptions = () => {
                 name="newPassword"
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
-                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
               />
             </div>
             <div className="flex flex-col">
@@ -92,7 +92,7 @@ const SecurityOptions = () => {
                 name="confirmNewPassword"
                 value={confirmNewPassword}
                 onChange={e => setConfirmNewPassword(e.target.value)}
-                className="w-full max-w-[500px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
+                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
               />
             </div>
           </div>
