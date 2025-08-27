@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import NewLeadModal from '../components/modals/NewLeadModal';
 import QuotationFormModal from '../components/modals/QuotationFormModal';
 import dummyData from '../static/dummyData_Leads';
-import { getNearbyJobs } from '../services/api/jobs'; // Import the API
+// import { getNearbyJobs } from '../services/api/jobs'; // API call disabled for now
 import AccessLockedModal from '../components/modals/AccessLockedModal';
 import { useUser } from '../UserContext';
 
@@ -47,22 +47,25 @@ const NewLeads = () => {
   const [error, setError] = useState('');
 
 
-  // Fetch nearby jobs on component mount
+  // Fetch nearby jobs on component mount (using dummy data for now)
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
         setError('');
 
-        // Replace with actual latitude and longitude
-        const latitude = 28.7041; // Example latitude
-        const longitude = 77.1025; // Example longitude
+        // API call disabled; using dummy data with status === 'New'
+        // const latitude = 28.7041; // Example latitude
+        // const longitude = 77.1025; // Example longitude
+        // const fetchedJobs = await getNearbyJobs(latitude, longitude);
+        // setJobs(fetchedJobs);
 
-        const fetchedJobs = await getNearbyJobs(latitude, longitude);
-        setJobs(fetchedJobs);
+        const newLeads = dummyData.filter(lead => lead.status === 'New');
+        setJobs(newLeads);
       } catch (err) {
-        console.error('Error fetching nearby jobs:', err);
-        setError('Failed to fetch jobs. Using dummy data.');
+        // Even on error, fall back to dummy data
+        console.error('Using dummy data for new leads:', err);
+        setError('');
         setJobs(dummyData.filter(lead => lead.status === 'New'));
       } finally {
         setLoading(false);

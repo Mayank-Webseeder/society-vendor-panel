@@ -18,12 +18,12 @@ const SubscriptionPage = () => {
             </div>
 
             {user.subscription_active ? (
-                <div className='flex flex-col gap-10'>
+                <div className='flex flex-col gap-10 max-w-5xl'>
                     {/* Overview Card */}
                     <div className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-5 sm:px-8 pt-6 pb-7 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden">
                         <div className="absolute -top-16 -right-10 w-72 h-72 bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
                         <div className="absolute top-0 left-0 h-1.5 w-44 bg-gradient-to-r from-indigo-600 via-blue-600 to-transparent rounded-br-full" />
-                        <div className="flex items-start gap-4 mb-6">
+                        <div className="flex items-start gap-4 mb-8">
                             <div className="p-3 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white shadow-inner ring-1 ring-white/30">
                                 <BadgeCheck size={24} />
                             </div>

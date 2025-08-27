@@ -1,36 +1,47 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button } from "@mui/material";
 import { IoClose, IoLockClosed } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-
-const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
-  
+const AccessLockedModal = ({ open, onClose, heading, subheading }) => {
   const navigate = useNavigate();
+
+  // Prevent background scroll while modal is open
+  useEffect(() => {
+    if (open) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [open]);
 
   if (!open) return null;
 
   return (
     <Box
       sx={{
-        position: 'fixed',
+        position: "fixed",
         zIndex: 50,
         top: 0,
         bottom: 0,
-        left: { xs: '0rem', sm: '4rem', md: '5rem' },
+        left: { xs: "0rem", sm: "4rem", md: "5rem" },
         right: 0,
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: "100%",
+        height: { xs: "calc(100% - 3.48rem)", sm: "100%" },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        p: { xs: 1.5, sm: 0 },
       }}
     >
       {/* Overlay */}
       <Box
         sx={{
-          position: 'absolute',
+          position: "absolute",
           inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           zIndex: 0,
         }}
         onClick={onClose}
@@ -39,20 +50,29 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
       {/* Modal Content */}
       <Box
         sx={{
-          position: 'relative',
-          backgroundColor: 'white',
-          border: '1px solid #e5e7eb',
-          borderRadius: '12px',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-          paddingX: { xs: '24px', md: '28px' },
-          paddingY: { xs: '20px', md: '24px' },
+          position: "relative",
+          backgroundColor: "white",
+          border: "1px solid #e5e7eb",
+          borderRadius: "12px",
+          boxShadow:
+            "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+          paddingX: { xs: "20px", md: "28px" },
+          paddingY: { xs: "16px", md: "24px" },
           zIndex: 10,
-          width: '100%',
-          maxWidth: '28rem',
-          overflowY: 'auto',
-          maxHeight: '90vh',
-          // overflow:'visible'
+          width: "100%",
+          maxWidth: { xs: "100%", sm: "28rem" },
+          overflowY: "auto",
+          maxHeight: "90vh",
+          // Centered fade/scale animation
+          animation: "modalPop 200ms ease-out",
+          "@keyframes modalPop": {
+            "0%": { transform: "scale(0.98)", opacity: 0 },
+            "100%": { transform: "scale(1)", opacity: 1 },
+          },
         }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="access-locked-title"
       >
         {/* Close Icon */}
         {/* <Box
@@ -80,10 +100,10 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
         {/* Lock Icon and Title */}
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "24px",
             gap: 1.5,
           }}
         >
@@ -91,10 +111,11 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
           <Typography
             variant="h4"
             sx={{
-              fontWeight: '700',
-              color: '#111827',
-              fontSize: '1.75rem',
+              fontWeight: "700",
+              color: "#111827",
+              fontSize: { xs: "1.35rem", sm: "1.5rem", md: "1.75rem" },
             }}
+            id="access-locked-title"
           >
             {heading}
           </Typography>
@@ -104,44 +125,44 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
         <Typography
           variant="body1"
           sx={{
-            marginBottom: '28px',
-            color: '#4b5563',
-            lineHeight: '1.6',
-            fontSize: '16px',
-            textAlign: 'center',
-            fontWeight: '500',
+            marginBottom: { xs: "20px", md: "28px" },
+            color: "#4b5563",
+            lineHeight: 1.6,
+            fontSize: { xs: "14px", md: "16px" },
+            textAlign: "center",
+            fontWeight: "500",
           }}
         >
           {subheading}
         </Typography>
 
         {/* What you'll get section */}
-        <Box sx={{ marginBottom: '32px' }}>
+        <Box sx={{ marginBottom: { xs: "24px", md: "32px" } }}>
           <Typography
             variant="h6"
             sx={{
-              fontWeight: '700',
-              color: '#111827',
-              marginBottom: '16px',
-              fontSize: '18px',
+              fontWeight: "700",
+              color: "#111827",
+              marginBottom: { xs: "12px", md: "16px" },
+              fontSize: { xs: "16px", md: "18px" },
             }}
           >
             What you'll get
           </Typography>
-          <Box sx={{ paddingLeft: '8px' }}>
+          <Box sx={{ paddingLeft: "8px" }}>
             <Typography
               variant="body2"
               sx={{
-                color: '#6b7280',
-                marginBottom: '8px',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                '&:before': {
+                color: "#6b7280",
+                marginBottom: "8px",
+                fontSize: { xs: "13px", md: "14px" },
+                display: "flex",
+                alignItems: "flex-start",
+                "&:before": {
                   content: '"•"',
-                  color: '#f59e0b',
-                  marginRight: '8px',
-                  lineHeight: '1.5',
+                  color: "#f59e0b",
+                  marginRight: "8px",
+                  lineHeight: "1.5",
                 },
               }}
             >
@@ -150,16 +171,16 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
             <Typography
               variant="body2"
               sx={{
-                color: '#6b7280',
-                marginBottom: '8px',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                '&:before': {
+                color: "#6b7280",
+                marginBottom: "8px",
+                fontSize: { xs: "13px", md: "14px" },
+                display: "flex",
+                alignItems: "flex-start",
+                "&:before": {
                   content: '"•"',
-                  color: '#f59e0b',
-                  marginRight: '8px',
-                  lineHeight: '1.5',
+                  color: "#f59e0b",
+                  marginRight: "8px",
+                  lineHeight: "1.5",
                 },
               }}
             >
@@ -168,15 +189,15 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
             <Typography
               variant="body2"
               sx={{
-                color: '#6b7280',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                '&:before': {
+                color: "#6b7280",
+                fontSize: { xs: "13px", md: "14px" },
+                display: "flex",
+                alignItems: "flex-start",
+                "&:before": {
                   content: '"•"',
-                  color: '#f59e0b',
-                  marginRight: '8px',
-                  lineHeight: '1.5',
+                  color: "#f59e0b",
+                  marginRight: "8px",
+                  lineHeight: "1.5",
                 },
               }}
             >
@@ -186,17 +207,25 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
         </Box>
 
         {/* Action Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            gap: 1.5,
+          }}
+        >
           <Button
             variant="outlined"
-            sx={{ 
+            sx={{
               flex: 1,
-              color: '#6b7280',
-              borderRadius: '10px',
-              borderColor: '#d1d5db',
-              '&:hover': {
-                borderColor: '#9ca3af',
-                backgroundColor: '#f9fafb',
+              width: { xs: "100%", sm: "auto" },
+              color: "#6b7280",
+              borderRadius: "10px",
+              borderColor: "#d1d5db",
+              "&:hover": {
+                borderColor: "#9ca3af",
+                backgroundColor: "#f9fafb",
               },
             }}
             onClick={onClose}
@@ -205,15 +234,16 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
           </Button>
           <Button
             variant="contained"
-            sx={{ 
+            sx={{
               flex: 1,
-              borderRadius: '10px',
-              backgroundColor: '#3b82f6',
-              '&:hover': {
-                backgroundColor: '#2563eb',
+              width: { xs: "100%", sm: "auto" },
+              borderRadius: "10px",
+              backgroundColor: "#3b82f6",
+              "&:hover": {
+                backgroundColor: "#2563eb",
               },
             }}
-            onClick={() => navigate('/payment')}
+            onClick={() => navigate("/payment")}
           >
             Subscribe
           </Button>
@@ -225,14 +255,12 @@ const AccessLockedModal = ({ open, onClose , heading, subheading }) => {
 
 export default AccessLockedModal;
 
-
 // import { Box, Typography, Button } from '@mui/material';
 // import { IoClose, IoLockClosed, IoSparkles } from "react-icons/io5";
 // import { useNavigate } from 'react-router-dom';
 
-
 // const AccessLockedModal = ({ open, onClose }) => {
-  
+
 //   const navigate = useNavigate();
 
 //   if (!open) return null;
@@ -454,7 +482,7 @@ export default AccessLockedModal;
 //           >
 //             Upgrade to Premium
 //           </Button>
-          
+
 //           <Button
 //             variant="text"
 //             sx={{
@@ -481,7 +509,6 @@ export default AccessLockedModal;
 // };
 
 // export default AccessLockedModal;
-
 
 // import { Box, Typography, Button } from '@mui/material';
 // import { IoClose } from "react-icons/io5";

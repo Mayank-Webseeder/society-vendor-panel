@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Typography } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import Login from './Login';
@@ -46,10 +46,59 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden"
-         style={{
-           background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-         }}>
+  <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden relative">
+      {/* Background layers: animated gradient, soft color blobs, vignette */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        initial={{ x: 0 }}
+        // animate={useReducedMotion() ? undefined : { x: [0, 30, -30, 0] }}
+        // transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        style={{
+          background: 'linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)',
+          filter: 'saturate(1.05) contrast(1.02)'
+        }}
+      />
+
+      {/* Soft blue blob (top-left) */}
+      <motion.div
+        className="absolute -left-20 -top-20 w-80 h-80 rounded-full z-0 pointer-events-none"
+        initial={{ x: 0, y: 0, opacity: 0.9 }}
+        animate={useReducedMotion() ? undefined : { x: [0, 12, -8, 0], y: [0, -8, 6, 0] }}
+        transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(circle at 30% 30%, rgba(59,130,246,0.18), transparent 40%)',
+          filter: 'blur(48px)'
+        }}
+      />
+
+      {/* Soft purple blob (bottom-right) */}
+      <motion.div
+        className="absolute -right-24 -bottom-24 w-96 h-96 rounded-full z-0 pointer-events-none"
+        initial={{ x: 0, y: 0, opacity: 0.85 }}
+        animate={useReducedMotion() ? undefined : { x: [0, -10, 14, 0], y: [0, 8, -6, 0] }}
+        transition={{ duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(circle at 70% 70%, rgba(139,92,246,0.12), transparent 45%)',
+          filter: 'blur(56px)'
+        }}
+      />
+
+      {/* Ambient halo behind form column */}
+      <div
+        className="absolute left-[-10%] md:left-[-6%] top-1/2 -translate-y-1/2 w-[520px] h-[520px] z-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(59,130,246,0.20), rgba(99,102,241,0.14) 32%, transparent 90%)',
+          filter: 'blur(64px)'
+        }}
+      />
+
+      {/* Subtle vignette to ground the layout */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.32) 100%)'
+        }}
+      />
       {/* Left: Form Section */}
       <motion.div
         className="relative flex flex-col justify-center items-center p-6 md:px-12
@@ -57,13 +106,10 @@ const AuthPage = () => {
         variants={formPanelVariants}
         initial="hidden"
         animate="visible"
-        style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-        }}
       >
         {/* Professional grid pattern overlay */}
         <div
-          className="absolute inset-0 z-0 opacity-50"
+          className="absolute inset-0 z-0 opacity-25"
           style={{
             backgroundImage: `
               linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
@@ -102,7 +148,7 @@ const AuthPage = () => {
         ></div>
 
         {/* Logo & Title */}
-        <div className='flex flex-col items-center mb-14 px-4 text-center z-10'>
+        <div className='flex flex-col items-center mb-10 sm:mb-12 px-4 text-center z-10'>
           <Typography
             variant="h1"
             sx={{
@@ -110,7 +156,7 @@ const AuthPage = () => {
               background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '3rem', md: '4.5rem' },
+              fontSize: { xs: '2.25rem', sm: '3rem', md: '4rem' },
               fontFamily: 'Roboto, sans-serif',
               letterSpacing: '0.05em',
               textAlign: 'center',
@@ -123,7 +169,7 @@ const AuthPage = () => {
                 bottom: '-10px',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '60%',
+                width: '56%',
                 height: '2px',
                 background: 'linear-gradient(90deg, #60a5fa, #ffffff)',
                 borderRadius: '1px',
@@ -146,8 +192,31 @@ const AuthPage = () => {
           }
         </div>
 
+        {/* Segmented toggle: improved colors and background */}
+        <div className="z-10 mb-4">
+          <div className="mx-auto w-full max-w-md px-4">
+            <div className="inline-flex items-center rounded-full bg-gradient-to-r from-white/6 via-transparent to-white/4 backdrop-blur-md p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_6px_20px_rgba(0,0,0,0.18)]">
+              <button
+                onClick={() => setIsLogin(true)}
+                className={`w-24 px-5 py-2 rounded-full border-none text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer ${isLogin ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white bg-white/5'}`}
+                aria-pressed={isLogin}
+              >
+                Login
+              </button>
+              <button
+                onClick={() => setIsLogin(false)}
+                className={`ml-4 w-24 px-5 py-2 rounded-full border-none text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer ${!isLogin ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white bg-white/5'}`}
+                aria-pressed={!isLogin}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Login / SignUp Forms */}
         <div className="w-full max-w-md px-4 z-10">
+          <div className="rounded-2xl bg-white/10 backdrop-blur-md border-solid border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-5 sm:p-6">
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div
@@ -208,6 +277,7 @@ const AuthPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
         </div>
       </motion.div>
 
@@ -222,7 +292,7 @@ const AuthPage = () => {
         animate="visible"
       >
         {/* Dark overlay with subtle gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120]/80 via-[#0b1120]/40 to-transparent"></div>
 
         {/* Tagline */}
         <motion.div

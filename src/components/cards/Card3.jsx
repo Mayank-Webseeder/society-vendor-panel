@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import Card3_Vector26 from "../../assets/Card3_Vector26.png";
-import Card3_Vector27 from "../../assets/Card3_Vector27.png";
 import { FaChevronRight } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
 import { finalRating } from '../../static/dummyData_MyStats';
 import { useUser } from "../../UserContext";
+import { Star, ArrowUpRight } from 'lucide-react';
 
 
 const Card3 = () => {
@@ -28,39 +27,57 @@ const Card3 = () => {
   return (
     <div
       onClick={() => navigate('/my-stats')}
-      className="relative hidden md:block bg-[#7366EC] w-60 rounded-2xl h-40 overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer group"
+      className="group relative hidden md:block overflow-hidden rounded-2xl w-56 md:w-60 h-36 md:h-40 bg-white/75 backdrop-blur-md border border-solid border-slate-200/70 shadow-[0_5px_14px_-6px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_24px_-10px_rgba(0,0,0,0.28),0_4px_10px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer"
     >
-      <p className="relative font-medium text-xl pl-2 text-white/90 z-30 pt-4">
-        Rating & Feedback
-      </p>
-      <div className="relative font-semibold text-white text-4xl z-30 pt-12 pl-3">
-        {
-          subscriptionActive ?
-            <>
-              {renderStars()}
-            </>
-            :
-            <span className="pl-2">
-              N/A
-            </span>
-        }
+      {/* Ambient glows */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-10 -left-6 w-40 h-40 bg-[radial-gradient(circle_at_30%_30%,rgba(139,92,246,0.20),rgba(139,92,246,0)_65%)] blur-2xl" />
+        <div className="absolute -bottom-14 -right-8 w-48 h-48 bg-[radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.18),rgba(59,130,246,0)_65%)] blur-2xl" />
+        {/* Corner grid pattern */}
+        {/* <div className="absolute -top-6 -right-6 opacity-20 text-violet-600">
+          <svg width="140" height="140" viewBox="0 0 140 140" fill="none" aria-hidden="true">
+            <defs>
+              <pattern id="gridCard3" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M10 0L0 10" stroke="currentColor" strokeWidth="0.6" />
+              </pattern>
+            </defs>
+            <rect width="140" height="140" fill="url(#gridCard3)" />
+          </svg>
+        </div> */}
       </div>
-      <img
-        src={Card3_Vector26}
-        className="absolute z-20 right-0 bottom-0 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"
-        alt="card3-vector-26"
-      />
-      <img
-        src={Card3_Vector27}
-        className="absolute z-10 right-0 bottom-0 transition-transform duration-500 group-hover:translate-x-4 group-hover:translate-y-4"
-        alt="card3-vector-27"
-      />
-      <FaChevronRight
-        strokeWidth={3}
-        size={25}
-        color="rgba(255,255,255,0.84)"
-        className="hidden lg:block absolute right-3 bottom-3 z-20 transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
-      />
+      <div className="relative h-full px-4 py-3 flex flex-col">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-sm ring-1 ring-white/40">
+            <Star size={16} strokeWidth={2.2} />
+          </div>
+          <div className="flex flex-col leading-tight">
+            <p className="text-slate-700 text-base font-semibold tracking-tight">Rating & Feedback</p>
+            <p className="text-[10px] text-slate-500">Avg. rating</p>
+          </div>
+        </div>
+        <div className="mt-auto">
+          <div className="flex items-end justify-between pr-1">
+            <div className="flex-1">
+              {subscriptionActive ? (
+                <div>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-indigo-50 text-indigo-600 ring-1 ring-indigo-500/20">
+                      <ArrowUpRight size={12} />
+                      +0.2
+                    </span>
+                    <span className="text-[10px] text-slate-500">vs last week</span>
+                  </div>
+                  <div className="-mt-1">{renderStars()}</div>
+                </div>
+              ) : (
+                <p className="text-slate-900 text-3xl md:text-4xl font-bold">N/A</p>
+              )}
+            </div>
+            <FaChevronRight className="hidden lg:block text-violet-500/80 group-hover:text-violet-600 mr-1 mb-1 transition-colors" size={18} />
+          </div>
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-400 via-indigo-400 to-transparent opacity-90" />
     </div>
   );
 };
