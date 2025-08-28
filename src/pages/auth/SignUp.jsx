@@ -123,7 +123,7 @@ const SignUp = ({ onSwitch }) => {
       variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
     >
       <motion.h2
-        className="text-3xl font-normal text-white text-center mb-8"
+        className="text-2xl sm:text-3xl font-semibold text-white text-center mb-6"
         style={{ fontFamily:"Loto" }}
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -135,7 +135,7 @@ const SignUp = ({ onSwitch }) => {
       {/* Error Message */}
       {error && (
         <motion.div 
-          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+          className="bg-red-50 border-solid border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -149,9 +149,9 @@ const SignUp = ({ onSwitch }) => {
           type="text"
           id="fullname"
           placeholder="John Doe"
-          className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+          className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
+                     focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+                     text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           required
@@ -164,9 +164,9 @@ const SignUp = ({ onSwitch }) => {
           type="email"
           id="email"
           placeholder="your.email@example.com"
-          className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+          className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
+                     focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+                     text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -179,9 +179,9 @@ const SignUp = ({ onSwitch }) => {
           type="password"
           id="password"
           placeholder="••••••••"
-          className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+          className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
+                     focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+                     text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -204,14 +204,14 @@ const SignUp = ({ onSwitch }) => {
       <motion.button
         type="submit"
         className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
-                   transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                   transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-0"
         style={{
-          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-          boxShadow: '0 4px 15px rgba(59,130,246,0.3)'
+          background: 'linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #1d4ed8 100%)',
+          boxShadow: '0 6px 18px rgba(56,189,248,0.35)'
         }}
         whileHover={{ 
           y: -2,
-          boxShadow: '0 6px 25px rgba(59,130,246,0.4)'
+          boxShadow: '0 6px 25px rgba(56,189,248,0.4)'
         }}
         whileTap={{ scale: 0.98 }}
         variants={inputVariants}
@@ -221,7 +221,7 @@ const SignUp = ({ onSwitch }) => {
 
       <motion.p className="text-center text-white/80 text-sm mt-4" variants={inputVariants}>
         Already have an account?{' '}
-        <motion.button
+  <motion.button
           type="button"
           className="text-blue-300 text-base bg-transparent pl-1 border-none hover:text-blue-100 font-medium cursor-pointer transition-colors duration-200"
           onClick={onSwitch}

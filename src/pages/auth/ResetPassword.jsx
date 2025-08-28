@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
 import { forgetPassword } from '../../services/api/auth';
 
@@ -72,10 +72,59 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden"
-         style={{
-           background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-         }}>
+    <div className="min-h-screen overflow-y-hidden flex flex-col md:flex-row font-inter overflow-hidden relative">
+      {/* Background layers: animated gradient, soft color blobs, vignette */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        initial={{ x: 0 }}
+        // animate={useReducedMotion() ? undefined : { x: [0, 30, -30, 0] }}
+        // transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        style={{
+          background: 'linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)',
+          filter: 'saturate(1.05) contrast(1.02)'
+        }}
+      />
+
+      {/* Soft blue blob (top-left) */}
+      <motion.div
+        className="absolute -left-20 -top-20 w-80 h-80 rounded-full z-0 pointer-events-none"
+        initial={{ x: 0, y: 0, opacity: 0.9 }}
+        animate={useReducedMotion() ? undefined : { x: [0, 12, -8, 0], y: [0, -8, 6, 0] }}
+        transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(circle at 30% 30%, rgba(59,130,246,0.18), transparent 40%)',
+          filter: 'blur(48px)'
+        }}
+      />
+
+      {/* Soft purple blob (bottom-right) */}
+      <motion.div
+        className="absolute -right-24 -bottom-24 w-96 h-96 rounded-full z-0 pointer-events-none"
+        initial={{ x: 0, y: 0, opacity: 0.85 }}
+        animate={useReducedMotion() ? undefined : { x: [0, -10, 14, 0], y: [0, 8, -6, 0] }}
+        transition={{ duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(circle at 70% 70%, rgba(139,92,246,0.12), transparent 45%)',
+          filter: 'blur(56px)'
+        }}
+      />
+
+      {/* Ambient halo behind form column */}
+      <div
+        className="absolute left-[-10%] md:left-[-6%] top-1/2 -translate-y-1/2 w-[520px] h-[520px] z-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(59,130,246,0.20), rgba(99,102,241,0.14) 32%, transparent 90%)',
+          filter: 'blur(64px)'
+        }}
+      />
+
+      {/* Subtle vignette to ground the layout */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.32) 100%)'
+        }}
+      />
       {/* Left: Form Section */}
       <motion.div
         className="relative flex flex-col justify-center items-center p-6 md:px-12
@@ -83,13 +132,10 @@ const ResetPassword = () => {
         variants={formPanelVariants}
         initial="hidden"
         animate="visible"
-        style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)'
-        }}
       >
         {/* Professional grid pattern overlay */}
         <div
-          className="absolute inset-0 z-0 opacity-50"
+          className="absolute inset-0 z-0 opacity-25"
           style={{
             backgroundImage: `
               linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
@@ -128,7 +174,7 @@ const ResetPassword = () => {
         ></div>
 
         {/* Logo & Title */}
-        <div className='flex flex-col items-center mb-14 px-4 text-center z-10'>
+        <div className='flex flex-col items-center mb-10 sm:mb-12 px-4 text-center z-10'>
           <Typography
             variant="h1"
             sx={{
@@ -136,9 +182,9 @@ const ResetPassword = () => {
               background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '3.5rem', md: '6rem' },
+              fontSize: { xs: '2.25rem', sm: '3rem', md: '4rem' },
               fontFamily: 'Roboto, sans-serif',
-              letterSpacing: '0.1em',
+              letterSpacing: '0.05em',
               textAlign: 'center',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
               position: 'relative',
@@ -146,10 +192,10 @@ const ResetPassword = () => {
               '&::after': {
                 content: '""',
                 position: 'absolute',
-                bottom: '-4px',
+                bottom: '-10px',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '60%',
+                width: '56%',
                 height: '2px',
                 background: 'linear-gradient(90deg, #60a5fa, #ffffff)',
                 borderRadius: '1px',
@@ -171,95 +217,97 @@ const ResetPassword = () => {
 
         {/* Form */}
         <div className="w-full max-w-md px-4 z-10">
-          <motion.h2
-            className="text-2xl font-normal text-white/80 text-left mb-8"
-            style={{ fontFamily:"Loto" }}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-          >
-            Reset Password
-          </motion.h2>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                {error}
-              </motion.div>
-            )}
-
-            {/* New Password Field */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
+          <div className="rounded-2xl bg-white/10 backdrop-blur-md border-solid border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-5 sm:p-6">
+            <motion.h2
+              className="text-xl sm:text-2xl font-semibold text-white/90 text-left mb-6"
+              style={{ fontFamily:"Loto" }}
+              initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
-                Create New Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter new password"
-                className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                           text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </motion.div>
-
-            {/* Confirm Password Field */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
-              <label htmlFor="confirmPassword" className="block text-white text-sm font-medium mb-2">
-                Confirm New Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Re-enter new password"
-                className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                           text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </motion.div>
-
-            {/* Info Text */}
-            <motion.p
-              className="text-left font-medium text-sm text-white/80 mb-8"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-            >
-              Your new password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character (e.g., @, #, $).
-            </motion.p>
-
-            {/* Submit Button */}
-            <motion.button
-              type="submit"
-              className="w-full border-none py-3 px-6 rounded-lg font-semibold transition-all duration-200 text-base
-                         bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer
-                         shadow-md"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
             >
               Reset Password
-            </motion.button>
-          </form>
+            </motion.h2>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Error Message */}
+              {error && (
+                <motion.div
+                  className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              {/* New Password Field */}
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              >
+                <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
+                  Create New Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter new password"
+                  className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-gray-300/80
+                             focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                             text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </motion.div>
+
+              {/* Confirm Password Field */}
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <label htmlFor="confirmPassword" className="block text-white text-sm font-medium mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Re-enter new password"
+                  className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-gray-300/80
+                             focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+                             text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </motion.div>
+
+              {/* Info Text */}
+              <motion.p
+                className="text-left font-medium text-sm text-white/80 mb-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+              >
+                Your new password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character (e.g., @, #, $).
+              </motion.p>
+
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                className="w-full border-none py-3 px-6 rounded-lg font-semibold transition-all duration-200 text-base
+                           bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer
+                           shadow-md"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+              >
+                Reset Password
+              </motion.button>
+            </form>
+          </div>
         </div>
       </motion.div>
 
@@ -272,7 +320,7 @@ const ResetPassword = () => {
         animate="visible"
       >
         {/* Dark overlay with subtle gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120]/80 via-[#0b1120]/40 to-transparent"></div>
 
         {/* Tagline */}
         <motion.div

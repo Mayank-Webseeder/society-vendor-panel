@@ -109,7 +109,7 @@ const Login = ({ onSwitch, onLogin }) => {
       variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
     >
       <motion.h2
-        className="text-3xl font-normal text-white text-center mb-8"
+        className="text-2xl sm:text-3xl font-semibold text-white text-center mb-6"
         style={{ fontFamily:"Loto" }}
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -121,7 +121,7 @@ const Login = ({ onSwitch, onLogin }) => {
       {/* Error Message */}
       {error && (
         <motion.div
-          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+          className="bg-red-50 border-solid border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -129,15 +129,15 @@ const Login = ({ onSwitch, onLogin }) => {
         </motion.div>
       )}
 
-      <motion.div variants={inputVariants}>
+    <motion.div variants={inputVariants}>
         <label htmlFor="email" className="block text-white text-sm font-medium mb-2">Email Address</label>
         <input
           type="email"
           id="email"
           placeholder="your.email@example.com"
-          className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+      className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
+           focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+           text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -150,9 +150,9 @@ const Login = ({ onSwitch, onLogin }) => {
           type="password"
           id="password"
           placeholder="••••••••"
-          className="w-full px-4 py-2.5 border-solid border border-gray-300 rounded-lg placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-                     text-gray-800 bg-white/90 backdrop-blur transition-all duration-200 text-base"
+          className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
+                     focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+                     text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -185,11 +185,11 @@ const Login = ({ onSwitch, onLogin }) => {
 
       <motion.button
         type="submit"
-        className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
-                   transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+  className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
+       transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-0"
         style={{
-          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-          boxShadow: '0 4px 15px rgba(59,130,246,0.3)'
+    background: 'linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #1d4ed8 100%)',
+    boxShadow: '0 6px 18px rgba(56,189,248,0.35)'
         }}
         whileHover={{ 
           y: -2,
@@ -203,20 +203,20 @@ const Login = ({ onSwitch, onLogin }) => {
 
       <motion.button
         type="button"
-        className="w-full border-2 border-solid text-lg font-semibold py-3 rounded-lg
+        className="w-full border border-solid text-lg font-semibold py-3 rounded-lg
                    transition-all duration-300 transform hover:scale-[1.02] active:scale-98 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
         style={{
-          borderColor: 'rgba(255,255,255,0.3)',
+          borderColor: 'rgba(255,255,255,0.2)',
           color: 'white',
-          backgroundColor: 'rgba(255,255,255,0.05)',
+          backgroundColor: 'rgba(255,255,255,0.06)',
           backdropFilter: 'blur(10px)'
         }}
         onClick={onSwitch}
         whileHover={{ 
           y: -2,
-          backgroundColor: 'rgba(255,255,255,0.15)',
-          borderColor: 'rgba(255,255,255,0.5)',
-          boxShadow: '0 4px 20px rgba(59,130,246,0.2)'
+          backgroundColor: 'rgba(255,255,255,0.12)',
+          borderColor: 'rgba(255,255,255,0.35)',
+          boxShadow: '0 4px 20px rgba(56,189,248,0.28)'
         }}
         whileTap={{ scale: 0.98 }}
         variants={inputVariants}
