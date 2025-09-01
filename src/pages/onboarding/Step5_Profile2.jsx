@@ -81,13 +81,16 @@ const Step5_Profile2 = () => {
       <Paper
         elevation={0}
         sx={{
+          // border: '2px solid green',
+          border: 'none',
           width: '100%',
           height: '100%',
+          minHeight: '620px',
+          maxHeight: '620px',
           display: 'flex',
           borderRadius: '16px',
           overflowY: 'auto',
           backgroundColor: '#ffffff',
-          border: 'none',
           boxShadow: 'none',
           // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
           '&::-webkit-scrollbar': {
@@ -120,7 +123,7 @@ const Step5_Profile2 = () => {
             alignItems: 'center',
             px: { xs: 3, sm: 4, md: 5 },
             py: { xs: 3, sm: 4 },
-            height: '100%',
+            minHeight: '100%',
             backgroundColor: '#ffffff',
             '@media (max-width:1200px)': {
               width: '100%',
@@ -197,7 +200,7 @@ const Step5_Profile2 = () => {
               className='w-full h-full rounded-xl flex flex-col'
             >
               {/* Top Section - Hero */}
-              <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
+              <Box sx={{ mb: 2, position: 'relative', zIndex: 1 }}>
                 {/* Main Title */}
                 <Typography
                   variant="h3"

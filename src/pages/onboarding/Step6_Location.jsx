@@ -140,7 +140,7 @@ const Step6_Location = () => {
     <div 
       className="relative h-screen w-screen flex flex-col justify-center items-center"
       style={{
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)',
+        // background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 30%, #1e1b4b 100%)',
         overflow: 'hidden',
       }}
     >
@@ -172,6 +172,8 @@ const Step6_Location = () => {
           sx={{
             width: '100%',
             height: '100%',
+            minHeight: '620px',
+            maxHeight: '620px',
             display: 'flex',
             borderRadius: '20px',
             overflow: 'auto',
@@ -220,7 +222,7 @@ const Step6_Location = () => {
               alignItems: 'center',
               px: { xs: 3, sm: 4, md: 5 },
               py: { xs: 3, sm: 4 },
-              height: '100%',
+              minHeight: '100%',
               backgroundColor: '#ffffff',
               '@media (max-width:1200px)': {
                 width: '100%',
@@ -297,7 +299,7 @@ const Step6_Location = () => {
                 className='w-full h-full rounded-xl flex flex-col'
               >
                 {/* Top Section - Hero */}
-                <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
+                <Box sx={{ mb: 5, position: 'relative', zIndex: 1 }}>
                   {/* Main Title */}
                   <Typography
                     variant="h3"

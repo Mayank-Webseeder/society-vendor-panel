@@ -88,6 +88,8 @@ const Step7_VerifyNumber = () => {
         sx={{
           width: '100%',
           height: '100%',
+          minHeight: '620px',
+          maxHeight: '620px',
           display: 'flex',
           borderRadius: '16px',
           overflowY: 'auto',
@@ -202,7 +204,7 @@ const Step7_VerifyNumber = () => {
               className='w-full h-full rounded-xl flex flex-col'
             >
               {/* Top Section - Hero */}
-              <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
+              <Box sx={{ mb: 5, position: 'relative', zIndex: 1 }}>
                 {/* Main Title */}
                 <Typography
                   variant="h3"
@@ -230,7 +232,8 @@ const Step7_VerifyNumber = () => {
                     },
                   }}
                 >
-                  Verify Your Number
+                  {/* Verify Your Number */}
+                  Complete Registration
                 </Typography>
 
                 {/* Subtitle */}
@@ -245,7 +248,8 @@ const Step7_VerifyNumber = () => {
                     fontFamily: 'Roboto, sans-serif',
                   }}
                 >
-                  Enter your mobile number to receive a verification code
+                  {/* Enter your mobile number to receive a verification code */}
+                  Provide your contact details to connect with clients
                 </Typography>
 
                 {/* Phone Icon */}
@@ -464,10 +468,12 @@ const Step7_VerifyNumber = () => {
                               },
                             }}
                           />
-                            Verifying...
+                            {/* Verifying... */}
+                            "Creating Account..."
                           </Box>
                         ) : (
-                            'Send Verification Code'
+                            // "Send Verification Code"
+                            "Finish Setup"
                         )
                     }
                   </Button>

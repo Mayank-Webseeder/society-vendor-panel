@@ -145,8 +145,11 @@ const Step4_Profile1 = () => {
           width: '100%',
           height: '100%',
           display: 'flex',
+          minHeight: '620px',
+          maxHeight: '620px',
           borderRadius: '16px',
           overflowY: 'auto',
+          // border: '2px solid green',
           backgroundColor: '#ffffff',
           boxShadow: 'none',
           overflowX: 'hidden',
@@ -181,7 +184,7 @@ const Step4_Profile1 = () => {
             alignItems: 'center',
             px: { xs: 3, sm: 4, md: 5 },
             py: { xs: 3, sm: 4 },
-            height: '100%',
+            minHeight: '100%',
             backgroundColor: '#ffffff',
             '@media (max-width:1200px)': {
               width: '100%',
@@ -258,7 +261,7 @@ const Step4_Profile1 = () => {
               className='w-full h-full rounded-xl flex flex-col'
             >
               {/* Top Section - Hero */}
-              <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
+              <Box sx={{ mb: 2, position: 'relative', zIndex: 1 }}>
                 {/* Main Title */}
                 <Typography
                   variant="h3"
