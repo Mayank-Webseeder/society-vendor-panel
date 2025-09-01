@@ -142,7 +142,7 @@ const UserProfile = () => {
           className="hidden md:flex md:w-[20%] lg:w-[16%] xl:w-[15%] bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl flex-col shadow-[0_4px_14px_-4px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)]"
           variants={itemVariants}
         >
-          <div className="flex flex-col gap-1.5 px-3 py-6">
+          <div className="flex flex-col gap-2.5 px-3 py-6">
             {sidebarOptions.map(opt => (
               <motion.div
                 key={opt.label}
@@ -158,11 +158,11 @@ const UserProfile = () => {
                 variants={itemVariants}
                 whileHover={{ y: -2, scale: 1.02 }}
               >
-                <span className='hidden md:block text-base group-hover:scale-[1.08] transition-transform duration-300'>
+                <span className='hidden md:flex text-base group-hover:scale-[1.08] transition-transform duration-300'>
                   {opt.icon}
                 </span>
                 <span className="flex flex-col items-center text-center xl:flex-row xl:ml-1.5 gap-1 tracking-tight leading-tight text-sm xl:text-[0.95rem]">
-                  <span style={{ fontFamily: 'Manrope' }} className="flex items-center gap-1">
+                  <span style={{ fontFamily: 'Roboto' }} className="flex items-center gap-1">
                     {opt.label}
                     {opt.isPremium  &&  !user.subscription_active  &&  <LockIconMui sx={{ fontSize: 16, color: '#F59E0B' }} />}
                   </span>

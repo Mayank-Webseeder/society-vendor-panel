@@ -18,8 +18,8 @@ import FAQ from './pages/FAQ';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
-import PaymentSuccess from './pages/payment/PaymentSuccess';
-import PaymentFailure from './pages/payment/PaymentFailure';
+// import PaymentSuccess from './pages/payment/PaymentSuccess';
+// import PaymentFailure from './pages/payment/PaymentFailure';
 import AuthPage from './pages/auth/AuthPage';
 import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -75,8 +75,8 @@ function App() {
 
         {/* Payment (not a protected route) */}
         <Route path="/payment" element={<Payment />} />
-        <Route path="/payment/success" element={<PaymentSuccess />} />
-        <Route path="/payment/failure" element={<PaymentFailure />} />
+        {/* <Route path="/payment/success" element={<PaymentSuccess />} /> */}
+        {/* <Route path="/payment/failure" element={<PaymentFailure />} /> */}
 
 
         {/* Main App */}

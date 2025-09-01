@@ -110,7 +110,7 @@ const Login = ({ onSwitch, onLogin }) => {
     >
       <motion.h2
         className="text-2xl sm:text-3xl font-semibold text-white text-center mb-6"
-        style={{ fontFamily:"Loto" }}
+        style={{ fontFamily:"Parisienne" }}
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.5 }}

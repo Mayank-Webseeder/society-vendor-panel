@@ -156,7 +156,7 @@ const AuthPage = () => {
               background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '2.25rem', sm: '3rem', md: '4rem' },
+              fontSize: { xs: '2.35rem', sm: '3rem', md: '4rem' },
               fontFamily: 'Roboto, sans-serif',
               letterSpacing: '0.05em',
               textAlign: 'center',
