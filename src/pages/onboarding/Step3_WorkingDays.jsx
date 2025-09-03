@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Paper, Typography, Button, Box, Fade, Zoom } from '@mui/material';
-import { CheckCircle, EventAvailable } from '@mui/icons-material';
-import onboardingImage from '../../assets/onboardingImage.png';
-import { useOnBoarding } from './OnboardingContext';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Paper, Typography, Button, Box, Fade, Zoom } from "@mui/material";
+import { CheckCircle, EventAvailable } from "@mui/icons-material";
+import onboardingImage from "../../assets/onboardingImage.png";
+import { useOnBoarding } from "./OnboardingContext";
+import faviconFinal from "/faviconFinal.png";
 
-const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
+const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const Step3_WorkingDays = () => {
-
   const navigate = useNavigate();
   const { onboardingData, updateOnboardingData } = useOnBoarding();
 
-  const [selectedDays, setSelectedDays] = useState(onboardingData.workingDays || []);
-  const [error, setError] = useState('');
+  const [selectedDays, setSelectedDays] = useState(
+    onboardingData.workingDays || []
+  );
+  const [error, setError] = useState("");
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Step3_WorkingDays = () => {
   }, []);
 
   useEffect(() => {
-    const orderedDays = daysOfWeek.filter(day => selectedDays.includes(day));
+    const orderedDays = daysOfWeek.filter((day) => selectedDays.includes(day));
     updateOnboardingData({
       workingDays: orderedDays,
     });
@@ -38,90 +39,193 @@ const Step3_WorkingDays = () => {
 
   const handleContinue = () => {
     if (selectedDays.length === 0) {
-      setError('Please select at least one working day.');
+      setError("Please select at least one working day.");
       return;
     }
 
-    setError('');
-    navigate('/auth/onboarding/profile-1');
+    setError("");
+    navigate("/auth/onboarding/profile-1");
   };
 
-
-
   return (
-    <div style={{ position: 'relative', width: '80%', height: '80%' }}>
+    <div
+      style={{
+        position: "relative",
+        width: window.innerWidth < 640 ? "100%" : "80%",
+        height: window.innerWidth < 640 ? "100%" : "80%",
+      }}
+    >
       <Paper
         elevation={0}
         sx={{
-          width: '100%',
-          height: '100%',
-          minHeight: '620px',
-          display: 'flex',
-          borderRadius: '16px',
-          overflowY: 'auto',
-          backgroundColor: '#ffffff',
-          border: 'none',
-          boxShadow: 'none',
+          width: "100%",
+          height: "100%",
+          minHeight: { sm: "620px" },
+          display: "flex",
+          position: "relative",
+          borderRadius: "16px",
+          // backgroundColor: '#ffffff',
+          border: "none",
+          boxShadow: "none",
+          overflowY: "auto",
+          overflow: "hidden",
+          background: {
+            xs: "linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)",
+            sm: "#ffffff",
+          },
+          backgroundBlendMode: { xs: "normal", sm: "normal" },
+          // Subtle overlay patterns matching OnboardingLayout
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: {
+              xs: `
+                radial-gradient(circle at 30% 30%, rgba(59,130,246,0.08), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(139,92,246,0.06), transparent 45%)
+              `,
+              sm: "none",
+            },
+            backgroundSize: {
+              xs: "400px 400px, 300px 300px, 20px 20px",
+              sm: "auto",
+            },
+            opacity: { xs: 0.7, sm: 0 },
+            pointerEvents: "none",
+            zIndex: 1,
+          },
+          // No additional decorative layer for desktop
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "none",
+            opacity: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+          },
           // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
-          '&::-webkit-scrollbar': {
-            display: 'none',
+          "&::-webkit-scrollbar": {
+            display: "none",
           },
           // Hide scrollbar for Firefox
-          scrollbarWidth: 'none',
+          scrollbarWidth: "none",
           // Alternative for older browsers
-          msOverflowStyle: 'none',
-          '@media (max-width:1150px)': {
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
+          msOverflowStyle: "none",
+          "@media (max-width:639px)": {
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            // minHeight: '100vh',
+          },
+          "@media (min-width:640px) and (max-width:1150px)": {
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
           },
         }}
       >
-
         {/* Debugging Purposes */}
         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
+        <img
+          src={faviconFinal}
+          className="flex sm:hidden absolute top-1.5 left-2 z-10 w-12 h-12"
+          alt="logo"
+        />
 
         {/* Left Half: Redesigned Content with Pure White Background */}
         <Box
           sx={{
-            display: 'flex',
+            display: "flex",
             flex: 1,
-            flexDirection: 'column',
-            position: 'relative',
+            flexDirection: "column",
+            position: "relative",
             minWidth: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             px: { xs: 3, sm: 4, md: 5 },
             py: { xs: 3, sm: 4 },
-            height: '100%',
-            backgroundColor: '#ffffff',
-            overflow: 'hidden',
-            '@media (max-width:1200px)': {
-              width: '100%',
-              alignItems: 'center',
-              flex: 'unset',
+            minHeight: "100%",
+            backgroundColor: { xs: "transparent", sm: "#ffffff" },
+            overflow: "visible",
+            flexWrap: "wrap",
+            zIndex: 2,
+            "@media (max-width:639px)": {
+              width: "100%",
+              minHeight: "100vh",
+              justifyContent: "center",
+              alignItems: "center",
+              px: 4,
+              py: 4,
+              flex: "unset",
+              // Mobile white card container with subtle shadow
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: "8%",
+                left: "5%",
+                right: "5%",
+                bottom: "8%",
+                background: `
+                  linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.95) 0%, 
+                    rgba(248, 250, 252, 0.98) 50%,
+                    rgba(255, 255, 255, 0.95) 100%
+                  )
+                `,
+                backdropFilter: "blur(20px)",
+                borderRadius: "20px",
+                border: "1px solid rgba(255, 255, 255, 0.8)",
+                boxShadow: `
+                  0 20px 60px rgba(0, 0, 0, 0.4),
+                  0 8px 24px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 1),
+                  inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+                `,
+                zIndex: -1,
+              },
+            },
+            "@media (min-width:640px) and (max-width:1200px)": {
+              width: "100%",
+              alignItems: "center",
+              flex: "unset",
               minWidth: 0,
             },
-            '@media (min-width:1201px)': {
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '60%',
+            "@media (min-width:1201px)": {
+              alignItems: "center",
+              justifyContent: "center",
+              width: "60%",
             },
           }}
         >
           {/* Subtle background patterns */}
           <div
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundImage: `
+              backgroundImage:
+                window.innerWidth < 640
+                  ? `
+                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 20% 90%, rgba(255, 255, 255, 0.08) 0%, transparent 40%)
+              `
+                  : `
                 radial-gradient(circle at 20% 20%, rgba(86, 169, 217, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%)
               `,
-              pointerEvents: 'none',
+              pointerEvents: "none",
               zIndex: 0,
             }}
           />
@@ -129,212 +233,373 @@ const Step3_WorkingDays = () => {
           {/* Decorative corner accents */}
           <div
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               right: 0,
-              width: '120px',
-              height: '120px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)',
-              transform: 'translate(50%, -50%)',
+              width: "120px",
+              height: "120px",
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)",
+              transform: "translate(50%, -50%)",
+              display: window.innerWidth >= 640 ? "block" : "none",
               zIndex: 0,
             }}
           />
 
           <div
             style={{
-              position: 'absolute',
+              position: "absolute",
               bottom: 0,
               left: 0,
-              width: '150px',
-              height: '150px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)',
-              transform: 'translate(-50%, 50%)',
+              width: "150px",
+              height: "150px",
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)",
+              transform: "translate(-50%, 50%)",
+              display: window.innerWidth >= 640 ? "block" : "none",
               zIndex: 0,
             }}
           />
 
           <Fade in={showContent} timeout={1000}>
             <div
-              style={{ 
-                flex: 1, 
-                display: 'flex', 
-                flexDirection: 'column', 
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                position: 'relative', 
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent:
+                  window.innerWidth < 640 ? "flex-start" : "space-between",
+                alignItems: "center",
+                position: "relative",
                 minWidth: 0,
-                width: '100%',
-                zIndex: 1,
-                textAlign: 'center',
-                minHeight: '100%',
+                width: "100%",
+                textAlign: "center",
+                minHeight: window.innerWidth < 640 ? "auto" : "100%",
+                maxHeight:
+                  window.innerWidth < 640 ? "calc(80vh - 80px)" : "100%",
+                gap: window.innerWidth < 640 ? 3 : 0,
+                overflowY: window.innerWidth < 640 ? "auto" : "visible",
+                paddingRight: window.innerWidth < 640 ? "8px" : "0",
+                // Custom scrollbar styling for mobile
+                "&::WebkitScrollbar":
+                  window.innerWidth < 640
+                    ? {
+                        width: "4px",
+                      }
+                    : {},
+                "&::WebkitScrollbarTrack":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: "2px",
+                      }
+                    : {},
+                "&::WebkitScrollbarThumb":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.3)",
+                        borderRadius: "2px",
+                      }
+                    : {},
+                "&::WebkitScrollbarThumb:hover":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.5)",
+                      }
+                    : {},
               }}
-              className='w-full h-full rounded-xl flex flex-col'
+              className="w-full h-full rounded-xl z-40 flex flex-col"
             >
               {/* Top Section - Hero */}
-              <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
-                {/* Main Title */}
-                <Typography
-                  variant="h3"
+              <Box
+                sx={{
+                  mb: { xs: 3, sm: 4 },
+                  position: "relative",
+                  zIndex: 1,
+                  width: "100%",
+                }}
+              >
+                {/* Mobile: Enhanced Corporate Header */}
+                <Box
                   sx={{
-                    fontWeight: '700',
-                    background: 'linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
-                    fontFamily: 'Roboto, sans-serif',
-                    letterSpacing: '0.02em',
-                    textAlign: 'center',
-                    mb: 1.5,
-                    position: 'relative',
-                    '&::after': {
+                    display: { xs: "block", sm: "none" },
+                    textAlign: "center",
+                    mb: 4,
+                    position: "relative",
+                    "&::before": {
                       content: '""',
-                      position: 'absolute',
-                      bottom: '-6px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '50%',
-                      height: '2px',
-                      background: 'linear-gradient(90deg, #56A9D9, #1e3a8a)',
-                      borderRadius: '1px',
+                      position: "absolute",
+                      top: "-20px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "60px",
+                      height: "4px",
+                      background:
+                        "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.8) 100%)", // changed color
+                      borderRadius: "2px",
                     },
                   }}
                 >
-                  Choose Your Days
-                </Typography>
-
-                {/* Subtitle */}
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: 'rgba(30, 58, 138, 0.7)',
-                    fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
-                    fontWeight: '400',
-                    textAlign: 'center',
-                    mb: 2,
-                    fontFamily: 'Roboto, sans-serif',
-                  }}
-                >
-                  Select the days you're available to work
-                </Typography>
-
-                {/* Decorative Icon */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    mt: 2,
-                    mb: 3,
-                  }}
-                >
-                  <Box
+                  <Typography
+                    variant="h4"
                     sx={{
-                      width: 60,
-                      height: 60,
-                      borderRadius: '16px',
-                      background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
-                      animation: 'float 3s ease-in-out infinite',
-                      '@keyframes float': {
-                        '0%, 100%': { transform: 'translateY(0px)' },
-                        '50%': { transform: 'translateY(-8px)' },
+                      fontWeight: "800",
+                      background:
+                        "linear-gradient(135deg, rgba(30, 58, 138, 0.98) 0%, rgba(37, 99, 235, 0.95) 50%, rgba(29, 78, 216, 0.92) 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      fontSize: "2.4rem",
+                      fontFamily: '"Inter", "Roboto", sans-serif',
+                      letterSpacing: "-0.01em",
+                      mb: 2,
+                      textShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: "-8px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "80px",
+                        height: "3px",
+                        background:
+                          "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 1) 50%, rgba(29, 78, 216, 0.8) 100%)", // changed color
+                        borderRadius: "2px",
                       },
                     }}
                   >
-                    <EventAvailable sx={{ fontSize: 30, color: 'white' }} />
+                    Working Days
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: "rgba(30, 58, 138, 1)", // changed color
+                      fontSize: "1.1rem",
+                      fontWeight: "500",
+                      mb: 3,
+                      px: 2,
+                      textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                      lineHeight: 1.5,
+                      fontFamily: '"Inter", "Roboto", sans-serif',
+                      maxWidth: "280px",
+                      mx: "auto",
+                      position: "relative",
+                    }}
+                  >
+                    Select the days you're available to work
+                  </Typography>
+                  {/* Mobile: Enhanced floating icon with vibrant gradient */}
+                  <Box
+                    sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: "20px",
+                        background:
+                          "linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(29, 78, 216, 0.95) 100%)",
+                        backdropFilter: "blur(20px)",
+                        border: "2px solid rgba(59, 130, 246, 0.6)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: `
+                                          0 12px 40px rgba(59, 130, 246, 0.4),
+                                          0 4px 16px rgba(37, 99, 235, 0.3),
+                                          inset 0 1px 0 rgba(255, 255, 255, 0.4)
+                                        `,
+                        animation: "pulse 2s ease-in-out infinite",
+                        "@keyframes pulse": {
+                          "0%, 100%": {
+                            transform: "scale(1)",
+                            boxShadow: "0 12px 40px rgba(59, 130, 246, 0.4)",
+                          },
+                          "50%": {
+                            transform: "scale(1.05)",
+                            boxShadow: "0 16px 56px rgba(59, 130, 246, 0.5)",
+                          },
+                        },
+                      }}
+                    >
+                      <EventAvailable sx={{ color: "white", fontSize: 30 }} />
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Desktop: Original Hero Design */}
+                <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                  {/* Main Title */}
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      fontWeight: "700",
+                      background:
+                        "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      fontSize: { xs: "2rem", sm: "2.5rem", md: "2.8rem" },
+                      fontFamily: "Roboto, sans-serif",
+                      letterSpacing: "0.02em",
+                      textAlign: "center",
+                      mb: 1.5,
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: "-6px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "30%",
+                        height: "3px",
+                        background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
+                        borderRadius: "1px",
+                      },
+                    }}
+                  >
+                    Choose Your Days
+                  </Typography>
+
+                  {/* Subtitle */}
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "rgba(30, 58, 138, 0.7)",
+                      fontSize: { xs: "0.95rem", sm: "1rem", md: "1.1rem" },
+                      fontWeight: "400",
+                      textAlign: "center",
+                      mb: 2,
+                      fontFamily: "Roboto, sans-serif",
+                    }}
+                  >
+                    Select the days you're available to work
+                  </Typography>
+
+                  {/* Decorative Icon */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      mt: 2,
+                      mb: 3,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: "16px",
+                        background:
+                          "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 6px 24px rgba(86, 169, 217, 0.3)",
+                        animation: "float 3s ease-in-out infinite",
+                        "@keyframes float": {
+                          "0%, 100%": { transform: "translateY(0px)" },
+                          "50%": { transform: "translateY(-8px)" },
+                        },
+                      }}
+                    >
+                      <EventAvailable sx={{ fontSize: 30, color: "white" }} />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
 
               {/* Middle Section - Form Content */}
               <div className="flex flex-col w-full items-center flex-1">
-
                 {/* Working Days Selection - Compact Design */}
                 <Box
                   sx={{
-                    display: 'grid',
+                    display: "grid",
                     gridTemplateColumns: {
-                      xs: 'repeat(auto-fit, minmax(70px, 1fr))',
-                      sm: 'repeat(5, 1fr)',
+                      xs: "repeat(auto-fit, minmax(70px, 1fr))",
+                      sm: "repeat(5, 1fr)",
                     },
                     gap: { xs: 1.5, sm: 2 },
                     mb: { xs: 4, sm: 5 },
-                    maxWidth: '500px',
-                    width: '100%',
+                    maxWidth: "500px",
+                    width: { xs: "95%", sm: "100%" },
                   }}
                 >
                   {daysOfWeek.map((day, index) => (
-                    <Zoom 
-                      key={day} 
-                      in={showContent} 
+                    <Zoom
+                      key={day}
+                      in={showContent}
                       timeout={600 + index * 100}
                     >
                       <Button
                         variant="contained"
                         onClick={() => handleDayToggle(day)}
                         sx={{
-                          minWidth: 'auto',
+                          minWidth: "auto",
                           px: { xs: 1.5, sm: 2.5 },
                           py: { xs: 1.2, sm: 1.5 },
-                          borderRadius: '12px',
-                          fontSize: { xs: '0.85rem', sm: '0.95rem' },
-                          fontWeight: '600',
-                          textTransform: 'none',
-                          position: 'relative',
-                          overflow: 'hidden',
-                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                          transform: 'translateY(0)',
-                          color: selectedDays.includes(day) ? 'white' : '#56A9D9',
-                          background: selectedDays.includes(day) 
-                            ? 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)' 
-                            : 'linear-gradient(135deg, rgba(86, 169, 217, 0.08) 0%, rgba(66, 165, 245, 0.05) 100%)',
-                          border: selectedDays.includes(day) 
-                            ? '2px solid transparent' 
-                            : '2px solid rgba(86, 169, 217, 0.2)',
-                          boxShadow: selectedDays.includes(day) 
-                            ? '0 6px 20px rgba(86, 169, 217, 0.3)' 
-                            : '0 2px 8px rgba(86, 169, 217, 0.1)',
-                          '&:hover': {
-                            transform: 'translateY(-2px) scale(1.03)',
-                            boxShadow: selectedDays.includes(day) 
-                              ? '0 8px 25px rgba(86, 169, 217, 0.4)' 
-                              : '0 4px 16px rgba(86, 169, 217, 0.2)',
-                            background: selectedDays.includes(day) 
-                              ? 'linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)' 
-                              : 'linear-gradient(135deg, rgba(86, 169, 217, 0.15) 0%, rgba(66, 165, 245, 0.1) 100%)',
+                          borderRadius: "12px",
+                          fontSize: { xs: "0.85rem", sm: "0.95rem" },
+                          fontWeight: "600",
+                          textTransform: "none",
+                          position: "relative",
+                          overflow: "hidden",
+                          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                          transform: "translateY(0)",
+                          color: selectedDays.includes(day)
+                            ? "white"
+                            : "#56A9D9",
+                          background: selectedDays.includes(day)
+                            ? "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)"
+                            : "linear-gradient(135deg, rgba(86, 169, 217, 0.08) 0%, rgba(66, 165, 245, 0.05) 100%)",
+                          border: selectedDays.includes(day)
+                            ? "2px solid transparent"
+                            : "2px solid rgba(86, 169, 217, 0.2)",
+                          boxShadow: selectedDays.includes(day)
+                            ? "0 6px 20px rgba(86, 169, 217, 0.3)"
+                            : "0 2px 8px rgba(86, 169, 217, 0.1)",
+                          "&:hover": {
+                            transform: "translateY(-2px) scale(1.03)",
+                            boxShadow: selectedDays.includes(day)
+                              ? "0 8px 25px rgba(86, 169, 217, 0.4)"
+                              : "0 4px 16px rgba(86, 169, 217, 0.2)",
+                            background: selectedDays.includes(day)
+                              ? "linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)"
+                              : "linear-gradient(135deg, rgba(86, 169, 217, 0.15) 0%, rgba(66, 165, 245, 0.1) 100%)",
                           },
-                          '&:active': {
-                            transform: 'translateY(-1px) scale(1.01)',
+                          "&:active": {
+                            transform: "translateY(-1px) scale(1.01)",
                           },
                           ...(selectedDays.includes(day) && {
-                            '&::before': {
+                            "&::before": {
                               content: '""',
-                              position: 'absolute',
+                              position: "absolute",
                               top: 0,
                               left: 0,
                               right: 0,
                               bottom: 0,
-                              background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
-                              pointerEvents: 'none',
+                              background:
+                                "linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
+                              pointerEvents: "none",
                             },
                           }),
                         }}
                       >
                         {selectedDays.includes(day) && (
-                          <CheckCircle 
-                            sx={{ 
-                              fontSize: '0.9rem', 
+                          <CheckCircle
+                            sx={{
+                              fontSize: "0.9rem",
                               mr: 0.4,
-                              animation: 'checkPulse 2s ease-in-out infinite',
-                              '@keyframes checkPulse': {
-                                '0%, 100%': { opacity: 0.8, transform: 'scale(1)' },
-                                '50%': { opacity: 1, transform: 'scale(1.1)' },
+                              animation: "checkPulse 2s ease-in-out infinite",
+                              "@keyframes checkPulse": {
+                                "0%, 100%": {
+                                  opacity: 0.8,
+                                  transform: "scale(1)",
+                                },
+                                "50%": { opacity: 1, transform: "scale(1.1)" },
                               },
-                            }} 
+                            }}
                           />
                         )}
                         {day}
@@ -349,14 +614,14 @@ const Step3_WorkingDays = () => {
                     <Box
                       sx={{
                         p: 2,
-                        borderRadius: '12px',
-                        background: 'rgba(244, 67, 54, 0.08)',
-                        border: '1px solid rgba(244, 67, 54, 0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
+                        borderRadius: "12px",
+                        background: "rgba(244, 67, 54, 0.08)",
+                        border: "1px solid rgba(244, 67, 54, 0.2)",
+                        display: "flex",
+                        alignItems: "center",
                         gap: 2,
-                        width: '100%',
-                        maxWidth: '350px',
+                        width: "100%",
+                        maxWidth: "350px",
                         mb: 3,
                       }}
                     >
@@ -364,16 +629,17 @@ const Step3_WorkingDays = () => {
                         sx={{
                           width: 4,
                           height: 35,
-                          borderRadius: '2px',
-                          background: 'linear-gradient(135deg, #f44336 0%, #ff5252 100%)',
+                          borderRadius: "2px",
+                          background:
+                            "linear-gradient(135deg, #f44336 0%, #ff5252 100%)",
                         }}
                       />
-                      <Typography 
-                        variant="body2" 
-                        sx={{ 
-                          color: '#d32f2f', 
-                          fontWeight: '500',
-                          fontSize: '0.9rem',
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#d32f2f",
+                          fontWeight: "500",
+                          fontSize: "0.9rem",
                         }}
                       >
                         {error}
@@ -384,44 +650,47 @@ const Step3_WorkingDays = () => {
               </div>
 
               {/* Bottom Section - Continue Button */}
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
                 <Button
                   variant="contained"
                   onClick={handleContinue}
                   sx={{
                     py: 2,
                     px: 5,
-                    background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-                    color: 'white',
-                    fontWeight: '600',
-                    fontSize: '1.1rem',
-                    borderRadius: '12px',
-                    boxShadow: '0 6px 20px rgba(86, 169, 217, 0.3)',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    textTransform: 'none',
-                    minWidth: '180px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)',
-                      boxShadow: '0 8px 28px rgba(86, 169, 217, 0.4)',
-                      transform: 'translateY(-2px)',
+                    background:
+                      "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
+                    color: "white",
+                    fontWeight: "600",
+                    fontSize: "1.1rem",
+                    borderRadius: "12px",
+                    boxShadow: "0 6px 20px rgba(86, 169, 217, 0.3)",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    textTransform: "none",
+                    minWidth: "180px",
+                    position: "relative",
+                    overflow: "hidden",
+                    "&:hover": {
+                      background:
+                        "linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)",
+                      boxShadow: "0 8px 28px rgba(86, 169, 217, 0.4)",
+                      transform: "translateY(-2px)",
                     },
-                    '&:active': {
-                      transform: 'translateY(-1px)',
+                    "&:active": {
+                      transform: "translateY(-1px)",
                     },
-                    '&::before': {
+                    "&::before": {
                       content: '""',
-                      position: 'absolute',
+                      position: "absolute",
                       top: 0,
-                      left: '-100%',
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                      transition: 'left 0.5s',
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                      transition: "left 0.5s",
                     },
-                    '&:hover::before': {
-                      left: '100%',
+                    "&:hover::before": {
+                      left: "100%",
                     },
                   }}
                 >
@@ -435,44 +704,44 @@ const Step3_WorkingDays = () => {
         {/* Right Half: Pure White Image Section */}
         <Box
           sx={{
-            width: '40%',
-            flex:1,
-            display: { xs: 'none', lg: 'flex' },
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            backgroundColor: '#ffffff',
-            '@media (max-width:1150px)': {
-              display: 'none',
+            width: "40%",
+            flex: 1,
+            display: { xs: "none", lg: "flex" },
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            backgroundColor: "#ffffff",
+            "@media (max-width:1150px)": {
+              display: "none",
             },
           }}
         >
           <Fade in={showContent} timeout={1200}>
             <Box
               sx={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                height: '100%',
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "100%",
               }}
             >
               <img
                 src={onboardingImage}
                 alt="Professional Service Illustration"
                 style={{
-                  maxWidth: '85%',
-                  height: 'auto',
-                  position: 'relative',
+                  maxWidth: "85%",
+                  height: "auto",
+                  position: "relative",
                   zIndex: 1,
-                  transition: 'transform 0.3s ease',
+                  transition: "transform 0.3s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.transform = 'scale(1.02) translateY(-5px)';
+                  e.target.style.transform = "scale(1.02) translateY(-5px)";
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.transform = 'scale(1) translateY(0px)';
+                  e.target.style.transform = "scale(1) translateY(0px)";
                 }}
               />
             </Box>

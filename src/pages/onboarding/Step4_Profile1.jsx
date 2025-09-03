@@ -5,6 +5,7 @@ import { Paperclip, User, Building, Briefcase, Shield, CheckCircle, IndianRupee,
 import { MdOutlinePayment } from "react-icons/md";
 import { BiReceipt } from "react-icons/bi";
 import { useOnBoarding } from './OnboardingContext';
+import faviconFinal from '/faviconFinal.png';
 
 
 const Step4_Profile1 = () => {
@@ -138,21 +139,66 @@ const Step4_Profile1 = () => {
 
 
   return (
-    <div style={{ position: 'relative', width: '80%', height: '80%' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: window.innerWidth < 640 ? '100%' : '80%',
+        height: window.innerWidth < 640 ? '100%' : '80%',
+      }}
+    >
       <Paper
         elevation={0}
         sx={{
           width: '100%',
           height: '100%',
+          maxHeight: { sm: '620px' },
           display: 'flex',
-          minHeight: '620px',
-          maxHeight: '620px',
+          position: 'relative',
           borderRadius: '16px',
-          overflowY: 'auto',
-          // border: '2px solid green',
-          backgroundColor: '#ffffff',
+          border: 'none',
           boxShadow: 'none',
+          overflowY: 'auto',
           overflowX: 'hidden',
+          background: {
+            xs: 'linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)',
+            sm: '#ffffff',
+          },
+          backgroundBlendMode: { xs: 'normal', sm: 'normal' },
+          // Subtle overlay patterns matching Step3
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: {
+              xs: `
+                radial-gradient(circle at 30% 30%, rgba(59,130,246,0.08), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(139,92,246,0.06), transparent 45%)
+              `,
+              sm: 'none',
+            },
+            backgroundSize: {
+              xs: '400px 400px, 300px 300px, 20px 20px',
+              sm: 'auto',
+            },
+            opacity: { xs: 0.7, sm: 0 },
+            pointerEvents: 'none',
+            zIndex: 1,
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'none',
+            opacity: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+          },
           // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
           '&::-webkit-scrollbar': {
             display: 'none',
@@ -161,13 +207,23 @@ const Step4_Profile1 = () => {
           scrollbarWidth: 'none',
           // Alternative for older browsers
           msOverflowStyle: 'none',
-          '@media (max-width:1150px)': {
+          '@media (max-width:639px)': {
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          '@media (min-width:640px) and (max-width:1150px)': {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
           },
         }}
       >
+        <img
+          src={faviconFinal}
+          className="flex sm:hidden absolute top-1.5 left-2 z-10 w-12 h-12"
+          alt="logo"
+        />
 
         {/* Debugging Purposes */}
         {/* <pre className='pt-56'>{JSON.stringify(onboardingData, null, 2)}</pre> */}
@@ -180,13 +236,51 @@ const Step4_Profile1 = () => {
             flexDirection: 'column',
             position: 'relative',
             minWidth: 0,
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             alignItems: 'center',
             px: { xs: 3, sm: 4, md: 5 },
             py: { xs: 3, sm: 4 },
             minHeight: '100%',
-            backgroundColor: '#ffffff',
-            '@media (max-width:1200px)': {
+            backgroundColor: { xs: 'transparent', sm: '#ffffff' },
+            overflow: 'visible',
+            flexWrap: 'wrap',
+            zIndex: 2,
+            '@media (max-width:639px)': {
+              width: '100%',
+              minHeight: '100vh',
+              justifyContent: 'center',
+              alignItems: 'center',
+              px: 4,
+              py: 4,
+              flex: 'unset',
+              // Mobile white card container with subtle shadow
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: '8%',
+                left: '5%',
+                right: '5%',
+                bottom: '8%',
+                background: `
+                  linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.95) 0%, 
+                    rgba(248, 250, 252, 0.98) 50%,
+                    rgba(255, 255, 255, 0.95) 100%
+                  )
+                `,
+                backdropFilter: 'blur(20px)',
+                borderRadius: '20px',
+                border: '1px solid rgba(255, 255, 255, 0.8)',
+                boxShadow: `
+                  0 20px 60px rgba(0, 0, 0, 0.4),
+                  0 8px 24px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 1),
+                  inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+                `,
+                zIndex: -1,
+              },
+            },
+            '@media (min-width:640px) and (max-width:1200px)': {
               width: '100%',
               alignItems: 'center',
               flex: 'unset',
@@ -194,8 +288,8 @@ const Step4_Profile1 = () => {
             },
             '@media (min-width:1201px)': {
               alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
+              justifyContent: 'center',
+              width: '60%',
             },
           }}
         >
@@ -207,7 +301,15 @@ const Step4_Profile1 = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundImage: `
+              backgroundImage:
+                window.innerWidth < 640
+                  ? `
+                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 20% 90%, rgba(255, 255, 255, 0.08) 0%, transparent 40%)
+              `
+                  : `
                 radial-gradient(circle at 20% 20%, rgba(86, 169, 217, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%)
               `,
@@ -227,6 +329,7 @@ const Step4_Profile1 = () => {
               background: 'radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)',
               transform: 'translate(50%, -50%)',
               zIndex: 0,
+              display: window.innerWidth < 640 ? 'none' : 'block',
             }}
           />
           <div
@@ -240,6 +343,7 @@ const Step4_Profile1 = () => {
               background: 'radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)',
               transform: 'translate(-50%, 50%)',
               zIndex: 0,
+              display: window.innerWidth < 640 ? 'none' : 'block',
             }}
           />
 
@@ -249,91 +353,212 @@ const Step4_Profile1 = () => {
                 flex: 1, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                justifyContent: 'space-between',
+                justifyContent:
+                  window.innerWidth < 640 ? "flex-start" : "space-between",
                 alignItems: 'center',
                 position: 'relative', 
                 minWidth: 0,
                 width: '100%',
-                zIndex: 1,
                 textAlign: 'center',
-                minHeight: '100%',
+                minHeight: window.innerWidth < 640 ? "auto" : "100%",
+                maxHeight:
+                  window.innerWidth < 640 ? "calc(80vh - 80px)" : "100%",
+                gap: window.innerWidth < 640 ? 3 : 0,
+                overflowY: window.innerWidth < 640 ? "auto" : "visible",
+                paddingRight: window.innerWidth < 640 ? "8px" : "0",
+                // Custom scrollbar styling for mobile
+                "&::WebkitScrollbar":
+                  window.innerWidth < 640
+                    ? {
+                        width: "4px",
+                      }
+                    : {},
+                "&::WebkitScrollbarTrack":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: "2px",
+                      }
+                    : {},
+                "&::WebkitScrollbarThumb":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.3)",
+                        borderRadius: "2px",
+                      }
+                    : {},
+                "&::WebkitScrollbarThumb:hover":
+                  window.innerWidth < 640
+                    ? {
+                        background: "rgba(255, 255, 255, 0.5)",
+                      }
+                    : {},
               }}
-              className='w-full h-full rounded-xl flex flex-col'
+              className='w-full h-full rounded-xl z-40 flex flex-col'
             >
               {/* Top Section - Hero */}
-              <Box sx={{ mb: 2, position: 'relative', zIndex: 1 }}>
-                {/* Main Title */}
-                <Typography
-                  variant="h3"
+              <Box sx={{ mb: { xs: 3, sm: 2 }, position: 'relative', zIndex: 1, width: '100%' }}>
+                {/* Mobile: Enhanced Corporate Header (match Step3 style) */}
+                <Box
                   sx={{
-                    fontWeight: '700',
-                    background: 'linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
-                    fontFamily: 'Roboto, sans-serif',
-                    letterSpacing: '0.02em',
+                    display: { xs: 'block', sm: 'none' },
                     textAlign: 'center',
-                    mb: 1.5,
+                    mb: 4,
                     position: 'relative',
-                    '&::after': {
+                    '&::before': {
                       content: '""',
                       position: 'absolute',
-                      bottom: '-6px',
+                      top: '-20px',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      width: '50%',
-                      height: '2px',
-                      background: 'linear-gradient(90deg, #56A9D9, #1e3a8a)',
-                      borderRadius: '1px',
+                      width: '60px',
+                      height: '4px',
+                      background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.8) 100%)',
+                      borderRadius: '2px',
                     },
                   }}
                 >
-                  Complete Your Profile
-                </Typography>
-
-                {/* Subtitle */}
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: 'rgba(30, 58, 138, 0.7)',
-                    fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
-                    fontWeight: '400',
-                    textAlign: 'center',
-                    mb: 2,
-                    fontFamily: 'Roboto, sans-serif',
-                  }}
-                >
-                  Tell us about yourself to personalize your experience
-                </Typography>
-
-                {/* Decorative Icon */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    mt: 2,
-                    mb: 3,
-                  }}
-                >
-                  <Box
+                  <Typography
+                    variant="h4"
                     sx={{
-                      width: 60,
-                      height: 60,
-                      borderRadius: '16px',
-                      background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
-                      animation: 'float 3s ease-in-out infinite',
-                      '@keyframes float': {
-                        '0%, 100%': { transform: 'translateY(0px)' },
-                        '50%': { transform: 'translateY(-8px)' },
+                      fontWeight: '800',
+                      background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.98) 0%, rgba(37, 99, 235, 0.95) 50%, rgba(29, 78, 216, 0.92) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      fontSize: '2.2rem',
+                      fontFamily: '"Inter", "Roboto", sans-serif',
+                      letterSpacing: '-0.01em',
+                      mb: 2,
+                      textShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                      position: 'relative',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: '-8px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '80px',
+                        height: '3px',
+                        background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 1) 50%, rgba(29, 78, 216, 0.8) 100%)',
+                        borderRadius: '2px',
                       },
                     }}
                   >
-                    <UserCheck size={30} color="white" />
+                    Complete Profile
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'rgba(30, 58, 138, 1)',
+                      fontSize: '1.05rem',
+                      fontWeight: '500',
+                      mb: 3,
+                      px: 2,
+                      textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      lineHeight: 1.5,
+                      fontFamily: '"Inter", "Roboto", sans-serif',
+                      maxWidth: '280px',
+                      mx: 'auto',
+                      position: 'relative',
+                    }}
+                  >
+                    Tell us about yourself to personalize your experience
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                    <Box
+                      sx={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: '20px',
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(29, 78, 216, 0.95) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        border: '2px solid rgba(59, 130, 246, 0.6)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 12px 40px rgba(59, 130, 246, 0.4), 0 4px 16px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4)',
+                        animation: 'pulse 2s ease-in-out infinite',
+                        '@keyframes pulse': {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 12px 40px rgba(59, 130, 246, 0.4)' },
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 16px 56px rgba(59, 130, 246, 0.5)' },
+                        },
+                      }}
+                    >
+                      <UserCheck size={30} color="white" />
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Desktop: Original Hero Design (unchanged) */}
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      fontWeight: '700',
+                      background: 'linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
+                      fontFamily: 'Roboto, sans-serif',
+                      letterSpacing: '0.02em',
+                      textAlign: 'center',
+                      mb: 1.5,
+                      position: 'relative',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: '-6px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '20%',
+                        height: '3px',
+                        background: 'linear-gradient(90deg, #56A9D9, #1e3a8a)',
+                        borderRadius: '1px',
+                      },
+                    }}
+                  >
+                    Complete Your Profile
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'rgba(30, 58, 138, 0.7)',
+                      fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
+                      fontWeight: '400',
+                      textAlign: 'center',
+                      mb: 2,
+                      fontFamily: 'Roboto, sans-serif',
+                    }}
+                  >
+                    Tell us about yourself to personalize your experience
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      mt: 2,
+                      mb: 3,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: '16px',
+                        background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
+                        animation: 'float 3s ease-in-out infinite',
+                        '@keyframes float': {
+                          '0%, 100%': { transform: 'translateY(0px)' },
+                          '50%': { transform: 'translateY(-8px)' },
+                        },
+                      }}
+                    >
+                      <UserCheck size={30} color="white" />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -349,7 +574,7 @@ const Step4_Profile1 = () => {
                     columnGap: '5rem', 
                     rowGap: '1.9rem', 
                     marginBottom: '2rem',
-                    width: '100%',
+                    width: { xs: "90%", sm: "100%" },
                   }}
                 >
                   {/* Row 1: Name & Gender */}
@@ -384,9 +609,10 @@ const Step4_Profile1 = () => {
                         required
                         sx={{
                           '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
+                            borderRadius: { xs: '16px', sm: '12px' },
                             backgroundColor: focusedField === 'name' ? '#f0f9ff' : '#ffffff',
                             transition: 'all 0.3s ease',
+                            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
                             '& fieldset': {
                               borderColor: focusedField === 'name' ? '#56A9D9' : '#e2e8f0',
                               borderWidth: focusedField === 'name' ? '2px' : '1px',
@@ -400,14 +626,14 @@ const Step4_Profile1 = () => {
                             },
                           },
                           '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
+                            color: '#0f172a',
+                            fontSize: { xs: '16px', sm: '1rem' },
+                            py: { xs: '14px', sm: '14px' },
+                            px: { xs: '16px', sm: '16px' },
                             fontWeight: 500,
                           },
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
+                            color: { xs: '#64748b', sm: '#94a3b8' },
                             opacity: 1,
                           },
                         }}
@@ -441,23 +667,23 @@ const Step4_Profile1 = () => {
                             variant={gender === option ? 'contained' : 'outlined'}
                             onClick={() => setGender(option)}
                             sx={{
-                              // flex: 1,
-                              py: '8px',
-                              px:'20px',
-                              borderRadius: '12px',
+                              py: { xs: '6px', sm: '8px' },
+                              px: { xs: '10px', sm: '20px' },
+                              borderRadius: { xs: '16px', sm: '12px' },
                               textTransform: 'none',
                               fontWeight: 500,
-                              fontSize: '0.9rem',
+                              fontSize: { xs: '0.95rem', sm: '0.9rem' },
                               background: gender === option
                                 ? 'linear-gradient(135deg, #56A9D9 0%, #4A9FD1 100%)'
-                                : 'transparent',
-                              color: gender === option ? 'white' : '#56A9D9',
-                              borderColor: '#56A9D9',
+                                : 'linear-gradient(135deg, rgba(86, 169, 217, 0.08) 0%, rgba(66, 165, 245, 0.05) 100%)',
+                              color: gender === option ? 'white' : '#1e3a8a',
+                              borderColor: 'rgba(86, 169, 217, 0.4)',
+                              boxShadow: gender === option ? '0 6px 20px rgba(86, 169, 217, 0.3)' : '0 2px 8px rgba(86, 169, 217, 0.08)',
                               '&:hover': {
-                                backgroundColor: gender === option
-                                  ? 'linear-gradient(135deg, #4A9FD1 0%, #3B82E6 100%)' // Slightly darker gradient for hover
-                                  : '#f0f9ff',
-                                borderColor: '#56A9D9',
+                                background: gender === option
+                                  ? 'linear-gradient(135deg, #4A9FD1 0%, #3B82E6 100%)'
+                                  : 'linear-gradient(135deg, rgba(86, 169, 217, 0.15) 0%, rgba(66, 165, 245, 0.1) 100%)',
+                                borderColor: 'rgba(86, 169, 217, 0.5)',
                               },
                             }}
                           >
@@ -490,7 +716,7 @@ const Step4_Profile1 = () => {
                           <CheckCircle size={16} style={{ color: '#10B981' }} />
                         )}
                       </Typography>
-                      <TextField
+          <TextField
                         variant="outlined"
                         fullWidth
                         placeholder="Enter your business name"
@@ -501,9 +727,10 @@ const Step4_Profile1 = () => {
                         required
                         sx={{
                           '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            backgroundColor: focusedField === 'business' ? '#f0f9ff' : '#ffffff',
+            borderRadius: { xs: '16px', sm: '12px' },
+            backgroundColor: focusedField === 'business' ? '#f0f9ff' : '#ffffff',
                             transition: 'all 0.3s ease',
+            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
                             '& fieldset': {
                               borderColor: focusedField === 'business' ? '#56A9D9' : '#e2e8f0',
                               borderWidth: focusedField === 'business' ? '2px' : '1px',
@@ -517,14 +744,14 @@ const Step4_Profile1 = () => {
                             },
                           },
                           '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
+            color: '#0f172a',
+            fontSize: { xs: '16px', sm: '1rem' },
+            py: { xs: '14px', sm: '14px' },
+            px: { xs: '16px', sm: '16px' },
                             fontWeight: 500,
                           },
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
+            color: { xs: '#64748b', sm: '#94a3b8' },
                             opacity: 1,
                           },
                         }}
@@ -573,16 +800,17 @@ const Step4_Profile1 = () => {
                             },
                           }}
                           sx={{
-                            borderRadius: '12px',
+                            borderRadius: { xs: '16px', sm: '12px' },
                             bgcolor: '#ffffff',
-                            '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
-                            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e0e0' },
+                            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e2e8f0' },
+                            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#56A9D9' },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#56A9D9' },
                             '& .MuiSelect-select': {
-                              color: '#94A3B8',
-                              fontSize: '0.95rem',
-                              py: '14px',
-                              px: '16px',
+                              color: { xs: '#0f172a', sm: '#94A3B8' },
+                              fontSize: { xs: '16px', sm: '0.95rem' },
+                              py: { xs: '14px', sm: '14px' },
+                              px: { xs: '16px', sm: '16px' },
                               fontWeight: 500,
                             },
                           }}
@@ -621,7 +849,7 @@ const Step4_Profile1 = () => {
                           <CheckCircle size={16} style={{ color: '#10B981' }} />
                         )}
                       </Typography>
-                      <TextField
+          <TextField
                         variant="outlined"
                         fullWidth
                         placeholder="Aadhaar Card, PAN Card, Driving License, Voter ID"
@@ -666,9 +894,10 @@ const Step4_Profile1 = () => {
                         }}
                         sx={{
                           '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            backgroundColor: focusedField === 'id' ? '#f0f9ff' : '#ffffff',
+            borderRadius: { xs: '16px', sm: '12px' },
+            backgroundColor: focusedField === 'id' ? '#f0f9ff' : '#ffffff',
                             transition: 'all 0.3s ease',
+            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
                             '& fieldset': {
                               borderColor: focusedField === 'id' ? '#56A9D9' : '#e2e8f0',
                               borderWidth: focusedField === 'id' ? '2px' : '1px',
@@ -682,15 +911,15 @@ const Step4_Profile1 = () => {
                             },
                           },
                           '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
+            color: '#0f172a',
+            fontSize: { xs: '16px', sm: '1rem' },
+            py: { xs: '14px', sm: '14px' },
+            px: { xs: '16px', sm: '16px' },
                             cursor: 'pointer',
                             fontWeight: 500,
                           },
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
+            color: { xs: '#64748b', sm: '#94a3b8' },
                             opacity: 1,
                           },
                         }}
@@ -763,9 +992,10 @@ const Step4_Profile1 = () => {
                             },
                           }}
                           sx={{
-                            borderRadius: '12px',
+                            borderRadius: { xs: '16px', sm: '12px' },
                             backgroundColor: focusedField === 'paymentMethod' ? '#f0f9ff' : '#ffffff',
                             transition: 'all 0.3s ease',
+                            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
                             '& .MuiOutlinedInput-notchedOutline': {
                               borderColor: focusedField === 'paymentMethod' ? '#56A9D9' : '#e2e8f0',
                               borderWidth: focusedField === 'paymentMethod' ? '2px' : '1px',
@@ -778,10 +1008,10 @@ const Step4_Profile1 = () => {
                               borderWidth: '2px',
                             },
                             '& .MuiSelect-select': {
-                              color: preferredPaymentMethod === '' ? '#94A3B8' : '#1a1a1a',
-                              fontSize: '1rem',
-                              py: '14px',
-                              px: '16px',
+                              color: preferredPaymentMethod === '' ? '#64748b' : '#0f172a',
+                              fontSize: { xs: '16px', sm: '1rem' },
+                              py: { xs: '14px', sm: '14px' },
+                              px: { xs: '16px', sm: '16px' },
                               fontWeight: 500,
                             },
                           }}
@@ -818,7 +1048,7 @@ const Step4_Profile1 = () => {
                           <CheckCircle size={16} style={{ color: '#10B981' }} />
                         )}
                       </Typography>
-                      <TextField
+          <TextField
                         variant="outlined"
                         fullWidth
                         placeholder="Enter last payment amount"
@@ -836,9 +1066,10 @@ const Step4_Profile1 = () => {
                         }}
                         sx={{
                           '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            backgroundColor: focusedField === 'lastPayments' ? '#f0f9ff' : '#ffffff',
+            borderRadius: { xs: '16px', sm: '12px' },
+            backgroundColor: focusedField === 'lastPayments' ? '#f0f9ff' : '#ffffff',
                             transition: 'all 0.3s ease',
+            boxShadow: { xs: '0 2px 10px rgba(2,12,33,0.06)', sm: 'none' },
                             '& fieldset': {
                               borderColor: focusedField === 'lastPayments' ? '#56A9D9' : '#e2e8f0',
                               borderWidth: focusedField === 'lastPayments' ? '2px' : '1px',
@@ -852,14 +1083,14 @@ const Step4_Profile1 = () => {
                             },
                           },
                           '& .MuiInputBase-input': {
-                            color: '#1a1a1a',
-                            fontSize: '1rem',
-                            py: '14px',
-                            px: '16px',
+            color: '#0f172a',
+            fontSize: { xs: '16px', sm: '1rem' },
+            py: { xs: '14px', sm: '14px' },
+            px: { xs: '16px', sm: '16px' },
                             fontWeight: 500,
                           },
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#94a3b8',
+            color: { xs: '#64748b', sm: '#94a3b8' },
                             opacity: 1,
                           },
                         }}
@@ -941,7 +1172,7 @@ const Step4_Profile1 = () => {
                 )}
 
                 {/* Continue Button */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mb: { xs: 4, sm: 5 }, px: { xs: 2, sm: 0 }, width: '100%' }}>
                   <Button
                     variant="contained"
                     onClick={handleContinue}
@@ -951,21 +1182,22 @@ const Step4_Profile1 = () => {
                       background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
                       color: 'white',
                       fontWeight: '600',
-                      fontSize: '1.1rem',
-                      borderRadius: '12px',
+                      fontSize: "1.1rem",
+                      borderRadius: "12px",
                       boxShadow: '0 6px 20px rgba(86, 169, 217, 0.3)',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       textTransform: 'none',
-                      minWidth: '180px',
+                      minWidth: "180px",
                       position: 'relative',
                       overflow: 'hidden',
+                      border: { xs: '1px solid rgba(59,130,246,0.4)', sm: 'none' },
                       '&:hover': {
                         background: 'linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)',
-                        boxShadow: '0 8px 28px rgba(86, 169, 217, 0.4)',
-                        transform: 'translateY(-2px)',
+                        boxShadow: { xs: '0 12px 36px rgba(86, 169, 217, 0.45)', sm: '0 8px 28px rgba(86, 169, 217, 0.4)' },
+                        transform: { xs: 'none', sm: 'translateY(-2px)' },
                       },
                       '&:active': {
-                        transform: 'translateY(-1px)',
+                        transform: { xs: 'none', sm: 'translateY(-1px)' },
                       },
                       '&::before': {
                         content: '""',

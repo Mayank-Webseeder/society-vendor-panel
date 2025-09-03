@@ -240,7 +240,7 @@ const NewLeads = () => {
       >
         {/* Scroll container: table has a fixed min-width and will scroll horizontally when it exceeds container width */}
         <div className="w-full overflow-x-auto rounded-xl">
-          <table className="min-w-[1000px] w-full bg-white shadow rounded-xl table-fixed border-collapse" style={{minWidth: '900px'}}>
+          <table className="min-w-[1000px] w-full bg-white shado table-fixed border-collapse" style={{minWidth: '900px'}}>
           <thead>
             {/* Search Row */}
             <tr>
@@ -387,10 +387,10 @@ const NewLeads = () => {
               </th>
             </tr>
             {/* Table Head Row */}
-            <tr className="bg-[#F9FAFB] text-gray-500">
-              <th className="py-4 px-4 text-left font-normal w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
-              <th className="py-4 text-center font-normal w-32 sm:w-40 md:w-48">WORK</th>
-              <th className="py-4 text-center font-normal w-28 sm:w-32 md:w-36">
+            <tr className="bg-[#F9FAFB] text-gray-600" style={{borderBottom: '1px solid #E5E7EB'}}>
+              <th className="py-3 px-4 text-left text-sm font-bold w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
+              <th className="py-3 text-center text-sm font-bold w-32 sm:w-40 md:w-48">WORK</th>
+              <th className="py-3 text-center text-sm font-bold w-28 sm:w-32 md:w-36">
                 <span className="gap-1 select-none">
                   POSTED ON
                   <IconButton
@@ -404,8 +404,8 @@ const NewLeads = () => {
                 </span>
               </th>
               {/* <th className="hidden lg:table-cell py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th> */}
-              <th className="py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th>
-              <th className="py-4 text-center font-normal w-16 sm:w-20 md:w-24 rounded-tr-xl">ACTION</th>
+              <th className="py-3 text-center text-sm font-bold w-24 sm:w-28 md:w-32">POSTED AT</th>
+              <th className="py-3 text-center text-sm font-bold w-16 sm:w-20 md:w-24 rounded-tr-xl">ACTION</th>
             </tr>
           </thead>
 
@@ -417,7 +417,7 @@ const NewLeads = () => {
                   paginatedLeads.map(lead => (
                     <tr
                       key={lead.id}
-                      className="hover:bg-blue-50 transition"
+                      className="odd:bg-white even:bg-slate-50/60 hover:bg-blue-50 transition"
                       style={{ borderBottom: "1px solid #E5E7EB" }}
                     >
                       <td className="py-3 px-4">

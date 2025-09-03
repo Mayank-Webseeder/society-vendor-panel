@@ -157,7 +157,7 @@ const VerifyOtpForgotPassword = () => {
         ></div>
 
         {/* Logo & Title */}
-        <div className='flex flex-col items-center mb-10 sm:mb-12 px-4 text-center z-10'>
+        <div className='flex flex-col items-center mb-16 px-4 text-center z-10'>
           <Typography
             variant="h1"
             sx={{
@@ -165,7 +165,7 @@ const VerifyOtpForgotPassword = () => {
               background: 'linear-gradient(90deg, #ffffff, #60a5fa)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '2.25rem', sm: '3rem', md: '4rem' },
+              fontSize: { xs: '2.35rem', sm: '3rem', md: '4rem' },
               fontFamily: 'Roboto, sans-serif',
               letterSpacing: '0.05em',
               textAlign: 'center',
@@ -202,8 +202,8 @@ const VerifyOtpForgotPassword = () => {
         <div className="w-full max-w-md px-4 z-10">
           <div className="rounded-2xl bg-white/10 backdrop-blur-md border-solid border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-5 sm:p-6">
             <motion.h2
-              className="text-xl sm:text-2xl font-semibold text-white/90 text-left mb-6"
-              style={{ fontFamily:"Loto" }}
+              className="sm:text-xl font-semibold text-white/90 text-left mb-6"
+              style={{ fontFamily:"Lato" }}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
