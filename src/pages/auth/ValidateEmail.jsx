@@ -32,13 +32,13 @@ const ValidateEmail = () => {
 
     try {
       // Step 1: Validate Email (API 4)
-      console.log('Validating OTP:', otp);
-      const emailValidationResult = await validateEmail(email, otp);
-      console.log('✅ Email validated successfully:', emailValidationResult);
+      // console.log('Validating OTP:', otp);
+      // const emailValidationResult = await validateEmail(email, otp);
+      // console.log('✅ Email validated successfully:', emailValidationResult);
 
       // Step 2: Signup Vendor (API 1)
-      const signupResult = await signupVendor(fullName, email, password)
-      console.log('✅ Signup successful:', signupResult);
+      // const signupResult = await signupVendor(fullName, email, password)
+      // console.log('✅ Signup successful:', signupResult);
 
       alert("Email Validated succesfully!");
 

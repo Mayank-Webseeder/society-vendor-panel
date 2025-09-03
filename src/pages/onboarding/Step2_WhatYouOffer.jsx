@@ -91,6 +91,8 @@ const Step2_WhatYouOffer = () => {
     <div
       style={{
         position: "relative",
+        display: 'flex',
+        justifyContent: 'center',
         width: window.innerWidth < 640 ? "100%" : "80%",
         height: window.innerWidth < 640 ? "100%" : "80%",
       }}
@@ -106,7 +108,6 @@ const Step2_WhatYouOffer = () => {
           borderRadius: "16px",
           overflowY: "auto",
           // backgroundColor: '#ffffff',
-          border: "none",
           boxShadow: "none",
           overflow: "hidden",
           // Apply OnboardingLayout's dark background
@@ -163,7 +164,9 @@ const Step2_WhatYouOffer = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            // minHeight: '100vh',
+            minHeight: '100%',
+            width: '90%',
+            background: "white"
           },
           "@media (min-width:640px) and (max-width:1150px)": {
             justifyContent: "center",
@@ -177,7 +180,7 @@ const Step2_WhatYouOffer = () => {
 
         <img
           src={faviconFinal}
-          className="flex sm:hidden absolute top-1.5 left-2 z-10 w-12 h-12"
+          className="hidden absolute top-1.5 left-2 z-10 w-12 h-12"
           alt="logo"
         />
 
@@ -197,10 +200,10 @@ const Step2_WhatYouOffer = () => {
             backgroundColor: { xs: "transparent", sm: "#ffffff" },
             overflow: "visible",
             flexWrap: "wrap",
-            zIndex: 2,
+            zIndex: 30,
             "@media (max-width:639px)": {
               width: "100%",
-              minHeight: "100vh",
+              minHeight: "100%",
               justifyContent: "center",
               alignItems: "center",
               px: 4,
@@ -224,12 +227,12 @@ const Step2_WhatYouOffer = () => {
                 backdropFilter: "blur(20px)",
                 borderRadius: "20px",
                 border: "1px solid rgba(255, 255, 255, 0.8)",
-                boxShadow: `
-                  0 20px 60px rgba(0, 0, 0, 0.4),
-                  0 8px 24px rgba(0, 0, 0, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 1),
-                  inset 0 -1px 0 rgba(0, 0, 0, 0.05)
-                `,
+                // boxShadow: `
+                //   0 20px 60px rgba(0, 0, 0, 0.4),
+                //   0 8px 24px rgba(0, 0, 0, 0.3),
+                //   inset 0 1px 0 rgba(255, 255, 255, 1),
+                //   inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+                // `,
                 zIndex: -1,
               },
             },
@@ -244,6 +247,7 @@ const Step2_WhatYouOffer = () => {
               justifyContent: "center",
               width: "60%",
             },
+            
           }}
         >
           {/* Enhanced background patterns - Corporate mobile design */}
@@ -424,24 +428,6 @@ const Step2_WhatYouOffer = () => {
                       maxWidth: "280px",
                       mx: "auto",
                       position: "relative",
-                      // '&::before': {
-                      //   content: '"✨"',
-                      //   position: 'absolute',
-                      //   left: '-20px',
-                      //   top: '50%',
-                      //   transform: 'translateY(-50%)',
-                      //   fontSize: '1rem',
-                      //   opacity: 0.7,
-                      // },
-                      // '&::after': {
-                      //   content: '"✨"',
-                      //   position: 'absolute',
-                      //   right: '-20px',
-                      //   top: '50%',
-                      //   transform: 'translateY(-50%)',
-                      //   fontSize: '1rem',
-                      //   opacity: 0.7,
-                      // },
                     }}
                   >
                     Select services to connect with societies
@@ -696,7 +682,7 @@ const Step2_WhatYouOffer = () => {
                       {showInfoDialog && (
                         <Fade in={showInfoDialog} timeout={200}>
                           <div
-                            className="absolute bg-white rounded-xl shadow-2xl border border-blue-100 p-4 z-[999999]"
+                            className="absolute bg-white rounded-xl shadow-2xl border border-blue-100 p-4 z-[100]"
                             style={{
                               background:
                                 "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)",
@@ -1244,6 +1230,7 @@ const Step2_WhatYouOffer = () => {
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
+            z: 20,
             backgroundColor: "#ffffff",
             "@media (max-width:1150px)": {
               display: "none",

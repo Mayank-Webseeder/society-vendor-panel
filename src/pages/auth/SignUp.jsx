@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { sendOtpEmailVerification } from '../../services/api/auth';
+import { Eye, EyeOff } from 'lucide-react';
 
 
 const SignUp = ({ onSwitch }) => {
@@ -10,6 +11,7 @@ const SignUp = ({ onSwitch }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -35,9 +37,9 @@ const SignUp = ({ onSwitch }) => {
 
     try {
       // Call the sendOtpEmailVerification API (API 6)
-      const result = await sendOtpEmailVerification(email.trim());
+      // const result = await sendOtpEmailVerification(email.trim());
       
-      console.log('✅ OTP sent successfully:', result);
+      // console.log('✅ OTP sent successfully:', result);
       
       // Show success message
       alert('OTP sent successfully! Please check your email for verification.');
@@ -175,17 +177,27 @@ const SignUp = ({ onSwitch }) => {
 
       <motion.div variants={inputVariants}>
         <label htmlFor="password" className="block text-white text-sm font-medium mb-2">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="••••••••"
-          className="w-full px-4 py-2.5 border-solid border border-white/20 rounded-lg placeholder-white/70
-                     focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
-                     text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            placeholder="••••••••"
+            className="w-full px-4 py-2.5 pr-12 border-solid border border-white/20 rounded-lg placeholder-white/70
+                       focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent
+                       text-white/90 bg-white/10 backdrop-blur-md transition-all duration-200 text-base shadow-inner"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute inset-y-0 right-3 border-none flex items-center bg-transparent text-white/60 hover:text-white transition-colors cursor-pointer"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
       </motion.div>
 
       <motion.div className="flex items-center text-sm" variants={inputVariants}>
