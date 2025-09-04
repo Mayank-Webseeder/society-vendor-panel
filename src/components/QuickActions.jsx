@@ -47,16 +47,16 @@ const QuickActions = () => {
 
   return (
     <motion.div
-      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-[0_6px_22px_-6px_rgba(0,0,0,0.20),0_3px_10px_rgba(0,0,0,0.08)] p-4 sm:p-6 overflow-hidden"
+      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-lg hover:shadow-xl p-4 sm:p-6 overflow-hidden transition-all duration-300"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
     >
       {/* Ambient hover gradients */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
+      {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
         <div className="absolute -top-28 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.22),rgba(59,130,246,0)_70%)] blur-2xl" />
         <div className="absolute -bottom-36 -right-16 w-96 h-96 bg-[radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.22),rgba(168,85,247,0)_70%)] blur-2xl" />
-      </div>
+      </div> */}
 
       {/* Heading */}
       <div className="relative flex items-center justify-between mb-4 sm:mb-7">

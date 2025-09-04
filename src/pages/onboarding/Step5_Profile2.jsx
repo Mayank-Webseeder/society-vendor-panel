@@ -413,7 +413,7 @@ const Step5_Profile2 = () => {
                       fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
                       fontWeight: '400',
                       textAlign: 'center',
-                      mb: 2,
+                      mb: 3,
                       fontFamily: 'Roboto, sans-serif',
                     }}
                   >
@@ -421,7 +421,7 @@ const Step5_Profile2 = () => {
                   </Typography>
 
                   {/* Decorative Icon */}
-                  <Box
+                  {/* <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
@@ -448,7 +448,7 @@ const Step5_Profile2 = () => {
                     >
                       <MapPin size={30} color="white" />
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Box>
 

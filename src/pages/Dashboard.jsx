@@ -67,9 +67,9 @@ const Dashboard = () => {
           </motion.div>
 
           {/* Utility Cards */}
-          <OngoingJobs />
-          <AppliedJobs />
           <NewJobs />
+          <AppliedJobs />
+          <OngoingJobs />
           <QuickActions />
         </div>
 

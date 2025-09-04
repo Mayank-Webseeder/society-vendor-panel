@@ -616,7 +616,7 @@ const Step6_Location = () => {
                     </Typography>
 
                     {/* Decorative Icon */}
-                    <Box
+                    {/* <Box
                       sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -644,12 +644,12 @@ const Step6_Location = () => {
                       >
                         <FaMapMarkedAlt size={30} color="white" />
                       </Box>
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
 
                 {/* Middle Section - Location Content */}
-                <div className="flex flex-col w-full items-center flex-1 max-w-5xl">
+                <div className="flex flex-col justify-center w-full items-center flex-1 max-w-5xl">
                   <Box
                     sx={{
                       // border:'2px solid red',

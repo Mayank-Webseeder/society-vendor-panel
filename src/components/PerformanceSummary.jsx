@@ -97,10 +97,10 @@ const PerformanceSummary = () => {
       transition={{ duration: 0.55, ease: 'easeOut' }}
     >
       {/* Ambient hover gradient backdrop */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
+      {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
         <div className="absolute -top-24 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_30%_30%,rgba(99,102,241,0.22),rgba(99,102,241,0)_70%)] blur-2xl" />
         <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-[radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.25),rgba(168,85,247,0)_70%)] blur-2xl" />
-      </div>
+      </div> */}
 
       {/* Header */}
       <div className="relative mb-6">
@@ -124,7 +124,7 @@ const PerformanceSummary = () => {
           return (
             <motion.div
               key={metric.label}
-              className={`group relative overflow-hidden rounded-2xl border border-solid ${accent.ring} bg-white/70 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between shadow-[0_4px_10px_-2px_rgba(0,0,0,0.10),0_2px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_7px_18px_-5px_rgba(0,0,0,0.22),0_3px_10px_rgba(0,0,0,0.12)] transition-all duration-400 cursor-default`}
+              className={`group relative overflow-hidden rounded-2xl border border-solid ${accent.ring} bg-white/70 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between shadow-[0_4px_10px_-2px_rgba(0,0,0,0.10),0_2px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_7px_18px_-5px_rgba(0,0,0,0.22),0_3px_10px_rgba(0,0,0,0.12)] transition-all duration-400 cursor-pointer`}
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.07 }}

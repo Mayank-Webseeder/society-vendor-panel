@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, Navigate, replace } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
@@ -39,27 +39,32 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
+// AuthRoutes component moved outside App to prevent infinite re-renders
+const AuthRoutes = () => {
+  return (
+    <Routes>
+      <Route index element={<AuthPage />} />
+      <Route path="validate-email" element={<ValidateEmail />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
+      <Route path="forgot-password/reset-password" element={<ResetPassword />} />
+    </Routes>
+  );
+};
+
+
 function App() {
 
-  const location = useLocation();
-
-  
   return (
     <>
       {/* ToastContainer for notifications */}
       <ToastContainer position="top-right" autoClose={3000} />
 
 
-      <Routes location={location}>
+      <Routes>
 
         {/* Auth flow */}
-        <Route path="/auth">
-          <Route index element={<AuthPage />} /> {/* Default page for /auth */}
-          <Route path="validate-email" element={<ValidateEmail />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
-          <Route path="forgot-password/reset-password" element={<ResetPassword />} />
-        </Route>
+        <Route path="/auth/*" element={<AuthRoutes />} />
 
         {/* Onboarding */}
         <Route path="/auth/onboarding" element={<OnboardingLayout />}>
@@ -73,7 +78,7 @@ function App() {
           <Route path="verify-otp" element={<Step8_VerifyOtp />} />
         </Route>
 
-        {/* Payment (not a protected route) */}
+        {/* Payment */}
         <Route path="/payment" element={<Payment />} />
         {/* <Route path="/payment/success" element={<PaymentSuccess />} /> */}
         {/* <Route path="/payment/failure" element={<PaymentFailure />} /> */}
@@ -87,7 +92,7 @@ function App() {
               <div className="relative h-screen w-screen">
 
                 {/* SIDEBAR - hidden on mobile, visible on sm+ */}
-                <aside className="hidden sm:fixed sm:top-0 sm:left-0 sm:h-screen sm:w-16 md:w-20 bg-[#1A2131] z-50 sm:flex sm:flex-col sm:items-center sm:py-2">
+                <aside className="hidden sm:fixed sm:top-0 sm:left-0 sm:h-screen sm:w-16 bg-[#1A2131] z-50 sm:flex sm:flex-col sm:items-center sm:py-2">
                   <Sidebar iconOnly />
                 </aside>
 
@@ -97,7 +102,7 @@ function App() {
                 </div>
 
                 {/* PAGE CONTENT */}
-                <main className="absolute top-0 left-0 sm:left-16 md:left-20 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gradient-to-br from-blue-100 to-blue-50">
+                <main className="absolute top-0 left-0 sm:left-16 right-0 bottom-14 sm:bottom-0 overflow-y-auto bg-gradient-to-br from-blue-100 to-blue-50">
                   <Routes>
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/new-leads" element={<NewLeads />} />

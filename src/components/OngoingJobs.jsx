@@ -51,7 +51,7 @@ const OngoingJobs = () => {
       {/* Ambient gradient on hover */}
       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <div className="absolute -top-8 -left-4 w-32 h-32 bg-[radial-gradient(circle_at_30%_30%,rgba(251,146,60,0.25),rgba(251,146,60,0)_70%)] blur-2xl" />
-        <div className="absolute -bottom-10 -right-4 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.25),rgba(249,115,22,0)_70%)] blur-2xl" />
+        {/* <div className="absolute -bottom-10 -right-4 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.25),rgba(249,115,22,0)_70%)] blur-2xl" /> */}
       </div>
 
       <div className="relative p-3 sm:p-5">
@@ -125,17 +125,17 @@ const OngoingJobs = () => {
 
   return (
     <motion.div
-      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-[0_6px_22px_-6px_rgba(0,0,0,0.20),0_3px_10px_rgba(0,0,0,0.08)] overflow-hidden"
+      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
       transition={{ delay: 0.3 }}
     >
       {/* Ambient gradient backdrop (hover reveal only for container) */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
+      {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
         <div className="absolute -top-24 -left-16 w-72 h-72 bg-[radial-gradient(circle_at_30%_30%,rgba(251,146,60,0.22),rgba(251,146,60,0)_70%)] blur-2xl" />
         <div className="absolute -bottom-32 -right-10 w-80 h-80 bg-[radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.24),rgba(249,115,22,0)_70%)] blur-2xl" />
-      </div>
+      </div> */}
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid rgba(226, 232, 240, 0.6)' }} className="relative px-4 sm:px-7 pt-5 sm:pt-7 pb-4 sm:pb-6">

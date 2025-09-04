@@ -65,7 +65,7 @@ const Step1_Loading = () => {
   return (
     <div className='relative z-20 min-h-screen w-full flex items-center justify-center overflow-hidden'>
       {/* Main Content - relies on OnboardingLayout background */}
-      <div className='relative z-10 flex flex-col items-center justify-center max-w-6xl mx-auto px-4 sm:px-6 pt-7 sm:py-12 text-center'>
+      <div className='relative z-10 flex flex-col items-center justify-center max-w-6xl mx-auto px-4 sm:px-6 pt-7 sm:pt-12 sm:pb-2 text-center'>
 
         {/* Title Section */}
         <div className='mt-8 mb-12'>

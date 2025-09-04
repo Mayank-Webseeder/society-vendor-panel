@@ -278,37 +278,26 @@ const Step3_WorkingDays = () => {
                 textAlign: "center",
                 minHeight: window.innerWidth < 640 ? "auto" : "100%",
                 maxHeight:
-                  window.innerWidth < 640 ? "calc(80vh - 80px)" : "100%",
+                  window.innerWidth < 640 ? "calc(80vh - 80px)" : "calc(100vh - 200px)",
                 gap: window.innerWidth < 640 ? 3 : 0,
-                overflowY: window.innerWidth < 640 ? "auto" : "visible",
-                paddingRight: window.innerWidth < 640 ? "8px" : "0",
-                // Custom scrollbar styling for mobile
-                "&::WebkitScrollbar":
-                  window.innerWidth < 640
-                    ? {
-                        width: "4px",
-                      }
-                    : {},
-                "&::WebkitScrollbarTrack":
-                  window.innerWidth < 640
-                    ? {
-                        background: "rgba(255, 255, 255, 0.1)",
-                        borderRadius: "2px",
-                      }
-                    : {},
-                "&::WebkitScrollbarThumb":
-                  window.innerWidth < 640
-                    ? {
-                        background: "rgba(255, 255, 255, 0.3)",
-                        borderRadius: "2px",
-                      }
-                    : {},
-                "&::WebkitScrollbarThumb:hover":
-                  window.innerWidth < 640
-                    ? {
-                        background: "rgba(255, 255, 255, 0.5)",
-                      }
-                    : {},
+                overflowY: "auto",
+                paddingRight: window.innerWidth < 640 ? "8px" : "8px",
+                // Custom scrollbar styling
+                scrollbarWidth: "thin",
+                scrollbarColor: "rgba(59, 130, 246, 0.3) transparent",
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "transparent",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "rgba(59, 130, 246, 0.3)",
+                  borderRadius: "2px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "rgba(59, 130, 246, 0.5)",
+                },
               }}
               className="w-full h-full rounded-xl z-40 flex flex-col"
             >
@@ -390,41 +379,29 @@ const Step3_WorkingDays = () => {
                   >
                     Select the days you're available to work
                   </Typography>
-                  {/* Mobile: Enhanced floating icon with vibrant gradient */}
+                  {/* Mobile: Professional Icon */}
                   <Box
-                    sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      mb: 2,
+                    }}
                   >
                     <Box
                       sx={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: "20px",
-                        background:
-                          "linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(29, 78, 216, 0.95) 100%)",
-                        backdropFilter: "blur(20px)",
-                        border: "2px solid rgba(59, 130, 246, 0.6)",
+                        width: 56,
+                        height: 56,
+                        borderRadius: "16px",
+                        background: "rgba(255, 255, 255, 0.9)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(59, 130, 246, 0.2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        boxShadow: `
-                                          0 12px 40px rgba(59, 130, 246, 0.4),
-                                          0 4px 16px rgba(37, 99, 235, 0.3),
-                                          inset 0 1px 0 rgba(255, 255, 255, 0.4)
-                                        `,
-                        animation: "pulse 2s ease-in-out infinite",
-                        "@keyframes pulse": {
-                          "0%, 100%": {
-                            transform: "scale(1)",
-                            boxShadow: "0 12px 40px rgba(59, 130, 246, 0.4)",
-                          },
-                          "50%": {
-                            transform: "scale(1.05)",
-                            boxShadow: "0 16px 56px rgba(59, 130, 246, 0.5)",
-                          },
-                        },
+                        boxShadow: "0 4px 16px rgba(59, 130, 246, 0.1)",
                       }}
                     >
-                      <EventAvailable sx={{ color: "white", fontSize: 30 }} />
+                      <EventAvailable sx={{ color: "rgba(59, 130, 246, 0.8)", fontSize: 24 }} />
                     </Box>
                   </Box>
                 </Box>
@@ -452,7 +429,7 @@ const Step3_WorkingDays = () => {
                         bottom: "-6px",
                         left: "50%",
                         transform: "translateX(-50%)",
-                        width: "30%",
+                        width: "17%",
                         height: "3px",
                         background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
                         borderRadius: "1px",
@@ -477,7 +454,7 @@ const Step3_WorkingDays = () => {
                     Select the days you're available to work
                   </Typography>
 
-                  {/* Decorative Icon */}
+                  {/* Briefcase Icon */}
                   <Box
                     sx={{
                       display: "flex",
@@ -488,23 +465,19 @@ const Step3_WorkingDays = () => {
                   >
                     <Box
                       sx={{
-                        width: 60,
-                        height: 60,
+                        width: 56,
+                        height: 56,
                         borderRadius: "16px",
-                        background:
-                          "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
+                        background: "rgba(255, 255, 255, 0.9)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(86, 169, 217, 0.2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        boxShadow: "0 6px 24px rgba(86, 169, 217, 0.3)",
-                        animation: "float 3s ease-in-out infinite",
-                        "@keyframes float": {
-                          "0%, 100%": { transform: "translateY(0px)" },
-                          "50%": { transform: "translateY(-8px)" },
-                        },
+                        boxShadow: "0 4px 16px rgba(86, 169, 217, 0.1)",
                       }}
                     >
-                      <EventAvailable sx={{ fontSize: 30, color: "white" }} />
+                      <EventAvailable sx={{ fontSize: 24, color: "rgba(86, 169, 217, 0.8)" }} />
                     </Box>
                   </Box>
                 </Box>
@@ -518,9 +491,9 @@ const Step3_WorkingDays = () => {
                     display: "grid",
                     gridTemplateColumns: {
                       xs: "repeat(auto-fit, minmax(70px, 1fr))",
-                      sm: "repeat(5, 1fr)",
+                      sm: "repeat(4, 1fr)",
                     },
-                    gap: { xs: 1.5, sm: 2 },
+                    gap: { xs: 1.5, sm: 3 },
                     mb: { xs: 4, sm: 5 },
                     maxWidth: "500px",
                     width: { xs: "95%", sm: "100%" },
@@ -701,52 +674,7 @@ const Step3_WorkingDays = () => {
           </Fade>
         </Box>
 
-        {/* Right Half: Pure White Image Section */}
-        <Box
-          sx={{
-            width: "40%",
-            flex: 1,
-            display: { xs: "none", lg: "flex" },
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            backgroundColor: "#ffffff",
-            "@media (max-width:1150px)": {
-              display: "none",
-            },
-          }}
-        >
-          <Fade in={showContent} timeout={1200}>
-            <Box
-              sx={{
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <img
-                src={onboardingImage}
-                alt="Professional Service Illustration"
-                style={{
-                  maxWidth: "85%",
-                  height: "auto",
-                  position: "relative",
-                  zIndex: 1,
-                  transition: "transform 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "scale(1.02) translateY(-5px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "scale(1) translateY(0px)";
-                }}
-              />
-            </Box>
-          </Fade>
-        </Box>
+
       </Paper>
     </div>
   );

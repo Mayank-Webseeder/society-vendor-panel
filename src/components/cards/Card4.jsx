@@ -26,7 +26,7 @@ const Card4 = () => {
         {/* Ambient glows */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-10 -left-6 w-40 h-40 bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.20),rgba(56,189,248,0)_65%)] blur-2xl" />
-          <div className="absolute -bottom-14 -right-8 w-48 h-48 bg-[radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.18),rgba(59,130,246,0)_65%)] blur-2xl" />
+          {/* <div className="absolute -bottom-14 -right-8 w-48 h-48 bg-[radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.18),rgba(59,130,246,0)_65%)] blur-2xl" /> */}
         </div>
         <div className="relative h-full px-4 py-3 flex flex-col">
           <div className="flex items-center gap-2.5">

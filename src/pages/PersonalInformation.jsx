@@ -386,7 +386,7 @@ const PersonalInformation = () => {
       {/* Simple Heading */}
       <div className="flex items-start sm:items-center justify-between mb-8 gap-4">
         <div className="flex flex-col gap-1">
-          <h2 style={{ fontFamily: 'Manrope' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Profile Information</h2>
+          <h2 style={{ fontFamily: 'Lato' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Profile Information</h2>
           <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage and keep your personal details up to date</p>
         </div>
         <Button

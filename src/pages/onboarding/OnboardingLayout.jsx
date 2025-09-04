@@ -13,9 +13,9 @@ const OnboardingLayout = () => {
           className="absolute inset-0"
           initial={{ x: 0 }}
           style={{
-            background: 'linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)',
-            filter: 'saturate(1.05) contrast(1.02)'
-          }}
+          background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 30%, #60a5fa 70%, #93c5fd 100%)',
+          filter: 'saturate(1.05) contrast(1.02)'
+        }}
         />
 
         {/* Soft animated blobs */}

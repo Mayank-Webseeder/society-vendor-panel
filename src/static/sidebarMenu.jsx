@@ -5,7 +5,7 @@ import { MdOutlineEventAvailable } from "react-icons/md";
 import { BsBarChartLine } from "react-icons/bs";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineLogout } from "react-icons/md";
 
 

@@ -526,13 +526,15 @@ const Step4_Profile1 = () => {
                       fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
                       fontWeight: '400',
                       textAlign: 'center',
-                      mb: 2,
+                      mb: 3,
                       fontFamily: 'Roboto, sans-serif',
                     }}
                   >
                     Tell us about yourself to personalize your experience
                   </Typography>
-                  <Box
+
+                  {/* Decorative Icon */}
+                  {/* <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
@@ -559,7 +561,7 @@ const Step4_Profile1 = () => {
                     >
                       <UserCheck size={30} color="white" />
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Box>
 

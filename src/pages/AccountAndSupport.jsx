@@ -19,7 +19,7 @@ const supportOptions = [
         description: 'Common questions answered',
         route: 'faq',
         icon: BookOpen,
-        gradient: 'linear-gradient(135deg,#818cf8,#4f46e5)'
+        gradient: 'linear-gradient(135deg,#60a5fa,#2563eb)'
     },
     {
         id: 'terms',
@@ -27,7 +27,7 @@ const supportOptions = [
         description: 'Usage & service agreement',
         route: 'terms-conditions',
         icon: FileText,
-        gradient: 'linear-gradient(135deg,#a78bfa,#7c3aed)'
+        gradient: 'linear-gradient(135deg,#60a5fa,#2563eb)'
     },
     {
         id: 'privacy',
@@ -35,8 +35,32 @@ const supportOptions = [
         description: 'Data handling & security',
         route: 'privacy-policy',
         icon: Shield,
-        gradient: 'linear-gradient(135deg,#c084fc,#9333ea)'
+        gradient: 'linear-gradient(135deg,#60a5fa,#2563eb)'
     }
+    // {
+    //     id: 'faq',
+    //     title: 'FAQ',
+    //     description: 'Common questions answered',
+    //     route: 'faq',
+    //     icon: BookOpen,
+    //     gradient: 'linear-gradient(135deg,#818cf8,#4f46e5)'
+    // },
+    // {
+    //     id: 'terms',
+    //     title: 'Terms & Conditions',
+    //     description: 'Usage & service agreement',
+    //     route: 'terms-conditions',
+    //     icon: FileText,
+    //     gradient: 'linear-gradient(135deg,#a78bfa,#7c3aed)'
+    // },
+    // {
+    //     id: 'privacy',
+    //     title: 'Privacy Policy',
+    //     description: 'Data handling & security',
+    //     route: 'privacy-policy',
+    //     icon: Shield,
+    //     gradient: 'linear-gradient(135deg,#c084fc,#9333ea)'
+    // }
 ];
 
 // Animation variants (page + items)
@@ -65,7 +89,7 @@ const AccountAndSupport = () => {
         <Box className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-12'>
             {/* Heading */}
                         <div className="flex flex-col gap-1 mb-8">
-                            <h2 style={{ fontFamily: 'Manrope' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Account & Support</h2>
+                            <h2 style={{ fontFamily: 'Lato' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Account & Support</h2>
                             <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage & refine the services you provide</p>
                         </div>
                         

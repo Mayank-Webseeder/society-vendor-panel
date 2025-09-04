@@ -87,7 +87,7 @@ const ValidateEmail = () => {
         // animate={useReducedMotion() ? undefined : { x: [0, 30, -30, 0] }}
         // transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
         style={{
-          background: 'linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)',
+          background: 'linear-gradient(135deg, #000000 0%, #1e3a8a 30%, #1e40af 100%)',
           filter: 'saturate(1.05) contrast(1.02)'
         }}
       />
@@ -227,7 +227,7 @@ const ValidateEmail = () => {
 
         {/* OTP Validation Form */}
         <div className="w-full max-w-md px-4 z-10">
-          <div className="rounded-2xl bg-white/10 backdrop-blur-md border-solid border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-5 sm:p-6">
+          <div className="rounded-2xl bg-black/10 backdrop-blur-md border-solid border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-5 sm:p-6">
             {loading ? (
               <motion.div
                 key="loading"

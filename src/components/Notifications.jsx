@@ -152,10 +152,10 @@ const Notifications = () => {
         style={ showAll ? { maxHeight: 545, overflowY: 'auto' } : { maxHeight: 545, overflowY: 'hidden' } }
       >
         {/* Ambient gradients */}
-        <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
+        {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
           <div className="absolute -top-28 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.22),rgba(59,130,246,0)_70%)] blur-2xl" />
-          {/* <div className="absolute -bottom-36 -right-16 w-96 h-96 bg-[radial-gradient(circle_at_70%_70%,rgba(99,102,241,0.26),rgba(99,102,241,0)_70%)] blur-2xl" /> */}
-        </div>
+          <div className="absolute -bottom-36 -right-16 w-96 h-96 bg-[radial-gradient(circle_at_70%_70%,rgba(99,102,241,0.26),rgba(99,102,241,0)_70%)] blur-2xl" />
+        </div> */}
 
         {/* Header */}
         <div style={{ borderBottom: '1px solid rgba(226,232,240,0.6)' }} className="relative px-5 sm:px-7 pt-2 sm:pt-4 pb-4 sm:pb-3">

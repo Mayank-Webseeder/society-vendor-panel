@@ -53,14 +53,14 @@ const AuthPage = () => {
         initial={{ x: 0 }}
         // animate={useReducedMotion() ? undefined : { x: [0, 30, -30, 0] }}
         // transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-        style={{
-          background: 'linear-gradient(135deg, #020617 0%, #1e40af 30%, #1d4ed8 100%)',
-          filter: 'saturate(1.05) contrast(1.02)'
-        }}
         // style={{
-        //   background: 'linear-gradient(135deg, #000000 0%, #1e3a8a 30%, #1e40af 100%)',
+        //   background: 'linear-gradient(135deg, #020617 0%, #1e40af 30%, #1d4ed8 100%)',
         //   filter: 'saturate(1.05) contrast(1.02)'
         // }}
+        style={{
+          background: 'linear-gradient(135deg, #000000 0%, #1e3a8a 30%, #1e40af 100%)',
+          filter: 'saturate(1.05) contrast(1.02)'
+        }}
       />
 
       {/* Soft blue blob (top-left) */}
