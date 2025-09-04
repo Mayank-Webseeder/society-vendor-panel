@@ -3,6 +3,7 @@ import { Bell, X, Clock, CheckCircle, AlertTriangle, XCircle, Info } from 'lucid
 import { notifications, notificationCount } from '../static/dummyData_Notifications';
 import { FaRegBell } from "react-icons/fa";
 import { Button } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { useUser } from '../UserContext';
 
 
@@ -65,9 +66,20 @@ const BellNotification = ({ mobile = false }) => {
     if (!user) {
         return (
             <div className="relative">
-                <button className={`border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent ${mobile ? 'p-1' : 'p-2'}`}>
-                    <FaRegBell size={mobile ? 18 : 29} />
-                </button>
+                <Tooltip title="Loading..." placement="right" slotProps={{
+                    tooltip: {
+                      sx: {
+                        fontSize: '0.7rem',
+                        padding: '8px 10px',
+                        backgroundColor: '#000',
+                        color: 'white',
+                      }
+                    }
+                  }}>
+                    <button className={`border-none rounded-lg transition-colors duration-200 text-white cursor-pointer bg-transparent ${mobile ? 'p-1' : 'p-2'}`}>
+                        <FaRegBell size={mobile ? 18 : 30} />
+                    </button>
+                </Tooltip>
             </div>
         );
     }
@@ -75,13 +87,23 @@ const BellNotification = ({ mobile = false }) => {
     if (!user.notificationsEnabled || !subscriptionActive) {
         return (
             <div className="relative">
-                <button
-                    className={`flex justify-center items-center ${mobile? 'p-1.5' : 'p-2'} border-none rounded-full hover:bg-gray-500 transition-colors duration-200 opacity-50 cursor-not-allowed`}
-                    disabled={true}
-                    title="Notifications are disabled"
-                >
-                    <Bell className="w-6 h-6 text-gray-400" />
-                </button>
+                <Tooltip title="Notifications are disabled" placement="right" slotProps={{
+                    tooltip: {
+                      sx: {
+                        fontSize: '0.7rem',
+                        padding: '8px 10px',
+                        backgroundColor: '#000',
+                        color: 'white',
+                      }
+                    }
+                  }}>
+                    <button
+                        className={`flex justify-center items-center ${mobile? 'p-1.5' : 'p-2'} border-none rounded-full hover:bg-gray-500 transition-colors duration-200 opacity-50 cursor-not-allowed`}
+                        disabled={true}
+                    >
+                        <Bell size={mobile ? 18 : 30} className="text-gray-400" />
+                    </button>
+                </Tooltip>
             </div>
         );
     }
@@ -97,21 +119,31 @@ const BellNotification = ({ mobile = false }) => {
     return (
         <div className="relative">
             {/* Notification Bell Icon */}
-            <button
-                ref={bellRef}
-                onClick={handleBellClick}
-                aria-label="Notifications"
-                className={`flex justify-center border-none items-center rounded-md transition-all duration-200 text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${clicked ? 'bg-slate-900' : 'bg-transparent hover:bg-[#1E3A8A]/90'} ${mobile ? 'p-1.5' : 'p-2'} shadow-sm`}
-                title="Notifications"
-                type="button"
-            >
-                <FaRegBell size={mobile ? 18 : 30} />
-                {notificationCount() > 0  &&  (
-                    <span className={`absolute -top-1 -right-1 rounded-full flex items-center justify-center font-semibold text-white shadow-sm ${mobile ? 'w-4 h-4 text-[10px]' : 'w-5 h-5 text-[10px]'} bg-red-500`}> 
-                        <span className={`leading-none ${mobile? 'pr-[1px]' : 'pr-[0px]'}`}>{notificationCount()}</span>
-                    </span>
-                )}
-            </button>
+            <Tooltip title="Notifications" placement="right" slotProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: '0.7rem',
+                    padding: '8px 10px',
+                    backgroundColor: '#000',
+                    color: 'white',
+                  }
+                }
+              }}>
+                <button
+                    ref={bellRef}
+                    onClick={handleBellClick}
+                    aria-label="Notifications"
+                    className={`flex justify-center border-none items-center rounded-md transition-all duration-200 text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${clicked ? 'bg-slate-900' : 'bg-transparent hover:bg-[#1E3A8A]/90'} ${mobile ? 'p-1.5' : 'p-2'} shadow-sm`}
+                    type="button"
+                >
+                    <FaRegBell size={mobile ? 18 : 27} />
+                    {notificationCount() > 0  &&  (
+                        <span className={`absolute -top-1 -right-1 rounded-full flex items-center justify-center font-semibold text-white shadow-sm ${mobile ? 'w-4 h-4 text-[10px]' : 'w-5 h-5 text-[10px]'} bg-red-500`}> 
+                            <span className={`leading-none ${mobile? 'pr-[1px]' : 'pr-[0px]'}`}>{notificationCount()}</span>
+                        </span>
+                    )}
+                </button>
+            </Tooltip>
 
             {/* Notification Popup */}
             {isOpen && (

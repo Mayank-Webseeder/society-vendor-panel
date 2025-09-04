@@ -54,7 +54,7 @@ const NewLeads = () => {
         setLoading(true);
         setError('');
 
-        // API call disabled; using dummy data with status === 'New'
+        // API call
         // const latitude = 28.7041; // Example latitude
         // const longitude = 77.1025; // Example longitude
         // const fetchedJobs = await getNearbyJobs(latitude, longitude);
@@ -199,34 +199,8 @@ const NewLeads = () => {
           </div>
         </motion.div>
 
-        {/* New status card below header (match MyJobs styling) */}
-        <motion.div className="w-full" variants={itemVariants} initial="hidden" animate="visible">
-          <div className="mt-0 px-0 sm:px-0">
-            <motion.div
-              className="bg-white w-48 p-3 sm:p-4 border border-gray-100 rounded-xl sm:shadow-sm flex items-center gap-3 transition-transform duration-150 hover:scale-[1.02] cursor-pointer"
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
-            >
-              <div className="flex-shrink-0">
-                <div className={`w-11 h-11 rounded-full flex items-center justify-center bg-blue-50`}>
-                  <FileText className={`w-5 h-5 text-blue-600`} />
-                </div>
-              </div>
+      {/* Table - Desktop (sm+) */}
 
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div className="min-w-0">
-                    <p style={{ fontFamily: 'Lato' }} className="text-sm text-gray-700 font-semibold truncate">New</p>
-                    <p style={{ fontFamily: 'Lato' }} className="text-xs text-gray-500 mt-0.5">Overview</p>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-2xl font-bold text-blue-600`}>{totalResults}</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
 
       </motion.div>
 
@@ -240,159 +214,94 @@ const NewLeads = () => {
       >
         {/* Scroll container: table has a fixed min-width and will scroll horizontally when it exceeds container width */}
         <div className="w-full overflow-x-auto rounded-xl">
-          <table className="min-w-[1000px] w-full bg-white shado table-fixed border-collapse" style={{minWidth: '900px'}}>
+          <table className="min-w-[1000px] w-full bg-white shadow table-fixed border-collapse" style={{minWidth: '900px'}}>
           <thead>
             {/* Search Row */}
             <tr>
-              <th colSpan={4} className="hidden bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
-                <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
-                  <TextField
-                    value={search}
-                    onChange={e => {
-                      setSearch(e.target.value);
-                      setPage(1);
-                    }}
-                    placeholder="Search by lead name"
-                    size="small"
-                    variant="outlined"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon color="action" />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        search && (
-                          <InputAdornment position="end">
-                            <CloseIcon
-                              fontSize="small"
-                              className="cursor-pointer text-gray-400 hover:text-gray-600"
-                              onClick={() => {
-                                setSearch('');
-                                setPage(1);
-                              }}
-                            />
+              <th colSpan={4} className="bg-slate-100/80 rounded-tl-xl rounded-tr-xl" style={{ borderBottom: "1px solid #d1d5db" }}>
+                <div className="flex justify-between items-center px-4 py-3">
+                  <div className="flex gap-8">
+                    <TextField
+                      value={search}
+                      onChange={e => {
+                        setSearch(e.target.value);
+                        setPage(1);
+                      }}
+                      placeholder="Search by lead name"
+                      size="small"
+                      variant="outlined"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon color="action" />
                           </InputAdornment>
-                        )
-                      ),
-                      style: { borderRadius: 8, background: "white" }
-                    }}
-                    sx={{ width: 220 }}
-                  />
-                  <TextField
-                    value={searchWork}
-                    onChange={e => {
-                      setSearchWork(e.target.value);
-                      setPage(1);
-                    }}
-                    placeholder="Search by work"
-                    size="small"
-                    variant="outlined"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon color="action" />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        searchWork && (
-                          <InputAdornment position="end">
-                            <CloseIcon
-                              fontSize="small"
-                              className="cursor-pointer text-gray-400 hover:text-gray-600"
-                              onClick={() => {
-                                setSearchWork('');
-                                setPage(1);
-                              }}
-                            />
+                        ),
+                        endAdornment: (
+                          search && (
+                            <InputAdornment position="end">
+                              <CloseIcon
+                                fontSize="small"
+                                className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                onClick={() => {
+                                  setSearch('');
+                                  setPage(1);
+                                }}
+                              />
+                            </InputAdornment>
+                          )
+                        ),
+                        style: { borderRadius: 8, background: "white" }
+                      }}
+                      sx={{ width: 220 }}
+                    />
+                    <TextField
+                      value={searchWork}
+                      onChange={e => {
+                        setSearchWork(e.target.value);
+                        setPage(1);
+                      }}
+                      placeholder="Search by work"
+                      size="small"
+                      variant="outlined"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon color="action" />
                           </InputAdornment>
-                        )
-                      ),
-                      style: { borderRadius: 8, background: "white" }
-                    }}
-                    sx={{ width: 220 }}
-                  />
-                </div>
-              </th>
-
-              <th colSpan={5} className="bg-[#F9FAFB] rounded-tl-xl rounded-tr-xl">
-                <div className="flex justify-start gap-8 px-4 py-3" style={{borderBottom: '1px solid #E5E7EB'}}>
-                  <TextField
-                    value={search}
-                    onChange={e => {
-                      setSearch(e.target.value);
-                      setPage(1);
-                    }}
-                    placeholder="Search by lead name"
-                    size="small"
-                    variant="outlined"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon color="action" />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        search && (
-                          <InputAdornment position="end">
-                            <CloseIcon
-                              fontSize="small"
-                              className="cursor-pointer text-gray-400 hover:text-gray-600"
-                              onClick={() => {
-                                setSearch('');
-                                setPage(1);
-                              }}
-                            />
-                          </InputAdornment>
-                        )
-                      ),
-                      style: { borderRadius: 8, background: "white" }
-                    }}
-                    sx={{ width: 220 }}
-                  />
-                  <TextField
-                    value={searchWork}
-                    onChange={e => {
-                      setSearchWork(e.target.value);
-                      setPage(1);
-                    }}
-                    placeholder="Search by work"
-                    size="small"
-                    variant="outlined"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon color="action" />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        searchWork && (
-                          <InputAdornment position="end">
-                            <CloseIcon
-                              fontSize="small"
-                              className="cursor-pointer text-gray-400 hover:text-gray-600"
-                              onClick={() => {
-                                setSearchWork('');
-                                setPage(1);
-                              }}
-                            />
-                          </InputAdornment>
-                        )
-                      ),
-                      style: { borderRadius: 8, background: "white" }
-                    }}
-                    sx={{ width: 220 }}
-                  />
+                        ),
+                        endAdornment: (
+                          searchWork && (
+                            <InputAdornment position="end">
+                              <CloseIcon
+                                fontSize="small"
+                                className="cursor-pointer text-gray-400 hover:text-gray-600"
+                                onClick={() => {
+                                  setSearchWork('');
+                                  setPage(1);
+                                }}
+                              />
+                            </InputAdornment>
+                          )
+                        ),
+                        style: { borderRadius: 8, background: "white" }
+                      }}
+                      sx={{ width: 220 }}
+                    />
+                  </div>
+                  <div className="flex items-center mr-4 gap-2 bg-white border-solid border border-blue-200 rounded-lg px-3 py-1 text-sm text-blue-700 font-medium">
+                    <FileText size={16} />
+                    Total New Leads: {totalResults}
+                  </div>
                 </div>
               </th>
             </tr>
             {/* Table Head Row */}
-            <tr className="bg-[#F9FAFB] text-gray-600" style={{borderBottom: '1px solid #E5E7EB'}}>
-              <th className="py-3 px-4 text-left text-sm font-bold w-36 sm:w-48 md:w-56 rounded-tl-xl">LEAD NAME</th>
+            <tr className="bg-slate-100/70 text-slate-700" style={{borderBottom: '1px solid #d1d5db'}}>
+              <th className="py-3 px-4 text-left text-sm font-bold w-36 sm:w-48 md:w-56">LEAD NAME</th>
               <th className="py-3 text-center text-sm font-bold w-32 sm:w-40 md:w-48">WORK</th>
               <th className="py-3 text-center text-sm font-bold w-28 sm:w-32 md:w-36">
                 <span className="gap-1 select-none">
-                  POSTED ON
+                  POSTED
                   <IconButton
                     size="small"
                     onClick={handleSortToggle}
@@ -403,9 +312,7 @@ const NewLeads = () => {
                   </IconButton>
                 </span>
               </th>
-              {/* <th className="hidden lg:table-cell py-4 text-center font-normal w-24 sm:w-28 md:w-32">POSTED AT</th> */}
-              <th className="py-3 text-center text-sm font-bold w-24 sm:w-28 md:w-32">POSTED AT</th>
-              <th className="py-3 text-center text-sm font-bold w-16 sm:w-20 md:w-24 rounded-tr-xl">ACTION</th>
+              <th className="py-3 text-center text-sm font-bold w-16 sm:w-20 md:w-24">ACTION</th>
             </tr>
           </thead>
 
@@ -417,7 +324,7 @@ const NewLeads = () => {
                   paginatedLeads.map(lead => (
                     <tr
                       key={lead.id}
-                      className="odd:bg-white even:bg-slate-50/60 hover:bg-blue-50 transition"
+                      className="bg-white hover:bg-blue-50 transition"
                       style={{ borderBottom: "1px solid #E5E7EB" }}
                     >
                       <td className="py-3 px-4">
@@ -470,9 +377,10 @@ const NewLeads = () => {
                         </span>
                       </td>
 
-                      <td className="py-3 text-center">{lead.postedOn}</td>
-                      {/* <td className="hidden lg:table-cell py-3 text-center">{lead.time}</td> */}
-                      <td className="py-3 text-center">{lead.time}</td>
+                      <td className="py-3 text-center">
+                        <div>{lead.postedOn}</div>
+                        <div className="text-xs text-gray-500">{lead.time}</div>
+                      </td>
                       <td className="py-3 text-center">
                         {lead.interested ? (
                           <MotionButton
@@ -542,7 +450,6 @@ const NewLeads = () => {
                     <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
                     <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
                     <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
-                    <td className="hidden lg:table-cell py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
                     <td className="py-3 px-4" style={{ background: "#fff", borderBottom: idx === (ROWS_PER_PAGE - paginatedLeads.length - 1) ? "1px solid #E5E7EB" : "none", height: 56 }} />
                   </tr>
                 ))}
@@ -551,18 +458,7 @@ const NewLeads = () => {
               <tr>
                 <td 
                   colSpan={4} 
-                  className="lg:hidden text-center text-gray-400 bg-white rounded-b-xl" 
-                  style={{ 
-                    height: ROWS_PER_PAGE * 56,
-                    minHeight: 560,
-                    verticalAlign: 'middle'
-                  }}
-                >
-                  No new leads found.
-                </td>
-                <td 
-                  colSpan={5} 
-                  className="hidden lg:table-cell text-center text-gray-400 bg-white rounded-b-xl" 
+                  className="text-center text-gray-400 bg-white rounded-b-xl" 
                   style={{ 
                     height: ROWS_PER_PAGE * 56,
                     minHeight: 560,
@@ -578,56 +474,7 @@ const NewLeads = () => {
           {/* Pagination Row */}
           <tfoot>
             <tr>
-              <td colSpan={4} className="lg:hidden bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
-                <div className="flex items-center justify-between px-4 py-3">
-                  <span className="text-gray-600 text-sm">
-                    {totalResults === 0
-                      ? "Showing 0 results"
-                      : `Showing ${startIdx + 1} to ${endIdx} of ${totalResults} results`}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={handlePrevPage}
-                      disabled={page === 1}
-                      sx={{
-                        minWidth: 0,
-                        borderRadius: 2,
-                        px: 1.5,
-                        fontWeight: 600,
-                        color: page === 1 ? '#bdbdbd' : '#1976D2',
-                        borderColor: page === 1 ? '#e0e0e0' : '#1976D2',
-                        '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
-                      }}
-                    >
-                      <ChevronLeft size={18} />
-                    </Button>
-                    <span className="text-gray-700 text-sm font-medium">
-                      Page {page} of {totalPages || 1}
-                    </span>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={handleNextPage}
-                      disabled={page === totalPages || totalResults === 0}
-                      sx={{
-                        minWidth: 0,
-                        borderRadius: 2,
-                        px: 1.5,
-                        fontWeight: 600,
-                        color: page === totalPages || totalResults === 0 ? '#bdbdbd' : '#1976D2',
-                        borderColor: page === totalPages || totalResults === 0 ? '#e0e0e0' : '#1976D2',
-                        '&:hover': { borderColor: '#1976D2', background: '#F3F4F6' },
-                      }}
-                    >
-                      <ChevronRight size={18} />
-                    </Button>
-                  </div>
-                </div>
-              </td>
-
-              <td colSpan={5} className="hidden lg:table-cell bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
+              <td colSpan={4} className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200">
                 <div className="flex items-center justify-between px-4 py-3">
                   <span className="text-gray-600 text-sm">
                     {totalResults === 0
@@ -683,14 +530,14 @@ const NewLeads = () => {
 
       {/* Mobile list view for leads (<sm) - stacked cards */}
       <motion.div
-        className="sm:hidden border-none bg-white rounded-xl mx-2"
+        className="sm:hidden border-solid border border-gray-300 bg-slate-100 rounded-xl mx-2"
         variants={itemVariants}
         initial='hidden'
         animate='visible'
       >
         <div className="flex flex-col gap-3">
           {/* Mobile search fields */}
-          <div className="bg-white rounded-xl border border-gray-100 p-3 mb-2">
+          <div className="bg-transparent p-3 mb-2" style={{ borderBottom: '0.5px solid #9ca3af' }}>
             <div className="flex items-center gap-2">
               <div className="flex-1 min-w-0 flex gap-2">
                 <TextField
@@ -720,7 +567,6 @@ const NewLeads = () => {
                     style: { borderRadius: 8, background: 'white' }
                   }}
                 />
-
                 <TextField
                   value={searchWork}
                   onChange={e => { setSearchWork(e.target.value); setPage(1); }}
@@ -755,7 +601,7 @@ const NewLeads = () => {
                 <IconButton
                   size="small"
                   onClick={() => { handleSortToggle(); setPage(1); }}
-                  sx={{ ml: 1, borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42,0.06)' }}
+                  sx={{ ml: 1, borderRadius: 1, bgcolor: 'transparent', border: '1px solid rgba(15,23,42, 0.4)' }}
                   aria-label={`Sort by posted on ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
                 >
                   {sortOrder === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
@@ -837,7 +683,7 @@ const NewLeads = () => {
         </div>
 
         {/* Mobile pagination controls */}
-        <div className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-br-xl border-gray-200 mt-3">
+        <div className="bg-[#F9FAFB] rounded-bl-xl rounded-br-xl mt-3" style={{ borderTop: "1px solid #d1d5db"}}>
           <div className="flex items-center justify-between px-4 py-3">
             <span className="text-gray-600 text-sm">
               {totalResults === 0

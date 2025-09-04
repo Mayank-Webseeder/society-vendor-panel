@@ -113,10 +113,10 @@ const Calendar = () => {
         initial="hidden"
         animate="visible"
       >
-        <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
           <div className="absolute -top-16 -left-10 w-56 h-56 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.32),rgba(59,130,246,0)_70%)] blur-2xl" />
-          {/* <div className="absolute -bottom-20 -right-8 w-64 h-64 bg-[radial-gradient(circle_at_70%_70%,rgba(99,102,241,0.18),rgba(99,102,241,0)_70%)] blur-2xl" /> */}
-        </div>
+          <div className="absolute -bottom-20 -right-8 w-64 h-64 bg-[radial-gradient(circle_at_70%_70%,rgba(99,102,241,0.18),rgba(99,102,241,0)_70%)] blur-2xl" />
+        </div> */}
 
         <div className="relative flex items-center justify-between mb-4 pb-4">
           <button onClick={goToPreviousMonth} className="group/btn flex justify-center items-center p-2 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border border-solid border-slate-200 text-slate-600 hover:from-white hover:to-slate-50 hover:text-blue-600 transition-all duration-300 shadow-sm hover:shadow cursor-pointer" aria-label="Previous month">

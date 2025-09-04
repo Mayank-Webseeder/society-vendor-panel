@@ -83,7 +83,7 @@ const AppliedJobs = () => {
     >
       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <div className="absolute -top-8 -left-6 w-36 h-36 bg-[radial-gradient(circle_at_30%_30%,rgba(34,197,94,0.18),rgba(34,197,94,0)_70%)] blur-2xl" />
-        <div className="absolute -bottom-10 -right-6 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(16,185,129,0.16),rgba(16,185,129,0)_70%)] blur-2xl" />
+        {/* <div className="absolute -bottom-10 -right-6 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(16,185,129,0.16),rgba(16,185,129,0)_70%)] blur-2xl" /> */}
       </div>
 
       <div className="relative p-3 sm:p-5">
@@ -127,15 +127,15 @@ const AppliedJobs = () => {
 
   return (
     <motion.div
-      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-[0_6px_22px_-6px_rgba(0,0,0,0.20),0_3px_10px_rgba(0,0,0,0.08)] overflow-hidden"
+      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/* Ambient green gradient hover reveal */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
+      {/* <div className="pointer-events-none absolute inset-0 opacity-0 group-hover/container:opacity-100 transition-opacity duration-700">
         <div className="absolute -top-28 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_30%_30%,rgba(34,197,94,0.22),rgba(34,197,94,0)_70%)] blur-2xl" />
         <div className="absolute -bottom-36 -right-16 w-96 h-96 bg-[radial-gradient(circle_at_70%_70%,rgba(16,185,129,0.22),rgba(16,185,129,0)_70%)] blur-2xl" />
-      </div>
+      </div> */}
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid rgba(226, 232, 240, 0.6)' }} className="relative px-4 sm:px-7 pt-5 sm:pt-7 pb-4 sm:pb-6">

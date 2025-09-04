@@ -36,16 +36,16 @@ const HeadingCard = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
 
         {/* Content container */}
-        <div className="relative px-6 py-3 sm:px-7 sm:py-5">
+        <div className="relative px-3 py-1 sm:px-5 sm:py-3.5">
           <div className="flex flex-row sm:flex-row justify-between items-start sm:items-start gap-3 sm:gap-0">
             {/* Main content area */}
             <div className="flex sm:flex-row items-center sm:items-center gap-4 sm:gap-6 flex-1">
               {/* Enhanced avatar section */}
               <div className="relative flex-shrink-0">
-                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-2xl p-3 sm:p-4 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
+                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-xl p-2 sm:p-3 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
                   <PermIdentityIcon
-                    sx={{ fontSize: 34 }}
-                    className="text-indigo-600 w-7 h-7 sm:w-10 sm:h-10"
+                    sx={{ fontSize: { xs: 26, sm: 32 } }}
+                    className="text-indigo-600"
                   />
                 </div>
                 {/* Subtle glow effect */}
@@ -54,16 +54,16 @@ const HeadingCard = () => {
 
               {/* Greeting text */}
               <div className="flex-1 mt-2 sm:mt-0">
-                <div className="space-y-1">
-                  <h1 className="text-xl sm:text-3xl font-semibold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent leading-tight">
+                <div className="sm:space-y-1">
+                  <h1 className="text-lg sm:text-2xl font-semibold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent leading-tight">
                     {greeting}
                   </h1>
-                  <p className="text-lg sm:text-xl text-slate-600 font-medium">
+                  <p className="text-base sm:text-xl text-slate-600 font-medium">
                     {user?.name ? user.name.split(" ")[0] : "User"} !
                   </p>
                 </div>
                 {/* Subtle underline accent */}
-                <div className="mt-2 h-0.5 w-12 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-60"></div>
+                {/* <div className="mt-0 h-0.5 w-12 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-60"></div> */}
               </div>
             </div>
 

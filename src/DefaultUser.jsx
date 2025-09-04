@@ -24,24 +24,11 @@ const defaultUser = {
   state: "Maharashtra",
   country: 'India',
   pincode: "400706",
-  get address() {
-    return [
-      this.building,
-      this.locality,
-      this.landmark,
-      this.city,
-      this.state,
-      this.country,
-      this.pincode
-    ].join(', ');
-  },
+  address: "Flat-203/Shanti Residency, Purple Residency, Andheri West Club, Mumbai, Maharashtra, India, 400706",
   locationCoordinates: "N/A",
   whatYouOffer: ["Housekeeping Services", "Waste Management", "Elevator Maintenance", "Plumbing Services"],
-  get servicesCount() {    // Since servicesCount is defined as a getter in the defaultUser object, you can access it like a regular property, ex, defaultUser.servicesCount. A getter is a special type of property that calculates its value dynamically when accessed.
-    return this.whatYouOffer.length;
-  },
+  servicesCount: 4,
   workingDays: ['Mon', 'Wed', 'Thu', 'Fri', 'Sun'],
-  // workingHours: '9 AM - 7 PM',
   phone: "+91 9999999999",
   otp: "1234",
   avgResponseTime: 12,
@@ -58,9 +45,7 @@ const defaultUser = {
   subscription_referenceId: 'N/A',
   testMode: false,
   serviceBasePrice: 1000, // Base price per service
-  get totalCost() {
-    return this.serviceBasePrice * this.servicesCount;
-  },
+  totalCost: 4000,
   discountLowerLimit: 3,
   discountUpperLimit: 5,
   gstRate: 0.18 // 18% GST for services (standard rate for professional/maintenance services in India)

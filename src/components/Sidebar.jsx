@@ -40,7 +40,7 @@ const Sidebar = ({ mobileTopBar = false }) => {
                     ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
                   `}
                 >
-                  <Icon size={18} className="text-white" />
+                  <Icon size={20} className="text-white" />
                 </div>
               </Link>
             );
@@ -61,7 +61,7 @@ const Sidebar = ({ mobileTopBar = false }) => {
                     ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
                   `}
                 >
-                  <Icon size={19} className="text-white" />
+                  <Icon size={20} className="text-white" />
                 </div>
               </Link>
             );
@@ -75,7 +75,7 @@ const Sidebar = ({ mobileTopBar = false }) => {
   return (
     <nav className="flex flex-col items-center w-full h-full justify-between">
       {/* Top menu items */}
-      <div className="flex flex-col items-center gap-5 w-full mt-1">
+      <div className="flex flex-col items-center gap-7 w-full">
         {/* <Link to='/dashboard' className='hidden sm:block no-underline'>
           <p className='text-xl text-[#56A9D9]' style={{ fontFamily: 'Parisienne, cursive' }}>Velra</p>
         </Link> */}
@@ -84,14 +84,23 @@ const Sidebar = ({ mobileTopBar = false }) => {
           const Icon = item.icon;
           return (
             <Link to={item.redirect} key={idx} className="w-full flex justify-center">
-              <Tooltip title={item.title} placement="right">
+              <Tooltip title={item.title} placement="right" slotProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: '0.7rem',
+                    padding: '8px 10px',
+                    backgroundColor: '#000',
+                    color: 'white',
+                  }
+                }
+              }}>
                 <div
                   className={`flex items-center justify-center w-12 h-12 rounded-lg transition-colors
                     ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
                   `}
                   style={{ padding: 0 }}
                 >
-                  <Icon size={30} className="text-white" />
+                  <Icon size={27} className="text-white" />
                 </div>
               </Tooltip>
             </Link>
@@ -100,7 +109,7 @@ const Sidebar = ({ mobileTopBar = false }) => {
       </div>
 
       {/* Bottom menu items */}
-      <div className="flex flex-col items-center gap-4 w-full mb-2">
+      <div className="flex flex-col items-center gap-7 w-full">
         {bottomMenuItems.map((item, idx) => {
           const isActive = location.pathname === item.redirect;
           const Icon = item.icon;
@@ -113,14 +122,23 @@ const Sidebar = ({ mobileTopBar = false }) => {
                 <BellNotification />
               ) : (
                 <Link to={item.redirect} className="w-full flex justify-center">
-                  <Tooltip title={item.title} placement="right">
+                  <Tooltip title={item.title} placement="right" slotProps={{
+                    tooltip: {
+                      sx: {
+                        fontSize: '0.7rem',
+                        padding: '8px 10px',
+                        backgroundColor: '#000',
+                        color: 'white',
+                      }
+                    }
+                  }}>
                     <div
                       className={`relative flex items-center justify-center w-12 h-12 rounded-lg transition-colors
                         ${isActive ? 'bg-black' : 'hover:bg-[#1E3A8A]'}
                       `}
                       style={{ padding: 0 }}
                     >
-                      <Icon size={30} className="text-white" />
+                      <Icon size={27} className="text-white" />
                     </div>
                   </Tooltip>
                 </Link>
