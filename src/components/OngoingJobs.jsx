@@ -144,7 +144,7 @@ const OngoingJobs = () => {
             <h2 className="text-lg sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">
               Work in Progress
             </h2>
-            <div className="mt-2 h-1 w-28 bg-gradient-to-r from-orange-500/70 via-amber-400/70 to-transparent rounded-full" />
+            {/* <div className="mt-2 h-1 w-28 bg-gradient-to-r from-orange-500/70 via-amber-400/70 to-transparent rounded-full" /> */}
             <p className="text-[11px] sm:text-xs text-slate-500 mt-2 ml-0.5">
               {subscriptionActive ? (
                 <>{totalOngoingJobs} {totalOngoingJobs === 1 ? 'job in progress' : 'jobs in progress'}</>

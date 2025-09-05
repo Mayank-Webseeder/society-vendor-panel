@@ -45,7 +45,7 @@ const HeadingCard = () => {
                 <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-xl p-2 sm:p-3 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
                   <PermIdentityIcon
                     sx={{ fontSize: { xs: 26, sm: 32 } }}
-                    className="text-indigo-600"
+                    className="text-blue-600"
                   />
                 </div>
                 {/* Subtle glow effect */}

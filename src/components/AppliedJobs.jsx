@@ -142,7 +142,7 @@ const AppliedJobs = () => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <h2 className="text-lg sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">Applied Jobs</h2>
-            <div className="mt-2 h-1 w-28 bg-gradient-to-r from-green-500/70 via-emerald-400/70 to-transparent rounded-full" />
+            {/* <div className="mt-2 h-1 w-28 bg-gradient-to-r from-green-500/70 via-emerald-400/70 to-transparent rounded-full" /> */}
             <p className="text-[11px] sm:text-xs text-slate-500 mt-2 ml-0.5">
               {subscriptionActive ? (
                 <>{jobs.length} {jobs.length === 1 ? 'job' : 'jobs'} scheduled</>

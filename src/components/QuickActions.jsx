@@ -62,7 +62,7 @@ const QuickActions = () => {
       <div className="relative flex items-center justify-between mb-2 sm:mb-3">
         <div className="flex flex-col">
           <h2 className="text-sm sm:text-base font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">Quick Actions</h2>
-          <div className="mt-1 h-0.5 w-20 bg-gradient-to-r from-blue-500/70 via-purple-500/60 to-transparent rounded-full" />
+          {/* <div className="mt-1 h-0.5 w-20 bg-gradient-to-r from-blue-500/70 via-purple-500/60 to-transparent rounded-full" /> */}
           <p className="text-[9px] sm:text-xs text-slate-500 mt-1 ml-0.5">Get things done faster</p>
         </div>
       </div>
@@ -118,7 +118,7 @@ const QuickActions = () => {
 
       {/* Desktop Design */}
       <motion.div
-        className="hidden sm:grid grid-cols-3 gap-2 sm:gap-3"
+        className="hidden sm:grid grid-cols-1 gap-2 sm:gap-3"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -130,19 +130,19 @@ const QuickActions = () => {
             <motion.button
               key={action.label}
               variants={itemVariants}
-              className={`group relative overflow-hidden rounded-xl bg-white/75 backdrop-blur-md p-2 flex flex-col items-center border border-solid border-slate-200/70 text-center cursor-pointer transition-all duration-300 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.16),0_2px_4px_rgba(0,0,0,0.06)] hover:-translate-y-0.5`}
+              className={`group relative overflow-hidden rounded-xl bg-white/75 backdrop-blur-md p-3 flex flex-row items-center border border-solid border-slate-200/70 text-left cursor-pointer transition-all duration-300 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.16),0_2px_4px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 min-h-[60px]`}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleActionClick(action)}
             >
               {/* Hover ambient - removed for compact buttons */}
               {/* Icon */}
-              <div className="flex justify-center w-full mb-1.5">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
+              <div className="flex-shrink-0 mr-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
                   ${accent === 'blue' ? 'border-blue-200/70 group-hover:border-blue-300/80' : ''}
                   ${accent === 'emerald' ? 'border-emerald-200/70 group-hover:border-emerald-300/80' : ''}
                   ${accent === 'violet' ? 'border-violet-200/70 group-hover:border-violet-300/80' : ''}
                 `}>
-                  <IconComponent className={`w-4 h-4
+                  <IconComponent className={`w-5 h-5
                     ${accent === 'blue' ? 'text-blue-600' : ''}
                     ${accent === 'emerald' ? 'text-emerald-600' : ''}
                     ${accent === 'violet' ? 'text-violet-600' : ''}
@@ -150,7 +150,7 @@ const QuickActions = () => {
                 </div>
               </div>
               {/* Title */}
-              <h3 className="text-slate-800 font-medium text-xs leading-tight px-1 line-clamp-2 group-hover:translate-x-0.5 transition-transform">
+              <h3 className="text-slate-800 font-medium text-sm leading-tight flex-1 group-hover:translate-x-0.5 transition-transform">
                 {action.label}
               </h3>
               {/* Bottom accent bar */}

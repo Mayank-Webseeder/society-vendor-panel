@@ -162,18 +162,18 @@ const Notifications = () => {
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <h2 className="text-lg sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">Notifications</h2>
-              <div className="mt-2 h-1 w-32 bg-gradient-to-r from-blue-500/70 via-indigo-500/70 to-transparent rounded-full" />
+              {/* <div className="mt-2 h-1 w-32 bg-gradient-to-r from-blue-500/70 via-indigo-500/70 to-transparent rounded-full" /> */}
               <p className="text-[11px] sm:text-xs text-slate-500 mt-2 ml-0.5">Stay updated with your activities</p>
             </div>
             <motion.div className="relative" whileHover={{ scale: 1.06 }}>
               {subscriptionActive && user.notificationsEnabled && (
                 <>
-                  <div className="w-9 h-9 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-white/60">
-                    <span className="text-xs text-white font-bold">{count}</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-white/60">
+                    <span className="text-sm text-white font-bold">{count}</span>
                   </div>
-                  {count > 0 && (
+                  {/* {count > 0 && (
                     <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-400 rounded-full animate-pulse" />
-                  )}
+                  )} */}
                 </>
               )}
             </motion.div>
