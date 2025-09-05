@@ -50,7 +50,7 @@ const OngoingJobs = () => {
     >
       {/* Ambient gradient on hover */}
       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute -top-8 -left-4 w-32 h-32 bg-[radial-gradient(circle_at_30%_30%,rgba(251,146,60,0.25),rgba(251,146,60,0)_70%)] blur-2xl" />
+        {/* <div className="absolute -top-8 -left-4 w-32 h-32 bg-[radial-gradient(circle_at_30%_30%,rgba(251,146,60,0.25),rgba(251,146,60,0)_70%)] blur-2xl" /> */}
         {/* <div className="absolute -bottom-10 -right-4 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.25),rgba(249,115,22,0)_70%)] blur-2xl" /> */}
       </div>
 

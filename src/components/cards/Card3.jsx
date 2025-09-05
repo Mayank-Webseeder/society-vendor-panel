@@ -27,7 +27,7 @@ const Card3 = () => {
   return (
     <div
       onClick={() => navigate('/my-stats')}
-      className="group relative hidden md:block overflow-hidden rounded-2xl w-56 md:w-60 h-36 md:h-40 bg-white/75 backdrop-blur-md border border-solid border-slate-200/70 shadow-[0_5px_14px_-6px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_24px_-10px_rgba(0,0,0,0.28),0_4px_10px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer"
+      className="group relative hidden md:block overflow-hidden rounded-2xl w-56 md:w-64 h-36 md:h-36 bg-white/75 backdrop-blur-md border border-solid border-slate-200/70 shadow-[0_5px_14px_-6px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_24px_-10px_rgba(0,0,0,0.28),0_4px_10px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer"
     >
       {/* Ambient glows */}
       <div className="pointer-events-none absolute inset-0">
@@ -49,13 +49,13 @@ const Card3 = () => {
             <div className="flex-1">
               {subscriptionActive ? (
                 <div>
-                  <div className="mt-1 flex items-center gap-2">
+                  {/* <div className="mt-1 flex items-center gap-2">
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-600 ring-1 ring-emerald-500/20">
                       <ArrowUpRight size={12} />
                       +0.2
                     </span>
                     <span className="text-[10px] text-slate-500">vs last week</span>
-                  </div>
+                  </div> */}
                   <div className="-mt-1">{renderStars()}</div>
                 </div>
               ) : (

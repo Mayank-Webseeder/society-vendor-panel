@@ -47,7 +47,7 @@ const Dashboard = () => {
       { !subscriptionActive && <SubscribeStrip /> }
 
 
-      <div className="relative w-full h-full flex pt-4 pb-8 gap-4 lg:gap-6">
+      <div className="relative w-full h-full flex pt-4 pb-8 gap-4 lg:gap-3">
         {/* Left Side */}
         <div id='child-1' className='flex flex-col gap-6 px-4 w-full lg:w-[70%] xl:w-[77%]'>
           {/* Heading */}
@@ -70,15 +70,16 @@ const Dashboard = () => {
           <NewJobs />
           <AppliedJobs />
           <OngoingJobs />
-          <QuickActions />
+          {/* <QuickActions /> */}
         </div>
 
 
         {/* Right Side */}
-        <div className='hidden lg:flex lg:w-[30%] flex-col xl:w-[23%] px-2 gap-6'>
-          <Calendar />
+        <div className='hidden lg:flex lg:w-[30%] flex-col xl:w-[23%] px-2 pr-4 gap-6'>
+          {/* <Calendar /> */}
           <Notifications />
-          <PerformanceSummary />
+          {/* <PerformanceSummary /> */}
+          <QuickActions />
         </div>
       </div>
     </div>

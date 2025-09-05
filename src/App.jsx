@@ -67,8 +67,8 @@ function App() {
         <Route path="/auth/*" element={<AuthRoutes />} />
 
         {/* Onboarding */}
-        <Route path="/auth/onboarding" element={<OnboardingLayout />}>
-          <Route index element={<Step1_Loading />} />
+        <Route path="/auth/onboarding" element={<Step1_Loading />} />
+        <Route path="/auth/onboarding/steps" element={<OnboardingLayout />}>
           <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
           <Route path="working-days" element={<Step3_WorkingDays />} />
           <Route path="profile-1" element={<Step4_Profile1 />} />

@@ -88,1260 +88,464 @@ const Step7_VerifyNumber = () => {
   };
 
   return (
-    <div
-      style={{
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100%",
+        height: "100%",
+        minHeight: { sm: "620px" },
+        maxHeight: { sm: "620px" },
+        display: "flex",
         position: "relative",
-        width:
-          typeof window !== "undefined" && window.innerWidth < 640
-            ? "100%"
-            : "80%",
-        height:
-          typeof window !== "undefined" && window.innerWidth < 640
-            ? "100%"
-            : "80%",
+        borderRadius: "16px",
+        border: "1px solid #D1D5DB",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        overflow: "auto",
+        background:
+          "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
+        backgroundBlendMode: { xs: "normal", sm: "normal" },
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "none",
+          backgroundSize: "auto",
+          opacity: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+        },
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "none",
+          opacity: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+        },
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        justifyContent: "center",
       }}
     >
-      <Paper
-        elevation={0}
+      {/* Debugging Purposes */}
+      {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
+
+      {/* Main Content */}
+      <Box
         sx={{
-          width: "100%",
-          height: "100%",
-          minHeight: { sm: "620px" },
-          maxHeight: { sm: "620px" },
           display: "flex",
+          flex: 1,
+          flexDirection: "column",
           position: "relative",
-          borderRadius: "16px",
-          overflowY: "auto",
-          overflowX: "hidden",
-          background: {
-            xs: "linear-gradient(135deg, #071032 0%, #0b1536 30%, #0b1022 100%)",
-            sm: "#ffffff",
-          },
-          boxShadow: "none",
-          // Subtle overlay patterns for mobile
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            inset: 0,
-            background: {
-              xs: `
-                radial-gradient(circle at 30% 30%, rgba(59,130,246,0.08), transparent 40%),
-                radial-gradient(circle at 70% 70%, rgba(139,92,246,0.06), transparent 45%)
-              `,
-              sm: "none",
-            },
-            backgroundSize: { xs: "400px 400px, 300px 300px", sm: "auto" },
-            opacity: { xs: 0.7, sm: 0 },
-            pointerEvents: "none",
-            zIndex: 1,
-          },
-          // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          // Hide scrollbar for Firefox
-          scrollbarWidth: "none",
-          // Alternative for older browsers
-          msOverflowStyle: "none",
-          "@media (max-width:1150px)": {
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          },
+          minWidth: 0,
+          justifyContent: "center",
+          alignItems: "center",
+          px: 4,
+          py: 4,
+          minHeight: "100%",
+          backgroundColor: "transparent",
+          overflow: "visible",
+          flexWrap: "wrap",
+          zIndex: 2,
         }}
       >
-        {/* Mobile favicon */}
-        <img
-          src="/faviconFinal.png"
-          className="flex sm:hidden absolute top-1.5 left-2 z-10 w-12 h-12"
-          alt="logo"
-        />
-        {/* Debugging Purposes */}
-        {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
-
-        {/* Left Half: Form Content */}
-        <Box
-          sx={{
-            // border: '2px solid red',
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            position: "relative",
-            minWidth: 0,
-            justifyContent: "center",
-            alignItems: "center",
-            px: { xs: 3, sm: 4, md: 5 },
-            py: { xs: 3, sm: 4 },
-            // border: '2px solid green',
-            height: "100%",
-            backgroundColor: { xs: "transparent", sm: "#ffffff" },
-            overflow: "visible",
-            zIndex: 2,
-            "@media (max-width:639px)": {
-              width: "100%",
-              minHeight: "100vh",
-              justifyContent: "center",
-              alignItems: "center",
-              px: 4,
-              py: 4,
-              // Mobile floating white card container
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                top: "8%",
-                left: "5%",
-                right: "5%",
-                bottom: "8%",
-                background: `
-                  linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.95) 0%, 
-                    rgba(248, 250, 252, 0.98) 50%,
-                    rgba(255, 255, 255, 0.95) 100%
-                  )
-                `,
-                backdropFilter: "blur(20px)",
-                borderRadius: "20px",
-                border: "1px solid rgba(255, 255, 255, 0.8)",
-                boxShadow: `
-                  0 20px 60px rgba(0, 0, 0, 0.4),
-                  0 8px 24px rgba(0, 0, 0, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 1),
-                  inset 0 -1px 0 rgba(0, 0, 0, 0.05)
-                `,
-                zIndex: -1,
-              },
-            },
-            "@media (max-width:1200px)": {
-              width: "100%",
-              alignItems: "center",
-              flex: "unset",
-              minWidth: 0,
-            },
-            "@media (min-width:1201px)": {
-              alignItems: "center",
-              justifyContent: "center",
-              width: "60%",
-            },
-          }}
-        >
-          {/* Subtle background patterns */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundImage: `
+        {/* Subtle background patterns */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: `
                 radial-gradient(circle at 20% 20%, rgba(86, 169, 217, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%)
               `,
-              pointerEvents: "none",
-              zIndex: 0,
-              display:
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? "none"
-                  : "block",
-            }}
-          />
-          {/* Decorative corner accents */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              width: "120px",
-              height: "120px",
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)",
-              transform: "translate(50%, -50%)",
-              zIndex: 0,
-              display:
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? "none"
-                  : "block",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "150px",
-              height: "150px",
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)",
-              transform: "translate(-50%, 50%)",
-              zIndex: 0,
-              display:
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? "none"
-                  : "block",
-            }}
-          />
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+        {/* Decorative corner accents */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "120px",
+            height: "120px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)",
+            transform: "translate(50%, -50%)",
+            zIndex: 0,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "150px",
+            height: "150px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)",
+            transform: "translate(-50%, 50%)",
+            zIndex: 0,
+          }}
+        />
 
-          <Fade in={showContent} timeout={1000}>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? "flex-start"
-                    : "space-between",
-                alignItems: "center",
+        <Fade in={showContent} timeout={1000}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+              position: "relative",
+              minWidth: 0,
+              width: "100%",
+              zIndex: 1,
+              textAlign: "center",
+              minHeight: "100%",
+            }}
+            className="w-full h-full rounded-xl flex flex-col"
+          >
+            {/* Top Section - Hero */}
+            <Box
+              sx={{
+                mb: 5,
                 position: "relative",
-                minWidth: 0,
-                width: "100%",
                 zIndex: 1,
-                textAlign: "center",
-                minHeight:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? "auto"
-                    : "100%",
-                maxHeight:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? "calc(80vh - 80px)"
-                    : "100%",
-                gap:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? 12
-                    : 0,
-                overflowY:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? "auto"
-                    : "visible",
-                paddingRight:
-                  typeof window !== "undefined" && window.innerWidth < 640
-                    ? "8px"
-                    : "0",
+                width: "100%",
               }}
-              className="w-full h-full rounded-xl flex flex-col"
             >
-              {/* Top Section - Hero */}
-              <Box
-                sx={{
-                  mb: { xs: 3, sm: 5 },
-                  position: "relative",
-                  zIndex: 1,
-                  width: "100%",
-                }}
-              >
-                {/* Mobile: Enhanced Corporate Header */}
-                <Box
+              {/* Desktop: Original Hero Design */}
+              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                {/* Main Title */}
+                <Typography
+                  variant="h3"
                   sx={{
-                    display: { xs: "block", sm: "none" },
+                    fontWeight: "700",
+                    background:
+                      "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontSize: "2.5rem",
+                    fontFamily: "Roboto, sans-serif",
+                    letterSpacing: "0.02em",
                     textAlign: "center",
-                    mb: 4,
+                    mb: 1.5,
                     position: "relative",
-                    "&::before": {
+                    "&::after": {
                       content: '""',
                       position: "absolute",
-                      top: "-20px",
+                      bottom: "-6px",
                       left: "50%",
                       transform: "translateX(-50%)",
-                      width: "60px",
-                      height: "4px",
-                      background:
-                        "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.8) 100%)",
-                      borderRadius: "2px",
+                      width: "40%",
+                      height: "3px",
+                      background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
+                      borderRadius: "1px",
                     },
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: "800",
-                      background:
-                        "linear-gradient(135deg, rgba(30, 58, 138, 0.98) 0%, rgba(37, 99, 235, 0.95) 50%, rgba(29, 78, 216, 0.92) 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      fontSize: "2.2rem",
-                      fontFamily: '"Inter", "Roboto", sans-serif',
-                      letterSpacing: "-0.01em",
-                      mb: 2,
-                      textShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                      position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: "-8px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "80px",
-                        height: "3px",
-                        background:
-                          "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 1) 50%, rgba(29, 78, 216, 0.8) 100%)",
-                        borderRadius: "2px",
-                      },
-                    }}
-                  >
-                    Finish Registration
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: "rgba(30, 58, 138, 1)",
-                      fontSize: "1.05rem",
-                      fontWeight: "500",
-                      mb: 3,
-                      px: 2,
-                      textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                      lineHeight: 1.5,
-                      fontFamily: '"Inter", "Roboto", sans-serif',
-                      maxWidth: "280px",
-                      mx: "auto",
-                      position: "relative",
-                    }}
-                  >
-                    Provide your contact details to connect with clients
-                  </Typography>
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", mb: 2 }}
-                  >
-                    <Box
-                      sx={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: "20px",
-                        background:
-                          "linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(29, 78, 216, 0.95) 100%)",
-                        backdropFilter: "blur(20px)",
-                        border: "2px solid rgba(59, 130, 246, 0.6)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow:
-                          "0 12px 40px rgba(59, 130, 246, 0.4), 0 4px 16px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4)",
-                        animation: "pulse 2s ease-in-out infinite",
-                        "@keyframes pulse": {
-                          "0%, 100%": {
-                            transform: "scale(1)",
-                            boxShadow: "0 12px 40px rgba(59, 130, 246, 0.4)",
-                          },
-                          "50%": {
-                            transform: "scale(1.05)",
-                            boxShadow: "0 16px 56px rgba(59, 130, 246, 0.5)",
-                          },
-                        },
-                      }}
-                    >
-                      <FaPhone size={30} color="white" />
-                    </Box>
-                  </Box>
-                </Box>
+                  {/* Verify Your Number */}
+                  Complete Registration
+                </Typography>
 
-                {/* Desktop: Original Hero Design */}
-                <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                  {/* Main Title */}
-                  <Typography
-                    variant="h3"
-                    sx={{
-                      fontWeight: "700",
-                      background:
-                        "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      fontSize: { xs: "2rem", sm: "2.5rem", md: "2.8rem" },
-                      fontFamily: "Roboto, sans-serif",
-                      letterSpacing: "0.02em",
-                      textAlign: "center",
-                      mb: 1.5,
-                      position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: "-6px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "40%",
-                        height: "3px",
-                        background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
-                        borderRadius: "1px",
-                      },
-                    }}
-                  >
-                    {/* Verify Your Number */}
-                    Complete Registration
-                  </Typography>
-
-                  {/* Subtitle */}
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: "rgba(30, 58, 138, 0.7)",
-                      fontSize: { xs: "0.95rem", sm: "1rem", md: "1.1rem" },
-                      fontWeight: "400",
-                      textAlign: "center",
-                      mb: 2,
-                      fontFamily: "Roboto, sans-serif",
-                    }}
-                  >
-                    {/* Enter your mobile number to receive a verification code */}
-                    Provide your contact details to connect with clients
-                  </Typography>
-
-                  {/* Phone Icon */}
-                  {/* <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      mt: 2,
-                      mb: 3,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: '16px',
-                        background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
-                        animation: 'float 3s ease-in-out infinite',
-                        '@keyframes float': {
-                          '0%, 100%': { transform: 'translateY(0px)' },
-                          '50%': { transform: 'translateY(-8px)' },
-                        },
-                      }}
-                    >
-                      <FaPhone size={30} color="white" />
-                    </Box>
-                  </Box> */}
-                </Box>
+                {/* Subtitle */}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "rgba(30, 58, 138, 0.7)",
+                    fontSize: "1rem",
+                    fontWeight: "400",
+                    textAlign: "center",
+                    mb: 2,
+                    fontFamily: "Roboto, sans-serif",
+                  }}
+                >
+                  {/* Enter your mobile number to receive a verification code */}
+                  Provide your contact details to connect with clients
+                </Typography>
               </Box>
+            </Box>
 
-              <div className="sm:mt-12 w-96">
-                {/* Middle Section - Form Content */}
-                <div className="flex flex-col w-full items-center max-w-xl flex-1">
+            <div className="flex flex-col gap-7 items-center">
+              {/* Middle Section - Form Content */}
+              <div className="flex flex-col w-full items-center max-w-xl flex-1">
+                <Box
+                  sx={{
+                    width: "100%",
+                    minWidth: "420px",
+                    textAlign: "center",
+                    zIndex: 2,
+                  }}
+                >
+                  {/* Phone Number Input */}
                   <Box
                     sx={{
+                      mb: 3,
+                      // border: '2px solid red',
                       width: "100%",
-                      maxWidth: "420px",
-                      textAlign: "center",
-                      zIndex: 2,
+                      display: "flex",
+                      justifyContent: "center",
                     }}
                   >
-                    {/* Phone Number Input */}
-                    <Box
-                      sx={{
-                        mb: 3,
-                        // border: '2px solid red',
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
+                    <TextField
+                      variant="outlined"
+                      placeholder="Enter your mobile number"
+                      value={phoneNumber}
+                      onChange={handlePhoneChange}
+                      type="tel"
+                      inputProps={{
+                        maxLength: 10,
+                        inputMode: "numeric",
+                        pattern: "[0-9]*",
                       }}
-                    >
-                      <TextField
-                        variant="outlined"
-                        placeholder="Enter your mobile number"
-                        value={phoneNumber}
-                        onChange={handlePhoneChange}
-                        type="tel"
-                        inputProps={{
-                          maxLength: 10,
-                          inputMode: "numeric",
-                          pattern: "[0-9]*",
-                        }}
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                pr: 1.5,
+                                mr: 1,
+                                borderRight: "1px solid #e2e8f0",
+                              }}
+                            >
                               <Box
+                                component="span"
                                 sx={{
                                   display: "flex",
                                   alignItems: "center",
-                                  gap: 1,
-                                  pr: 1.5,
-                                  mr: 1,
-                                  borderRight: "1px solid #e2e8f0",
+                                  fontSize: "1.25rem",
+                                  pb: 0.5,
                                 }}
                               >
-                                <Box
-                                  component="span"
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "1.25rem",
-                                    pb: 0.5,
-                                  }}
-                                >
-                                  🇮🇳
-                                </Box>
-                                <Typography
-                                  variant="body1"
-                                  sx={{
-                                    color: "#475569",
-                                    fontWeight: 500,
-                                    fontSize: "0.95rem",
-                                  }}
-                                >
-                                  +91
-                                </Typography>
+                                🇮🇳
                               </Box>
-                            </InputAdornment>
-                          ),
-                          sx: {
-                            borderRadius: { xs: "16px", sm: "12px" },
-                            backgroundColor: "#ffffff",
-                            transition: "all 0.2s ease",
-                            "& fieldset": {
-                              borderColor: "#e2e8f0",
-                              borderWidth: "1px",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "#56A9D9",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#56A9D9",
-                              borderWidth: "2px",
-                              boxShadow: "0 0 0 3px rgba(86, 169, 217, 0.1)",
-                            },
-                            "& .MuiInputBase-input": {
-                              color: "#1e293b",
-                              fontSize: { xs: "1rem", sm: "1rem" },
-                              fontWeight: 500,
-                              py: { xs: 1.8, sm: 1.75 },
-                              pl: 0,
-                            },
-                            "& .MuiInputBase-input::placeholder": {
-                              color: "#94a3b8",
-                              opacity: 1,
-                            },
-                            // Slight shadow on mobile for affordance
-                            boxShadow: {
-                              xs: "0 2px 10px rgba(15,23,42,0.06)",
-                              sm: "none",
-                            },
-                          },
-                        }}
-                        sx={{
-                          width: { xs: "320px", sm: "100%" },
-                        }}
-                      />
-                    </Box>
-
-                    {/* Error Message */}
-                    {error && (
-                      <Alert
-                        severity="error"
-                        sx={{
-                          mb: 3,
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: "#475569",
+                                  fontWeight: 500,
+                                  fontSize: "0.95rem",
+                                }}
+                              >
+                                +91
+                              </Typography>
+                            </Box>
+                          </InputAdornment>
+                        ),
+                        sx: {
                           borderRadius: "12px",
-                          backgroundColor: "#fef2f2",
-                          border: "1px solid #fecaca",
-                          "& .MuiAlert-message": {
-                            color: "#dc2626",
-                            fontWeight: 500,
+                          backgroundColor: "#ffffff",
+                          transition: "all 0.2s ease",
+                          "& fieldset": {
+                            borderColor: "#e2e8f0",
+                            borderWidth: "1px",
                           },
-                        }}
-                      >
-                        {error}
-                      </Alert>
-                    )}
-                  </Box>
-                </div>
-
-                {/* Bottom Section - Continue Button */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 3,
-                    my: { xs: 4, sm: 5 },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      onClick={handleVerifyNumber}
-                      disabled={isLoading || phoneNumber.length !== 10}
+                          "&:hover fieldset": {
+                            borderColor: "#56A9D9",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#56A9D9",
+                            borderWidth: "2px",
+                            boxShadow: "0 0 0 3px rgba(86, 169, 217, 0.1)",
+                          },
+                          "& .MuiInputBase-input": {
+                            color: "#1e293b",
+                            fontSize: "1rem",
+                            fontWeight: 500,
+                            py: 1.75,
+                            pl: 0,
+                          },
+                          "& .MuiInputBase-input::placeholder": {
+                            color: "#94a3b8",
+                            opacity: 1,
+                          },
+                        },
+                      }}
                       sx={{
-                        py: { xs: 1.6, sm: 2 },
-                        px: { xs: 2, sm: 5 },
-                        background:
-                          phoneNumber.length === 10 && !isLoading
-                            ? "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)"
-                            : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
-                        color:
-                          phoneNumber.length === 10 && !isLoading
-                            ? "white"
-                            : { xs: "#6b7280", sm: "#9ca3af" },
-                        fontWeight: "600",
-                        fontSize: { xs: "1rem", sm: "1.1rem" },
-                        borderRadius: { xs: "14px", sm: "12px" },
-                        boxShadow:
-                          phoneNumber.length === 10 && !isLoading
-                            ? {
-                                xs: "0 10px 30px rgba(86, 169, 217, 0.35)",
-                                sm: "0 6px 20px rgba(86, 169, 217, 0.3)",
-                              }
-                            : "none",
-                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                        textTransform: "none",
-                        minWidth: { xs: "180px", sm: "280px" },
-                        width: { xs: "100%", sm: "auto" },
-                        maxWidth: { xs: "260px", sm: "300px" },
-                        position: "relative",
-                        overflow: "hidden",
-                        border: {
-                          xs:
-                            phoneNumber.length === 10 && !isLoading
-                              ? "1px solid rgba(59,130,246,0.45)"
-                              : "1px solid rgba(100,116,139,0.15)",
-                          sm: "none",
-                        },
-                        "&:hover": {
-                          background:
-                            phoneNumber.length === 10 && !isLoading
-                              ? "linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)"
-                              : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
-                          boxShadow:
-                            phoneNumber.length === 10 && !isLoading
-                              ? {
-                                  xs: "0 12px 36px rgba(86, 169, 217, 0.45)",
-                                  sm: "0 8px 28px rgba(86, 169, 217, 0.4)",
-                                }
-                              : "none",
-                          transform:
-                            phoneNumber.length === 10 && !isLoading
-                              ? { xs: "none", sm: "translateY(-2px)" }
-                              : "none",
-                        },
-                        "&:active": {
-                          transform:
-                            phoneNumber.length === 10 && !isLoading
-                              ? { xs: "none", sm: "translateY(-1px)" }
-                              : "none",
-                        },
-                        "&:disabled": {
-                          background:
-                            "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
-                          color: { xs: "#6b7280", sm: "#9ca3af" },
-                        },
-                        "&::before": {
-                          content: '""',
-                          position: "absolute",
-                          top: 0,
-                          left: "-100%",
-                          width: "100%",
-                          height: "100%",
-                          background:
-                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                          transition: "left 0.5s",
-                        },
-                        "&:hover::before": {
-                          left:
-                            phoneNumber.length === 10 && !isLoading
-                              ? "100%"
-                              : "-100%",
+                        width: "100%",
+                      }}
+                    />
+                  </Box>
+
+                  {/* Error Message */}
+                  {error && (
+                    <Alert
+                      severity="error"
+                      sx={{
+                        mb: 3,
+                        borderRadius: "12px",
+                        backgroundColor: "#fef2f2",
+                        border: "1px solid #fecaca",
+                        "& .MuiAlert-message": {
+                          color: "#dc2626",
+                          fontWeight: 500,
                         },
                       }}
                     >
-                      {isLoading ? (
-                        <Box
-                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                        >
-                          <Box
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              border: "2px solid currentColor",
-                              borderTop: "2px solid transparent",
-                              borderRadius: "50%",
-                              animation: "spin 1s linear infinite",
-                              "@keyframes spin": {
-                                "0%": { transform: "rotate(0deg)" },
-                                "100%": { transform: "rotate(360deg)" },
-                              },
-                            }}
-                          />
-                          {/* Verifying... */}
-                          "Creating Account..."
-                        </Box>
-                      ) : (
-                        // "Send Verification Code"
-                        "Finish Setup"
-                      )}
-                    </Button>
-                  </Box>
-                  {/* Message about redirection */}
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: {
-                        xs: "rgba(30, 58, 138, 0.8)",
-                        sm: "rgba(30, 58, 138, 0.7)",
-                      },
-                      fontSize: { xs: "0.85rem", sm: "0.9rem" },
-                      fontWeight: "400",
-                      textAlign: "center",
-                      mt: 1,
-                      maxWidth: { xs: "300px", sm: "320px" },
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    Upon successful completion, you will be redirected to the
-                    dashboard.
-                  </Typography>
+                      {error}
+                    </Alert>
+                  )}
                 </Box>
               </div>
-            </div>
-          </Fade>
-        </Box>
 
-        {/* Right Half: Pure White Image Section */}
-        <Box
-          sx={{
-            width: "40%",
-            flex: 1,
-            display: { xs: "none", lg: "flex" },
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            backgroundColor: "#ffffff",
-            "@media (max-width:1150px)": {
-              display: "none",
-            },
-          }}
-        >
-          <Fade in={showContent} timeout={1200}>
-            <Box
-              sx={{
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <img
-                src={verifyNumber}
-                alt="Verify Number Illustration"
-                style={{
-                  maxWidth: "85%",
-                  height: "auto",
-                  position: "relative",
-                  zIndex: 1,
-                  transition: "transform 0.3s ease",
+              {/* Bottom Section - Continue Button */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 3,
+                  my: 5,
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "scale(1.02) translateY(-5px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "scale(1) translateY(0px)";
-                }}
-              />
-            </Box>
-          </Fade>
-        </Box>
-      </Paper>
-    </div>
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={handleVerifyNumber}
+                    disabled={isLoading || phoneNumber.length !== 10}
+                    sx={{
+                      py: 2,
+                      px: 5,
+                      background:
+                        phoneNumber.length === 10 && !isLoading
+                          ? "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)"
+                          : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
+                      color:
+                        phoneNumber.length === 10 && !isLoading
+                          ? "white"
+                          : "#9ca3af",
+                      fontWeight: "600",
+                      fontSize: "1.1rem",
+                      borderRadius: "12px",
+                      boxShadow:
+                        phoneNumber.length === 10 && !isLoading
+                          ? "0 6px 20px rgba(86, 169, 217, 0.3)"
+                          : "none",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      textTransform: "none",
+                      minWidth: "280px",
+                      position: "relative",
+                      overflow: "hidden",
+                      "&:hover": {
+                        background:
+                          phoneNumber.length === 10 && !isLoading
+                            ? "linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)"
+                            : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
+                        boxShadow:
+                          phoneNumber.length === 10 && !isLoading
+                            ? "0 8px 28px rgba(86, 169, 217, 0.4)"
+                            : "none",
+                        transform:
+                          phoneNumber.length === 10 && !isLoading
+                            ? "translateY(-2px)"
+                            : "none",
+                      },
+                      "&:active": {
+                        transform:
+                          phoneNumber.length === 10 && !isLoading
+                            ? "translateY(-1px)"
+                            : "none",
+                      },
+                      "&:disabled": {
+                        background:
+                          "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
+                        color: "#9ca3af",
+                      },
+                      "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: "-100%",
+                        width: "100%",
+                        height: "100%",
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                        transition: "left 0.5s",
+                      },
+                      "&:hover::before": {
+                        left:
+                          phoneNumber.length === 10 && !isLoading
+                            ? "100%"
+                            : "-100%",
+                      },
+                    }}
+                  >
+                    {isLoading ? (
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <Box
+                          sx={{
+                            width: 16,
+                            height: 16,
+                            border: "2px solid currentColor",
+                            borderTop: "2px solid transparent",
+                            borderRadius: "50%",
+                            animation: "spin 1s linear infinite",
+                            "@keyframes spin": {
+                              "0%": { transform: "rotate(0deg)" },
+                              "100%": { transform: "rotate(360deg)" },
+                            },
+                          }}
+                        />
+                        {/* Verifying... */}
+                        "Creating Account..."
+                      </Box>
+                    ) : (
+                      // "Send Verification Code"
+                      "Finish Setup"
+                    )}
+                  </Button>
+                </Box>
+                {/* Message about redirection */}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "rgba(30, 58, 138, 0.7)",
+                    fontSize: "0.9rem",
+                    fontWeight: "400",
+                    textAlign: "center",
+                    mt: 1,
+                    maxWidth: "320px",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  Upon successful completion, you will be redirected to the
+                  dashboard.
+                </Typography>
+              </Box>
+            </div>
+          </div>
+        </Fade>
+      </Box>
+    </Paper>
   );
 };
 
 export default Step7_VerifyNumber;
-
-// import { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { Paper, Typography, Button, TextField, Box, InputAdornment, Alert, Fade } from '@mui/material';
-// import { FaPhone } from "react-icons/fa6";
-// import verifyNumber from '../../assets/verifyNumber.png';
-// import { useOnBoarding } from './OnboardingContext';
-
-// const Step7_VerifyNumber = () => {
-
-//   const navigate = useNavigate();
-//   const { onboardingData, updateOnboardingData } = useOnBoarding();
-//   const [phoneNumber, setPhoneNumber] = useState(onboardingData.phone || '');
-//   const [error, setError] = useState('');
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [showContent, setShowContent] = useState(false);
-
-//   useEffect(() => {
-//     setShowContent(true);
-//   }, []);
-
-//   const handlePhoneChange = (e) => {
-//     // Allow only numbers and max 10 digits
-//     const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
-//     setPhoneNumber(val);
-//     if (error) setError('');
-//   };
-
-//   const handleVerifyNumber = async () => {
-//     if (phoneNumber.length !== 10) {
-//       setError('Please enter a valid 10-digit mobile number.');
-//       return;
-//     }
-//     setError('');
-//     setIsLoading(true);
-
-//     // Simulate API call
-//     setTimeout(() => {
-//       updateOnboardingData({ phone: phoneNumber });
-//       setIsLoading(false);
-//       navigate('/auth/onboarding/verify-otp');
-//     }, 1500);
-//   };
-
-//   return (
-//     <div style={{ position: 'relative', width: '80%', height: '80%' }}>
-//       <Paper
-//         elevation={0}
-//         sx={{
-//           width: '100%',
-//           height: '100%',
-//           display: 'flex',
-//           borderRadius: '16px',
-//           overflowY: 'auto',
-//           backgroundColor: '#ffffff',
-//           border: 'none',
-//           boxShadow: 'none',
-//           // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
-//           '&::-webkit-scrollbar': {
-//             display: 'none',
-//           },
-//           // Hide scrollbar for Firefox
-//           scrollbarWidth: 'none',
-//           // Alternative for older browsers
-//           msOverflowStyle: 'none',
-//           '@media (max-width:1150px)': {
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             flexDirection: 'column',
-//           },
-//         }}
-//       >
-//         {/* Debugging Purposes */}
-//         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
-
-//         {/* Left Half: Form Content */}
-//         <Box
-//           sx={{
-//             // border: '2px solid red',
-//             display: 'flex',
-//             flex: 1,
-//             flexDirection: 'column',
-//             position: 'relative',
-//             minWidth: 0,
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             px: { xs: 3, sm: 4, md: 5 },
-//             py: { xs: 3, sm: 4 },
-//             height: '100%',
-//             backgroundColor: '#ffffff',
-//             '@media (max-width:1200px)': {
-//               width: '100%',
-//               alignItems: 'center',
-//               flex: 'unset',
-//               minWidth: 0,
-//             },
-//             '@media (min-width:1201px)': {
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               width: '60%',
-//             },
-//           }}
-//         >
-//           {/* Subtle background patterns */}
-//           <div
-//             style={{
-//               position: 'absolute',
-//               top: 0,
-//               left: 0,
-//               right: 0,
-//               bottom: 0,
-//               backgroundImage: `
-//                 radial-gradient(circle at 20% 20%, rgba(86, 169, 217, 0.05) 0%, transparent 50%),
-//                 radial-gradient(circle at 80% 80%, rgba(86, 169, 217, 0.03) 0%, transparent 50%)
-//               `,
-//               pointerEvents: 'none',
-//               zIndex: 0,
-//             }}
-//           />
-//           {/* Decorative corner accents */}
-//           <div
-//             style={{
-//               position: 'absolute',
-//               top: 0,
-//               right: 0,
-//               width: '120px',
-//               height: '120px',
-//               borderRadius: '50%',
-//               background: 'radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)',
-//               transform: 'translate(50%, -50%)',
-//               zIndex: 0,
-//             }}
-//           />
-//           <div
-//             style={{
-//               position: 'absolute',
-//               bottom: 0,
-//               left: 0,
-//               width: '150px',
-//               height: '150px',
-//               borderRadius: '50%',
-//               background: 'radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)',
-//               transform: 'translate(-50%, 50%)',
-//               zIndex: 0,
-//             }}
-//           />
-
-//           <Fade in={showContent} timeout={1000}>
-//             <div
-//               style={{
-//                 flex: 1,
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 justifyContent: 'space-between',
-//                 alignItems: 'center',
-//                 position: 'relative',
-//                 minWidth: 0,
-//                 width: '100%',
-//                 zIndex: 1,
-//                 textAlign: 'center',
-//                 minHeight: '100%',
-//               }}
-//               className='w-full h-full rounded-xl flex flex-col'
-//             >
-//               {/* Top Section - Hero */}
-//               <Box sx={{ mb: 4, position: 'relative', zIndex: 1 }}>
-//                 {/* Main Title */}
-//                 <Typography
-//                   variant="h3"
-//                   sx={{
-//                     fontWeight: '700',
-//                     background: 'linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)',
-//                     WebkitBackgroundClip: 'text',
-//                     WebkitTextFillColor: 'transparent',
-//                     fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
-//                     fontFamily: 'Roboto, sans-serif',
-//                     letterSpacing: '0.02em',
-//                     textAlign: 'center',
-//                     mb: 1.5,
-//                     position: 'relative',
-//                     '&::after': {
-//                       content: '""',
-//                       position: 'absolute',
-//                       bottom: '-6px',
-//                       left: '50%',
-//                       transform: 'translateX(-50%)',
-//                       width: '50%',
-//                       height: '2px',
-//                       background: 'linear-gradient(90deg, #56A9D9, #1e3a8a)',
-//                       borderRadius: '1px',
-//                     },
-//                   }}
-//                 >
-//                   Verify Your Number
-//                 </Typography>
-
-//                 {/* Subtitle */}
-//                 <Typography
-//                   variant="h6"
-//                   sx={{
-//                     color: 'rgba(30, 58, 138, 0.7)',
-//                     fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
-//                     fontWeight: '400',
-//                     textAlign: 'center',
-//                     mb: 2,
-//                     fontFamily: 'Roboto, sans-serif',
-//                   }}
-//                 >
-//                   Enter your mobile number to receive a verification code
-//                 </Typography>
-
-//                 {/* Phone Icon */}
-//                 <Box
-//                   sx={{
-//                     display: 'flex',
-//                     justifyContent: 'center',
-//                     mt: 2,
-//                     mb: 3,
-//                   }}
-//                 >
-//                   <Box
-//                     sx={{
-//                       width: 60,
-//                       height: 60,
-//                       borderRadius: '16px',
-//                       background: 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)',
-//                       display: 'flex',
-//                       alignItems: 'center',
-//                       justifyContent: 'center',
-//                       boxShadow: '0 6px 24px rgba(86, 169, 217, 0.3)',
-//                       animation: 'float 3s ease-in-out infinite',
-//                       '@keyframes float': {
-//                         '0%, 100%': { transform: 'translateY(0px)' },
-//                         '50%': { transform: 'translateY(-8px)' },
-//                       },
-//                     }}
-//                   >
-//                     <FaPhone size={30} color="white" />
-//                   </Box>
-//                 </Box>
-//               </Box>
-
-//               {/* Middle Section - Form Content */}
-//               <div className="flex flex-col w-full items-center max-w-lg flex-1">
-//                 {/* Main Content */}
-//                 <Box
-//                   sx={{
-//                     // border:'2px solid green',
-//                     width: '100%',
-//                     maxWidth: '420px',
-//                     textAlign: 'center',
-//                     zIndex: 2,
-//                   }}
-//                 >
-//                   {/* Phone Number Input */}
-//                   <Box sx={{ mb: 3 }}>
-//                     <TextField
-//                       variant="outlined"
-//                       fullWidth
-//                       placeholder="Enter your mobile number"
-//                       value={phoneNumber}
-//                       onChange={handlePhoneChange}
-//                       type="tel"
-//                       inputProps={{
-//                         maxLength: 10,
-//                         inputMode: 'numeric',
-//                         pattern: '[0-9]*',
-//                       }}
-//                       InputProps={{
-//                         startAdornment: (
-//                           <InputAdornment position="start">
-//                             <Box
-//                               sx={{
-//                                 display: 'flex',
-//                                 alignItems: 'center',
-//                                 gap: 1,
-//                                 pr: 1.5,
-//                                 mr: 1,
-//                                 borderRight: '1px solid #e2e8f0',
-//                               }}
-//                             >
-//                               <Box
-//                                 component="span"
-//                                 sx={{
-//                                   display: 'flex',
-//                                   alignItems: 'center',
-//                                   fontSize: '1.25rem',
-//                                   pb: 0.5,
-//                                 }}
-//                               >
-//                                 🇮🇳
-//                               </Box>
-//                               <Typography
-//                                 variant="body1"
-//                                 sx={{
-//                                   color: '#475569',
-//                                   fontWeight: 500,
-//                                   fontSize: '0.95rem',
-//                                 }}
-//                               >
-//                                 +91
-//                               </Typography>
-//                             </Box>
-//                           </InputAdornment>
-//                         ),
-//                         sx: {
-//                           borderRadius: '12px',
-//                           backgroundColor: '#ffffff',
-//                           transition: 'all 0.2s ease',
-//                           '& fieldset': {
-//                             borderColor: '#e2e8f0',
-//                             borderWidth: '1px',
-//                           },
-//                           '&:hover fieldset': {
-//                             borderColor: '#56A9D9',
-//                           },
-//                           '&.Mui-focused fieldset': {
-//                             borderColor: '#56A9D9',
-//                             borderWidth: '2px',
-//                             boxShadow: '0 0 0 3px rgba(86, 169, 217, 0.1)',
-//                           },
-//                           '& .MuiInputBase-input': {
-//                             color: '#1e293b',
-//                             fontSize: '1rem',
-//                             fontWeight: 500,
-//                             py: 1.75,
-//                             pl: 0,
-//                           },
-//                           '& .MuiInputBase-input::placeholder': {
-//                             color: '#94a3b8',
-//                             opacity: 1,
-//                           },
-//                         },
-//                       }}
-//                     />
-//                   </Box>
-
-//                   {/* Error Message */}
-//                   {error && (
-//                     <Alert
-//                       severity="error"
-//                       sx={{
-//                         mb: 3,
-//                         borderRadius: '12px',
-//                         backgroundColor: '#fef2f2',
-//                         border: '1px solid #fecaca',
-//                         '& .MuiAlert-message': {
-//                           color: '#dc2626',
-//                           fontWeight: 500,
-//                         },
-//                       }}
-//                     >
-//                       {error}
-//                     </Alert>
-//                   )}
-//                 </Box>
-//               </div>
-
-//               {/* Bottom Section - Continue Button */}
-//               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, mt: 4 }}>
-//                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-//                   <Button
-//                     variant="contained"
-//                     onClick={handleVerifyNumber}
-//                     disabled={isLoading || phoneNumber.length !== 10}
-//                     sx={{
-//                       py: 2,
-//                       px: 5,
-//                       background: (phoneNumber.length === 10 && !isLoading)
-//                         ? 'linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)'
-//                         : 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-//                       color: (phoneNumber.length === 10 && !isLoading) ? 'white' : '#9ca3af',
-//                       fontWeight: '600',
-//                       fontSize: '1.1rem',
-//                       borderRadius: '12px',
-//                       boxShadow: (phoneNumber.length === 10 && !isLoading) ? '0 6px 20px rgba(86, 169, 217, 0.3)' : 'none',
-//                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-//                       textTransform: 'none',
-//                       minWidth: '220px',
-//                       position: 'relative',
-//                       overflow: 'hidden',
-//                       '&:hover': {
-//                         background: (phoneNumber.length === 10 && !isLoading)
-//                           ? 'linear-gradient(135deg, #42A5F5 0%, #1976D2 100%)'
-//                           : 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-//                         boxShadow: (phoneNumber.length === 10 && !isLoading) ? '0 8px 28px rgba(86, 169, 217, 0.4)' : 'none',
-//                         transform: (phoneNumber.length === 10 && !isLoading) ? 'translateY(-2px)' : 'none',
-//                       },
-//                       '&:active': {
-//                         transform: (phoneNumber.length === 10 && !isLoading) ? 'translateY(-1px)' : 'none',
-//                       },
-//                       '&:disabled': {
-//                         background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-//                         color: '#9ca3af',
-//                       },
-//                       '&::before': {
-//                         content: '""',
-//                         position: 'absolute',
-//                         top: 0,
-//                         left: '-100%',
-//                         width: '100%',
-//                         height: '100%',
-//                         background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-//                         transition: 'left 0.5s',
-//                       },
-//                       '&:hover::before': {
-//                         left: (phoneNumber.length === 10 && !isLoading) ? '100%' : '-100%',
-//                       },
-//                     }}
-//                   >
-//                     {
-//                       isLoading ? (
-//                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-//                           <Box
-//                             sx={{
-//                               width: 16,
-//                               height: 16,
-//                               border: '2px solid currentColor',
-//                               borderTop: '2px solid transparent',
-//                               borderRadius: '50%',
-//                               animation: 'spin 1s linear infinite',
-//                               '@keyframes spin': {
-//                                 '0%': { transform: 'rotate(0deg)' },
-//                                 '100%': { transform: 'rotate(360deg)' },
-//                               },
-//                             }}
-//                           />
-//                             Verifying...
-//                           </Box>
-//                         ) : (
-//                             'Send Verification Code'
-//                         )
-//                     }
-//                   </Button>
-//                 </Box>
-//               </Box>
-//             </div>
-//           </Fade>
-//         </Box>
-
-//         {/* Right Half: Pure White Image Section */}
-//         <Box
-//           sx={{
-//             width: '40%',
-//             flex: 1,
-//             display: { xs: 'none', lg: 'flex' },
-//             alignItems: 'center',
-//             justifyContent: 'center',
-//             position: 'relative',
-//             backgroundColor: '#ffffff',
-//             '@media (max-width:1150px)': {
-//               display: 'none',
-//             },
-//           }}
-//         >
-//           <Fade in={showContent} timeout={1200}>
-//             <Box
-//               sx={{
-//                 position: 'relative',
-//                 display: 'flex',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-//                 width: '100%',
-//                 height: '100%',
-//               }}
-//             >
-//               <img
-//                 src={verifyNumber}
-//                 alt="Verify Number Illustration"
-//                 style={{
-//                   maxWidth: '85%',
-//                   height: 'auto',
-//                   position: 'relative',
-//                   zIndex: 1,
-//                   transition: 'transform 0.3s ease',
-//                 }}
-//                 onMouseEnter={(e) => {
-//                   e.target.style.transform = 'scale(1.02) translateY(-5px)';
-//                 }}
-//                 onMouseLeave={(e) => {
-//                   e.target.style.transform = 'scale(1) translateY(0px)';
-//                 }}
-//               />
-//             </Box>
-//           </Fade>
-//         </Box>
-//       </Paper>
-//     </div>
-//   );
-// };
-
-// export default Step7_VerifyNumber;

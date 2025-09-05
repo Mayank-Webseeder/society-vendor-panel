@@ -49,7 +49,7 @@ const NewJobs = () => {
       transition={{ delay: index * 0.08 }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute -top-8 -left-4 w-32 h-32 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),rgba(59,130,246,0)_70%)] blur-2xl" />
+        {/* <div className="absolute -top-8 -left-4 w-32 h-32 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),rgba(59,130,246,0)_70%)] blur-2xl" /> */}
         {/* <div className="absolute -bottom-10 -right-4 w-40 h-40 bg-[radial-gradient(circle_at_70%_70%,rgba(99,102,241,0.25),rgba(99,102,241,0)_70%)] blur-2xl" /> */}
       </div>
 

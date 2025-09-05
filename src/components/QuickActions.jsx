@@ -47,7 +47,7 @@ const QuickActions = () => {
 
   return (
     <motion.div
-      className="relative group/container rounded-3xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-lg hover:shadow-xl p-4 sm:p-6 overflow-hidden transition-all duration-300"
+      className="relative group/container rounded-2xl bg-white/80 backdrop-blur-xl border border-solid border-slate-200/70 shadow-lg hover:shadow-xl p-2 sm:p-3 overflow-hidden transition-all duration-300"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
@@ -59,11 +59,11 @@ const QuickActions = () => {
       </div> */}
 
       {/* Heading */}
-      <div className="relative flex items-center justify-between mb-4 sm:mb-7">
+      <div className="relative flex items-center justify-between mb-2 sm:mb-3">
         <div className="flex flex-col">
-          <h2 className="text-lg sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">Quick Actions</h2>
-          <div className="mt-2 h-1 w-32 bg-gradient-to-r from-blue-500/70 via-purple-500/60 to-transparent rounded-full" />
-          <p className="text-[11px] sm:text-xs text-slate-500 mt-2 ml-0.5">Get things done faster</p>
+          <h2 className="text-sm sm:text-base font-semibold tracking-tight bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent">Quick Actions</h2>
+          <div className="mt-1 h-0.5 w-20 bg-gradient-to-r from-blue-500/70 via-purple-500/60 to-transparent rounded-full" />
+          <p className="text-[9px] sm:text-xs text-slate-500 mt-1 ml-0.5">Get things done faster</p>
         </div>
       </div>
 
@@ -118,7 +118,7 @@ const QuickActions = () => {
 
       {/* Desktop Design */}
       <motion.div
-        className="hidden sm:grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5"
+        className="hidden sm:grid grid-cols-3 gap-2 sm:gap-3"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -130,62 +130,31 @@ const QuickActions = () => {
             <motion.button
               key={action.label}
               variants={itemVariants}
-              className={`group relative overflow-hidden rounded-2xl bg-white/75 backdrop-blur-md p-4 flex flex-col border border-solid border-slate-200/70 text-left cursor-pointer transition-all duration-300 shadow-[0_4px_10px_-4px_rgba(0,0,0,0.16),0_2px_5px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_18px_-8px_rgba(0,0,0,0.24),0_3px_8px_rgba(0,0,0,0.10)] hover:-translate-y-0.5`}
-              whileTap={{ scale: 0.97 }}
+              className={`group relative overflow-hidden rounded-xl bg-white/75 backdrop-blur-md p-2 flex flex-col items-center border border-solid border-slate-200/70 text-center cursor-pointer transition-all duration-300 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.16),0_2px_4px_rgba(0,0,0,0.06)] hover:-translate-y-0.5`}
+              whileTap={{ scale: 0.95 }}
               onClick={() => handleActionClick(action)}
             >
-              {/* Hover ambient */}
-              <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className={`absolute -top-8 -left-6 w-40 h-40 blur-2xl rounded-full
-                  ${accent === 'blue' ? 'bg-blue-300/25' : ''}
-                  ${accent === 'emerald' ? 'bg-emerald-300/25' : ''}
-                  ${accent === 'violet' ? 'bg-violet-300/30' : ''}
-                `} />
-                {/* <div className={`absolute -bottom-10 -right-4 w-48 h-48 blur-2xl rounded-full
-                  ${accent === 'blue' ? 'bg-indigo-300/20' : ''}
-                  ${accent === 'emerald' ? 'bg-teal-300/20' : ''}
-                  ${accent === 'violet' ? 'bg-fuchsia-300/25' : ''}
-                `} /> */}
-              </div>
+              {/* Hover ambient - removed for compact buttons */}
               {/* Icon */}
-              <div className="flex justify-center w-full mb-3">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
+              <div className="flex justify-center w-full mb-1.5">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm
                   ${accent === 'blue' ? 'border-blue-200/70 group-hover:border-blue-300/80' : ''}
                   ${accent === 'emerald' ? 'border-emerald-200/70 group-hover:border-emerald-300/80' : ''}
                   ${accent === 'violet' ? 'border-violet-200/70 group-hover:border-violet-300/80' : ''}
                 `}>
-                  <IconComponent className={`w-6 h-6
+                  <IconComponent className={`w-4 h-4
                     ${accent === 'blue' ? 'text-blue-600' : ''}
                     ${accent === 'emerald' ? 'text-emerald-600' : ''}
                     ${accent === 'violet' ? 'text-violet-600' : ''}
-                  `} strokeWidth={1.4} />
+                  `} strokeWidth={1.8} />
                 </div>
               </div>
               {/* Title */}
-              <h3 className="text-slate-800 font-semibold text-sm sm:text-base mb-1.5 tracking-tight group-hover:translate-x-0.5 transition-transform">
+              <h3 className="text-slate-800 font-medium text-xs leading-tight px-1 line-clamp-2 group-hover:translate-x-0.5 transition-transform">
                 {action.label}
               </h3>
-              {/* Description */}
-              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-2">
-                {action.description}
-              </p>
-              {/* CTA */}
-              <div className="mt-auto flex items-center justify-between pt-2">
-                <span className={`text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full border border-solid backdrop-blur-sm shadow-sm
-                  ${accent === 'blue' ? 'text-blue-700 border-blue-200/70 bg-blue-50/60 group-hover:bg-blue-100/60' : ''}
-                  ${accent === 'emerald' ? 'text-emerald-700 border-emerald-200/70 bg-emerald-50/60 group-hover:bg-emerald-100/60' : ''}
-                  ${accent === 'violet' ? 'text-violet-700 border-violet-200/70 bg-violet-50/60 group-hover:bg-violet-100/60' : ''}
-                `}>
-                  Go
-                </span>
-                <ArrowRight className={`w-4 h-4 transition-transform duration-300 group-hover:translate-x-1
-                  ${accent === 'blue' ? 'text-blue-500' : ''}
-                  ${accent === 'emerald' ? 'text-emerald-500' : ''}
-                  ${accent === 'violet' ? 'text-violet-500' : ''}
-                `} />
-              </div>
               {/* Bottom accent bar */}
-              <div className={`absolute bottom-0 left-0 right-0 h-1 opacity-90 bg-gradient-to-r
+              <div className={`absolute bottom-0 left-0 right-0 h-0.5 opacity-90 bg-gradient-to-r
                 ${accent === 'blue' ? 'from-blue-400 via-indigo-400 to-transparent' : ''}
                 ${accent === 'emerald' ? 'from-emerald-400 via-teal-400 to-transparent' : ''}
                 ${accent === 'violet' ? 'from-violet-400 via-fuchsia-400 to-transparent' : ''}
@@ -196,13 +165,13 @@ const QuickActions = () => {
       </motion.div>
 
       {/* Bottom animated accent dots */}
-      <div className="mt-3 sm:mt-6">
+      <div className="mt-1.5 sm:mt-2">
         <div className="flex items-center justify-center">
-          <div className="flex space-x-2">
+          <div className="flex space-x-1">
             {[0, 1, 2].map((dot) => (
               <motion.div
                 key={dot}
-                className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400"
+                className="w-0.5 h-0.5 rounded-full bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400"
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2.2, repeat: Infinity, delay: dot * 0.25 }}
               />
