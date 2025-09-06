@@ -94,33 +94,36 @@ const Step1_Loading = () => {
 
 
   return (
-    <div className='relative z-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-cyan-50 min-h-screen w-full flex items-center justify-center overflow-hidden'>
+    <div className='relative z-20 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 min-h-screen w-full flex items-center justify-center overflow-hidden'>
       {/* Branding - Top Left */}
-      <div className="absolute top-3 left-3 z-10 flex items-center gap-3 select-none">
-        <img src={faviconFinal} alt="logo" className="w-12 h-12 drop-shadow" />
+      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 flex items-center gap-2 sm:gap-3 select-none">
+        <img src={faviconFinal} alt="logo" className="w-8 h-8 sm:w-12 sm:h-12 drop-shadow" />
+        <div className="hidden lg:flex text-lg xl:text-xl font-extrabold tracking-wide">
+          <span className="bg-gradient-to-r from-slate-800 via-blue-600 to-indigo-600 bg-clip-text text-transparent">My Society Needs</span>
+        </div>
       </div>
 
       {/* Main Content - relies on OnboardingLayout background */}
-      <div className='relative z-10 flex flex-col items-center justify-center max-w-6xl mx-auto px-4 sm:px-6 pt-7 sm:pt-12 sm:pb-2 text-center'>
+      <div className='relative z-10 flex flex-col items-center justify-center max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 pt-4 sm:pt-7 lg:pt-12 pb-4 sm:pb-8 text-center'>
 
         {/* Title Section */}
-        <div className='mt-8 mb-12 relative'>
+        <div className='mt-4 sm:mt-8 mb-8 sm:mb-12 relative'>
           {/* Decorative elements */}
-          <div className="absolute -top-4 -left-4 w-8 h-8 border border-blue-200 rounded-full opacity-30 animate-spin" style={{ animationDuration: '8s' }}></div>
-          <div className="absolute -top-2 -right-2 w-6 h-6 border border-cyan-200 rounded-lg opacity-25 rotate-45 animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 border border-blue-200 rounded-full opacity-30 animate-spin" style={{ animationDuration: '8s' }}></div>
+          <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border border-cyan-200 rounded-lg opacity-25 rotate-45 animate-pulse" style={{ animationDelay: '1s' }}></div>
           
-          <h1 className='font-bold text-4xl md:text-6xl text-slate-800 mb-4 tracking-wide animate-fade-in-up'>
+          <h1 className='font-bold text-4xl md:text-5xl lg:text-6xl text-slate-800 mb-3 sm:mb-4 tracking-wide animate-fade-in-up'>
             <span className='hidden sm:inline'>Welcome to{' '}</span>
             <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-indigo-600 bg-clip-text text-transparent animate-gradient-x">
               My Society Needs
             </span>
           </h1>
 
-          <p className='text-md sm:text-xl md:text-2xl text-slate-600 font-light mb-8 max-w-3xl leading-relaxed animate-fade-in-up' style={{ animationDelay: '0.2s' }}>
+          <p className='text-base sm:text-md md:text-xl lg:text-2xl text-slate-600 font-light mb-6 sm:mb-8 max-w-3xl leading-relaxed animate-fade-in-up px-2 sm:px-0' style={{ animationDelay: '0.2s' }}>
             One - Stop Solution for All Your{' '}<br className='block sm:hidden'/>
             <span className="text-blue-600 font-medium relative">
               Societal & Business Needs
-              <Sparkles className="inline w-5 h-5 ml-2 text-yellow-500 animate-pulse" />
+              <Sparkles className="inline w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2 text-yellow-500 animate-pulse" />
             </span>
           </p>
 
@@ -141,24 +144,24 @@ const Step1_Loading = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-14 w-full max-w-6xl">
+        <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-14 sm:w-full max-w-6xl">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
               <div 
                 key={index}
-                className="group bg-white/95 backdrop-blur-md rounded-xl p-6 sm:p-8 border-solid border border-slate-200 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-2 animate-fade-in-up relative overflow-hidden" 
+                className="group w-[80%] sm:w-auto h-44 sm:h-auto bg-white/95 backdrop-blur-md rounded-xl p-4 sm:p-6 md:p-8 border-solid border border-slate-200 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-2 animate-fade-in-up relative overflow-hidden" 
                 style={{ animationDelay: feature.delay }}
               >
                 {/* Card background effect */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                 
                 <div className="relative z-10">
-                  <div className={`w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-all duration-300 shadow-lg ${feature.hoverShadow}`}>
-                    <IconComponent className="text-white" size={24} />
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6 mx-auto group-hover:scale-110 transition-all duration-300 shadow-lg ${feature.hoverShadow}`}>
+                    <IconComponent className="text-white" size={20} />
                   </div>
-                  <h3 className="text-slate-800 font-bold text-lg sm:text-xl mb-3">{feature.title}</h3>
-                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">{feature.description}</p>
+                  <h3 className="text-slate-800 font-bold text-base sm:text-lg md:text-xl mb-2 sm:mb-3">{feature.title}</h3>
+                  <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             );
@@ -171,18 +174,19 @@ const Step1_Loading = () => {
           {!showSpinner ? (
             <div className="text-center relative">              
               <div className="relative group">
-                {/* Subtle professional glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-cyan-600/20 to-indigo-600/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-105 group-hover:scale-110"></div>
+                {/* Subtle professional glow effect - reduced on mobile */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-cyan-600/20 to-indigo-600/20 rounded-xl blur-2xl sm:blur-lg opacity-0 group-hover:opacity-60 sm:group-hover:opacity-100 transition-all duration-300 scale-100 sm:scale-105 group-hover:scale-105 sm:group-hover:scale-110"></div>
 
                 <button
                   type="button"
-                  className="relative inline-flex items-center justify-center px-8 sm:px-12 md:px-16 py-4 sm:py-5 text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-blue-600 via-cyan-600 to-indigo-600 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer border-solid border border-white/10 backdrop-blur-sm hover:border-white/20"
+                  className="relative inline-flex items-center justify-center px-6 sm:px-8 md:px-12 lg:px-16 py-3 sm:py-4 md:py-5 text-base sm:text-lg md:text-xl font-bold text-white bg-gradient-to-r from-blue-600 via-cyan-600 to-indigo-600 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer border-solid border border-white/10 backdrop-blur-sm hover:border-white/20"
                   onClick={() => setShowSpinner(true)}
                 >
                   <span className="flex items-center">
-                    <Zap className="mr-2 group-hover:animate-pulse" size={20} />
-                    Begin Onboarding Process
-                    <ArrowRight className="ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform duration-300" size={20} />
+                    <Zap className="mr-2 group-hover:animate-pulse" size={18} />
+                    <span className="hidden sm:inline">Begin Onboarding Process</span>
+                    <span className="sm:hidden">Start Now</span>
+                    <ArrowRight className="ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform duration-300" size={18} />
                   </span>
                 </button>
               </div>
@@ -192,54 +196,54 @@ const Step1_Loading = () => {
               </p>
 
               {/* Enhanced Trust indicators */}
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 mb-4 text-slate-500 text-xs sm:text-sm animate-fade-in" style={{ animationDelay: '1.6s' }}>
-                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1 border border-slate-200 hover:border-green-300 transition-all duration-300 hover:shadow-md">
-                  <CheckCircle2 size={14} className="text-green-500 group-hover:scale-110 transition-transform" />
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6 md:mt-8 mb-4 text-slate-500 text-xs sm:text-sm animate-fade-in" style={{ animationDelay: '1.6s' }}>
+                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 border border-slate-200 hover:border-green-300 transition-all duration-300 hover:shadow-md">
+                  <CheckCircle2 size={12} className="text-green-500 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">No setup fees</span>
                 </div>
-                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1 border border-slate-200 hover:border-blue-300 transition-all duration-300 hover:shadow-md">
-                  <CheckCircle2 size={14} className="text-blue-500 group-hover:scale-110 transition-transform" />
+                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 border border-slate-200 hover:border-blue-300 transition-all duration-300 hover:shadow-md">
+                  <CheckCircle2 size={12} className="text-blue-500 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">Pay & Connect</span>
                 </div>
-                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1 border border-slate-200 hover:border-purple-300 transition-all duration-300 hover:shadow-md">
-                  <CheckCircle2 size={14} className="text-purple-500 group-hover:scale-110 transition-transform" />
+                <div className="group flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 border border-slate-200 hover:border-purple-300 transition-all duration-300 hover:shadow-md">
+                  <CheckCircle2 size={12} className="text-purple-500 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">Cancel anytime</span>
                 </div>
               </div>
             </div>
           ) : (
             // Loading Animation
-            <div className="flex flex-col items-center space-y-3 sm:space-y-3">
+            <div className="flex flex-col items-center space-y-2 sm:space-y-3">
               {/* Simple loading spinner */}
               <div className="relative">
-                <div className="w-16 h-16 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 sm:w-16 sm:h-16 border-3 sm:border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
               </div>
 
               {/* Simple progress bar */}
-              <div className="w-full max-w-sm sm:w-96 bg-slate-200 rounded-full h-2">
+              <div className="w-full max-w-xs sm:max-w-sm md:w-96 bg-slate-200 rounded-full h-1.5 sm:h-2">
                 <div
-                  className="bg-gradient-to-r from-blue-400 to-cyan-400 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-400 to-cyan-400 h-1.5 sm:h-2 rounded-full transition-all duration-300"
                   style={{ width: `${loadingProgress}%` }}
                 >
                 </div>
               </div>
 
               {/* Loading content */}
-              <div className="text-center space-y-2">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-800">
+              <div className="text-center space-y-1 sm:space-y-2">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-slate-800">
                   {loadingSteps[currentStep]}
                 </h3>
-                <p className="text-slate-600 text-sm sm:text-base">
+                <p className="text-slate-600 text-xs sm:text-sm md:text-base">
                   {loadingProgress}% Complete
                 </p>
               </div>
 
               {/* Simple progress indicators */}
-              <div className="flex space-x-2">
+              <div className="flex space-x-1.5 sm:space-x-2">
                 {loadingSteps.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
                       index <= currentStep
                         ? 'bg-blue-500'
                         : 'bg-slate-300'

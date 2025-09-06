@@ -36,13 +36,13 @@ const HeadingCard = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
 
         {/* Content container */}
-        <div className="relative px-3 py-1 sm:px-5 sm:py-3.5">
+        <div className="relative px-3 py-1.5 sm:px-5 sm:py-3.5">
           <div className="flex flex-row sm:flex-row justify-between items-start sm:items-start gap-3 sm:gap-0">
             {/* Main content area */}
             <div className="flex sm:flex-row items-center sm:items-center gap-4 sm:gap-6 flex-1">
               {/* Enhanced avatar section */}
               <div className="relative flex-shrink-0">
-                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-xl p-2 sm:p-3 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
+                <div className="bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 rounded-xl p-1.5 sm:p-3 shadow-md ring-1 ring-slate-200/50 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ease-out">
                   <PermIdentityIcon
                     sx={{ fontSize: { xs: 26, sm: 32 } }}
                     className="text-blue-600"
@@ -69,7 +69,7 @@ const HeadingCard = () => {
 
             {/* Subscription badge */}
             {subscriptionActive && (
-              <div className="flex-shrink-0 ml-0 sm:ml-4 mt-8 sm:mt-5 self-center sm:self-auto">
+              <div className="flex-shrink-0 ml-0 sm:ml-4 mt-3 sm:mt-5 self-center sm:self-auto">
                 <div className="relative">
                   <span className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 px-2 py-1.5 text-xs sm:px-2.5 sm:py-2.5 sm:text-sm font-semibold text-amber-800 ring-2 ring-amber-200/60 shadow-md hover:shadow-lg transition-all duration-300 group/badge">
                     {/* Premium icon */}

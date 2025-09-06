@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { OnboardingProvider } from "./OnboardingContext";
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import faviconFinal from '/faviconFinal.png';
 
 const OnboardingLayout = () => {

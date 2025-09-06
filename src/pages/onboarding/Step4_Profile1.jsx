@@ -193,8 +193,8 @@ const Step4_Profile1 = () => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: { sm: "620px" },
-        maxHeight: { sm: "620px" },
+        minHeight: "620px",
+        maxHeight: "620px",
         display: "flex",
         position: "relative",
         borderRadius: "16px",
@@ -202,8 +202,8 @@ const Step4_Profile1 = () => {
         // backgroundColor: '#ffffff',
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
         overflow: "auto",
-        background:
-          "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
+        // background:
+        //   "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
         backgroundBlendMode: { xs: "normal", sm: "normal" },
         // Subtle overlay patterns matching OnboardingLayout
         "&::before": {
@@ -293,6 +293,7 @@ const Step4_Profile1 = () => {
             background:
               "radial-gradient(circle, rgba(86, 169, 217, 0.08) 0%, transparent 70%)",
             transform: "translate(50%, -50%)",
+            display: window.innerWidth >= 640 ? "block" : "none",
             zIndex: 0,
           }}
         />
@@ -307,6 +308,7 @@ const Step4_Profile1 = () => {
             background:
               "radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)",
             transform: "translate(-50%, 50%)",
+            display: window.innerWidth >= 640 ? "block" : "none",
             zIndex: 0,
           }}
         />
@@ -338,7 +340,7 @@ const Step4_Profile1 = () => {
               }}
             >
               {/* Desktop: Original Hero Design (unchanged) */}
-              <Box>
+              <Box sx={{ display: "flex", flexDirection: 'column', alignItems: "center" }}>
                 <Typography
                   variant="h3"
                   sx={{
@@ -347,7 +349,7 @@ const Step4_Profile1 = () => {
                       "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    fontSize: "2.5rem",
+                    fontSize: window.innerWidth < 640 ? "2rem" : "2.5rem",
                     fontFamily: "Roboto, sans-serif",
                     letterSpacing: "0.02em",
                     textAlign: "center",
@@ -359,21 +361,22 @@ const Step4_Profile1 = () => {
                       bottom: "-6px",
                       left: "50%",
                       transform: "translateX(-50%)",
-                      width: "20%",
+                      width: window.innerWidth < 640 ? "25%" : "20%",
                       height: "3px",
                       background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
                       borderRadius: "1px",
                     },
                   }}
                 >
-                  Complete Your Profile
+                  {window.innerWidth < 640 ? "Complete Profile" : "Complete Your Profile"}
                 </Typography>
                 <Typography
                   variant="h6"
                   sx={{
                     color: "rgba(30, 58, 138, 0.7)",
-                    fontSize: "1rem",
+                    fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
                     fontWeight: "400",
+                    maxWidth: { xs: "200px", sm: "360px"},
                     textAlign: "center",
                     mb: 3,
                     fontFamily: "Roboto, sans-serif",
@@ -391,8 +394,8 @@ const Step4_Profile1 = () => {
                 sx={{
                   display: "grid",
                   gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                  columnGap: "5rem",
-                  rowGap: "1.9rem",
+                  columnGap: window.innerWidth < 640 ? "2rem" : "5rem",
+                  rowGap: window.innerWidth < 640 ? "1.5rem" : "1.9rem",
                   marginBottom: "2rem",
                   width: "100%",
                 }}
@@ -405,7 +408,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -450,9 +453,9 @@ const Step4_Profile1 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -470,7 +473,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -483,19 +486,19 @@ const Step4_Profile1 = () => {
                         <CheckCircle size={16} style={{ color: "#10B981" }} />
                       )}
                     </Typography>
-                    <div style={{ display: "flex", gap: "12px" }}>
+                    <div style={{ display: "grid", gap: window.innerWidth < 640 ? "8px" : "12px", gridTemplateColumns: window.innerWidth < 640 ? "1fr 1fr" : "1fr 1fr 1fr" }}>
                       {["Male", "Female", "Prefer not to say"].map((option) => (
                         <Button
                           key={option}
                           variant={gender === option ? "contained" : "outlined"}
                           onClick={() => setGender(option)}
                           sx={{
-                            py: "8px",
-                            px: "20px",
+                            py: window.innerWidth < 640 ? "5px" : "8px",
+                            px: window.innerWidth < 640 ? "2px" : "10px",
                             borderRadius: "12px",
                             textTransform: "none",
                             fontWeight: 500,
-                            fontSize: "0.9rem",
+                            fontSize: window.innerWidth < 640 ? "0.7rem" : "0.9rem",
                             background:
                               gender === option
                                 ? "linear-gradient(135deg, #56A9D9 0%, #4A9FD1 100%)"
@@ -513,6 +516,8 @@ const Step4_Profile1 = () => {
                                   : "linear-gradient(135deg, rgba(86, 169, 217, 0.15) 0%, rgba(66, 165, 245, 0.1) 100%)",
                               borderColor: "rgba(86, 169, 217, 0.5)",
                             },
+                            minWidth: window.innerWidth < 640 ? "auto" : "auto",
+                            flex: window.innerWidth < 640 ? "1" : "auto",
                           }}
                         >
                           {option}
@@ -530,7 +535,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -577,9 +582,9 @@ const Step4_Profile1 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -597,7 +602,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -646,9 +651,9 @@ const Step4_Profile1 = () => {
                           },
                           "& .MuiSelect-select": {
                             color: "#94A3B8",
-                            fontSize: "0.95rem",
-                            py: "14px",
-                            px: "16px",
+                            fontSize: window.innerWidth < 640 ? "0.8rem" : "0.95rem",
+                            py: window.innerWidth < 640 ? "10px" : "14px",
+                            px: window.innerWidth < 640 ? "12px" : "16px",
                             fontWeight: 500,
                           },
                         }}
@@ -677,7 +682,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -718,7 +723,7 @@ const Step4_Profile1 = () => {
                               }}
                             >
                               <Paperclip
-                                size={20}
+                                size={window.innerWidth < 640 ? 18 : 20}
                                 style={{
                                   color: "#56A9D9",
                                   cursor: "pointer",
@@ -758,9 +763,9 @@ const Step4_Profile1 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           cursor: "pointer",
                           fontWeight: 500,
                         },
@@ -781,9 +786,10 @@ const Step4_Profile1 = () => {
                             alignItems: "center",
                             gap: 1,
                             fontWeight: 500,
+                            fontSize: window.innerWidth < 640 ? "0.8rem" : "0.875rem",
                           }}
                         >
-                          <CheckCircle size={16} />
+                          <CheckCircle size={window.innerWidth < 640 ? 14 : 16} />
                           File uploaded successfully: {idProofFile.name}
                         </Typography>
                       </Fade>
@@ -800,7 +806,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -866,9 +872,9 @@ const Step4_Profile1 = () => {
                               preferredPaymentMethod === ""
                                 ? "#64748b"
                                 : "#0f172a",
-                            fontSize: "1rem",
-                            py: "14px",
-                            px: "16px",
+                            fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                            py: window.innerWidth < 640 ? "10px" : "14px",
+                            px: window.innerWidth < 640 ? "12px" : "16px",
                             fontWeight: 500,
                           },
                         }}
@@ -892,7 +898,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "rgba(0, 0, 0, 0.8)",
                         mb: 1.5,
-                        fontSize: "1rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                         fontWeight: 600,
                         display: "flex",
                         alignItems: "center",
@@ -952,9 +958,9 @@ const Step4_Profile1 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -983,7 +989,7 @@ const Step4_Profile1 = () => {
                 <Fade in={!!error} timeout={500}>
                   <Box
                     sx={{
-                      p: 2,
+                      p: window.innerWidth < 640 ? 1.5 : 2,
                       borderRadius: "12px",
                       background: "rgba(244, 67, 54, 0.08)",
                       border: "1px solid rgba(244, 67, 54, 0.2)",
@@ -991,13 +997,13 @@ const Step4_Profile1 = () => {
                       alignItems: "center",
                       gap: 2,
                       width: "100%",
-                      maxWidth: "400px",
+                      maxWidth: window.innerWidth < 640 ? "320px" : "400px",
                     }}
                   >
                     <Box
                       sx={{
                         width: 4,
-                        height: 35,
+                        height: window.innerWidth < 640 ? 30 : 35,
                         borderRadius: "2px",
                         background:
                           "linear-gradient(135deg, #f44336 0%, #ff5252 100%)",
@@ -1008,7 +1014,7 @@ const Step4_Profile1 = () => {
                       sx={{
                         color: "#d32f2f",
                         fontWeight: "500",
-                        fontSize: "0.9rem",
+                        fontSize: window.innerWidth < 640 ? "0.85rem" : "0.9rem",
                       }}
                     >
                       {error}
@@ -1022,7 +1028,7 @@ const Step4_Profile1 = () => {
                 <Fade in={showSuccess} timeout={500}>
                   <Box
                     sx={{
-                      p: 2,
+                      p: window.innerWidth < 640 ? 1.5 : 2,
                       borderRadius: "12px",
                       background: "rgba(16, 185, 129, 0.08)",
                       border: "1px solid rgba(16, 185, 129, 0.2)",
@@ -1030,16 +1036,16 @@ const Step4_Profile1 = () => {
                       alignItems: "center",
                       gap: 2,
                       width: "100%",
-                      maxWidth: "400px",
+                      maxWidth: window.innerWidth < 640 ? "320px" : "400px",
                     }}
                   >
-                    <CheckCircle size={20} style={{ color: "#10B981" }} />
+                    <CheckCircle size={window.innerWidth < 640 ? 18 : 20} style={{ color: "#10B981" }} />
                     <Typography
                       variant="body2"
                       sx={{
                         color: "#10B981",
                         fontWeight: "500",
-                        fontSize: "0.9rem",
+                        fontSize: window.innerWidth < 640 ? "0.85rem" : "0.9rem",
                       }}
                     >
                       Profile saved! Redirecting...
@@ -1061,18 +1067,18 @@ const Step4_Profile1 = () => {
                   variant="contained"
                   onClick={handleContinue}
                   sx={{
-                    py: 2,
-                    px: 5,
+                    py: window.innerWidth < 640 ? 1.5 : 2,
+                    px: window.innerWidth < 640 ? 4 : 5,
                     background:
                       "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
                     color: "white",
                     fontWeight: "600",
-                    fontSize: "1.1rem",
+                    fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                     borderRadius: "12px",
                     boxShadow: "0 6px 20px rgba(86, 169, 217, 0.3)",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     textTransform: "none",
-                    minWidth: "180px",
+                    minWidth: window.innerWidth < 640 ? "160px" : "180px",
                     position: "relative",
                     overflow: "hidden",
                     "&:hover": {

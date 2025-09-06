@@ -53,7 +53,8 @@ const Step3_WorkingDays = () => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: { sm: "620px" },
+        minHeight: "620px",
+        maxHeight: "620px",
         display: "flex",
         position: "relative",
         borderRadius: "16px",
@@ -61,7 +62,7 @@ const Step3_WorkingDays = () => {
         border: "1px solid #D1D5DB",
         // backgroundColor: '#ffffff',
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        background: "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
+        // background: "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
         // background: "linear-gradient(135deg, rgba(191, 219, 254, 0.9) 0%, rgba(219, 234, 254, 0.95) 25%, rgba(147, 197, 253, 0.85) 50%, rgba(96, 165, 250, 0.8) 75%, rgba(241, 245, 249, 0.9) 90%, rgba(255, 255, 255, 0.95) 100%)",
         backgroundBlendMode: { xs: "normal", sm: "normal" },
         // Subtle overlay patterns matching OnboardingLayout
@@ -74,19 +75,6 @@ const Step3_WorkingDays = () => {
           bottom: 0,
           background: "none",
           backgroundSize: "auto",
-          opacity: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-        },
-        // No additional decorative layer for desktop
-        "&::after": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "none",
           opacity: 0,
           pointerEvents: "none",
           zIndex: 1,
@@ -174,7 +162,7 @@ const Step3_WorkingDays = () => {
               background:
                 "radial-gradient(circle, rgba(86, 169, 217, 0.06) 0%, transparent 70%)",
               transform: "translate(-50%, 50%)",
-              display: "block",
+              display: window.innerWidth >= 640 ? "block" : "none",
               zIndex: 0,
             }}
           />
@@ -235,7 +223,7 @@ const Step3_WorkingDays = () => {
                         "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
-                      fontSize: "2.5rem",
+                      fontSize: window.innerWidth < 640 ? "2rem" : "2.5rem",
                       fontFamily: "Roboto, sans-serif",
                       letterSpacing: "0.02em",
                       textAlign: "center",
@@ -247,14 +235,14 @@ const Step3_WorkingDays = () => {
                         bottom: "-6px",
                         left: "50%",
                         transform: "translateX(-50%)",
-                        width: "17%",
+                        width: window.innerWidth < 640 ? "30%" : "17%",
                         height: "3px",
                         background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
                         borderRadius: "1px",
                       },
                     }}
                   >
-                    Choose Your Days
+                    {window.innerWidth < 640 ? "Choose Days" : "Choose Your Days"}
                   </Typography>
 
                   {/* Subtitle */}
@@ -262,7 +250,7 @@ const Step3_WorkingDays = () => {
                     variant="h6"
                     sx={{
                       color: "rgba(30, 58, 138, 0.7)",
-                      fontSize: "1rem",
+                      fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                       fontWeight: "400",
                       textAlign: "center",
                       mb: 2,
@@ -283,8 +271,8 @@ const Step3_WorkingDays = () => {
                   >
                     <Box
                       sx={{
-                        width: 56,
-                        height: 56,
+                        width: window.innerWidth < 640 ? 44 : 56,
+                        height: window.innerWidth < 640 ? 44 : 56,
                         borderRadius: "16px",
                         background: "rgba(255, 255, 255, 0.9)",
                         backdropFilter: "blur(10px)",
@@ -295,7 +283,7 @@ const Step3_WorkingDays = () => {
                         boxShadow: "0 4px 16px rgba(86, 169, 217, 0.1)",
                       }}
                     >
-                      <EventAvailable sx={{ fontSize: 24, color: "rgba(86, 169, 217, 0.8)" }} />
+                      <EventAvailable sx={{ fontSize: window.innerWidth < 640 ? 20 : 24, color: "rgba(86, 169, 217, 0.8)" }} />
                     </Box>
                   </Box>
                 </Box>
@@ -307,10 +295,10 @@ const Step3_WorkingDays = () => {
                 <Box
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(4, 1fr)",
-                    gap: 3,
+                    gridTemplateColumns: window.innerWidth < 640 ? "repeat(3, 1fr)" : "repeat(4, 1fr)",
+                    gap: window.innerWidth < 640 ? 2 : 3,
                     mb: 5,
-                    maxWidth: "500px",
+                    maxWidth: window.innerWidth < 640 ? "400px" : "500px",
                     width: "100%",
                   }}
                 >
@@ -325,10 +313,10 @@ const Step3_WorkingDays = () => {
                         onClick={() => handleDayToggle(day)}
                         sx={{
                           minWidth: "auto",
-                          px: 2.5,
-                          py: 1.5,
+                          px: window.innerWidth < 640 ? 1.5 : 2.5,
+                          py: window.innerWidth < 640 ? 1 : 1.5,
                           borderRadius: "12px",
-                          fontSize: "0.95rem",
+                          fontSize: window.innerWidth < 640 ? "0.85rem" : "0.95rem",
                           fontWeight: "600",
                           textTransform: "none",
                           position: "relative",
@@ -377,7 +365,7 @@ const Step3_WorkingDays = () => {
                         {selectedDays.includes(day) && (
                           <CheckCircle
                             sx={{
-                              fontSize: "0.9rem",
+                              fontSize: window.innerWidth < 640 ? "0.8rem" : "0.9rem",
                               mr: 0.4,
                               animation: "checkPulse 2s ease-in-out infinite",
                               "@keyframes checkPulse": {
@@ -401,7 +389,7 @@ const Step3_WorkingDays = () => {
                   <Fade in={!!error}>
                     <Box
                       sx={{
-                        p: 2,
+                        p: window.innerWidth < 640 ? 1.5 : 2,
                         borderRadius: "12px",
                         background: "rgba(244, 67, 54, 0.08)",
                         border: "1px solid rgba(244, 67, 54, 0.2)",
@@ -409,14 +397,14 @@ const Step3_WorkingDays = () => {
                         alignItems: "center",
                         gap: 2,
                         width: "100%",
-                        maxWidth: "350px",
+                        maxWidth: window.innerWidth < 640 ? "320px" : "350px",
                         mb: 3,
                       }}
                     >
                       <Box
                         sx={{
                           width: 4,
-                          height: 35,
+                          height: window.innerWidth < 640 ? 30 : 35,
                           borderRadius: "2px",
                           background:
                             "linear-gradient(135deg, #f44336 0%, #ff5252 100%)",
@@ -427,7 +415,7 @@ const Step3_WorkingDays = () => {
                         sx={{
                           color: "#d32f2f",
                           fontWeight: "500",
-                          fontSize: "0.9rem",
+                          fontSize: window.innerWidth < 640 ? "0.85rem" : "0.9rem",
                         }}
                       >
                         {error}
@@ -443,18 +431,18 @@ const Step3_WorkingDays = () => {
                   variant="contained"
                   onClick={handleContinue}
                   sx={{
-                    py: 2,
-                    px: 5,
+                    py: window.innerWidth < 640 ? 1.5 : 2,
+                    px: window.innerWidth < 640 ? 4 : 5,
                     background:
                       "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
                     color: "white",
                     fontWeight: "600",
-                    fontSize: "1.1rem",
+                    fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                     borderRadius: "12px",
                     boxShadow: "0 6px 20px rgba(86, 169, 217, 0.3)",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     textTransform: "none",
-                    minWidth: "180px",
+                    minWidth: window.innerWidth < 640 ? "160px" : "180px",
                     position: "relative",
                     overflow: "hidden",
                     "&:hover": {

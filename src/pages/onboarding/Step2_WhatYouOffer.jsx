@@ -83,7 +83,8 @@ const Step2_WhatYouOffer = () => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: { sm: "620px" },
+        minHeight: "620px",
+        maxHeight: "620px",
         display: "flex",
         position: "relative",
         borderRadius: "16px",
@@ -108,19 +109,6 @@ const Step2_WhatYouOffer = () => {
           pointerEvents: "none",
           zIndex: 1,
         },
-        // No additional decorative layer for desktop
-        "&::after": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "none",
-          opacity: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-        },
         // Hide scrollbar for webkit browsers (Chrome, Safari, Edge)
         "&::-webkit-scrollbar": {
           display: "none",
@@ -135,12 +123,6 @@ const Step2_WhatYouOffer = () => {
         {/* Debugging Purposes */}
         {/* <pre>{JSON.stringify(onboardingData, null, 2)}</pre> */}
 
-        <img
-          src={faviconFinal}
-          className="hidden absolute top-1.5 left-2 z-10 w-12 h-12"
-          alt="logo"
-        />
-
         {/* Form Content */}
         <Box
           sx={{
@@ -149,13 +131,15 @@ const Step2_WhatYouOffer = () => {
             flexDirection: "column",
             position: "relative",
             minWidth: 0,
+            // border:'4px solid green',
             justifyContent: "center",
             alignItems: "center",
             px: 4,
             py: 4,
             minHeight: "100%",
+            height: 'fit-content',
             backgroundColor: "transparent",
-            overflow: "visible",
+            overflowX: "clip",
             flexWrap: "wrap",
             zIndex: 30,
             "@media (min-width:1201px)": {
@@ -226,26 +210,8 @@ const Step2_WhatYouOffer = () => {
                 width: "100%",
                 textAlign: "center",
                 minHeight: "100%",
-                maxHeight: "calc(100vh - 200px)",
                 gap: 0,
-                overflowY: "auto",
                 paddingRight: "8px",
-                // Custom scrollbar styling
-                scrollbarWidth: "thin",
-                scrollbarColor: "rgba(59, 130, 246, 0.3) transparent",
-                "&::-webkit-scrollbar": {
-                  width: "4px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  background: "transparent",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  background: "rgba(59, 130, 246, 0.3)",
-                  borderRadius: "2px",
-                },
-                "&::-webkit-scrollbar-thumb:hover": {
-                  background: "rgba(59, 130, 246, 0.5)",
-                },
               }}
               className="w-full h-full rounded-xl z-40 flex flex-col"
             >
@@ -258,104 +224,8 @@ const Step2_WhatYouOffer = () => {
                   width: "100%",
                 }}
               >
-                {/* Mobile: Enhanced Corporate Header */}
-                <Box
-                  sx={{
-                    display: "none",
-                    textAlign: "center",
-                    mb: 4,
-                    position: "relative",
-                    "&::before": {
-                      content: '""',
-                      position: "absolute",
-                      top: "-20px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "60px",
-                      height: "4px",
-                      background:
-                        "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.8) 100%)", // changed color
-                      borderRadius: "2px",
-                    },
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: "800",
-                      background:
-                        "linear-gradient(135deg, rgba(30, 58, 138, 0.98) 0%, rgba(37, 99, 235, 0.95) 50%, rgba(29, 78, 216, 0.92) 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      fontSize: "2.4rem",
-                      fontFamily: '"Inter", "Roboto", sans-serif',
-                      letterSpacing: "-0.01em",
-                      mb: 2,
-                      textShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                      position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: "-8px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "80px",
-                        height: "3px",
-                        background:
-                          "linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 1) 50%, rgba(29, 78, 216, 0.8) 100%)", // changed color
-                        borderRadius: "2px",
-                      },
-                    }}
-                  >
-                    What You Offer
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: "rgba(30, 58, 138, 1)", // changed color
-                      fontSize: "1.1rem",
-                      fontWeight: "500",
-                      mb: 3,
-                      px: 2,
-                      textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                      lineHeight: 1.5,
-                      fontFamily: '"Inter", "Roboto", sans-serif',
-                      maxWidth: "280px",
-                      mx: "auto",
-                      position: "relative",
-                    }}
-                  >
-                    Select services to connect with societies
-                  </Typography>
-                  {/* Mobile: Professional Icon */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      mb: 2,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: "16px",
-                        background: "rgba(255, 255, 255, 0.9)",
-                        backdropFilter: "blur(10px)",
-                        border: "1px solid rgba(59, 130, 246, 0.2)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow: "0 4px 16px rgba(59, 130, 246, 0.1)",
-                      }}
-                    >
-                      <Briefcase size={24} color="rgba(59, 130, 246, 0.8)" />
-                    </Box>
-                  </Box>
-                </Box>
-
                 {/* Desktop: Original Hero Design */}
-                <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   {/* Main Title */}
                   <Typography
                     variant="h3"
@@ -365,7 +235,7 @@ const Step2_WhatYouOffer = () => {
                         "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
-                      fontSize: "2.5rem",
+                      fontSize: { xs: "2rem", sm: "2.5rem" },
                       fontFamily: "Roboto, sans-serif",
                       letterSpacing: "0.02em",
                       textAlign: "center",
@@ -377,14 +247,14 @@ const Step2_WhatYouOffer = () => {
                         bottom: "-6px",
                         left: "50%",
                         transform: "translateX(-50%)",
-                        width: "20%",
+                        width: window.innerWidth < 640 ? "40%": "20%",
                         height: "3px",
                         background: "linear-gradient(90deg, #56A9D9, #1e3a8a)",
                         borderRadius: "1px",
                       },
                     }}
                   >
-                    Tell Us What You Offer
+                    {window.innerWidth < 640 ? "What You Offer" : "Tell Us What You Offer"}
                   </Typography>
 
                   {/* Subtitle */}
@@ -392,8 +262,10 @@ const Step2_WhatYouOffer = () => {
                     variant="h6"
                     sx={{
                       color: "rgba(30, 58, 138, 0.7)",
-                      fontSize: "1rem",
+                      fontSize: { xs: "0.8rem", sm: "1rem" },
+                      maxWidth: { xs: "200px", sm: "360px"},
                       fontWeight: "400",
+                      // border:"2px solid red",
                       textAlign: "center",
                       mb: 2,
                       fontFamily: "Roboto, sans-serif",
@@ -407,14 +279,14 @@ const Step2_WhatYouOffer = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "center",
-                      mt: 2,
+                      mt: { xs: 0, sm: 2 },
                       mb: 3,
                     }}
                   >
                     <Box
                       sx={{
-                        width: 56,
-                        height: 56,
+                        width: { xs: 44, sm: 56 },
+                        height: { xs: 44, sm: 56 },
                         borderRadius: "16px",
                         background: "rgba(255, 255, 255, 0.9)",
                         backdropFilter: "blur(10px)",
@@ -425,7 +297,8 @@ const Step2_WhatYouOffer = () => {
                         boxShadow: "0 4px 16px rgba(86, 169, 217, 0.1)",
                       }}
                     >
-                      <Briefcase size={24} color="rgba(86, 169, 217, 0.8)" />
+                      <span className="sm:hidden flex"><Briefcase size={20} color="rgba(86, 169, 217, 0.8)" /></span>
+                      <span className="hidden sm:flex"><Briefcase size={24} color="rgba(86, 169, 217, 0.8)" /></span>
                     </Box>
                   </Box>
                 </Box>
@@ -441,11 +314,10 @@ const Step2_WhatYouOffer = () => {
               >
                 {/* Multi-Select Input with Info Icon */}
                 <div
-                  className="relative w-[95%] sm:w-full mb-6 flex items-center gap-3"
+                  className="relative w-full mb-6 flex items-center gap-2 sm:gap-3"
                   ref={dropdownRef}
                   style={{
                   marginBottom: "1.5rem",
-                    gap: "0.75rem",
                   }}
                 >
                   <Zoom in={showContent} timeout={800} style={{ flex: 1 }}>
@@ -457,19 +329,20 @@ const Step2_WhatYouOffer = () => {
                           "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%)",
                         backdropFilter: "blur(10px)",
                         border: "2px solid rgba(156, 163, 175, 0.2)",
-                        padding: "16px 16px 16px 56px",
+                        // border: "2px solid red",
+                        padding: window.innerWidth < 640 ? "12px 12px 12px 44px" : "16px 16px 16px 56px",
                         borderRadius: "12px",
-                        fontSize: "1rem",
-                        minHeight: "56px",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
+                        minHeight: window.innerWidth < 640 ? "48px" : "56px",
                         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                         color: "#374151",
                       }}
                     >
                       <Search
-                        size={20}
+                        size={window.innerWidth < 640 ? 18 : 20}
                         className="absolute pointer-events-none"
                         style={{
-                          left: "16px",
+                          left: window.innerWidth < 640 ? "12px" : "16px",
                           top: "50%",
                           transform: "translateY(-50%)",
                           color: "#60a5fa",
@@ -478,22 +351,18 @@ const Step2_WhatYouOffer = () => {
                       <span
                         className="font-medium"
                         style={{
-                        fontSize: "1rem",
-                          marginLeft: "2rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
+                          marginLeft: window.innerWidth < 640 ? "1.5rem" : "2rem",
                           color: "#374151",
                         }}
                       >
                         {selectedServices.length > 0
-                          ? `${selectedServices.length} service${
-                              selectedServices.length > 1 ? "s" : ""
-                            } selected`
-                          : "Select services you offer..."}
+                          ? `${selectedServices.length} service${selectedServices.length > 1 ? "s" : ""} selected`
+                          : `${window.innerWidth < 640 ? "Select services..." : "Select services you offer..."}`}
                       </span>
                       <ChevronDown
-                        size={20}
-                        className={`transition-transform duration-300 ${
-                          isDropdownOpen ? "rotate-180" : ""
-                        }`}
+                        size={window.innerWidth < 640 ? 18 : 20}
+                        className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
                         style={{
                           color: "#3b82f6",
                         }}
@@ -501,108 +370,110 @@ const Step2_WhatYouOffer = () => {
                     </div>
                   </Zoom>
 
-                  {/* Info Icon with Hover Dialog - Desktop Only */}
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setShowInfoDialog(true)}
-                    onMouseLeave={() => setShowInfoDialog(false)}
-                    onClick={() => setShowInfoDialog(!showInfoDialog)}
-                  >
-                      <Zoom in={showContent} timeout={1000}>
-                        <div
-                          className="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            background:
-                              "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
-                            boxShadow: "0 2px 8px rgba(59, 130, 246, 0.15)",
-                          }}
-                        >
-                          <IoInformationCircleOutline
-                            size={20}
-                            className="transition-colors duration-200"
-                            style={{
-                              color: "#3b82f6",
-                            }}
-                          />
-                        </div>
-                      </Zoom>
-
-                      {/* Info Dialog - Desktop Only */}
-                      {showInfoDialog && (
-                        <Fade in={showInfoDialog} timeout={200}>
+                  {/* Info Icon with Hover Dialog - Hidden on Mobile */}
+                  <div className="hidden sm:block">
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setShowInfoDialog(true)}
+                      onMouseLeave={() => setShowInfoDialog(false)}
+                      onClick={() => setShowInfoDialog(!showInfoDialog)}
+                    >
+                        <Zoom in={showContent} timeout={1000}>
                           <div
-                            className="absolute bg-white rounded-xl shadow-2xl border border-blue-100 p-4 z-[100]"
+                            className="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
                             style={{
+                              width: "40px",
+                              height: "40px",
                               background:
-                                "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)",
-                              backdropFilter: "blur(10px)",
-                              width: "320px",
-                              top: "48px",
-                              right: "0",
-                              transform: "translateX(50%)",
+                                "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+                              boxShadow: "0 2px 8px rgba(59, 130, 246, 0.15)",
                             }}
                           >
-                            {/* Arrow pointing up */}
+                            <IoInformationCircleOutline
+                              size={20}
+                              className="transition-colors duration-200"
+                              style={{
+                                color: "#3b82f6",
+                              }}
+                            />
+                          </div>
+                        </Zoom>
+
+                        {/* Info Dialog - Desktop Only */}
+                        {showInfoDialog && (
+                          <Fade in={showInfoDialog} timeout={200}>
                             <div
-                              className="absolute w-4 h-4 bg-white border-l border-t border-blue-100 rotate-45 z-[999999]"
+                              className="absolute bg-white rounded-xl shadow-2xl border border-blue-100 p-4 z-[100]"
                               style={{
                                 background:
                                   "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)",
-                                top: "-8px",
-                                right: "50%",
-                                transform: "translateX(50%) rotate(45deg)",
+                                backdropFilter: "blur(10px)",
+                                width: "320px",
+                                top: "48px",
+                                right: "0",
+                                transform: "translateX(50%)",
                               }}
-                            />
-                            <div className="flex items-start gap-3">
-                              <div className="flex-1">
-                                <Typography
-                                  variant="h6"
-                                  sx={{
-                                    fontSize: "1rem",
-                                    fontWeight: "600",
-                                    color: "#1e3a8a",
-                                    mb: 1,
-                                    fontFamily: "Roboto, sans-serif",
-                                  }}
-                                >
-                                  Service Registration Info
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  sx={{
-                                    fontSize: "0.875rem",
-                                    color: "rgba(30, 58, 138, 0.8)",
-                                    lineHeight: 1.5,
-                                    mb: 2,
-                                    fontFamily: "Roboto, sans-serif",
-                                  }}
-                                >
-                                  A charge of ₹{onboardingData.serviceBasePrice}{" "}
-                                  is applicable per service being registered.
-                                </Typography>
-                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+                            >
+                              {/* Arrow pointing up */}
+                              <div
+                                className="absolute w-4 h-4 bg-white border-l border-t border-blue-100 rotate-45 z-[999999]"
+                                style={{
+                                  background:
+                                    "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)",
+                                  top: "-8px",
+                                  right: "50%",
+                                  transform: "translateX(50%) rotate(45deg)",
+                                }}
+                              />
+                              <div className="flex items-start gap-3">
+                                <div className="flex-1">
                                   <Typography
-                                    variant="body2"
+                                    variant="h6"
                                     sx={{
-                                      fontSize: "0.85rem",
-                                      color: "#059669",
+                                      fontSize: "1rem",
                                       fontWeight: "600",
-                                      lineHeight: 1.4,
+                                      color: "#1e3a8a",
+                                      mb: 1,
                                       fontFamily: "Roboto, sans-serif",
                                     }}
                                   >
-                                    💡 Discount: Select at least{" "}
-                                    {onboardingData.discountLowerLimit} services
-                                    to avail special discounts!
+                                    Service Registration Info
                                   </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      fontSize: "0.875rem",
+                                      color: "rgba(30, 58, 138, 0.8)",
+                                      lineHeight: 1.5,
+                                      mb: 2,
+                                      fontFamily: "Roboto, sans-serif",
+                                    }}
+                                  >
+                                    A charge of ₹{onboardingData.serviceBasePrice}{" "}
+                                    is applicable per service being registered.
+                                  </Typography>
+                                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        fontSize: "0.85rem",
+                                        color: "#059669",
+                                        fontWeight: "600",
+                                        lineHeight: 1.4,
+                                        fontFamily: "Roboto, sans-serif",
+                                      }}
+                                    >
+                                      💡 Discount: Select at least{" "}
+                                      {onboardingData.discountLowerLimit} services
+                                      to avail special discounts!
+                                    </Typography>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </Fade>
-                      )}
+                          </Fade>
+                        )}
+                      </div>
                     </div>
 
                   {/* Services Select Dropdown */}
@@ -611,7 +482,7 @@ const Step2_WhatYouOffer = () => {
                       <div
                         className="absolute top-full left-0 w-full bg-white border-2 border-blue-200 rounded-xl shadow-2xl mt-2 py-2 z-10 backdrop-blur-sm"
                         style={{
-                          maxHeight: "280px",
+                          maxHeight: window.innerWidth < 640 ? "240px" : "280px",
                           overflowY: "auto",
                           background:
                             "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%)",
@@ -629,9 +500,9 @@ const Step2_WhatYouOffer = () => {
                               className="flex items-center hover:bg-blue-50 cursor-pointer transition-all duration-200 rounded-lg"
                               onClick={() => handleServiceToggle(offer.value)}
                               style={{
-                                padding: "12px 16px",
-                                margin: "2px 8px",
-                                minHeight: "48px",
+                                padding: window.innerWidth < 640 ? "10px 12px" : "12px 16px",
+                                margin: window.innerWidth < 640 ? "1px 4px" : "2px 8px",
+                                minHeight: window.innerWidth < 640 ? "44px" : "48px",
                               }}
                             >
                               <Checkbox
@@ -639,7 +510,7 @@ const Step2_WhatYouOffer = () => {
                                 onChange={() =>
                                   handleServiceToggle(offer.value)
                                 }
-                                size="medium"
+                                size={window.innerWidth < 640 ? "small" : "medium"}
                                 sx={{
                                   color: "#56A9D9",
                                   "&.Mui-checked": {
@@ -648,14 +519,17 @@ const Step2_WhatYouOffer = () => {
                                   "&:hover": {
                                     backgroundColor: "rgba(86, 169, 217, 0.1)",
                                   },
+                                  "& .MuiSvgIcon-root": {
+                                    fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
+                                  },
                                 }}
                               />
                               <Typography
                                 variant="body1"
                                 sx={{
                                   color: "#374151",
-                                  ml: 1.5,
-                                  fontSize: "0.95rem",
+                                  ml: window.innerWidth < 640 ? 1 : 1.5,
+                                  fontSize: window.innerWidth < 640 ? "0.85rem" : "0.95rem",
                                   fontWeight: 500,
                                 }}
                               >
@@ -768,7 +642,7 @@ const Step2_WhatYouOffer = () => {
                     <div
                       className="flex flex-wrap w-full"
                       style={{
-                        gap: "12px",
+                        gap: window.innerWidth < 640 ? "8px" : "12px",
                         justifyContent: "flex-start",
                         marginBottom: "0",
                       }}
@@ -786,14 +660,14 @@ const Step2_WhatYouOffer = () => {
                             <div
                               className="relative flex items-center rounded-full text-white bg-gradient-to-r from-blue-500 to-blue-600 border border-blue-300 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
                               style={{
-                                padding: "8px 16px",
-                                fontSize: "0.875rem",
+                                padding: window.innerWidth < 640 ? "6px 12px" : "8px 16px",
+                                fontSize: window.innerWidth < 640 ? "0.75rem" : "0.875rem",
                                 fontWeight: 500,
                               }}
                             >
                               <span
                                 style={{
-                                  maxWidth: "160px",
+                                  maxWidth: window.innerWidth < 640 ? "120px" : "160px",
                                   whiteSpace: "nowrap",
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
@@ -806,15 +680,15 @@ const Step2_WhatYouOffer = () => {
                                 onClick={() => handleRemoveTag(service.value)}
                                 className="border-none rounded-full bg-blue-700 text-white hover:bg-blue-800 transition-colors duration-150 focus:outline-none"
                                 style={{
-                                  marginLeft: "8px",
-                                  width: "20px",
-                                  height: "20px",
+                                  marginLeft: window.innerWidth < 640 ? "6px" : "8px",
+                                  width: window.innerWidth < 640 ? "16px" : "20px",
+                                  height: window.innerWidth < 640 ? "16px" : "20px",
                                   display: "flex",
                                   justifyContent: "center",
                                   alignItems: "center",
                                 }}
                               >
-                                <X size={12} />
+                                <X size={window.innerWidth < 640 ? 10 : 12} />
                               </button>
                             </div>
                           </Zoom>
@@ -849,8 +723,8 @@ const Step2_WhatYouOffer = () => {
                     onClick={handleContinue}
                     disabled={selectedServices.length === 0 || !agreedToTerms}
                     sx={{
-                      py: 2,
-                      px: 5,
+                      py: window.innerWidth < 640 ? 1.5 : 2,
+                      px: window.innerWidth < 640 ? 4 : 5,
                       background:
                         selectedServices.length === 0 || !agreedToTerms
                           ? "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)"
@@ -862,7 +736,7 @@ const Step2_WhatYouOffer = () => {
                           ? "#9ca3af"
                           : "white",
                       fontWeight: "600",
-                      fontSize: "1.1rem",
+                      fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                       borderRadius: "12px",
                       boxShadow:
                         selectedServices.length === 0 || !agreedToTerms
@@ -870,7 +744,7 @@ const Step2_WhatYouOffer = () => {
                           : "0 6px 20px rgba(86, 169, 217, 0.3)",
                       transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                       textTransform: "none",
-                      minWidth: "180px",
+                      minWidth: window.innerWidth < 640 ? "160px" : "180px",
                       minHeight: "auto",
                       width: "auto",
                       maxWidth: "none",
@@ -940,9 +814,9 @@ const Step2_WhatYouOffer = () => {
                           "&:hover": {
                             backgroundColor: "rgba(86, 169, 217, 0.1)",
                           },
-                          p: 1,
+                          p: window.innerWidth < 640 ? 0.5 : 1,
                           "& .MuiSvgIcon-root": {
-                            fontSize: "1.5rem",
+                            fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
                             filter: "none",
                           },
                         }}
@@ -953,7 +827,7 @@ const Step2_WhatYouOffer = () => {
                         variant="body2"
                         sx={{
                           color: "rgba(30, 58, 138, 0.7)",
-                          fontSize: "0.875rem",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "0.875rem",
                           lineHeight: 1.5,
                           fontWeight: 500,
                           maxWidth: "500px",
@@ -961,8 +835,8 @@ const Step2_WhatYouOffer = () => {
                           textShadow: "none",
                         }}
                       >
-                        By continuing, you agree to our{" "}
-                        <span
+                        By continuing, you agree to our{" "}Terms & Conditions and{" "}Privacy Policy
+                        {/* <span
                           style={{
                             color: "#56A9D9",
                             cursor: "pointer",
@@ -984,7 +858,7 @@ const Step2_WhatYouOffer = () => {
                           }}
                         >
                           Privacy Policy
-                        </span>
+                        </span> */}
                         .
                       </Typography>
                     }

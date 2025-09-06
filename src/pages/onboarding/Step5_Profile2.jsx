@@ -113,8 +113,8 @@ const Step5_Profile2 = () => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: { sm: "620px" },
-        maxHeight: { sm: "620px" },
+        minHeight: "620px",
+        maxHeight: "620px",
         display: "flex",
         position: "relative",
         borderRadius: "16px",
@@ -122,8 +122,8 @@ const Step5_Profile2 = () => {
         // backgroundColor: '#ffffff',
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
         overflow: "auto",
-        background:
-          "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
+        // background:
+        //   "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
         backgroundBlendMode: { xs: "normal", sm: "normal" },
         // Subtle overlay patterns matching OnboardingLayout
         "&::before": {
@@ -259,7 +259,7 @@ const Step5_Profile2 = () => {
               }}
             >
               {/* Desktop: Original Hero Design (unchanged) */}
-              <Box>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {/* Main Title */}
                 <Typography
                   variant="h3"
@@ -269,7 +269,7 @@ const Step5_Profile2 = () => {
                       "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    fontSize: "2.5rem",
+                    fontSize: window.innerWidth < 640 ? "2rem" : "2.5rem",
                     fontFamily: "Roboto, sans-serif",
                     letterSpacing: "0.02em",
                     textAlign: "center",
@@ -288,7 +288,7 @@ const Step5_Profile2 = () => {
                     },
                   }}
                 >
-                  Your Address Details
+                  {window.innerWidth < 640 ? "Address Details" : "Your Address Details"}
                 </Typography>
 
                 {/* Subtitle */}
@@ -296,8 +296,9 @@ const Step5_Profile2 = () => {
                   variant="h6"
                   sx={{
                     color: "rgba(30, 58, 138, 0.7)",
-                    fontSize: "1rem",
+                    fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
                     fontWeight: "400",
+                    maxWidth: { xs: "200px", sm: "360px"},
                     textAlign: "center",
                     mb: 3,
                     fontFamily: "Roboto, sans-serif",
@@ -376,9 +377,9 @@ const Step5_Profile2 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -443,9 +444,9 @@ const Step5_Profile2 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -512,9 +513,9 @@ const Step5_Profile2 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -577,9 +578,9 @@ const Step5_Profile2 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -656,9 +657,9 @@ const Step5_Profile2 = () => {
                           },
                           "& .MuiSelect-select": {
                             color: state === "" ? "#64748b" : "#0f172a",
-                            fontSize: "1rem",
-                            py: "14px",
-                            px: "16px",
+                            fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                            py: window.innerWidth < 640 ? "10px" : "14px",
+                            px: window.innerWidth < 640 ? "12px" : "16px",
                             fontWeight: 500,
                           },
                         }}
@@ -740,9 +741,9 @@ const Step5_Profile2 = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "#0f172a",
-                          fontSize: "1rem",
-                          py: "14px",
-                          px: "16px",
+                          fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
+                          py: window.innerWidth < 640 ? "10px" : "14px",
+                          px: window.innerWidth < 640 ? "12px" : "16px",
                           fontWeight: 500,
                         },
                         "& .MuiInputBase-input::placeholder": {
@@ -796,7 +797,7 @@ const Step5_Profile2 = () => {
                       sx={{
                         color: "#d32f2f",
                         fontWeight: "500",
-                        fontSize: "0.9rem",
+                        fontSize: window.innerWidth < 640 ? "0.8rem" : "0.9rem",
                       }}
                     >
                       {error}
@@ -827,7 +828,7 @@ const Step5_Profile2 = () => {
                       sx={{
                         color: "#10B981",
                         fontWeight: "500",
-                        fontSize: "0.9rem",
+                        fontSize: window.innerWidth < 640 ? "0.8rem" : "0.9rem",
                       }}
                     >
                       Address saved! Redirecting...
@@ -842,24 +843,25 @@ const Step5_Profile2 = () => {
                   display: "flex",
                   justifyContent: "center",
                   width: "100%",
+                  mb: 5
                 }}
               >
                 <Button
                   variant="contained"
                   onClick={handleContinue}
                   sx={{
-                    py: 2,
-                    px: 5,
+                    py: window.innerWidth < 640 ? 1.5 : 2,
+                    px: window.innerWidth < 640 ? 4 : 5,
                     background:
                       "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
                     color: "white",
                     fontWeight: "600",
-                    fontSize: "1.1rem",
+                    fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                     borderRadius: "12px",
                     boxShadow: "0 6px 20px rgba(86, 169, 217, 0.3)",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     textTransform: "none",
-                    minWidth: "180px",
+                    minWidth: window.innerWidth < 640 ? "160px" : "180px",
                     position: "relative",
                     overflow: "hidden",
                     "&:hover": {

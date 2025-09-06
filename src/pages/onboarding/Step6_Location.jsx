@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { MapPin, Navigation, CheckCircle } from "lucide-react";
-// import { FaMapMarkedAlt } from "react-icons/fa";
+import { FaMapMarkedAlt } from "react-icons/fa";
 import { useOnBoarding } from "./OnboardingContext";
 
 const Step6_Location = () => {
@@ -179,16 +179,16 @@ const Step6_Location = () => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: { sm: "620px" },
-        maxHeight: { sm: "620px" },
+        minHeight: "620px",
+        maxHeight: "620px",
         display: "flex",
         position: "relative",
         borderRadius: "16px",
         border: "1px solid #D1D5DB",
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
         overflow: "auto",
-        background:
-          "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
+        // background:
+        //   "linear-gradient(135deg, rgba(191, 219, 254, 0.8) 0%, rgba(219, 234, 254, 0.9) 20%, rgba(240, 248, 255, 0.95) 40%, rgba(255, 255, 255, 0.98) 60%, rgba(248, 250, 252, 0.85) 80%, rgba(241, 245, 249, 0.75) 100%)",
         backgroundBlendMode: { xs: "normal", sm: "normal" },
         "&::before": {
           content: '""',
@@ -320,7 +320,7 @@ const Step6_Location = () => {
             className="w-full h-full rounded-xl flex flex-col"
           >
             {/* Top Section - Hero */}
-            <Box sx={{ mb: 5, position: "relative", zIndex: 1, width: "100%" }}>
+            <Box sx={{ position: "relative", zIndex: 1, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
               {/* Main Title */}
               <Typography
                 variant="h3"
@@ -330,7 +330,7 @@ const Step6_Location = () => {
                     "linear-gradient(135deg, #1e3a8a 0%, #56A9D9 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  fontSize: "2.5rem",
+                  fontSize: window.innerWidth < 640 ? "2rem" : "2.5rem",
                   fontFamily: "Roboto, sans-serif",
                   letterSpacing: "0.02em",
                   textAlign: "center",
@@ -357,8 +357,9 @@ const Step6_Location = () => {
                 variant="h6"
                 sx={{
                   color: "rgba(30, 58, 138, 0.7)",
-                  fontSize: "1rem",
+                  fontSize: window.innerWidth < 640 ? "0.8rem" : "1rem",
                   fontWeight: "400",
+                  maxWidth: { xs: "200px", sm: "360px"},
                   textAlign: "center",
                   mb: 3,
                   fontFamily: "Roboto, sans-serif",
@@ -366,6 +367,33 @@ const Step6_Location = () => {
               >
                 We need your location to show nearby service opportunities
               </Typography>
+
+              {/* Map Icon */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  mt: 2,
+                  mb: 3,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: window.innerWidth < 640 ? 48 : 56,
+                    height: window.innerWidth < 640 ? 48 : 56,
+                    borderRadius: "16px",
+                    background: "rgba(255, 255, 255, 0.9)",
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid rgba(86, 169, 217, 0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 4px 16px rgba(86, 169, 217, 0.1)",
+                  }}
+                >
+                  <FaMapMarkedAlt color="rgba(86, 169, 217, 0.8)" size={window.innerWidth < 640 ? 20 : 24} />
+                </Box>
+              </Box>
             </Box>
 
             {/* Middle Section - Location Content */}
@@ -396,6 +424,7 @@ const Step6_Location = () => {
                         fontWeight: 600,
                         color: "#2d3748",
                         mb: 2,
+                        fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
                       }}
                     >
                       Enable Location Services
@@ -409,6 +438,7 @@ const Step6_Location = () => {
                         color: "#718096",
                         mb: 4,
                         lineHeight: 1.6,
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                       }}
                     >
                       Allow location access to find service opportunities near
@@ -421,12 +451,14 @@ const Step6_Location = () => {
                       size="large"
                       disabled={locationStatus === "fetching"}
                       sx={{
-                        py: 1.5,
+                        py: window.innerWidth < 640 ? 1.25 : 1.5,
+                        px: window.innerWidth < 640 ? 2 : 10,
+                        minWidth: { xs:"300px", sm: "400px" },
                         borderRadius: 3,
                         background:
                           "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                         textTransform: "none",
-                        fontSize: "1.1rem",
+                        fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                         fontWeight: 600,
                         "&:hover": {
                           background:
@@ -469,7 +501,7 @@ const Step6_Location = () => {
                         px: 3,
                         color: "#718096",
                         fontWeight: 500,
-                        fontSize: "0.95rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "0.95rem",
                         textTransform: "none",
                         borderRadius: 2,
                         "&:hover": {
@@ -503,6 +535,7 @@ const Step6_Location = () => {
                         fontWeight: 600,
                         color: "#2d3748",
                         mb: 2,
+                        fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
                       }}
                     >
                       Getting Your Location
@@ -513,6 +546,7 @@ const Step6_Location = () => {
                       sx={{
                         color: "#718096",
                         lineHeight: 1.6,
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                       }}
                     >
                       Please wait while we fetch your current location...
@@ -551,6 +585,7 @@ const Step6_Location = () => {
                         fontWeight: 600,
                         color: "#2d3748",
                         mb: 2,
+                        fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
                       }}
                     >
                       Location Found!
@@ -601,18 +636,18 @@ const Step6_Location = () => {
                         variant="contained"
                         onClick={handleContinue}
                         sx={{
-                          py: 2,
-                          px: 5,
+                          py: window.innerWidth < 640 ? 1.5 : 2,
+                          px: window.innerWidth < 640 ? 4 : 5,
                           background:
                             "linear-gradient(135deg, #56A9D9 0%, #42A5F5 100%)",
                           color: "white",
                           fontWeight: "600",
-                          fontSize: "1.1rem",
+                          fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                           borderRadius: "12px",
                           boxShadow: "0 6px 20px rgba(86, 169, 217, 0.3)",
                           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                           textTransform: "none",
-                          minWidth: "180px",
+                          minWidth: window.innerWidth < 640 ? "160px" : "180px",
                           position: "relative",
                           overflow: "hidden",
                           "&:hover": {
@@ -651,7 +686,7 @@ const Step6_Location = () => {
                           px: 3,
                           color: "#667eea",
                           fontWeight: 500,
-                          fontSize: "0.95rem",
+                          fontSize: window.innerWidth < 640 ? "0.9rem" : "0.95rem",
                           textTransform: "none",
                           borderRadius: 2,
                           "&:hover": {
@@ -682,7 +717,7 @@ const Step6_Location = () => {
                         mb: 3,
                       }}
                     >
-                      <MapPin size={28} color="white" />
+                      <FaMapMarkedAlt size={28} color="white" />
                     </Box>
 
                     <Typography
@@ -691,6 +726,7 @@ const Step6_Location = () => {
                         fontWeight: 600,
                         color: "#2d3748",
                         mb: 2,
+                        fontSize: window.innerWidth < 640 ? "1.25rem" : "1.5rem",
                       }}
                     >
                       Location Access Denied
@@ -702,6 +738,7 @@ const Step6_Location = () => {
                         color: "#718096",
                         mb: 4,
                         lineHeight: 1.6,
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "1rem",
                       }}
                     >
                       Location access is required to find nearby service
@@ -714,12 +751,12 @@ const Step6_Location = () => {
                       variant="contained"
                       size="large"
                       sx={{
-                        py: 1.5,
+                        py: window.innerWidth < 640 ? 1.25 : 1.5,
                         borderRadius: 3,
                         background:
                           "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                         textTransform: "none",
-                        fontSize: "1.1rem",
+                        fontSize: window.innerWidth < 640 ? "1rem" : "1.1rem",
                         fontWeight: 600,
                         "&:hover": {
                           background:
@@ -742,7 +779,7 @@ const Step6_Location = () => {
                         px: 3,
                         color: "#718096",
                         fontWeight: 500,
-                        fontSize: "0.95rem",
+                        fontSize: window.innerWidth < 640 ? "0.9rem" : "0.95rem",
                         textTransform: "none",
                         borderRadius: 2,
                         "&:hover": {
