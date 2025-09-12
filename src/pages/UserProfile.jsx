@@ -156,7 +156,7 @@ const UserProfile = () => {
               `}
                 onClick={() => navigate(opt.route)}
                 variants={itemVariants}
-                whileHover={{ y: -2, scale: 1.02 }}
+                whileHover={{ y: -1, scale: 1.02 }}
               >
                 <span className='hidden md:flex text-base group-hover:scale-[1.08] transition-transform duration-300'>
                   {opt.icon}
@@ -168,9 +168,9 @@ const UserProfile = () => {
                   </span>
                 </span>
                 {/* Active accent bar */}
-                {((opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) || location.pathname === opt.route) && (
+                {/* {((opt.label === 'Support' && location.pathname.startsWith('/my-profile/account-support')) || location.pathname === opt.route) && (
                   <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 shadow shadow-amber-400/40" />
-                )}
+                )} */}
               </motion.div>
             ))}
           </div>

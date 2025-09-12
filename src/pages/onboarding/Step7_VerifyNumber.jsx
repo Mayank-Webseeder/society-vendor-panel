@@ -52,19 +52,26 @@ const Step7_VerifyNumber = () => {
       formData.append("businessName", onboardingData.businessName);
       formData.append("address", onboardingData.address);
       formData.append("services", JSON.stringify(onboardingData.whatYouOffer)); // Convert array to JSON string
-      formData.append(
-        "workingDays",
-        JSON.stringify(onboardingData.workingDays)
-      ); // Convert array to JSON string
+      formData.append("workingDays",JSON.stringify(onboardingData.workingDays)); // Convert array to JSON string
       formData.append("workingHours", onboardingData.workingHours);
-      formData.append("payScale", onboardingData.payscale);
-      formData.append("location", onboardingData.locationCoordinates);
+      // formData.append("payScale", onboardingData.payscale);
+
+      // Format location as GeoJSON Point
+      if (onboardingData.locationCoordinates) {
+        const [lat, lng] = onboardingData.locationCoordinates.split(',').map(coord => parseFloat(coord.trim()));
+        const locationGeoJSON = {
+          type: "Point",
+          coordinates: [lng, lat] // GeoJSON uses [longitude, latitude] order
+        };
+        formData.append("location", JSON.stringify(locationGeoJSON));
+      }
+
       formData.append("paymentMethods", onboardingData.preferredPaymentMethod);
-      formData.append("lastPayments", onboardingData.lastPayments);
+      // formData.append("lastPayments", onboardingData.lastPayments);
       formData.append("experience", onboardingData.workExperience);
       formData.append("phone", phoneNumber);
       if (onboardingData.idProofFile) {
-        formData.append("idProof", onboardingData.idProofFile); // Attach file
+        formData.append("uniqueName", onboardingData.idProofFile); // Attach file
       }
 
       // Call createProfile API (API 5)
@@ -76,8 +83,11 @@ const Step7_VerifyNumber = () => {
       // Log in the user
       login(profileData.authToken);
 
-      // Navigate to the dashboard or next step
-      navigate("/dashboard");
+      // // Navigate to the dashboard or next step
+      // navigate("/dashboard");
+
+      // Navigate to the payment page
+      navigate("/payment");
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
       setError("Failed to complete onboarding. Please try again.");
@@ -128,6 +138,7 @@ const Step7_VerifyNumber = () => {
           pointerEvents: "none",
           zIndex: 1,
         },
+        // Hide scrollbar
         "&::-webkit-scrollbar": {
           display: "none",
         },

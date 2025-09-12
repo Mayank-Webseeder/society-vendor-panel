@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, TrendingUp, Users, Award, BarChart3, ChartNoAxesCombined, RefreshCw } from 'lucide-react';
+import { Star, TrendingUp, Users, Award, BarChart3, ChartNoAxesCombined, RefreshCw, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { IconButton } from '@mui/material';
 import { ratingsData, ratingsCount, finalRating } from '../static/dummyData_MyStats';
@@ -131,6 +131,7 @@ const MyStats = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);
   const [refreshTick, setRefreshTick] = useState(0);
+  const [timeFilter, setTimeFilter] = useState('year'); // 'week' | 'month' | 'year'
 
   const handleModalClose = () => {
     navigate('/dashboard');
@@ -168,19 +169,32 @@ const MyStats = () => {
                   <p style={{ fontFamily:'Lato' }} className="text-xs sm:text-sm text-slate-500 mt-0.5">Discover what customers say about their experience</p>
                 </div>
               </div>
-              {/* Reserved space for future actions (refresh, filters) */}
-              {/* <div className="flex items-center gap-4 self-stretch sm:self-auto" /> */}
             </div>
           </motion.div>
 
-          {/* <motion.div className="text-center mb-12" variants={itemVariants}>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-              Customer Ratings & Reviews
-            </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Discover what our customers are saying about their experience with our product
-            </p>
-          </motion.div> */}
+          {/* Filter Bar (dropdown below heading) */}
+          <motion.div
+            className="relative flex items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-5 sm:px-7 py-3.5 border border-slate-200 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)]"
+            variants={itemVariants}
+          >
+            <div className="text-xs sm:text-base text-slate-600">Filter reviews</div>
+            <div className="relative">
+              <label htmlFor="stats-time-filter" className="sr-only">Time Filter</label>
+              <select
+                id="stats-time-filter"
+                value={timeFilter}
+                onChange={(e) => setTimeFilter(e.target.value)}
+                className="appearance-none pl-4 pr-10 sm:pr-12 py-2 text-xs sm:text-sm rounded-lg border-solid border border-slate-200 bg-white text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              >
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="year">This Year</option>
+              </select>
+              <span className="pointer-events-none absolute inset-y-0 right-4 sm:right-4 flex items-center text-slate-500">
+                <ChevronDown size={16} />
+              </span>
+            </div>
+          </motion.div>
 
           {/* Main Rating Cards */}
           <motion.div

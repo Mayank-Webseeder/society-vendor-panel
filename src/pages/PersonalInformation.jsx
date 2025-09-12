@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { /* viewVendorProfile, */ updateVendorProfile } from '../services/api/auth';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Edit as EditIcon, User as UserIcon } from 'lucide-react';
-import { FormControl, Select, MenuItem, Button, Box, Typography, ListItemText, Checkbox } from '@mui/material';
+import { Edit as EditIcon } from 'lucide-react';
+import { FormControl, Select, MenuItem, Button, ListItemText, Checkbox } from '@mui/material';
 import IOSSwitch from '../components/IOSSwitch';
 import indianStates from '../static/dummyData_IndianStates';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -37,14 +37,6 @@ const PersonalInformation = () => {
       [name]: value,
     }));
   };
-
-  // const handleDateChange = (e) => {
-  //   const { value } = e.target;
-  //   setTempUser((prevTempUser) => ({
-  //     ...prevTempUser,
-  //     dateOfBirth: value, // Value from input type="date" is already YYYY-MM-DD
-  //   }));
-  // };
 
   const handleEditToggle = async () => {
     if (isEditing) {
@@ -501,6 +493,52 @@ const PersonalInformation = () => {
             {renderField('State', 'state', tempUser.state)}
             {renderField('Country', 'country', tempUser.country)}
             {renderField('Pincode', 'pincode', tempUser.pincode)}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Delete Account Section */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="delete-account"
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border-solid border border-red-400/90 px-3 sm:px-6 pt-5 pb-5 mt-6 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-clip"
+        >
+          {/* <div className="absolute top-0 left-0 h-1 w-32 bg-gradient-to-r from-red-500 via-red-600 to-transparent rounded-br-full" /> */}
+          <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 tracking-tight">Delete Your Account</h3>
+          <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+            Once you delete your account, there is no going back. Please be certain.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: '#ef4444',
+                color: '#ef4444',
+                '&:hover': {
+                  borderColor: '#dc2626',
+                  backgroundColor: '#fef2f2',
+                  color: '#dc2626'
+                },
+                textTransform: 'none',
+                fontWeight: 500,
+                px: 3,
+                py: 1.5,
+                borderRadius: '8px'
+              }}
+              onClick={() => {
+                // Handle delete account logic here
+                console.log('Delete account clicked');
+              }}
+            >
+              Delete Account
+            </Button>
+            <p className="text-xs text-slate-500 flex items-center">
+              This action cannot be undone.
+            </p>
           </div>
         </motion.div>
       </AnimatePresence>

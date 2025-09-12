@@ -1,12 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Check,
-  Lock,
-  ChevronRight,
-  Shield,
-  CreditCard,
-  Smartphone,
-} from "lucide-react";
+import { Check, Lock, ChevronRight, Shield, CreditCard, Smartphone } from "lucide-react";
 import { IoClose } from "react-icons/io5";
 import visa from "../../assets/logos/visa.svg";
 import mastercard from "../../assets/logos/mastercard.svg";
