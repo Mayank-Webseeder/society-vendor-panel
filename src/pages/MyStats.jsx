@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, TrendingUp, Users, Award, BarChart3, ChartNoAxesCombined, RefreshCw, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { IconButton } from '@mui/material';
 import { ratingsData, ratingsCount, finalRating } from '../static/dummyData_MyStats';
 import AccessLockedModal from '../components/modals/AccessLockedModal';
 import { useUser } from '../UserContext';
