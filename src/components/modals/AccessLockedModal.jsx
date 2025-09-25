@@ -26,7 +26,7 @@ const AccessLockedModal = ({ open, onClose, heading, subheading }) => {
         zIndex: 50,
         top: 0,
         bottom: 0,
-        left: { xs: "0rem", sm: "4rem", md: "5rem" },
+        left: { xs: "0rem", sm: "4rem" },
         right: 0,
         width: "100%",
         height: { xs: "calc(100% - 3.48rem)", sm: "100%" },

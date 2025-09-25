@@ -26,7 +26,7 @@ const WithdrawApplicationModal = ({ open, onClose, lead, onWithdraw }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        left: { xs: '0rem', sm: '4rem', md: '5rem' },
+        left: { xs: '0rem', sm: '4rem' },
         right: 0,
         bottom: 0,
         width: '100%',

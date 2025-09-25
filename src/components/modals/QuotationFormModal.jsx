@@ -59,7 +59,7 @@ const QuotationFormModal = ({ open, onClose, onSubmit, jobId }) => {
         position: 'fixed',
         zIndex: 30,
         top: 0,
-        left: { xs: 0, sm: '4rem', md: '5rem' },
+        left: { xs: 0, sm: '4rem' },
         right: 0,
         bottom: 0,
         width: '100%',
