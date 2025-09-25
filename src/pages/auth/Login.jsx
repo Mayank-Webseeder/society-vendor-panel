@@ -159,8 +159,8 @@ const Login = ({ onSwitch, onLogin }) => {
         />
       </motion.div>
 
-      <motion.div className="flex justify-between items-center text-sm" variants={inputVariants}>
-        <div className="flex items-center">
+      <motion.div className="flex justify-start items-center text-sm" variants={inputVariants}>
+        {/* <div className="flex items-center">
           <input
             type="checkbox"
             id="remember"
@@ -171,7 +171,7 @@ const Login = ({ onSwitch, onLogin }) => {
           <label htmlFor="remember" className="ml-2 text-slate-600 cursor-pointer">
             Remember Me
           </label>
-        </div>
+        </div> */}
         <motion.button
           type="button"
           className="text-blue-600 hover:text-blue-800 border-none bg-transparent font-medium cursor-pointer transition-colors duration-200"

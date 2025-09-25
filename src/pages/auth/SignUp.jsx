@@ -200,7 +200,7 @@ const SignUp = ({ onSwitch }) => {
         </div>
       </motion.div>
 
-      <motion.div className="flex items-center text-sm" variants={inputVariants}>
+      {/* <motion.div className="flex items-center text-sm" variants={inputVariants}>
         <input
           type="checkbox"
           id="remember"
@@ -211,7 +211,7 @@ const SignUp = ({ onSwitch }) => {
         <label htmlFor="remember" className="ml-2 text-slate-600 cursor-pointer">
           Remember Me
         </label>
-      </motion.div>
+      </motion.div> */}
 
       <motion.button
         type="submit"
