@@ -21,10 +21,10 @@ import {
   Briefcase,
   Shield,
   CheckCircle,
-  UserCheck,
+  // UserCheck,
 } from "lucide-react";
-import { MdOutlinePayment } from "react-icons/md";
-import { BiReceipt } from "react-icons/bi";
+// import { MdOutlinePayment } from "react-icons/md";
+// import { BiReceipt } from "react-icons/bi";
 import { useOnBoarding } from "./OnboardingContext";
 
 const Step4_Profile1 = () => {
@@ -178,10 +178,10 @@ const Step4_Profile1 = () => {
         return <Briefcase size={20} />;
       case "id":
         return <Shield size={20} />;
-      case "paymentMethod":
-        return <MdOutlinePayment size={20} />;
-      case "lastPayments":
-        return <BiReceipt size={20} />;
+      // case "paymentMethod":
+      //   return <MdOutlinePayment size={20} />;
+      // case "lastPayments":
+      //   return <BiReceipt size={20} />;
       default:
         return null;
     }
@@ -799,7 +799,7 @@ const Step4_Profile1 = () => {
                 <Box></Box>
 
                 {/* Row 4: Preferred Payment Method & Last Payments */}
-                <Grow in={true} timeout={1200}>
+                {/* <Grow in={true} timeout={1200}>
                   <Box>
                     <Typography
                       variant="body1"
@@ -970,7 +970,7 @@ const Step4_Profile1 = () => {
                       }}
                     />
                   </Box>
-                </Grow>
+                </Grow> */}
               </Box>
             </div>
 
