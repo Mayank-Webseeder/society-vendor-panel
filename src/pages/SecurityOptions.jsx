@@ -1,21 +1,14 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button, Box, Typography } from '@mui/material';
-import { Shield, Lock } from 'lucide-react';
-
-const contentVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-  exit: { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeIn" } },
-};
+import { Lock, Eye, EyeOff } from 'lucide-react';
 
 const SecurityOptions = () => {
-  // State for Security Options
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Handlers for Security Options
   const handleClearPasswords = () => {
     setCurrentPassword('');
     setNewPassword('');
@@ -31,130 +24,151 @@ const SecurityOptions = () => {
     handleClearPasswords();
   };
 
+  const isFormValid = currentPassword && newPassword && confirmNewPassword && newPassword === confirmNewPassword;
+
   return (
-    <div className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-10'>
-      {/* Heading */}
-      <div className="flex items-start sm:items-center justify-between mb-8 gap-4">
-        <div className="flex flex-col gap-1">
-          <h2 style={{ fontFamily: 'Lato' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Security Options</h2>
-          <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Manage your account security settings</p>
+    <div className="p-6">
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-1">Security Settings</h2>
+        <p className="text-gray-600 text-sm">Manage your account security and password</p>
+      </div>
+
+      {/* Change Password Section */}
+      <div className="bg-gray-50 rounded-lg p-6 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 bg-blue-100 rounded-lg">
+            <Lock className="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-gray-900">Change Password</h3>
+            <p className="text-sm text-gray-600">Keep your account secure with a strong password</p>
+          </div>
+        </div>
+
+        <div className="space-y-4 max-w-md">
+          {/* Current Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Current Password
+            </label>
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? 'text' : 'password'}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter current password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {/* New Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showNewPassword ? 'text' : 'password'}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter new password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Confirm New Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Confirm New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Confirm new password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {confirmNewPassword && newPassword !== confirmNewPassword && (
+              <p className="text-sm text-red-600 mt-1">Passwords do not match</p>
+            )}
+          </div>
+        </div>
+
+        {/* Password Requirements */}
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <p className="text-sm font-medium text-blue-900 mb-2">Password Requirements:</p>
+          <ul className="text-sm text-blue-800 space-y-1">
+            <li className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+              At least 8 characters long
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+              Mix of uppercase and lowercase letters
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+              At least one number or symbol
+            </li>
+          </ul>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-3 mt-6">
+          <button
+            onClick={handleClearPasswords}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Clear
+          </button>
+          <button
+            onClick={handleChangePassword}
+            disabled={!isFormValid}
+            className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Change Password
+          </button>
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key="security-options-content"
-          variants={contentVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-4 sm:px-8 pt-6 pb-8 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden max-w-4xl"
-        >
-          <div className="absolute -top-12 -right-10 w-64 h-64 bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
-          <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-indigo-500 via-blue-500 to-transparent rounded-br-full" />
-
-          <div className="flex items-start gap-4 mb-6">
-            <div className="flex-shrink-0 p-3.5 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white shadow-inner ring-1 ring-white/30">
-              <Lock size={22} />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-slate-800">Change Password</h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1">Use a strong password with a mix of letters, numbers & symbols.</p>
-            </div>
+      {/* Two-Factor Authentication */}
+      <div className="bg-gray-50 rounded-lg p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-1">Two-Factor Authentication</h3>
+            <p className="text-sm text-gray-600">Add an extra layer of security to your account</p>
           </div>
-
-          {/* Form Fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-1 gap-x-10 gap-y-4 w-full">
-            <div className="flex flex-col">
-              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">Current Password</label>
-              <input
-                type="password"
-                name="currentPassword"
-                value={currentPassword}
-                onChange={e => setCurrentPassword(e.target.value)}
-                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">New Password</label>
-              <input
-                type="password"
-                name="newPassword"
-                value={newPassword}
-                onChange={e => setNewPassword(e.target.value)}
-                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">Confirm New Password</label>
-              <input
-                type="password"
-                name="confirmNewPassword"
-                value={confirmNewPassword}
-                onChange={e => setConfirmNewPassword(e.target.value)}
-                className="w-full max-w-[600px] p-2.5 border-solid border border-slate-200 bg-gray-50/80 focus:bg-white text-slate-800 text-sm rounded-lg focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8 text-[11px] sm:text-xs text-slate-500/80">
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-indigo-500" /> At least 8 characters
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500" /> Mix upper & lower case
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-500" /> Include a number or symbol
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-3 mt-10">
-            <Button
-              variant="outlined"
-              onClick={handleClearPasswords}
-              sx={{
-                px: 3.5,
-                py: 1.1,
-                bgcolor: 'rgba(255,255,255,0.85)',
-                color: '#475569',
-                borderColor: 'rgba(148,163,184,0.5)',
-                fontWeight: 600,
-                borderRadius: '10px',
-                textTransform: 'none',
-                fontSize: '0.78rem',
-                letterSpacing: 0.3,
-                backdropFilter: 'blur(8px)',
-                '&:hover': {
-                  bgcolor: 'rgba(241,245,249,0.9)',
-                  borderColor: 'rgba(100,116,139,0.6)'
-                }
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleChangePassword}
-              sx={{
-                px: 3.8,
-                py: 1.15,
-                background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
-                color: 'white',
-                fontWeight: 600,
-                borderRadius: '10px',
-                textTransform: 'none',
-                fontSize: '0.78rem',
-                letterSpacing: 0.3,
-                boxShadow: '0 6px 18px -6px rgba(59,130,246,0.5),0 2px 6px rgba(0,0,0,0.08)',
-                '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 10px 24px -6px rgba(59,130,246,0.55),0 3px 8px rgba(0,0,0,0.10)' }
-              }}
-            >
-              Change Password
-            </Button>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            Enable 2FA
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

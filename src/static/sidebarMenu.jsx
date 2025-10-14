@@ -28,11 +28,11 @@ const sidebarMenu = [
         redirect: "/my-jobs"
     },
 
-    {
-        icon: MdOutlineEventAvailable,
-        title: "Availability",
-        redirect: "/my-profile/work-details"
-    },
+    // {
+    //     icon: MdOutlineEventAvailable,
+    //     title: "Availability",
+    //     redirect: "/my-profile/work-details"
+    // },
 
     {
         icon: BsBarChartLine,
@@ -40,22 +40,22 @@ const sidebarMenu = [
         redirect: "/my-stats"
     },
 
-    {
-        icon: FaRegUser,
-        title: "User Profile",
-        redirect: "/my-profile"
-    }, 
+    // {
+    //     icon: FaRegUser,
+    //     title: "User Profile",
+    //     redirect: "/my-profile"
+    // },
 
-    {
-        icon: FaRegBell,
-        title: "Notifications",
-        redirect: ''
-    },
+    // {
+    //     icon: FaRegBell,
+    //     title: "Notifications",
+    //     redirect: ''
+    // },
 
     {
         icon: MdOutlineSupportAgent,
         title: "Help",
-        redirect: "/my-profile/account-support/help-support"
+        redirect: "/my-profile/account-support"
     },
 
     {

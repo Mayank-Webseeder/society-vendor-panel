@@ -5,27 +5,23 @@ import { loginVendor, checkSubscriptionStatus, getVendorDashboard } from '../../
 import { useUser } from '../../UserContext';
 import defaultUser from '../../DefaultUser';
 
-
-const TEST_EMAIL = import.meta.env.VITE_TEST_EMAIL;
+const TEST_CONTACT = import.meta.env.VITE_TEST_CONTACT;
 const TEST_PASSWORD = import.meta.env.VITE_TEST_PASSWORD;
 
-
 const Login = ({ onSwitch, onLogin }) => {
-
   const navigate = useNavigate();
   const { setUser } = useUser();
 
-  const [email, setEmail] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState(''); 
+  const [error, setError] = useState('');
 
-
-  const handleLogin = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     // Check for test credentials
-    if (email === TEST_EMAIL && password === TEST_PASSWORD) {
+    if (contactNumber === TEST_CONTACT && password === TEST_PASSWORD) {
       console.log('✅ Logged in with test credentials');
       // Set testMode to true in defaultUser and store it in localStorage
       const testUser = { ...defaultUser, testMode: true, subscription_active: true };
@@ -40,10 +36,9 @@ const Login = ({ onSwitch, onLogin }) => {
       return;
     }
 
-
     // Normal API call for login
     // Basic validation
-    if (!email.trim() || !password.trim()) {
+    if (!contactNumber.trim() || !password.trim()) {
       setError('Please fill in all fields');
       return;
     }
@@ -51,11 +46,10 @@ const Login = ({ onSwitch, onLogin }) => {
 
     try {
       // Call the loginVendor API (API 2)
-      const result = await loginVendor(email.trim(), password.trim());
+      const result = await loginVendor(contactNumber.trim(), password.trim());
       console.log('✅ Login successful:', result);
       // Store the authToken in localStorage
       localStorage.setItem('authToken', result.authToken);
-
 
       // Fetch subscription status after login
       try {
@@ -69,7 +63,6 @@ const Login = ({ onSwitch, onLogin }) => {
         localStorage.setItem('subscription_referenceId', '');
       }
 
-
       // Fetch dashboard details after login
       try {
         const dashboard = await getVendorDashboard();
@@ -82,7 +75,6 @@ const Login = ({ onSwitch, onLogin }) => {
         localStorage.removeItem('user_dashboard');
       }
 
-
       // Trigger the onLogin callback
       if (onLogin) onLogin();
 
@@ -93,7 +85,6 @@ const Login = ({ onSwitch, onLogin }) => {
       setError(error.message || 'Login failed. Please try again.');
     }
   };
-
 
   const inputVariants = {
     initial: { y: 10, opacity: 0 },
@@ -110,7 +101,7 @@ const Login = ({ onSwitch, onLogin }) => {
     >
       <motion.h2
         className="text-2xl sm:text-2xl font-semibold text-slate-800 text-center mb-6"
-        style={{ fontFamily:"Lato" }}
+        style={{ fontFamily: "Lato" }}
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.5 }}
@@ -129,17 +120,17 @@ const Login = ({ onSwitch, onLogin }) => {
         </motion.div>
       )}
 
-    <motion.div variants={inputVariants}>
-        <label htmlFor="email" className="block text-slate-700 text-sm font-medium mb-2">Email Address</label>
+      <motion.div variants={inputVariants}>
+        <label htmlFor="contactNumber" className="block text-slate-700 text-sm font-medium mb-2">Contact Number</label>
         <input
-          type="email"
-          id="email"
-          placeholder="your.email@example.com"
-      className="w-full px-4 py-2.5 border-solid border border-slate-600/50 rounded-lg placeholder-slate-400
+          type="tel"
+          id="contactNumber"
+          placeholder="+91 98765 43210"
+          className="w-full px-4 py-2.5 border-solid border border-slate-600/50 rounded-lg placeholder-slate-400
            focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
            text-slate-900 bg-slate-100/90 backdrop-blur-sm transition-all duration-200 text-base shadow-inner"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={contactNumber}
+          onChange={(e) => setContactNumber(e.target.value)}
           required
         />
       </motion.div>
@@ -160,18 +151,6 @@ const Login = ({ onSwitch, onLogin }) => {
       </motion.div>
 
       <motion.div className="flex justify-start items-center text-sm" variants={inputVariants}>
-        {/* <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="remember"
-            className="form-checkbox h-4 w-4 text-blue-400 rounded-md border-gray-300 focus:ring-blue-400 cursor-pointer"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-          />
-          <label htmlFor="remember" className="ml-2 text-slate-600 cursor-pointer">
-            Remember Me
-          </label>
-        </div> */}
         <motion.button
           type="button"
           className="text-blue-600 hover:text-blue-800 border-none bg-transparent font-medium cursor-pointer transition-colors duration-200"
@@ -185,20 +164,19 @@ const Login = ({ onSwitch, onLogin }) => {
 
       <motion.button
         type="submit"
-  className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
+        className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
        transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-0"
         style={{
-    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
-    boxShadow: '0 4px 12px rgba(59,130,246,0.2)'
+          background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
+          boxShadow: '0 4px 12px rgba(59,130,246,0.2)'
         }}
-        whileHover={{ 
+        whileHover={{
           y: -2,
           boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
           background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)',
           transition: {
             type: "tween",
             duration: 0.15,
-            // ease: "easeOut"
           }
         }}
         whileTap={{ scale: 0.98 }}
@@ -213,7 +191,7 @@ const Login = ({ onSwitch, onLogin }) => {
           type="button"
           className="text-blue-600 text-base bg-transparent pl-1 border-none hover:text-blue-800 font-medium cursor-pointer transition-colors duration-300"
           onClick={onSwitch}
-          whileHover={{ 
+          whileHover={{
             scale: 1.05,
             color: '#1d4ed8'
           }}
@@ -225,6 +203,5 @@ const Login = ({ onSwitch, onLogin }) => {
     </motion.form>
   );
 };
-
 
 export default Login;

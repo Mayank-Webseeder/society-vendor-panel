@@ -1,192 +1,240 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  Menu,
-  MenuItem,
-  Button,
-  IconButton,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
-import {
-  Search as SearchIcon,
-  Close as CloseIcon,
-  BusinessCenter as BusinessCenterIcon,
-} from "@mui/icons-material";
-import {
+  Search,
+  SlidersHorizontal,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ArrowUp,
-  ArrowDown,
-  RefreshCw,
-} from "lucide-react";
-import { WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
-import { FileText, Hourglass, CheckSquare, Send } from "lucide-react";
-import { motion } from "framer-motion";
-import dummyData from "../static/dummyData_Leads";
-import NewLeadModal from "../components/modals/NewLeadModal";
-import QuotationFormModal from "../components/modals/QuotationFormModal";
-import OngoingModal from "../components/modals/OngoingModal";
-import CompletedModal from "../components/modals/CompletedModal";
-import WithdrawApplicationModal from "../components/modals/WithdrawApplicationModal";
-import CancelJobModal from "../components/modals/CancelJobModal";
-import { useUser } from "../UserContext";
-import AccessLockedModal from "../components/modals/AccessLockedModal";
-import { getMyAppliedJobs } from "../services/api/jobs";
-import { getJobDetailsById } from "../services/api/jobs";
-
-const MotionButton = motion(Button);
-
-const statusOptions = [
-  { label: "All" },
-  { label: "New" },
-  { label: "Completed" },
-  { label: "Ongoing" },
-  { label: "Applied" },
-];
-
-const ROWS_PER_PAGE = 10;
-
-const parsePostedOn = (str) => {
-  // Example: "27th June, 25" => "27 June 2025"
-  if (!str) return new Date(0);
-  const [dayPart, monthPart, yearPart] = str
-    .replace(/(st|nd|rd|th)/, "")
-    .replace(",", "")
-    .split(" ");
-  const year = yearPart.length === 2 ? `20${yearPart}` : yearPart;
-  return new Date(`${monthPart} ${dayPart} ${year}`);
-};
+  ArrowUpDown,
+  Briefcase,
+  Clock,
+  CheckCircle,
+  FileText,
+  XCircle,
+  Eye,
+  X,
+  Send,
+  AlertCircle,
+  TrendingUp
+} from 'lucide-react';
+import dummyData from '../static/dummyData_Leads';
+import { useUser } from '../UserContext';
+import AccessLockedModal from '../components/modals/AccessLockedModal';
+import NewLeadModal from '../components/modals/NewLeadModal';
+import QuotationFormModal from '../components/modals/QuotationFormModal';
+import OngoingModal from '../components/modals/OngoingModal';
+import CompletedModal from '../components/modals/CompletedModal';
+import WithdrawApplicationModal from '../components/modals/WithdrawApplicationModal';
+import CancelJobModal from '../components/modals/CancelJobModal';
 
 const MyJobs = () => {
   const { user } = useUser();
-  const subscriptionActive = user.subscription_active;
-
+  const subscriptionActive = user?.subscription_active;
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive); // Open modal if no subscription
+  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);
 
-  // Redirect to dashboard when access locked modal closes
   const handleModalClose = () => {
-    navigate("/dashboard");
+    navigate('/dashboard');
   };
 
-  // Manage modal states
+  // State management
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState(location.state?.filter || '');
+  const [selectedService, setSelectedService] = useState('');
+  const [selectedPriority, setSelectedPriority] = useState('');
+  const [quotationFilter, setQuotationFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Modal states
   const [modalLead, setModalLead] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [proceed, setProceed] = useState(false);
   const [showQuotationForm, setShowQuotationForm] = useState(false);
 
-  // Set the initial filter based on navigation state or default to "All"
-  const [selectedStatus, setSelectedStatus] = useState(
-    location.state?.filter || "All"
-  );
+  const ITEMS_PER_PAGE = 10;
 
-  const [statusAnchorEl, setStatusAnchorEl] = useState(null);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [searchWork, setSearchWork] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc");
-
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const jobStatuses = [
-    {
-      name: "New",
-      color: "text-blue-600",
-      icon: FileText,
-      count: dummyData.filter((lead) => lead.status === "New").length,
-    },
-    {
-      name: "Ongoing",
-      color: "text-yellow-600",
-      icon: Hourglass,
-      count: dummyData.filter((lead) => lead.status === "Ongoing").length,
-    },
-    {
-      name: "Completed",
-      color: "text-green-600",
-      icon: CheckSquare,
-      count: dummyData.filter((lead) => lead.status === "Completed").length,
-    },
-    {
-      name: "Applied",
-      color: "text-purple-600",
-      icon: Send,
-      count: dummyData.filter((lead) => lead.status === "Applied").length,
-    },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  // Filter out 'New' jobs since they have their own page
+  const myJobs = dummyData.filter(job => job.status !== 'New');
 
   useEffect(() => {
-    setJobs(dummyData); // Use dummyData directly
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setTimeout(() => {
+          setJobs(myJobs);
+          setLoading(false);
+        }, 300);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+        setJobs(myJobs);
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
   }, []);
 
-  // Filtered leads (add search filter)
-  const filteredLeads = (
-    selectedStatus === "All"
-      ? jobs
-      : jobs.filter((lead) => lead.status === selectedStatus)
-  ).filter(
-    (lead) =>
-      lead.name.toLowerCase().includes(search.toLowerCase()) &&
-      lead.work.toLowerCase().includes(searchWork.toLowerCase())
-  );
+  // Calculate statistics
+  const stats = {
+    totalApplications: jobs.filter(job => ['Applied', 'Ongoing', 'Completed'].includes(job.status)).length,
+    pending: jobs.filter(job => job.status === 'Applied' && job.pendingStatus === 'Approval Pending').length,
+    ongoing: jobs.filter(job => job.status === 'Ongoing').length,
+    completed: jobs.filter(job => job.status === 'Completed').length
+  };
 
-  const sortedLeads = [...filteredLeads].sort((a, b) => {
-    const dateA = parsePostedOn(a.postedOn);
-    const dateB = parsePostedOn(b.postedOn);
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+  // Filter and sort jobs
+  const filteredJobs = jobs.filter(job => {
+    const matchesSearch = job.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.work.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = !selectedStatus || job.status === selectedStatus;
+    const matchesService = !selectedService || job.work.toLowerCase().includes(selectedService.toLowerCase());
+    const matchesPriority = !selectedPriority ||
+      (selectedPriority === 'High' && job.urgent) ||
+      (selectedPriority === 'Normal' && !job.urgent);
+    const matchesQuotation = !quotationFilter ||
+      (quotationFilter === 'Required' && job.quotationRequired) ||
+      (quotationFilter === 'Not Required' && !job.quotationRequired);
+
+    return matchesSearch && matchesStatus && matchesService && matchesPriority && matchesQuotation;
   });
 
-  // Pagination logic
-  const totalResults = sortedLeads.length;
-  const totalPages = Math.ceil(totalResults / ROWS_PER_PAGE);
-  const startIdx = (page - 1) * ROWS_PER_PAGE;
-  const endIdx = Math.min(startIdx + ROWS_PER_PAGE, totalResults);
-  const paginatedLeads = sortedLeads.slice(startIdx, endIdx);
-
-  const handleSortToggle = () => {
-    setSortOrder((order) => (order === "asc" ? "desc" : "asc"));
-    setPage(1);
+  const parsePostedOn = (str) => {
+    if (!str) return new Date(0);
+    const [dayPart, monthPart, yearPart] = str.replace(/(st|nd|rd|th)/, '').replace(',', '').split(' ');
+    const year = yearPart.length === 2 ? `20${yearPart}` : yearPart;
+    return new Date(`${monthPart} ${dayPart} ${year}`);
   };
 
-  // Modal logic
-  // const handleView = (lead) => {
-  //   setModalLead(lead);
-  //   setModalOpen(true);
-  //   setProceed(false);
-  //   setShowQuotationForm(false);
-  // };
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    const dateA = parsePostedOn(a.postedOn);
+    const dateB = parsePostedOn(b.postedOn);
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
 
-  const handleView = async (lead) => {
-    // Temporarily using local/dummy lead data instead of API response
-    // const jobDetails = await getJobDetailsById(lead.id);
-    // console.log('Job Details:', jobDetails);
-    setModalLead(lead); // use the passed-in lead directly
-    setModalOpen(true);
-    setProceed(false);
-    setShowQuotationForm(false);
+  // Pagination
+  const totalPages = Math.ceil(sortedJobs.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedJobs = sortedJobs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const getStatusBadge = (job) => {
+    const statusConfig = {
+      'Applied': {
+        color: job.pendingStatus === 'Approved' ? 'bg-green-100 text-green-700' :
+          job.pendingStatus === 'Approval Pending' ? 'bg-orange-100 text-orange-700' :
+            'bg-blue-100 text-blue-700',
+        text: job.pendingStatus || 'Applied'
+      },
+      'Ongoing': { color: 'bg-amber-100 text-amber-700', text: 'In Progress' },
+      'Completed': { color: 'bg-green-100 text-green-700', text: 'Completed' }
+    };
+
+    const config = statusConfig[job.status] || { color: 'bg-gray-100 text-gray-700', text: job.status };
+    return (
+      <span className={`px-3 py-1 rounded-full text-sm font-medium ${config.color}`}>
+        {config.text}
+      </span>
+    );
   };
+
+  const getActionButton = (job) => {
+    const handleView = async (lead) => {
+      setModalLead(lead);
+      setModalOpen(true);
+      setProceed(false);
+      setShowQuotationForm(false);
+    };
+
+    const handleCancel = (lead) => {
+      setModalLead(lead);
+      setModalOpen(true);
+      setProceed(false);
+    };
+
+    const handleWithdraw = (lead) => {
+      setModalLead(lead);
+      setModalOpen(true);
+      setProceed(true);
+    };
+
+    switch (job.status) {
+      case 'Applied':
+        if (job.pendingStatus === 'Approval Pending') {
+          return (
+            <button
+              onClick={() => handleWithdraw(job)}
+              className="px-4 py-2 border border-orange-300 text-orange-700 rounded-lg text-sm font-medium hover:bg-orange-50 transition-colors"
+            >
+              Withdraw
+            </button>
+          );
+        } else if (job.pendingStatus === 'Approved') {
+          return (
+            <button
+              onClick={() => handleCancel(job)}
+              className="px-4 py-2 border border-red-300 text-red-700 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
+            >
+              Cancel
+            </button>
+          );
+        }
+        return (
+          <button
+            onClick={() => handleView(job)}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2"
+          >
+            <Eye className="w-4 h-4" />
+            View
+          </button>
+        );
+      case 'Ongoing':
+        return (
+          <button
+            onClick={() => handleView(job)}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2"
+          >
+            <Eye className="w-4 h-4" />
+            View Details
+          </button>
+        );
+      case 'Completed':
+        return (
+          <button
+            onClick={() => handleView(job)}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+          >
+            View Rating
+          </button>
+        );
+      default:
+        return (
+          <button
+            onClick={() => handleView(job)}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2"
+          >
+            <Eye className="w-4 h-4" />
+            View
+          </button>
+        );
+    }
+  };
+
+  const clearFilters = () => {
+    setSelectedStatus('');
+    setSelectedService('');
+    setSelectedPriority('');
+    setQuotationFilter('');
+    setSearchQuery('');
+    setCurrentPage(1);
+  };
+
+  const activeFiltersCount = [selectedStatus, selectedService, selectedPriority, quotationFilter, searchQuery].filter(Boolean).length;
 
   // Close modal handler
   const handleCloseModal = () => {
@@ -196,33 +244,19 @@ const MyJobs = () => {
     setShowQuotationForm(false);
   };
 
-  // Dropdown logic for status in table header
-  const handleStatusClick = (event) => setStatusAnchorEl(event.currentTarget);
-  const handleStatusClose = () => setStatusAnchorEl(null);
-  const handleStatusSelect = (label) => {
-    setSelectedStatus(label);
-    setStatusAnchorEl(null);
-    setPage(1); // Reset to first page on filter change
-  };
-
-  const handlePrevPage = () => setPage((p) => Math.max(1, p - 1));
-  const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
-
-  const handleCancel = (lead) => {
-    setModalLead(lead);
-    setModalOpen(true);
-    setProceed(false); // Ensure modal opens in cancel mode
-  };
-
-  const handleWithdraw = (lead) => {
-    setModalLead(lead);
-    setModalOpen(true);
-    setProceed(true); // Ensure modal opens in withdraw mode
-  };
+  if (loading) {
+    return (
+      <div className="min-h-full bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your jobs...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="relative flex flex-col gap-8 px-2 pt-3 pb-5 w-full">
-      {/* Render AccessLockedModal as an overlay if subscription is inactive */}
+    <div className="min-h-full bg-gray-50">
       {!subscriptionActive && (
         <AccessLockedModal
           open={isModalOpen}
@@ -232,1120 +266,318 @@ const MyJobs = () => {
         />
       )}
 
-      {/* Main content of MyJobs page */}
-      <motion.div
-        className="w-full px-2 flex flex-col gap-6 text-gray-800"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Header Section */}
-        <motion.div
-          className="relative border-solid flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-5 sm:px-7 py-5 border border-slate-200 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] mb-1 overflow-hidden"
-          variants={itemVariants}
-        >
-          {/* Overlay gradients & accent bar */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-50/60 via-transparent to-indigo-50/60" />
-          <div className="absolute top-0 left-0 h-1 w-40 bg-gradient-to-r from-blue-500 via-indigo-500 to-transparent rounded-br-full" />
-          <div className="relative w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-            <div className="flex items-start sm:items-center gap-4">
-              <div className="flex-shrink-0 rounded-xl p-3 bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-inner shadow-blue-800/10 ring-1 ring-white/30">
-                <BusinessCenterIcon
-                  sx={{ color: "#FFFFFF", fontSize: { xs: 26, sm: 30 } }}
-                />
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-1">My Jobs</h1>
+          <p className="text-gray-600 text-sm">Manage your job applications and track progress</p>
+        </div>
+
+        {/* Stats Cards - Same style as dashboard */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg p-6 border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">Total Applications</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.totalApplications}</p>
               </div>
-              <div className="flex flex-col gap-1">
-                <h1
-                  style={{ fontFamily: "Manrope" }}
-                  className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 tracking-tight"
-                >
-                  My Jobs
-                </h1>
-                <p
-                  style={{ fontFamily: "Lato" }}
-                  className="text-xs sm:text-sm text-slate-500 mt-0.5"
-                >
-                  Manage leads, applications and job progress
-                </p>
+              <div className="p-3 bg-slate-50 rounded-lg">
+                <Send className="w-6 h-6 text-slate-600" />
               </div>
             </div>
-            {/* Reserved space for future actions / filters */}
-            {/* <div className="flex items-center gap-4 self-stretch sm:self-auto" /> */}
           </div>
-        </motion.div>
 
-        {/* Job Status Cards Section (corporate look on desktop) */}
-        <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-6 sm:justify-start sm:items-center">
-          {jobStatuses.map((status) => (
-            <motion.div
-              key={status.name}
-              className="bg-white w-full sm:w-52 p-3 sm:p-4 border border-gray-100 rounded-xl sm:shadow-sm flex items-center gap-3 transition-transform duration-150 hover:scale-[1.02] cursor-pointer"
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
+          <div className="bg-white rounded-lg p-6 border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">Pending Review</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.pending}</p>
+              </div>
+              <div className="p-3 bg-orange-50 rounded-lg">
+                <Clock className="w-6 h-6 text-orange-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">Ongoing Jobs</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.ongoing}</p>
+              </div>
+              <div className="p-3 bg-amber-50 rounded-lg">
+                <AlertCircle className="w-6 h-6 text-amber-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">Completed Jobs</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.completed}</p>
+              </div>
+              <div className="p-3 bg-green-50 rounded-lg">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+          <div className="flex flex-col lg:flex-row gap-4 mb-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search jobs by name or service..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Filter Toggle */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-colors ${showFilters || activeFiltersCount > 0
+                  ? 'bg-blue-50 border-blue-200 text-blue-700'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
             >
-              <div className="flex-shrink-0">
-                <div
-                  className={`w-11 h-11 rounded-full flex items-center justify-center ${
-                    status.name === "New"
-                      ? "bg-blue-50"
-                      : status.name === "Ongoing"
-                      ? "bg-yellow-50"
-                      : status.name === "Completed"
-                      ? "bg-green-50"
-                      : "bg-purple-50"
-                  }`}
-                >
-                  <status.icon className={`w-5 h-5 ${status.color}`} />
-                </div>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div className="min-w-0">
-                    <p
-                      style={{ fontFamily: "Lato" }}
-                      className="text-sm text-gray-700 font-semibold truncate"
-                    >
-                      {status.name}
-                    </p>
-                    <p
-                      style={{ fontFamily: "Lato" }}
-                      className="text-xs text-gray-500 mt-0.5"
-                    >
-                      Overview
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-2xl font-bold ${status.color}`}>
-                      {status.count}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Table - Desktop (sm+) */}
-      <motion.div
-        className="hidden sm:block border-solid border border-gray-300 rounded-xl mx-2"
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="w-full overflow-x-auto rounded-xl">
-          <table
-            className="min-w-[1000px] w-full bg-white shadow border rounded-xl table-fixed border-collapse"
-            style={{ minWidth: "900px" }}
-          >
-            <thead>
-              {/* Search Row */}
-              <tr>
-                <th
-                  colSpan={5}
-                  className="bg-slate-100/80 rounded-tl-xl rounded-tr-xl"
-                >
-                  <div
-                    className="flex flex-col gap-3 px-4 py-3"
-                    style={{ borderBottom: "1px solid #d1d5db" }}
-                  >
-                    <div className="flex justify-between flex-wrap gap-6">
-                      <div className="flex gap-6">
-                        <TextField
-                          value={search}
-                          onChange={(e) => {
-                            setSearch(e.target.value);
-                            setPage(1);
-                          }}
-                          placeholder="Search by lead name"
-                          size="small"
-                          variant="outlined"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <SearchIcon color="action" />
-                              </InputAdornment>
-                            ),
-                            endAdornment: search && (
-                              <InputAdornment position="end">
-                                <CloseIcon
-                                  fontSize="small"
-                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                  onClick={() => {
-                                    setSearch("");
-                                    setPage(1);
-                                  }}
-                                />
-                              </InputAdornment>
-                            ),
-                            style: { borderRadius: 8, background: "white" },
-                          }}
-                          sx={{ width: 220 }}
-                        />
-                        <TextField
-                          value={searchWork}
-                          onChange={(e) => {
-                            setSearchWork(e.target.value);
-                            setPage(1);
-                          }}
-                          placeholder="Search by work"
-                          size="small"
-                          variant="outlined"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <SearchIcon color="action" />
-                              </InputAdornment>
-                            ),
-                            endAdornment: searchWork && (
-                              <InputAdornment position="end">
-                                <CloseIcon
-                                  fontSize="small"
-                                  className="cursor-pointer text-gray-400 hover:text-gray-600"
-                                  onClick={() => {
-                                    setSearchWork("");
-                                    setPage(1);
-                                  }}
-                                />
-                              </InputAdornment>
-                            ),
-                            style: { borderRadius: 8, background: "white" },
-                          }}
-                          sx={{ width: 220 }}
-                        />
-                      </div>
-
-                      <div className="hidden mr-4 sm:flex items-center gap-4 flex-wrap">
-                        <Button
-                          size="medium"
-                          variant="outlined"
-                          onClick={handleStatusClick}
-                          sx={{
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            color: "#0f172a",
-                            borderColor: "rgba(15,23,42,0.15)",
-                            background: "#FFFFFF",
-                            "&:hover": {
-                              borderColor: "#1976D2",
-                              background: "#F1F5F9",
-                            },
-                          }}
-                        >
-                          Status: {selectedStatus}
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            className="ml-1"
-                            aria-hidden
-                          >
-                            <path
-                              d="M6 9l6 6 6-6"
-                              stroke="#475569"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </Button>
-
-                        <Button
-                          size="medium"
-                          variant="outlined"
-                          onClick={handleSortToggle}
-                          sx={{
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            color: "#1976D2",
-                            borderColor: "#1976D2",
-                            "&:hover": {
-                              background: "#EFF6FF",
-                              borderColor: "#1976D2",
-                            },
-                          }}
-                          aria-label={`Sort by posted date ${
-                            sortOrder === "asc" ? "descending" : "ascending"
-                          }`}
-                        >
-                          Sort: {sortOrder === "asc" ? "Oldest" : "Newest"}
-                          {sortOrder === "asc" ? (
-                            <ArrowUp size={16} className="ml-1" />
-                          ) : (
-                            <ArrowDown size={16} className="ml-1" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* New filter & sort row for mobile */}
-                    <div className="flex sm:hidden items-center gap-4 flex-wrap">
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={handleStatusClick}
-                        sx={{
-                          textTransform: "none",
-                          borderRadius: 2,
-                          fontWeight: 600,
-                          color: "#0f172a",
-                          borderColor: "rgba(15,23,42,0.15)",
-                          background: "#FFFFFF",
-                          "&:hover": {
-                            borderColor: "#1976D2",
-                            background: "#F1F5F9",
-                          },
-                        }}
-                      >
-                        Status: {selectedStatus}
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          className="ml-1"
-                          aria-hidden
-                        >
-                          <path
-                            d="M6 9l6 6 6-6"
-                            stroke="#475569"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={handleSortToggle}
-                        sx={{
-                          textTransform: "none",
-                          borderRadius: 2,
-                          fontWeight: 600,
-                          color: "#1976D2",
-                          borderColor: "#1976D2",
-                          "&:hover": {
-                            background: "#EFF6FF",
-                            borderColor: "#1976D2",
-                          },
-                        }}
-                        aria-label={`Sort by posted date ${
-                          sortOrder === "asc" ? "descending" : "ascending"
-                        }`}
-                      >
-                        Sort: {sortOrder === "asc" ? "Oldest" : "Newest"}
-                        {sortOrder === "asc" ? (
-                          <ArrowUp size={16} className="ml-1" />
-                        ) : (
-                          <ArrowDown size={16} className="ml-1" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </th>
-                {/* Status options menu (opens when statusAnchorEl is set) */}
-                <Menu
-                  anchorEl={statusAnchorEl}
-                  open={Boolean(statusAnchorEl)}
-                  onClose={handleStatusClose}
-                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                  transformOrigin={{ vertical: "top", horizontal: "center" }}
-                >
-                  {statusOptions.map((option) => (
-                    <MenuItem
-                      key={option.label}
-                      selected={selectedStatus === option.label}
-                      onClick={() => handleStatusSelect(option.label)}
-                    >
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </tr>
-              {/* Table Head Row */}
-              <tr
-                className="bg-slate-100/70 text-slate-700"
-                style={{ borderBottom: "1px solid #d1d5db" }}
-              >
-                <th className="py-4 px-4 text-left text-sm font-bold w-36 sm:w-48 md:w-56">
-                  LEAD NAME
-                </th>
-                <th className="py-4 text-center text-sm font-bold w-32 sm:w-40 md:w-48">
-                  WORK
-                </th>
-                <th className="py-4 text-center text-sm font-bold w-28 sm:w-32 md:w-44">
-                  STATUS
-                </th>
-                <th className="py-4 text-center text-sm font-bold w-28 sm:w-32 md:w-36">
-                  POSTED ON
-                </th>
-                <th className="py-4 text-center text-sm font-bold w-24 sm:w-28 md:w-32">
-                  ACTION
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {paginatedLeads.length > 0 ? (
-                <>
-                  {paginatedLeads.map((lead) => (
-                    <tr
-                      key={lead.id}
-                      className="odd:bg-white even:bg-slate-50/60 hover:bg-blue-50 transition"
-                      style={{ borderBottom: "1px solid #E5E7EB" }}
-                    >
-                      <td className="py-3 px-4">
-                        {lead.name}
-                        {lead.interested && (
-                          <span
-                            className="ml-2 inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-md text-green-800 bg-green-50"
-                            style={{ border: "1px solid #86efac" }}
-                          >
-                            Interested
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <span className="inline-grid border-solid place-items-center grid-cols-[auto_auto] gap-2 px-2 py-1 bg-gray-50 rounded-md border border-gray-200 w-fit mx-auto">
-                          <WrenchScrewdriverIcon className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm text-gray-700">
-                            {lead.work}
-                          </span>
-                        </span>
-                      </td>
-                      <td className="py-3 text-center">
-                        {lead.status === "Applied" ? (
-                          <span
-                            className={`px-4 py-2 w-fit rounded-full text-sm font-semibold
-                              ${
-                                lead.pendingStatus === "Approval Pending"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : lead.pendingStatus === "Approved"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-blue-100 text-blue-700"
-                              }
-                            `}
-                          >
-                            {lead.pendingStatus}
-                          </span>
-                        ) : (
-                          <span
-                            className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                              lead.status === "Completed"
-                                ? "bg-green-100 text-green-700"
-                                : lead.status === "Ongoing"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : lead.status === "New"
-                                ? "bg-gray-100 text-gray-700"
-                                : "bg-gray-50 text-gray-500"
-                            }`}
-                          >
-                            {lead.status} {lead.status === "New" ? "!" : ""}
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 text-center">
-                        <div>{lead.postedOn}</div>
-                        <div className="text-xs text-gray-500">{lead.time}</div>
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        {lead.status === "New" ? (
-                          lead.interested ? (
-                            <MotionButton
-                              whileHover={{
-                                y: -2,
-                                boxShadow:
-                                  "0 4px 16px rgba(16, 185, 129, 0.10)",
-                              }}
-                              whileTap={{ y: 1 }}
-                              transition={{ type: "tween" }}
-                              variant="outlined"
-                              size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontWeight: 600,
-                                color: "green",
-                                borderColor: "green",
-                              }}
-                              onClick={() => {
-                                setModalLead(lead);
-                                setModalOpen(true);
-                                setProceed(true);
-                              }}
-                            >
-                              Fill Quotation
-                            </MotionButton>
-                          ) : (
-                            <MotionButton
-                              whileHover={{
-                                y: -2,
-                                boxShadow:
-                                  "0 4px 16px rgba(33, 150, 243, 0.10)",
-                              }}
-                              whileTap={{ y: 1 }}
-                              transition={{ type: "tween" }}
-                              variant="outlined"
-                              size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontWeight: 800,
-                                color: "#1976D2",
-                                borderColor: "#1976D2",
-                              }}
-                              onClick={() => {
-                                setModalLead(lead);
-                                setModalOpen(true);
-                                setProceed(false);
-                              }}
-                            >
-                              Apply
-                            </MotionButton>
-                          )
-                        ) : lead.status === "Applied" ? (
-                          lead.pendingStatus === "Approval Pending" ? (
-                            <MotionButton
-                              whileHover={{
-                                y: -2,
-                                boxShadow: "0 4px 16px rgba(255, 152, 0, 0.10)",
-                              }}
-                              whileTap={{ y: 1 }}
-                              transition={{ type: "tween" }}
-                              variant="outlined"
-                              size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontWeight: 600,
-                                color: "#ff9800",
-                                borderColor: "#ff9800",
-                              }}
-                              onClick={() => handleWithdraw(lead)}
-                            >
-                              Withdraw
-                            </MotionButton>
-                          ) : lead.pendingStatus === "Approved" ? (
-                            <MotionButton
-                              whileHover={{
-                                y: -2,
-                                boxShadow: "0 4px 16px rgba(229, 57, 53, 0.10)",
-                              }}
-                              whileTap={{ y: 1 }}
-                              transition={{ type: "tween" }}
-                              variant="outlined"
-                              size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontWeight: 600,
-                                color: "#e53935",
-                                borderColor: "#e53935",
-                              }}
-                              onClick={() => handleCancel(lead)}
-                            >
-                              Cancel
-                            </MotionButton>
-                          ) : (
-                            <MotionButton
-                              whileHover={{
-                                y: -2,
-                                boxShadow: "0 4px 16px rgba(255, 179, 0, 0.10)",
-                              }}
-                              whileTap={{ y: 1 }}
-                              transition={{ type: "tween" }}
-                              variant="outlined"
-                              size="small"
-                              sx={{
-                                minWidth: 100,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontWeight: 600,
-                                color: "#FFB300",
-                                borderColor: "#FFB300",
-                                background: "#FFF8E1",
-                              }}
-                              onClick={() => handleView(lead)}
-                            >
-                              View
-                            </MotionButton>
-                          )
-                        ) : lead.status === "Completed" ? (
-                          <MotionButton
-                            whileHover={{
-                              y: -2,
-                              boxShadow: "0 4px 16px rgba(33, 150, 243, 0.10)",
-                            }}
-                            whileTap={{ y: 1 }}
-                            transition={{ type: "tween" }}
-                            variant="outlined"
-                            size="small"
-                            sx={{
-                              minWidth: 100,
-                              textTransform: "none",
-                              borderRadius: 2,
-                              fontWeight: 500,
-                              color: "green",
-                              borderColor: "green",
-                            }}
-                            onClick={() => handleView(lead)}
-                          >
-                            Ratings
-                          </MotionButton>
-                        ) : (
-                          <MotionButton
-                            whileHover={{
-                              y: -2,
-                              boxShadow: "0 4px 16px rgba(255, 179, 0, 0.10)",
-                            }}
-                            whileTap={{ y: 1 }}
-                            transition={{ type: "tween" }}
-                            variant="outlined"
-                            size="small"
-                            sx={{
-                              minWidth: 100,
-                              textTransform: "none",
-                              borderRadius: 2,
-                              fontWeight: 600,
-                              color: "#FFB300",
-                              borderColor: "#FFB300",
-                            }}
-                            onClick={() => handleView(lead)}
-                          >
-                            View
-                          </MotionButton>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-
-                  {/* Add empty rows if less than 10 entries on this page */}
-                  {Array.from({
-                    length: ROWS_PER_PAGE - paginatedLeads.length,
-                  }).map((_, idx) => (
-                    <tr key={`empty-${idx}`}>
-                      <td
-                        colSpan={5}
-                        className="py-3 px-4"
-                        style={{
-                          background: "#fff",
-                          borderBottom:
-                            idx === ROWS_PER_PAGE - paginatedLeads.length - 1
-                              ? "1px solid #E5E7EB"
-                              : "none",
-                          height: 56,
-                        }}
-                      />
-                    </tr>
-                  ))}
-                </>
-              ) : (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center text-gray-400 bg-white rounded-b-xl"
-                    style={{
-                      height: ROWS_PER_PAGE * 56,
-                      minHeight: 560,
-                      verticalAlign: "middle",
-                    }}
-                  >
-                    No leads found for "{selectedStatus}".
-                  </td>
-                </tr>
+              <SlidersHorizontal className="w-5 h-5" />
+              <span>Filters</span>
+              {activeFiltersCount > 0 && (
+                <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+                  {activeFiltersCount}
+                </span>
               )}
-            </tbody>
+            </button>
 
-            {/* Pagination Row */}
-            <tfoot>
-              <tr className="">
-                <td
-                  colSpan={5}
-                  className="bg-[#F9FAFB] border-t rounded-bl-xl rounded-xl rounded-br-xl border-gray-200"
-                >
-                  <div className="flex items-center justify-between px-4 py-3">
-                    <span className="text-gray-600 text-sm">
-                      {totalResults === 0
-                        ? "Showing 0 results"
-                        : `Showing ${
-                            startIdx + 1
-                          } to ${endIdx} of ${totalResults} results`}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={handlePrevPage}
-                        disabled={page === 1}
-                        sx={{
-                          minWidth: 0,
-                          borderRadius: 2,
-                          px: 1.5,
-                          fontWeight: 600,
-                          color: page === 1 ? "#bdbdbd" : "#1976D2",
-                          borderColor: page === 1 ? "#e0e0e0" : "#1976D2",
-                          "&:hover": {
-                            borderColor: "#1976D2",
-                            background: "#F3F4F6",
-                          },
-                        }}
-                      >
-                        <ChevronLeft size={18} />
-                      </Button>
-                      <span className="text-gray-700 text-sm font-medium">
-                        Page {page} of {totalPages || 1}
-                      </span>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={handleNextPage}
-                        disabled={page === totalPages || totalResults === 0}
-                        sx={{
-                          minWidth: 0,
-                          borderRadius: 2,
-                          px: 1.5,
-                          fontWeight: 600,
-                          color:
-                            page === totalPages || totalResults === 0
-                              ? "#bdbdbd"
-                              : "#1976D2",
-                          borderColor:
-                            page === totalPages || totalResults === 0
-                              ? "#e0e0e0"
-                              : "#1976D2",
-                          "&:hover": {
-                            borderColor: "#1976D2",
-                            background: "#F3F4F6",
-                          },
-                        }}
-                      >
-                        <ChevronRight size={18} />
-                      </Button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </motion.div>
-
-      {/* Mobile list view for jobs (<sm) - stacked cards */}
-      <motion.div
-        className="sm:hidden border-solid border border-gray-300 bg-slate-100 rounded-xl mx-2"
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="flex flex-col gap-3 rounded-xl">
-          {/* Mobile search card */}
-          <div className="bg-slate-100 p-3 mb-2" style={{ borderTopRightRadius: '12px', borderTopLeftRadius: '12px', borderBottom: '1px solid #9ca3af' }}>
-            <div className="flex flex-col gap-3">
-              <div className="flex-1 min-w-0 flex gap-4">
-                <TextField
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setPage(1);
-                  }}
-                  placeholder="Name"
-                  size="small"
-                  variant="outlined"
-                  sx={{ flex: 1, minWidth: 0 }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="action" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: search && (
-                      <InputAdornment position="end">
-                        <CloseIcon
-                          fontSize="small"
-                          className="cursor-pointer text-gray-400 hover:text-gray-600"
-                          onClick={() => {
-                            setSearch("");
-                            setPage(1);
-                          }}
-                        />
-                      </InputAdornment>
-                    ),
-                    style: { borderRadius: 8, background: "white" },
-                  }}
-                />
-                <TextField
-                  value={searchWork}
-                  onChange={(e) => {
-                    setSearchWork(e.target.value);
-                    setPage(1);
-                  }}
-                  placeholder="Work"
-                  size="small"
-                  variant="outlined"
-                  sx={{ flex: 1, minWidth: 0 }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="action" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: searchWork && (
-                      <InputAdornment position="end">
-                        <CloseIcon
-                          fontSize="small"
-                          className="cursor-pointer text-gray-400 hover:text-gray-600"
-                          onClick={() => {
-                            setSearchWork("");
-                            setPage(1);
-                          }}
-                        />
-                      </InputAdornment>
-                    ),
-                    style: { borderRadius: 8, background: "white" },
-                  }}
-                />
-              </div>
-              {/* New filter & sort row (mobile) */}
-              <div className="flex items-center gap-4">
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={handleStatusClick}
-                  sx={{
-                    flex: 1,
-                    textTransform: "none",
-                    borderRadius: 2,
-                    fontWeight: 600,
-                    color: "#0f172a",
-                    borderColor: "rgba(15,23,42,0.15)",
-                    background: "#FFFFFF",
-                    "&:hover": {
-                      borderColor: "#1976D2",
-                      background: "#F1F5F9",
-                    },
-                  }}
-                >
-                  Status: {selectedStatus}
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="ml-1"
-                    aria-hidden
-                  >
-                    <path
-                      d="M6 9l6 6 6-6"
-                      stroke="#475569"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={handleSortToggle}
-                  sx={{
-                    flex: 1,
-                    textTransform: "none",
-                    borderRadius: 2,
-                    fontWeight: 600,
-                    color: "#1976D2",
-                    borderColor: "#1976D2",
-                    "&:hover": {
-                      background: "#EFF6FF",
-                      borderColor: "#1976D2",
-                    },
-                  }}
-                  aria-label={`Sort by posted date ${
-                    sortOrder === "asc" ? "descending" : "ascending"
-                  }`}
-                >
-                  Sort: {sortOrder === "asc" ? "Oldest" : "Newest"}{" "}
-                  {sortOrder === "asc" ? (
-                    <ArrowUp size={16} className="ml-1" />
-                  ) : (
-                    <ArrowDown size={16} className="ml-1" />
-                  )}
-                </Button>
-              </div>
-            </div>
+            {/* Sort */}
+            <button
+              onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+              className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              <ArrowUpDown className="w-5 h-5" />
+              <span>{sortOrder === 'desc' ? 'Newest' : 'Oldest'}</span>
+            </button>
           </div>
-          <div className="flex flex-col gap-5 px-3">
-            {paginatedLeads.length > 0 ? (
-              paginatedLeads.map((lead) => (
-                <div
-                  key={lead.id}
-                  className="bg-white rounded-xl shadow-md border-solid border border-gray-100 p-4 hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex gap-3">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-gray-100">
-                        <WrenchScrewdriverIcon className="w-5 h-5 text-indigo-600" />
-                      </div>
-                    </div>
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-semibold text-slate-800 truncate">
-                              {lead.name}
-                            </h3>
-                            {lead.interested && (
-                              <span className="text-xs font-semibold text-green-800 bg-green-50 px-2 py-0.5 rounded">
-                                Interested
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1 truncate">
-                            {lead.work}
-                          </div>
-                        </div>
-
-                        <div className="text-right text-xs text-gray-400">
-                          <div className="font-medium text-gray-500">
-                            {lead.postedOn}
-                          </div>
-                          <div className="mt-1">{lead.time}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="my-6 border-solid border border-t border-gray-100" />
-                  <div className="flex mt-1 justify-center">
-                    {/* Mobile action buttons centered & responsive */}
-                    {lead.status === "New" ? (
-                      lead.interested ? (
-                        <Button
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            display: "block",
-                            mx: "auto",
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            width: "min(350px,62%)",
-                            color: "green",
-                            borderColor: "green",
-                            boxShadow: "0 2px 6px rgba(16,185,129,0.06)",
-                            "&:hover": {
-                              borderColor: "darkgreen",
-                              background: "#F0FFF4",
-                            },
-                          }}
-                          onClick={() => {
-                            setModalLead(lead);
-                            setModalOpen(true);
-                            setProceed(true);
-                          }}
-                        >
-                          Fill Quotation
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            display: "block",
-                            mx: "auto",
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 800,
-                            width: "min(350px,62%)",
-                            color: "#1976D2",
-                            borderColor: "#1976D2",
-                          }}
-                          onClick={() => {
-                            setModalLead(lead);
-                            setModalOpen(true);
-                            setProceed(false);
-                          }}
-                        >
-                          Apply
-                        </Button>
-                      )
-                    ) : lead.status === "Applied" ? (
-                      lead.pendingStatus === "Approval Pending" ? (
-                        <Button
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            display: "block",
-                            mx: "auto",
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            width: "min(350px,62%)",
-                            color: "#ff9800",
-                            borderColor: "#ff9800",
-                          }}
-                          onClick={() => handleWithdraw(lead)}
-                        >
-                          Withdraw
-                        </Button>
-                      ) : lead.pendingStatus === "Approved" ? (
-                        <Button
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            display: "block",
-                            mx: "auto",
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            width: "min(350px,62%)",
-                            color: "#e53935",
-                            borderColor: "#e53935",
-                          }}
-                          onClick={() => handleCancel(lead)}
-                        >
-                          Cancel
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            display: "block",
-                            mx: "auto",
-                            textTransform: "none",
-                            borderRadius: 2,
-                            fontWeight: 600,
-                            width: "min(350px,62%)",
-                            color: "#FFB300",
-                            borderColor: "#FFB300",
-                            background: "#FFF8E1",
-                          }}
-                          onClick={() => handleView(lead)}
-                        >
-                          View
-                        </Button>
-                      )
-                    ) : lead.status === "Completed" ? (
-                      <Button
-                        variant="outlined"
-                        size="medium"
-                        sx={{
-                          display: "block",
-                          mx: "auto",
-                          textTransform: "none",
-                          borderRadius: 2,
-                          fontWeight: 500,
-                          width: "min(350px,62%)",
-                          color: "green",
-                          borderColor: "green",
-                        }}
-                        onClick={() => handleView(lead)}
-                      >
-                        Ratings
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        size="medium"
-                        sx={{
-                          display: "block",
-                          mx: "auto",
-                          textTransform: "none",
-                          borderRadius: 2,
-                          fontWeight: 600,
-                          width: "min(350px,62%)",
-                          color: "#FFB300",
-                          borderColor: "#FFB300",
-                        }}
-                        onClick={() => handleView(lead)}
-                      >
-                        View
-                      </Button>
-                    )}
+          {/* Extended Filters */}
+          {showFilters && (
+            <div className="border-t border-gray-200 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                {/* Status Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <div className="relative">
+                    <select
+                      value={selectedStatus}
+                      onChange={(e) => {
+                        setSelectedStatus(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    >
+                      <option value="">All Status</option>
+                      <option value="Applied">Applied</option>
+                      <option value="Ongoing">Ongoing</option>
+                      <option value="Completed">Completed</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="flex justify-center items-center text-center py-8 min-h-96 text-gray-400">
-                No jobs found.
+
+                {/* Service Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Service Type</label>
+                  <div className="relative">
+                    <select
+                      value={selectedService}
+                      onChange={(e) => {
+                        setSelectedService(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    >
+                      <option value="">All Services</option>
+                      <option value="Plumbing">Plumbing</option>
+                      <option value="Electrical">Electrical</option>
+                      <option value="Cleaning">Cleaning</option>
+                      <option value="HVAC">HVAC</option>
+                      <option value="Security">Security</option>
+                      <option value="Gardening">Gardening</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+
+                {/* Priority Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <div className="relative">
+                    <select
+                      value={selectedPriority}
+                      onChange={(e) => {
+                        setSelectedPriority(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    >
+                      <option value="">All Priority</option>
+                      <option value="High">High Priority</option>
+                      <option value="Normal">Normal Priority</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+
+                {/* Quotation Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Quotation</label>
+                  <div className="relative">
+                    <select
+                      value={quotationFilter}
+                      onChange={(e) => {
+                        setQuotationFilter(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    >
+                      <option value="">All Jobs</option>
+                      <option value="Required">Quotation Required</option>
+                      <option value="Not Required">No Quotation</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
               </div>
-            )}
+
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
+                >
+                  <X className="w-4 h-4" />
+                  Clear all filters
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Results Summary */}
+          <div className="flex items-center justify-between text-sm text-gray-600 mt-4 pt-4 border-t border-gray-200">
+            <span>{filteredJobs.length} jobs found</span>
+            <span>Page {currentPage} of {totalPages}</span>
           </div>
         </div>
 
-        {/* Mobile pagination controls */}
-        <div className="bg-[#F9FAFB] rounded-bl-xl rounded-br-xl mt-3" style={{ borderTop: "1px solid #d1d5db"}}>
-          <div className="flex items-center justify-between px-4 py-3">
-            <span className="text-gray-600 text-sm">
-              {totalResults === 0
-                ? "Showing 0 results"
-                : `Showing ${
-                    startIdx + 1
-                  } to ${endIdx} of ${totalResults} results`}
-            </span>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={handlePrevPage}
-                disabled={page === 1}
-                sx={{
-                  minWidth: 0,
-                  borderRadius: 2,
-                  px: 0.5,
-                  fontWeight: 600,
-                  color: page === 1 ? "#bdbdbd" : "#1976D2",
-                  borderColor: page === 1 ? "#e0e0e0" : "#1976D2",
-                  "&:hover": { borderColor: "#1976D2", background: "#F3F4F6" },
-                }}
-              >
-                <ChevronLeft size={18} />
-              </Button>
-              <span className="text-gray-700 text-sm font-medium">
-                Page {page} of {totalPages || 1}
-              </span>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={handleNextPage}
-                disabled={page === totalPages || totalResults === 0}
-                sx={{
-                  minWidth: 0,
-                  borderRadius: 2,
-                  px: 0.5,
-                  fontWeight: 600,
-                  color:
-                    page === totalPages || totalResults === 0
-                      ? "#bdbdbd"
-                      : "#1976D2",
-                  borderColor:
-                    page === totalPages || totalResults === 0
-                      ? "#e0e0e0"
-                      : "#1976D2",
-                  "&:hover": { borderColor: "#1976D2", background: "#F3F4F6" },
-                }}
-              >
-                <ChevronRight size={18} />
-              </Button>
+        {/* Jobs List */}
+        <div className="space-y-4 mb-8">
+          {paginatedJobs.length > 0 ? (
+            paginatedJobs.map((job) => (
+              <div key={job.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  {/* Job Info */}
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{job.name}</h3>
+                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
+                          <div className="flex items-center gap-1">
+                            <Briefcase className="w-4 h-4" />
+                            <span>{job.work}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>Posted {job.postedOn}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {getStatusBadge(job)}
+                          {job.interested && (
+                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                              Interested
+                            </span>
+                          )}
+                          {job.urgent && (
+                            <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
+                              High Priority
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="lg:w-40">
+                    {getActionButton(job)}
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+              <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No jobs found</h3>
+              <p className="text-gray-600">Try adjusting your search criteria or filters</p>
             </div>
-          </div>
+          )}
         </div>
-      </motion.div>
+
+        {/* Pagination - Same style as dashboard */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                const page = i + 1;
+                return (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-2 rounded-lg font-medium ${currentPage === page
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Modals */}
       {modalLead &&
         (() => {
-          // Completed
-          if (modalLead.status === "Completed") {
+          if (modalLead.status === 'Completed') {
             return (
               <CompletedModal
                 open={true}
@@ -1354,8 +586,7 @@ const MyJobs = () => {
               />
             );
           }
-          // Ongoing
-          if (modalLead.status === "Ongoing") {
+          if (modalLead.status === 'Ongoing') {
             return (
               <OngoingModal
                 open={true}
@@ -1364,11 +595,7 @@ const MyJobs = () => {
               />
             );
           }
-          // Withdraw Application
-          if (
-            modalLead.status === "Applied" &&
-            modalLead.pendingStatus === "Approval Pending"
-          ) {
+          if (modalLead.status === 'Applied' && modalLead.pendingStatus === 'Approval Pending') {
             return (
               <WithdrawApplicationModal
                 open={true}
@@ -1377,11 +604,7 @@ const MyJobs = () => {
               />
             );
           }
-          // Cancel Job
-          if (
-            modalLead.status === "Applied" &&
-            modalLead.pendingStatus === "Approved"
-          ) {
+          if (modalLead.status === 'Applied' && modalLead.pendingStatus === 'Approved') {
             return (
               <CancelJobModal
                 open={true}
@@ -1390,50 +613,6 @@ const MyJobs = () => {
               />
             );
           }
-          // New Lead: Modal flow (Apply → Fill Quotation and Apply → QuotationFormModal)
-          if (modalLead.status === "New") {
-            // Show QuotationFormModal if requested
-            if (showQuotationForm) {
-              return (
-                <QuotationFormModal
-                  open={showQuotationForm}
-                  onClose={() => {
-                    setShowQuotationForm(false);
-                    setModalLead(null);
-                    setProceed(false);
-                    setModalOpen(false);
-                  }}
-                  onSubmit={() => {
-                    setShowQuotationForm(false);
-                    setModalLead(null);
-                    setProceed(false);
-                    setModalOpen(false);
-                    // Optionally refresh data or show a message
-                  }}
-                />
-              );
-            }
-            // Otherwise show NewLeadModal
-            return (
-              <NewLeadModal
-                open={modalOpen}
-                onClose={() => {
-                  setModalOpen(false);
-                  setModalLead(null);
-                  setProceed(false);
-                  setShowQuotationForm(false);
-                }}
-                lead={modalLead}
-                proceed={proceed}
-                onApplyClick={() => setProceed(true)}
-                onFillQuotation={() => {
-                  setShowQuotationForm(true);
-                  setModalOpen(false);
-                }}
-              />
-            );
-          }
-          // Default fallback (should not happen)
           return null;
         })()}
     </div>

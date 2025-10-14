@@ -1,118 +1,201 @@
-import SubscriptionCard from '../components/SubscriptionCard';
-import { Box, Typography, Button } from '@mui/material';
-import { motion } from 'framer-motion';
 import { useUser } from '../UserContext';
-import { BadgeCheck, CalendarRange, CreditCard, AlertTriangle } from 'lucide-react';
-
+import { CheckCircle, Settings, CreditCard, AlertTriangle, Crown, ShoppingCart, Wrench } from 'lucide-react';
 
 const SubscriptionPage = () => {
+    const { user } = useUser();
 
-  const { user } = useUser();
+    // Mock user's subscribed services
+    const subscribedServices = [
+        { name: 'Plumbing', active: true, price: 200 },
+        { name: 'Electrical', active: true, price: 200 },
+        { name: 'Cleaning', active: true, price: 200 }
+    ];
+
+    // Available services for subscription
+    const availableServices = [
+        { name: 'HVAC', price: 200 },
+        { name: 'Gardening', price: 200 },
+        { name: 'Security', price: 200 },
+        { name: 'Painting', price: 200 },
+        { name: 'Carpentry', price: 200 }
+    ];
+
+    const totalSubscriptionValue = subscribedServices.length * 200;
 
     return (
-        <div className='relative w-full h-full px-4 sm:px-8 pt-4 sm:pt-6 pb-12'>
-            {/* Heading */}
-            <div className="flex flex-col gap-1 mb-10">
-                <h2 style={{ fontFamily: 'Lato' }} className="text-2xl sm:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600">Subscription Details</h2>
-                <p style={{ fontFamily: 'Lato' }} className="text-xs sm:text-sm text-slate-500">Overview of your current subscription & status</p>
+        <div className="p-6">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-1">Subscription Details</h2>
+                <p className="text-gray-600 text-sm">Manage your service subscriptions and access to job opportunities</p>
             </div>
 
-            {user.subscription_active ? (
-                <div className='flex flex-col gap-10 max-w-5xl'>
-                    {/* Overview Card */}
-                    <div className="relative bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-5 sm:px-8 pt-6 pb-7 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden">
-                        <div className="absolute -top-16 -right-10 w-72 h-72 bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
-                        <div className="absolute top-0 left-0 h-1.5 w-44 bg-gradient-to-r from-indigo-600 via-blue-600 to-transparent rounded-br-full" />
-                        <div className="flex items-start gap-4 mb-8">
-                            <div className="p-3 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white shadow-inner ring-1 ring-white/30">
-                                <BadgeCheck size={24} />
+            {user?.subscription_active ? (
+                <div className="space-y-6">
+                    {/* Current Subscription Overview */}
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-green-100 rounded-lg">
+                                <CheckCircle className="w-6 h-6 text-green-600" />
                             </div>
-                            <div className='flex flex-col'>
-                                <h3 className='text-lg sm:text-xl font-semibold tracking-tight text-slate-800'>Active Subscription</h3>
-                                <p className='text-xs sm:text-sm text-slate-500 mt-1'>You have full access to premium features</p>
+                            <div>
+                                <h3 className="text-lg font-medium text-green-900">Active Subscription</h3>
+                                <p className="text-sm text-green-700">You can apply to jobs for {subscribedServices.length} services</p>
                             </div>
                         </div>
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
-                            <div className='flex items-start gap-3'>
-                                <div className='w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-tr from-indigo-600 to-blue-600 text-white shadow-inner text-xs font-semibold'>{user.initials}</div>
-                                <div className='flex flex-col'>
-                                    <span className='text-[11px] font-semibold uppercase tracking-wide text-slate-500'>Member Name</span>
-                                    <span className='text-sm font-medium text-slate-800'>{user.name}</span>
-                                </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-1">Vendor Name</p>
+                                <p className="text-gray-900">{user.name}</p>
                             </div>
-                            <div className='flex items-start gap-3'>
-                                <div className='w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-tr from-amber-500 to-orange-500 text-white shadow-inner'>
-                                    <CreditCard size={16} />
-                                </div>
-                                <div className='flex flex-col'>
-                                    <span className='text-[11px] font-semibold uppercase tracking-wide text-slate-500'>Reference Number</span>
-                                    <span className='text-sm font-semibold tracking-wide bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent'>{user.subscription_referenceId}</span>
-                                </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-1">Subscription ID</p>
+                                <p className="text-gray-900 font-mono text-sm">{user.subscription_referenceId || 'SUB-2024-001'}</p>
                             </div>
-                            <div className='flex items-start gap-3'>
-                                <div className='w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-tr from-emerald-500 to-teal-500 text-white shadow-inner'>
-                                    <CalendarRange size={16} />
-                                </div>
-                                <div className='flex flex-col'>
-                                    <span className='text-[11px] font-semibold uppercase tracking-wide text-slate-500'>Start Date</span>
-                                    <span className='text-sm font-medium text-slate-800'>{user.subscription_validFrom}</span>
-                                </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-1">Total Services</p>
+                                <p className="text-gray-900 font-semibold">{subscribedServices.length} Services</p>
                             </div>
-                            <div className='flex items-start gap-3'>
-                                <div className='w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-inner'>
-                                    <CalendarRange size={16} />
-                                </div>
-                                <div className='flex flex-col'>
-                                    <span className='text-[11px] font-semibold uppercase tracking-wide text-slate-500'>End Date</span>
-                                    <span className='text-sm font-medium text-slate-800'>{user.subscription_validTill}</span>
-                                </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-1">Total Value</p>
+                                <p className="text-gray-900 font-semibold">₹{totalSubscriptionValue}</p>
                             </div>
                         </div>
-                        <div className='flex flex-wrap gap-3 mt-7'>
-                            <span className='px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border-solid border border-emerald-200 text-[11px] font-semibold tracking-wide'>Active</span>
-                            <span className='px-3 py-1.5 rounded-full bg-red-50 text-red-400 border-solid border border-red-200 text-[11px] font-medium'>Auto-Renew Unavailable</span>
+
+                        <div className="mt-4">
+                            <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                                Active Subscription
+                            </span>
                         </div>
                     </div>
 
-                    {/* Subscription Card Component */}
-                    <div className='w-full flex'>
-                        <SubscriptionCard />
+                    {/* Subscribed Services */}
+                    <div className="bg-gray-50 rounded-lg p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-blue-100 rounded-lg">
+                                <Settings className="w-5 h-5 text-blue-600" />
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900">Your Services</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {subscribedServices.map((service, index) => (
+                                <div key={index} className="bg-white rounded-lg border border-gray-200 p-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center gap-2">
+                                            <Wrench className="w-4 h-4 text-blue-600" />
+                                            <span className="font-medium text-gray-900">{service.name}</span>
+                                        </div>
+                                        <CheckCircle className="w-4 h-4 text-green-600" />
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-2">₹{service.price}/service</p>
+                                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                                        Active
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* What You Can Do */}
+                    <div className="bg-blue-50 rounded-lg p-6">
+                        <h3 className="text-lg font-medium text-blue-900 mb-4">With Your Subscription</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                                <span className="text-blue-800">Apply to jobs in your subscribed services</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                                <span className="text-blue-800">Upload quotations for jobs that require them</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                                <span className="text-blue-800">Get notified about job status updates</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                                <span className="text-blue-800">Access to application tracking</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Add More Services */}
+                    <div className="bg-white rounded-lg border border-gray-200 p-6">
+                        <h3 className="text-lg font-medium text-gray-900 mb-4">Add More Services</h3>
+                        <p className="text-gray-600 mb-4">Expand your service offerings to access more job opportunities</p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                            {availableServices.slice(0, 3).map((service, index) => (
+                                <div key={index} className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Wrench className="w-4 h-4 text-gray-600" />
+                                        <span className="font-medium text-gray-900">{service.name}</span>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">₹{service.price}/service</p>
+                                    <button className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                                        Add Service
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="text-center">
+                            <a
+                                href="/payment"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                            >
+                                <ShoppingCart className="w-4 h-4" />
+                                View All Services
+                            </a>
+                        </div>
                     </div>
                 </div>
             ) : (
-                <div className='flex justify-center'>
-                    <motion.div
-                        className='relative w-full max-w-2xl bg-white/75 backdrop-blur-lg rounded-2xl border border-slate-200 px-6 sm:px-10 pt-10 pb-12 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.15),0_2px_6px_rgba(0,0,0,0.06)] overflow-hidden text-center'
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
-                    >
-                        <div className='absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 rounded-full blur-3xl opacity-70 pointer-events-none' />
-                        <div className='absolute top-0 left-0 h-1.5 w-40 bg-gradient-to-r from-rose-500 via-amber-400 to-transparent rounded-br-full' />
-                        <div className='mx-auto mb-8 w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-orange-500 to-amber-400 flex items-center justify-center text-white shadow-inner ring-1 ring-white/40'>
-                            <AlertTriangle size={40} />
+                /* No Active Subscription */
+                <div className="flex justify-center">
+                    <div className="max-w-md text-center">
+                        <div className="bg-white rounded-lg border border-gray-200 p-8">
+                            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Crown className="w-8 h-8 text-amber-600" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Active Subscription</h3>
+                            <p className="text-gray-600 mb-6">
+                                Subscribe to services to start applying for jobs posted by societies in your area.
+                            </p>
+
+                            {/* Service Pricing Info */}
+                            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                                <h4 className="font-medium text-gray-900 mb-3">How it works:</h4>
+                                <div className="text-left space-y-2 text-sm text-gray-600">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                        Each service costs ₹200
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                        Subscribe to multiple services
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                        Apply to jobs in your subscribed services
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                        Upload quotations when required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a
+                                href="/payment"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                            >
+                                <ShoppingCart className="w-4 h-4" />
+                                Choose Services
+                            </a>
                         </div>
-                        <h3 className='text-2xl sm:text-3xl font-semibold tracking-tight text-slate-800 mb-4'>No Active Subscription</h3>
-                        <p className='text-sm sm:text-base text-slate-500 max-w-md mx-auto mb-8'>You currently don't have an active subscription. Upgrade now to unlock premium tools and grow faster.</p>
-                        <Button
-                            href='/payment'
-                            sx={{
-                                px: 5,
-                                py: 1.4,
-                                background: 'linear-gradient(90deg,#4F46E5,#2563EB)',
-                                color: 'white',
-                                fontWeight: 600,
-                                letterSpacing: 0.4,
-                                textTransform: 'none',
-                                fontSize: '0.85rem',
-                                borderRadius: '14px',
-                                boxShadow: '0 8px 22px -8px rgba(79,70,229,0.5),0 2px 6px rgba(0,0,0,0.06)',
-                                '&:hover': { filter: 'brightness(1.07)', boxShadow: '0 12px 30px -10px rgba(79,70,229,0.55),0 3px 8px rgba(0,0,0,0.10)' }
-                            }}
-                        >
-                            Subscribe Now
-                        </Button>
-                    </motion.div>
+                    </div>
                 </div>
             )}
         </div>
