@@ -40,11 +40,11 @@ const sidebarMenu = [
         redirect: "/my-stats"
     },
 
-    // {
-    //     icon: FaRegUser,
-    //     title: "User Profile",
-    //     redirect: "/my-profile"
-    // },
+    {
+        icon: FaRegUser,
+        title: "User Profile",
+        redirect: "/my-profile"
+    },
 
     // {
     //     icon: FaRegBell,

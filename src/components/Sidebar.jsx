@@ -9,8 +9,13 @@ const Sidebar = ({ mobileTopBar = false }) => {
   const { user } = useUser();
 
   // Organize menu items
-  const navigationItems = sidebarMenu.slice(0, 6);
-  const utilityItems = sidebarMenu.slice(-3);
+  const navigationItems = sidebarMenu.filter(item =>
+    !['Help', 'Log out', 'Notifications'].includes(item.title)
+  );
+
+  const utilityItems = sidebarMenu.filter(item =>
+    ['Help', 'Log out', 'Notifications'].includes(item.title)
+  );
 
   // Mobile menu filtering
   const mobileItems = sidebarMenu.filter(item =>
@@ -65,11 +70,11 @@ const Sidebar = ({ mobileTopBar = false }) => {
             <BellNotification mobile />
           </div>
 
-          {/* {(() => {
+          {(() => {
             const logoutItem = sidebarMenu.find(item => item.title === 'Log out');
             const isActive = location.pathname === logoutItem.redirect;
             return renderMenuItem(logoutItem, 'logout', isActive, 'flex justify-center w-9 h-9');
-          })()} */}
+          })()}
         </div>
       </div>
     );
