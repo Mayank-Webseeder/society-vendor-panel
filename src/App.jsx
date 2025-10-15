@@ -19,7 +19,6 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Payment from './pages/payment/Payment';
 import AuthPage from './pages/auth/AuthPage';
-import ValidateEmail from "./pages/auth/ValidateEmail";
 import ForgotPassword from './pages/auth/ForgotPassword';
 import VerifyOtpForgotPassword from "./pages/auth/VerifyOtpForgotPassword";
 import ResetPassword from './pages/auth/ResetPassword';
@@ -34,6 +33,8 @@ import Step7_VerifyNumber from './pages/onboarding/Step7_VerifyNumber';
 import Step8_VerifyOtp from './pages/onboarding/Step8_VerifyOtp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ValidatePhone from "./pages/auth/ValidatePhone";
+import VendorCreateProfile from "./pages/VendorCreateProfile";
 
 // Layout component for the main app with sidebar
 const MainLayout = () => {
@@ -85,7 +86,7 @@ const AuthRoutes = () => {
   return (
     <Routes>
       <Route index element={<AuthPage />} />
-      <Route path="validate-email" element={<ValidateEmail />} />
+      <Route path="validate-phone" element={<ValidatePhone />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
       <Route path="forgot-password/verify-otp" element={<VerifyOtpForgotPassword />} />
       <Route path="forgot-password/reset-password" element={<ResetPassword />} />
@@ -115,7 +116,7 @@ function App() {
         <Route path="/auth/*" element={<AuthRoutes />} />
 
         {/* Onboarding Routes */}
-        <Route path="/auth/onboarding" element={<Step1_Loading />} />
+        <Route path="/auth/onboarding" element={<VendorCreateProfile />} />
         <Route path="/auth/onboarding/steps" element={<OnboardingLayout />}>
           <Route path="what-you-offer" element={<Step2_WhatYouOffer />} />
           <Route path="working-days" element={<Step3_WorkingDays />} />

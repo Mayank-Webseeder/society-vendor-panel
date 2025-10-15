@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { loginVendor, checkSubscriptionStatus, getVendorDashboard } from '../../services/api/auth';
 import { useUser } from '../../UserContext';
 import defaultUser from '../../DefaultUser';
@@ -14,41 +14,39 @@ const Login = ({ onSwitch, onLogin }) => {
 
   const [contactNumber, setContactNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Check for test credentials
-    if (contactNumber === TEST_CONTACT && password === TEST_PASSWORD) {
-      console.log('✅ Logged in with test credentials');
-      // Set testMode to true in defaultUser and store it in localStorage
-      const testUser = { ...defaultUser, testMode: true, subscription_active: true };
-      localStorage.setItem('mysocietyneeds_user', JSON.stringify(testUser));
-      // Update the user context immediately
-      setUser(testUser);
-      // Store a mock token for test login
-      localStorage.setItem('authToken', 'TEST_AUTH_TOKEN');
-
-      if (onLogin) onLogin();
-      navigate('/dashboard');
-      return;
-    }
-
-    // Normal API call for login
-    // Basic validation
-    if (!contactNumber.trim() || !password.trim()) {
-      setError('Please fill in all fields');
-      return;
-    }
+    setLoading(true); // Immediately set loading to prevent re-animations
     setError('');
 
     try {
-      // Call the loginVendor API (API 2)
+      // Check for test credentials
+      if (contactNumber === TEST_CONTACT && password === TEST_PASSWORD) {
+        console.log('✅ Logged in with test credentials');
+        const testUser = { ...defaultUser, testMode: true, subscription_active: true };
+        localStorage.setItem('mysocietyneeds_user', JSON.stringify(testUser));
+        setUser(testUser);
+        localStorage.setItem('authToken', 'TEST_AUTH_TOKEN');
+
+        if (onLogin) onLogin();
+
+        // Use replace instead of navigate to prevent back navigation
+        navigate('/dashboard', { replace: true });
+        return;
+      }
+
+      // Basic validation
+      if (!contactNumber.trim() || !password.trim()) {
+        setError('Please fill in all fields');
+        setLoading(false);
+        return;
+      }
+
       const result = await loginVendor(contactNumber.trim(), password.trim());
       console.log('✅ Login successful:', result);
-      // Store the authToken in localStorage
       localStorage.setItem('authToken', result.authToken);
 
       // Fetch subscription status after login
@@ -66,48 +64,65 @@ const Login = ({ onSwitch, onLogin }) => {
       // Fetch dashboard details after login
       try {
         const dashboard = await getVendorDashboard();
-        // Update user context and localStorage with dashboard user info
         if (dashboard.user) {
-          setUser(dashboard.user); // This will merge with DefaultUser via safeSetUser
+          setUser(dashboard.user);
         }
         localStorage.setItem('user_dashboard', JSON.stringify(dashboard));
       } catch (err) {
         localStorage.removeItem('user_dashboard');
       }
 
-      // Trigger the onLogin callback
       if (onLogin) onLogin();
 
-      // Navigate to the dashboard or home page
-      navigate('/dashboard');
+      // Use replace instead of navigate to prevent back navigation
+      navigate('/dashboard', { replace: true });
+
     } catch (error) {
       console.error('❌ Login failed:', error);
       setError(error.message || 'Login failed. Please try again.');
+      setLoading(false);
     }
   };
 
-  const inputVariants = {
-    initial: { y: 10, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-  };
+  // Loading state with immediate visual feedback
+  if (loading) {
+    return (
+      <motion.div
+        className="flex flex-col items-center justify-center py-16"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className="flex space-x-2 mb-3">
+          <motion.span
+            className="block w-4 h-4 bg-blue-500 rounded-full"
+            animate={{ y: [-15, 0, -15] }}
+            transition={{ duration: 0.5, repeat: Infinity, repeatType: "loop" }}
+          />
+          <motion.span
+            className="block w-4 h-4 bg-blue-500 rounded-full"
+            animate={{ y: [-15, 0, -15] }}
+            transition={{ duration: 0.5, repeat: Infinity, repeatType: "loop", delay: 0.15 }}
+          />
+          <motion.span
+            className="block w-4 h-4 bg-blue-500 rounded-full"
+            animate={{ y: [-15, 0, -15] }}
+            transition={{ duration: 0.5, repeat: Infinity, repeatType: "loop", delay: 0.3 }}
+          />
+        </div>
+        <p className="text-xl text-slate-600 font-semibold mt-4">Logging you in...</p>
+      </motion.div>
+    );
+  }
 
   return (
-    <motion.form
-      onSubmit={handleLogin}
-      className="space-y-6"
-      initial="initial"
-      animate="animate"
-      variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
-    >
-      <motion.h2
+    <form onSubmit={handleLogin} className="space-y-6">
+      <h2
         className="text-2xl sm:text-2xl font-semibold text-slate-800 text-center mb-6"
         style={{ fontFamily: "Lato" }}
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.5 }}
       >
         Welcome Back!
-      </motion.h2>
+      </h2>
 
       {/* Error Message */}
       {error && (
@@ -115,13 +130,17 @@ const Login = ({ onSwitch, onLogin }) => {
           className="bg-red-50 border-solid border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
         >
           {error}
         </motion.div>
       )}
 
-      <motion.div variants={inputVariants}>
-        <label htmlFor="contactNumber" className="block text-slate-700 text-sm font-medium mb-2">Contact Number</label>
+      {/* Contact Number - Fixed Height Container */}
+      <div style={{ minHeight: '88px' }}>
+        <label htmlFor="contactNumber" className="block text-slate-700 text-sm font-medium mb-2">
+          Contact Number
+        </label>
         <input
           type="tel"
           id="contactNumber"
@@ -132,11 +151,15 @@ const Login = ({ onSwitch, onLogin }) => {
           value={contactNumber}
           onChange={(e) => setContactNumber(e.target.value)}
           required
+          disabled={loading}
         />
-      </motion.div>
+      </div>
 
-      <motion.div variants={inputVariants}>
-        <label htmlFor="password" className="block text-slate-700 text-sm font-medium mb-2">Password</label>
+      {/* Password - Fixed Height Container */}
+      <div style={{ minHeight: '88px' }}>
+        <label htmlFor="password" className="block text-slate-700 text-sm font-medium mb-2">
+          Password
+        </label>
         <input
           type="password"
           id="password"
@@ -147,60 +170,55 @@ const Login = ({ onSwitch, onLogin }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          disabled={loading}
         />
-      </motion.div>
+      </div>
 
-      <motion.div className="flex justify-start items-center text-sm" variants={inputVariants}>
-        <motion.button
+      {/* Forgot Password - Fixed Height Container */}
+      <div className="flex justify-start items-center text-sm" style={{ minHeight: '24px' }}>
+        <button
           type="button"
-          className="text-blue-600 hover:text-blue-800 border-none bg-transparent font-medium cursor-pointer transition-colors duration-200"
+          className="text-blue-600 hover:text-blue-800 border-none bg-transparent font-medium cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => navigate('/auth/forgot-password')}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          disabled={loading}
         >
           Forgot Password?
-        </motion.button>
-      </motion.div>
+        </button>
+      </div>
 
-      <motion.button
+      {/* Submit Button - Fixed Height */}
+      <button
         type="submit"
-        className="w-full border-none text-lg text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer
-       transition-all duration-300 transform hover:scale-[1.02] active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-0"
+        disabled={loading}
+        className={`w-full border-none text-lg font-bold py-3 rounded-lg shadow-lg cursor-pointer
+                   transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400
+                   ${loading
+            ? 'bg-slate-400 cursor-not-allowed text-slate-200'
+            : 'text-white hover:opacity-90'}`}
         style={{
-          background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
-          boxShadow: '0 4px 12px rgba(59,130,246,0.2)'
+          background: loading
+            ? '#94a3b8'
+            : 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
+          boxShadow: loading ? 'none' : '0 4px 12px rgba(59,130,246,0.2)',
+          minHeight: '48px'
         }}
-        whileHover={{
-          y: -2,
-          boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
-          background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)',
-          transition: {
-            type: "tween",
-            duration: 0.15,
-          }
-        }}
-        whileTap={{ scale: 0.98 }}
-        variants={inputVariants}
       >
-        Log In
-      </motion.button>
+        {loading ? 'Logging In...' : 'Log In'}
+      </button>
 
-      <motion.p className="text-center text-slate-700 text-sm font-medium mt-4" variants={inputVariants}>
+      {/* Switch to Sign Up - Fixed Height */}
+      <p className="text-center text-slate-700 text-sm font-medium mt-4" style={{ minHeight: '24px' }}>
         Don't have an account?{' '}
-        <motion.button
+        <button
           type="button"
-          className="text-blue-600 text-base bg-transparent pl-1 border-none hover:text-blue-800 font-medium cursor-pointer transition-colors duration-300"
+          className="text-blue-600 text-base bg-transparent pl-1 border-none hover:text-blue-800 font-medium cursor-pointer transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={onSwitch}
-          whileHover={{
-            scale: 1.05,
-            color: '#1d4ed8'
-          }}
-          whileTap={{ scale: 0.95 }}
+          disabled={loading}
         >
           Sign Up
-        </motion.button>
-      </motion.p>
-    </motion.form>
+        </button>
+      </p>
+    </form>
   );
 };
 

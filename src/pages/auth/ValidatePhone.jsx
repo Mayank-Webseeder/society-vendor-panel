@@ -1,48 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { validateContactNumber, signupVendor, sendOtpContactVerification } from '../../services/api/auth';
+import { ArrowLeft, Phone, MessageSquare, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import groupMenBlueUniforms from '../../assets/groupMenBlueUniforms.png';
-import authPageImg2 from '../../assets/authPageImg2.jpg';
-import authPageImg3 from '../../assets/authPageImg3.jpg';
-import { validateEmail, signupVendor } from '../../services/api/auth';
 
-
-const ValidateEmail = () => {
+const ValidatePhone = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Extract data from state
-  const { fullName, email, password } = location.state || {};    // Default to empty object if state is undefined
+  const { fullName, email, contactNumber, password } = location.state || {};
 
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Array of images for the looping animation
-  const images = [
-    groupMenBlueUniforms,
-    authPageImg2,
-    authPageImg3
-  ];
-
-  // Auto-cycle through images every 3 seconds
+  // Redirect if no data
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000);
+    if (!fullName || !email || !contactNumber || !password) {
+      navigate('/auth');
+    }
+  }, [fullName, email, contactNumber, password, navigate]);
 
-    return () => clearInterval(interval);
-  }, [images.length]);
-
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
 
   const handleValidate = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!otp.trim()) {
       setError('Please enter the OTP');
+      return;
+    }
+
+    if (otp.length !== 6) {
+      setError('OTP must be 6 digits');
       return;
     }
 
@@ -50,29 +49,52 @@ const ValidateEmail = () => {
     setError('');
 
     try {
-      // Step 1: Validate Email (API 4)
-      // console.log('Validating OTP:', otp);
-      // const emailValidationResult = await validateEmail(email, otp);
-      // console.log('✅ Email validated successfully:', emailValidationResult);
+      // Step 1: Validate Contact Number with OTP
+      console.log('Validating contact number OTP:', otp);
+      const contactValidationResult = await validateContactNumber(contactNumber, otp);
+      console.log('✅ Contact number validated successfully:', contactValidationResult);
 
-      // Step 2: Signup Vendor (API 1)
-      // const signupResult = await signupVendor(fullName, email, password)
-      // console.log('✅ Signup successful:', signupResult);
+      // Step 2: Create account (now using the validated contact number)
+      const signupResult = await signupVendor(fullName, contactNumber, password);
+      console.log('✅ Signup successful:', signupResult);
 
-      alert("Email Validated succesfully!");
+      // Store auth token and user data
+      if (signupResult.authToken) {
+        localStorage.setItem('authToken', signupResult.authToken);
+      }
 
-      // Redirect to onboarding page
-      navigate('/auth/onboarding');
+      // Success - redirect to dashboard or onboarding
+      navigate('/dashboard');
 
     } catch (error) {
       console.error('❌ Validation or Signup failed:', error);
-      setError(error.message || 'Validation or Signup failed. Please try again.');
-    
+      setError(error.message || 'Validation failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleResendOTP = async () => {
+    if (resendCooldown > 0) return;
+
+    setResendLoading(true);
+    setError('');
+
+    try {
+      await sendOtpContactVerification(contactNumber);
+      setResendCooldown(60);
+      // Show success message
+      const successMsg = document.createElement('div');
+      successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg z-50';
+      successMsg.textContent = 'OTP sent to your phone!';
+      document.body.appendChild(successMsg);
+      setTimeout(() => document.body.removeChild(successMsg), 3000);
+    } catch (error) {
+      setError('Failed to resend OTP. Please try again.');
+    } finally {
+      setResendLoading(false);
+    }
+  };
 
   const dotVariants = {
     start: { y: "0px" },
@@ -116,7 +138,7 @@ const ValidateEmail = () => {
         animate="visible"
       >
         {/* Animated Image Container */}
-        <div className="absolute inset-0">
+        {/* <div className="absolute inset-0">
           {images.map((image, index) => (
             <motion.div
               key={index}
@@ -132,7 +154,7 @@ const ValidateEmail = () => {
               }}
             />
           ))}
-        </div>
+        </div> */}
 
         {/* Dark overlay with subtle gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120]/80 via-[#0b1120]/40 to-transparent"></div>
@@ -188,13 +210,12 @@ const ValidateEmail = () => {
         </motion.div>
 
         {/* Image Indicators */}
-        <div className="absolute bottom-6 left-6 z-20 flex space-x-2">
+        {/* <div className="absolute bottom-6 left-6 z-20 flex space-x-2">
           {images.map((_, index) => (
             <motion.div
               key={index}
-              className={`w-2 h-2 rounded-full ${
-                index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-              }`}
+              className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                }`}
               animate={{
                 scale: index === currentImageIndex ? 1.2 : 1,
                 opacity: index === currentImageIndex ? 1 : 0.5
@@ -202,7 +223,7 @@ const ValidateEmail = () => {
               transition={{ duration: 0.3 }}
             />
           ))}
-        </div>
+        </div> */}
       </motion.div>
 
       {/* Right: Form Section */}
@@ -289,15 +310,15 @@ const ValidateEmail = () => {
           </Typography>
           {
             !loading &&
-              <motion.p
-                className="text-base text-center text-slate-600 mt-2"
-                initial={{ y: -10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                style={{fontFamily:"Roboto"}}
-              >
-                Your gateway to professional opportunities.
-              </motion.p>
+            <motion.p
+              className="text-base text-center text-slate-600 mt-2"
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              style={{ fontFamily: "Roboto" }}
+            >
+              Your gateway to professional opportunities.
+            </motion.p>
           }
         </div>
 
@@ -343,7 +364,7 @@ const ValidateEmail = () => {
               <>
                 <motion.h2
                   className="text-xl sm:text-2xl font-semibold text-slate-800 text-center mb-6"
-                  style={{ fontFamily:"Lato" }}
+                  style={{ fontFamily: "Lato" }}
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1, duration: 0.5 }}
@@ -360,7 +381,7 @@ const ValidateEmail = () => {
                 >
                   {/* Error Message */}
                   {error && (
-                    <motion.div 
+                    <motion.div
                       className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -406,7 +427,7 @@ const ValidateEmail = () => {
                       background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
                       boxShadow: '0 4px 12px rgba(59,130,246,0.2)'
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       y: -2,
                       boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
                       background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)'
@@ -428,4 +449,4 @@ const ValidateEmail = () => {
   );
 };
 
-export default ValidateEmail;
+export default ValidatePhone;

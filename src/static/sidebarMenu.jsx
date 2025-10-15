@@ -46,11 +46,11 @@ const sidebarMenu = [
         redirect: "/my-profile"
     },
 
-    // {
-    //     icon: FaRegBell,
-    //     title: "Notifications",
-    //     redirect: ''
-    // },
+    {
+        icon: FaRegBell,
+        title: "Notifications",
+        redirect: ''
+    },
 
     {
         icon: MdOutlineSupportAgent,
