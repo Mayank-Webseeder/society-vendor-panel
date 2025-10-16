@@ -11,7 +11,8 @@ import {
     X,
     CheckCircle,
     AlertCircle,
-    Navigation
+    Navigation,
+    RotateCcw
 } from 'lucide-react';
 
 const SERVICE_OPTIONS = [
@@ -39,6 +40,24 @@ function fileToDataUrl(file) {
         reader.readAsDataURL(file);
     });
 }
+
+// Reverse geocoding function using OpenStreetMap Nominatim (free service)
+const reverseGeocode = async (lat, lng) => {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
+        );
+        const data = await response.json();
+
+        if (data && data.display_name) {
+            return data.display_name;
+        }
+        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    } catch (error) {
+        console.error('Reverse geocoding failed:', error);
+        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    }
+};
 
 export default function VendorCreateProfile() {
     const navigate = useNavigate();
@@ -73,15 +92,11 @@ export default function VendorCreateProfile() {
         },
     });
 
-
-    // useEffect(() => {
-    //     console.log(form, "THIS IS THE FORM DATA");
-    // }, [form]);
-
     const [submitting, setSubmitting] = useState(false);
     const [errorText, setErrorText] = useState('');
     const [successText, setSuccessText] = useState('');
     const [gettingLocation, setGettingLocation] = useState(false);
+    const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
 
     const handleChange = (path, value) => {
         setForm(prev => {
@@ -136,18 +151,40 @@ export default function VendorCreateProfile() {
         }
 
         setGettingLocation(true);
+        setLocationPermissionDenied(false);
+        setErrorText('');
+
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                handleChange('location.GeoLocation.latitude', position.coords.latitude);
-                handleChange('location.GeoLocation.longitude', position.coords.longitude);
-                handleChange('location.formattedAddress', `${position.coords.latitude}, ${position.coords.longitude}`);
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+
+                // Get formatted address using reverse geocoding
+                const formattedAddress = await reverseGeocode(latitude, longitude);
+
+                handleChange('location.GeoLocation.latitude', latitude);
+                handleChange('location.GeoLocation.longitude', longitude);
+                handleChange('location.formattedAddress', formattedAddress);
                 setGettingLocation(false);
             },
             (error) => {
-                setErrorText('Failed to get your location. Please enter manually.');
                 setGettingLocation(false);
+
+                if (error.code === error.PERMISSION_DENIED) {
+                    setLocationPermissionDenied(true);
+                    setErrorText('Location permission denied. You can try again or enter coordinates manually.');
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    setErrorText('Location information unavailable. Please enter coordinates manually.');
+                } else if (error.code === error.TIMEOUT) {
+                    setErrorText('Location request timed out. Please try again or enter coordinates manually.');
+                } else {
+                    setErrorText('Failed to get your location. Please enter coordinates manually.');
+                }
             },
-            { timeout: 10000 }
+            {
+                timeout: 10000,
+                enableHighAccuracy: true,
+                maximumAge: 600000 // Cache for 10 minutes
+            }
         );
     };
 
@@ -408,49 +445,72 @@ export default function VendorCreateProfile() {
                         <div className="bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h4 className="font-medium text-gray-900">Location Coordinates *</h4>
+                                    <h4 className="font-medium text-gray-900">Service Location *</h4>
                                     <p className="text-sm text-gray-600">Required for service area mapping</p>
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={getCurrentLocation}
-                                    disabled={gettingLocation}
-                                    className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                                >
-                                    <Navigation className="w-4 h-4" />
-                                    {gettingLocation ? 'Getting...' : 'Use Current Location'}
-                                </button>
+                                <div className="flex gap-2">
+                                    {locationPermissionDenied && (
+                                        <button
+                                            type="button"
+                                            onClick={getCurrentLocation}
+                                            disabled={gettingLocation}
+                                            className="flex items-center gap-2 px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50"
+                                        >
+                                            <RotateCcw className="w-4 h-4" />
+                                            {gettingLocation ? 'Trying...' : 'Try Again'}
+                                        </button>
+                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={getCurrentLocation}
+                                        disabled={gettingLocation}
+                                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                                    >
+                                        <Navigation className="w-4 h-4" />
+                                        {gettingLocation ? 'Getting Location...' : 'Use Current Location'}
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Latitude *</label>
-                                    <input
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        value={form.location.GeoLocation.latitude}
-                                        onChange={(e) => handleChange('location.GeoLocation.latitude', e.target.value)}
-                                        placeholder="28.6139"
-                                        required
-                                    />
+                            {/* Display current location if available */}
+                            {form.location.formattedAddress && (
+                                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                    <div className="flex items-start gap-2">
+                                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                                        <div>
+                                            <p className="text-sm font-medium text-green-800">Location Detected</p>
+                                            <p className="text-sm text-green-700 mt-1">{form.location.formattedAddress}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Longitude *</label>
-                                    <input
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        value={form.location.GeoLocation.longitude}
-                                        onChange={(e) => handleChange('location.GeoLocation.longitude', e.target.value)}
-                                        placeholder="77.2090"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Service Area</label>
-                                    <input
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        value={form.location.formattedAddress}
-                                        onChange={(e) => handleChange('location.formattedAddress', e.target.value)}
-                                        placeholder="New Delhi, India"
-                                    />
+                            )}
+
+                            {/* Manual entry option */}
+                            <div className="border-t border-gray-200 pt-4">
+                                <p className="text-sm text-gray-600 mb-3">Or enter coordinates manually:</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-1">Latitude *</label>
+                                        <input
+                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            value={form.location.GeoLocation.latitude}
+                                            onChange={(e) => handleChange('location.GeoLocation.latitude', e.target.value)}
+                                            placeholder="28.6139"
+                                            type="number"
+                                            step="any"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-1">Longitude *</label>
+                                        <input
+                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            value={form.location.GeoLocation.longitude}
+                                            onChange={(e) => handleChange('location.GeoLocation.longitude', e.target.value)}
+                                            placeholder="77.2090"
+                                            type="number"
+                                            step="any"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -485,7 +545,7 @@ export default function VendorCreateProfile() {
                                             handleChange('idProof.fileBase64', '');
                                             if (fileInputRef.current) fileInputRef.current.value = '';
                                         }}
-                                        className="text-red-600 hover:text-red-700 text-sm font-medium"
+                                        className="text-red-600 hover:text-red-700 text-sm font-medium p-2 rounded"
                                     >
                                         Remove file
                                     </button>
@@ -541,7 +601,7 @@ export default function VendorCreateProfile() {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-4xl mx-auto p-6">
-                {/* image */}
+                {/* Image */}
                 <div className='flex justify-center mb-6'>
                     <img
                         src="/public/faviconFinal.png"
@@ -549,6 +609,7 @@ export default function VendorCreateProfile() {
                         className="w-32 h-32 object-contain"
                     />
                 </div>
+
                 {/* Header */}
                 <div className="text-center mb-8">
                     <h1 className="text-2xl font-semibold text-gray-900 mb-2">Create Your Vendor Profile</h1>
