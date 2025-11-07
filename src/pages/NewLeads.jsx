@@ -1,632 +1,747 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
-  Search,
-  SlidersHorizontal,
   MapPin,
-  Clock,
+  Phone,
+  Calendar,
+  DollarSign,
+  User,
+  Building,
+  Users,
   Briefcase,
-  Building2,
-  FileText,
-  ChevronDown,
+  Clock,
+  CheckCircle,
+  XCircle,
   X,
-  Eye,
-  ExternalLink,
-  Star,
-  ChevronLeft,
-  ChevronRight,
-  AlertCircle,
-  TrendingUp
-} from 'lucide-react';
-import dummyData from '../static/dummyData_Leads';
-import AccessLockedModal from '../components/modals/AccessLockedModal';
-import { useUser } from '../UserContext';
+  Filter,
+  Search,
+  FileText,
+} from "lucide-react";
+import { LuIndianRupee } from "react-icons/lu"; 
 
-const NewLeads = () => {
-  const { user } = useUser();
-  const subscriptionActive = user?.subscription_active;
-  const navigate = useNavigate();
+// API Configuration
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
 
-  const [isModalOpen, setIsModalOpen] = useState(!subscriptionActive);
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-  const handleModalClose = () => {
-    navigate('/dashboard');
-  };
+// Add auth token interceptor
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-  // Jobs state
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Filter states
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedService, setSelectedService] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [selectedUrgency, setSelectedUrgency] = useState('');
-  const [quotationOnly, setQuotationOnly] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 5;
-
-  // Mock enhanced job data
-  const enhancedJobs = [
-    {
-      id: 1,
-      title: 'Plumbing System Installation',
-      society: 'Green Valley Residency',
-      location: 'Sector 12, Noida',
-      service: 'Plumbing',
-      description: 'Complete plumbing system installation for a 3BHK apartment including kitchen and bathroom fixtures, water supply lines, and drainage systems.',
-      requirements: ['5+ years experience', 'Licensed plumber', 'Own tools preferred'],
-      urgency: 'High',
-      quotationRequired: true,
-      postedDate: '2024-10-14',
-      applicationDeadline: '2024-10-20',
-      estimatedDuration: '3-5 days',
-      contactPerson: 'Rajesh Kumar',
-      status: 'New'
-    },
-    {
-      id: 2,
-      title: 'Electrical Panel Maintenance',
-      society: 'Sunrise Apartments',
-      location: 'Gurgaon, Haryana',
-      service: 'Electrical',
-      description: 'Regular maintenance and safety inspection of electrical panels in residential complex. Includes testing, cleaning, and minor repairs.',
-      requirements: ['Electrical license required', '3+ years experience', 'Safety certification'],
-      urgency: 'Medium',
-      quotationRequired: false,
-      postedDate: '2024-10-13',
-      applicationDeadline: '2024-10-18',
-      estimatedDuration: '1-2 days',
-      contactPerson: 'Priya Sharma',
-      status: 'New'
-    },
-    {
-      id: 3,
-      title: 'HVAC System Installation',
-      society: 'Royal Gardens',
-      location: 'Delhi, NCR',
-      service: 'HVAC',
-      description: 'Installation of central air conditioning system for common areas including lobby, gym, and community hall.',
-      requirements: ['HVAC certification', '7+ years experience', 'Team of 3-4 members'],
-      urgency: 'Low',
-      quotationRequired: true,
-      postedDate: '2024-10-12',
-      applicationDeadline: '2024-10-25',
-      estimatedDuration: '7-10 days',
-      contactPerson: 'Amit Singh',
-      status: 'New'
-    },
-    {
-      id: 4,
-      title: 'Cleaning Services Contract',
-      society: 'Metro Heights',
-      location: 'Pune, Maharashtra',
-      service: 'Cleaning',
-      description: 'Monthly cleaning contract for residential society including common areas, stairs, lifts, and parking areas.',
-      requirements: ['Cleaning equipment', 'Insurance coverage', 'Previous society experience'],
-      urgency: 'Medium',
-      quotationRequired: true,
-      postedDate: '2024-10-11',
-      applicationDeadline: '2024-10-22',
-      estimatedDuration: 'Ongoing',
-      contactPerson: 'Sunita Verma',
-      status: 'New'
-    },
-    {
-      id: 5,
-      title: 'Security System Upgrade',
-      society: 'City Center Complex',
-      location: 'Mumbai, Maharashtra',
-      service: 'Security',
-      description: 'Upgrade existing security system with modern CCTV cameras, access control systems, and alarm systems.',
-      requirements: ['Security system certification', '5+ years experience', 'Technical support team'],
-      urgency: 'High',
-      quotationRequired: true,
-      postedDate: '2024-10-10',
-      applicationDeadline: '2024-10-17',
-      estimatedDuration: '5-7 days',
-      contactPerson: 'Rohit Gupta',
-      status: 'New'
-    },
-    {
-      id: 6,
-      title: 'Garden Landscaping Project',
-      society: 'Park View Society',
-      location: 'Bangalore, Karnataka',
-      service: 'Gardening',
-      description: 'Complete landscaping of society garden including new plants, irrigation system, and decorative elements.',
-      requirements: ['Landscaping experience', 'Plant knowledge', 'Design portfolio'],
-      urgency: 'Low',
-      quotationRequired: false,
-      postedDate: '2024-10-09',
-      applicationDeadline: '2024-10-30',
-      estimatedDuration: '10-15 days',
-      contactPerson: 'Kavita Reddy',
-      status: 'New'
-    },
-    {
-      id: 7,
-      title: 'Elevator Maintenance Contract',
-      society: 'Skyline Towers',
-      location: 'Hyderabad, Telangana',
-      service: 'Maintenance',
-      description: 'Annual maintenance contract for 4 elevators including regular service, emergency repairs, and compliance checks.',
-      requirements: ['Elevator technician license', '10+ years experience', '24/7 availability'],
-      urgency: 'High',
-      quotationRequired: true,
-      postedDate: '2024-10-08',
-      applicationDeadline: '2024-10-15',
-      estimatedDuration: 'Annual contract',
-      contactPerson: 'Deepak Kumar',
-      status: 'New'
-    },
-    {
-      id: 8,
-      title: 'Painting and Wall Repair',
-      society: 'Golden Heights',
-      location: 'Chennai, Tamil Nadu',
-      service: 'Painting',
-      description: 'Interior and exterior painting of residential complex including wall repairs, primer application, and finish coating.',
-      requirements: ['5+ years painting experience', 'Quality materials', 'Insurance coverage'],
-      urgency: 'Medium',
-      quotationRequired: false,
-      postedDate: '2024-10-07',
-      applicationDeadline: '2024-10-21',
-      estimatedDuration: '15-20 days',
-      contactPerson: 'Tamil Selvan',
-      status: 'New'
-    }
-  ];
+const ApplicationModal = ({ job, isOpen, onClose, onSubmit }) => {
+  const [formData, setFormData] = useState({
+    quotationFile: null,
+    message: "",
+    estimatedDays: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        setTimeout(() => {
-          setJobs(enhancedJobs);
-          setLoading(false);
-        }, 500);
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setJobs(enhancedJobs);
-        setLoading(false);
-      }
+    if (isOpen) {
+      setFormData({ quotationFile: null, message: "", estimatedDays: "" });
+    }
+  }, [isOpen]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type !== "application/pdf") {
+      alert("Please upload only PDF files.");
+      return;
+    }
+    setFormData({ ...formData, quotationFile: file });
+  };
+
+const handleSubmitApplication = async (jobId, formData) => {
+  try {
+    const payload = {
+      message: formData.message || undefined,
+      estimatedDays: formData.estimatedDays ? parseInt(formData.estimatedDays) : undefined,
     };
 
+    // ✅ Add quotation only when required and provided
+    if (selectedJob?.quotationRequired) {
+      if (!formData.quotation || formData.quotation === "") {
+        showNotification("Please provide quotation value.", "error");
+        return;
+      }
+      payload.quotation = parseFloat(formData.quotation);
+    }
+
+    // ✅ API endpoint based on condition
+    const endpoint = selectedJob?.quotationRequired
+      ? `/api/applications/${jobId}/apply`   // when quotation required
+      : `/api/applications/${jobId}/interest`; // when quotation not required
+
+    const { data } = await api.post(endpoint, payload);
+
+    showNotification(
+      data.message || "Application submitted successfully! The society will review your application.",
+      "success"
+    );
+
+    setShowModal(false);
+    await fetchJobs();
+  } catch (err) {
+    console.error("Error applying for job:", err);
+    showNotification(
+      err.response?.data?.message || "Failed to submit application. Please try again.",
+      "error"
+    );
+  }
+};
+
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="bg-gray-900 p-6 relative">
+          <button
+            onClick={onClose}
+            className="absolute border-none cursor-pointer top-4 right-4 bg-gray-900 text-red-500"
+          >
+            <X size={24} />
+          </button>
+          <h2 className="text-2xl font-bold text-white mb-1">
+            Apply for Job
+          </h2>
+          <p className="text-blue-100">{job?.title}</p>
+        </div>
+
+        {/* Body */}
+        <form onSubmit={handleSubmitApplication} className="p-6 space-y-5">
+          {/* Job Summary */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2">
+                <Building className="text-blue-600" size={16} />
+                <span>{job?.society?.buildingName}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <DollarSign className="text-green-600" size={16} />
+                <span className="font-semibold">
+                  ₹{job?.offeredPricing?.toLocaleString("en-IN")}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="text-purple-600" size={16} />
+                <span>{job?.requiredExperience}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Briefcase className="text-indigo-600" size={16} />
+                <span>{job?.type}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quotation Section — Only When Required */}
+          {job?.quotationRequired && (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <FileText className="text-amber-600 mt-1" size={20} />
+                <div>
+                  <p className="text-amber-800 font-semibold text-sm">
+                    Quotation Required
+                  </p>
+                  <p className="text-amber-700 text-xs mt-1">
+                    Please upload your quotation as a PDF file
+                  </p>
+                </div>
+              </div>
+
+              {/* File Upload Input */}
+              <div className="mt-3">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Upload Quotation PDF <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  required={job?.quotationRequired}
+                  onChange={handleFileChange}
+                  className="block w-full text-sm text-gray-600 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer p-3 hover:border-blue-400 focus:outline-none"
+                />
+                {formData.quotationFile && (
+                  <p className="text-xs text-green-600 mt-2">
+                    Selected file: {formData.quotationFile.name}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Message */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Cover Message <span className="text-gray-400">(Optional)</span>
+            </label>
+            <textarea
+              value={formData.message}
+              onChange={(e) =>
+                setFormData({ ...formData, message: e.target.value })
+              }
+              rows="4"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all resize-none"
+              placeholder="Introduce yourself and explain why you're a great fit for this job..."
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-3 border-none bg-slate-300 rounded-xl text-red-700 font-semibold  transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 py-3 bg-blue-600 border-none text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Application"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+
+
+
+// Job Card Component
+const JobCard = ({ job, onApply }) => {
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  const getStatusBadge = (status) => {
+    const badges = {
+      'New': { bg: 'bg-emerald-100', text: 'text-emerald-700', dot: 'bg-emerald-500' },
+      'In Progress': { bg: 'bg-amber-100', text: 'text-amber-700', dot: 'bg-amber-500' },
+      'Completed': { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' },
+      'Cancelled': { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' }
+    };
+    const badge = badges[status] || badges['New'];
+    
+    return (
+      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${badge.bg} ${badge.text}`}>
+        <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`}></span>
+        {status}
+      </span>
+    );
+  };
+
+  return (
+<div className="bg-white w-full  mx-auto rounded-2xl shadow hover:shadow-lg transition-shadow duration-300 border border-gray-200 hover:border-blue-300 overflow-hidden p-5 flex flex-col space-y-4">
+  {/* Title & Status */}
+  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+    <div className="flex-1 min-w-0">
+      <h3 className="text-xl font-semibold text-gray-900 truncate group-hover:text-blue-700 transition">{job.title}</h3>
+      <div className="flex items-center gap-1 text-blue-600 text-sm mt-1">
+        <Briefcase size={14} />
+        <span className="font-medium">{job.type}</span>
+      </div>
+    </div>
+    {getStatusBadge(job.status)}
+  </div>
+
+  {/* Quotation Required Badge */}
+  {job.quotationRequired && (
+    <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full w-fit">
+      <FileText size={12} />
+      <span>Quotation Required</span>
+    </div>
+  )}
+
+  {/* Description */}
+  <p className="text-gray-700 text-sm line-clamp-3">{job.details}</p>
+
+  {/* Key Info Grid */}
+  <div className="grid grid-cols-2 gap-4">
+    <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex flex-col space-y-1">
+      <div className="flex items-center gap-2 text-green-700 font-semibold text-sm">
+        <LuIndianRupee size={16} />
+        <span>Offered</span>
+      </div>
+      <p className="text-lg font-bold text-green-800">₹{job.offeredPricing.toLocaleString("en-IN")}</p>
+    </div>
+    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 flex flex-col space-y-1">
+      <div className="flex items-center gap-2 text-indigo-700 font-semibold text-sm">
+        <Clock size={16} />
+        <span>Experience</span>
+      </div>
+      <p className="text-sm font-bold text-indigo-800">{job.requiredExperience}</p>
+    </div>
+  </div>
+
+  {/* Schedule & Contact */}
+  <div className="flex flex-col sm:flex-row gap-4 text-gray-600 text-sm">
+    <div className="flex items-center gap-2">
+      <Calendar size={16} className="text-blue-600" />
+      <span>{formatDate(job.scheduledFor)}</span>
+    </div>
+    <div className="flex items-center gap-2">
+      <Phone size={16} className="text-blue-600" />
+      <span>{job.contactNumber}</span>
+    </div>
+  </div>
+
+  {/* Society Info */}
+  {job.society && (
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700 space-y-3">
+      <div className="flex items-center gap-2 font-semibold text-blue-700">
+        <Building size={18} />
+        <span className="truncate">{job.society.buildingName}</span>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex items-center gap-2">
+          <User size={14} />
+          <span>{job.society.username}</span>
+        </div>
+        <div className="flex items-center gap-2 truncate">
+          <MapPin size={14} />
+          <span>{job.society.address}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Users size={14} />
+          <span>{job.society.residentsCount} residents</span>
+        </div>
+      </div>
+      {job.location?.googleMapLink && (
+        <a
+          href={job.location.googleMapLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex no-underline items-center gap-2 text-blue-700 hover:text-blue-900 font-medium transition"
+        >
+          <MapPin size={16} />
+          <span>View Map</span>
+        </a>
+      )}
+    </div>
+  )}
+
+  {/* Posted On & Apply Button */}
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-200">
+    <time className="text-xs text-gray-400">Posted on {job.postedAt}</time>
+    <button
+      onClick={() => onApply(job)}
+      className="bg-gradient-to-r border-none from-blue-600 to-indigo-700 text-white rounded-lg py-3 px-6 font-semibold shadow-md hover:from-blue-700 hover:to-indigo-800 transition-transform transform hover:-translate-y-1"
+    >
+      Apply Now
+    </button>
+  </div>
+</div>
+
+
+
+
+
+  );
+};
+
+// Main Component
+const NewLeads = () => {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    type: 'all',
+    status: 'all',
+    quotationRequired: 'all',
+    priceRange: 'all'
+  });
+  const [showFilters, setShowFilters] = useState(false);
+  // Fetch Jobs from API
+  useEffect(() => {
     fetchJobs();
   }, []);
 
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.get("/api/jobs/nearby");
+      setJobs(data);
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+      setError(err.response?.data?.message || "Failed to load jobs. Please try again later.");
+      showNotification(
+        err.response?.data?.message || "Failed to load jobs",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Submit job application
+const handleSubmitApplication = async (jobId, formData) => {
+  try {
+    const endpoint = selectedJob?.quotationRequired
+      ? `/api/applications/${jobId}/interest`
+      : `/api/applications/${jobId}/apply`;
+
+    const { data } = await api.post(endpoint, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    showNotification(data.message || "Application submitted successfully!", "success");
+    setShowModal(false);
+    await fetchJobs();
+  } catch (err) {
+    console.error("Error applying for job:", err);
+    showNotification(err.response?.data?.message || "Failed to submit application.", "error");
+  }
+};
+
+
+
+  const handleApplyClick = (job) => {
+    setSelectedJob(job);
+    setShowModal(true);
+  };
+
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   // Filter jobs
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.society.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesService = !selectedService || job.service === selectedService;
-    const matchesLocation = !selectedLocation || job.location.includes(selectedLocation);
-    const matchesUrgency = !selectedUrgency || job.urgency === selectedUrgency;
-    const matchesQuotation = !quotationOnly || job.quotationRequired;
-
-    return matchesSearch && matchesService && matchesLocation && matchesUrgency && matchesQuotation;
+    // Search filter
+    if (searchQuery && !job.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !job.type.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !job.details.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    
+    // Type filter
+    if (filters.type !== 'all' && job.type !== filters.type) return false;
+    
+    // Status filter
+    if (filters.status !== 'all' && job.status !== filters.status) return false;
+    
+    // Quotation filter
+    if (filters.quotationRequired !== 'all') {
+      const requiresQuotation = filters.quotationRequired === 'required';
+      if (job.quotationRequired !== requiresQuotation) return false;
+    }
+    
+    // Price range filter
+    if (filters.priceRange !== 'all') {
+      const price = job.offeredPricing;
+      if (filters.priceRange === 'low' && price >= 10000) return false;
+      if (filters.priceRange === 'medium' && (price < 10000 || price >= 20000)) return false;
+      if (filters.priceRange === 'high' && price < 20000) return false;
+    }
+    
+    return true;
   });
 
-  // Calculate statistics
-  const stats = {
-    total: jobs.length,
-    highPriority: jobs.filter(job => job.urgency === 'High').length,
-    quotationRequired: jobs.filter(job => job.quotationRequired).length,
-    newToday: jobs.filter(job => {
-      const today = new Date().toISOString().split('T')[0];
-      return job.postedDate === today;
-    }).length
-  };
-
-  // Pagination
-  const totalPages = Math.ceil(filteredJobs.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedJobs = filteredJobs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  // Pagination helpers
-  const getVisiblePages = () => {
-    const delta = 1;
-    const range = [];
-
-    for (let i = Math.max(1, currentPage - delta); i <= Math.min(totalPages, currentPage + delta); i++) {
-      range.push(i);
-    }
-
-    if (currentPage - delta > 1) {
-      range.unshift('...');
-      range.unshift(1);
-    }
-
-    if (currentPage + delta < totalPages) {
-      range.push('...');
-      range.push(totalPages);
-    }
-
-    return range;
-  };
-
-  const services = ['Plumbing', 'Electrical', 'HVAC', 'Cleaning', 'Security', 'Gardening', 'Maintenance', 'Painting'];
-  const locations = ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Pune', 'Gurgaon', 'Noida', 'Hyderabad'];
-  const urgencyLevels = ['High', 'Medium', 'Low'];
-
-  const getUrgencyColor = (urgency) => {
-    switch (urgency) {
-      case 'High': return 'bg-red-100 text-red-700';
-      case 'Medium': return 'bg-amber-100 text-amber-700';
-      case 'Low': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
-  const clearFilters = () => {
-    setSelectedService('');
-    setSelectedLocation('');
-    setSelectedUrgency('');
-    setQuotationOnly(false);
-    setCurrentPage(1);
-  };
-
-  const activeFiltersCount = [selectedService, selectedLocation, selectedUrgency, quotationOnly].filter(Boolean).length;
-
-  if (loading) {
-    return (
-      <div className="min-h-full bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading available jobs...</p>
-        </div>
-      </div>
-    );
-  }
+  const jobTypes = ['all', ...new Set(jobs.map(j => j.type))];
+  const statuses = ['all', 'New', 'In Progress', 'Completed', 'Cancelled'];
 
   return (
-    <div className="min-h-full bg-gray-50">
-      {!subscriptionActive && <SubscribeStrip />}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
-      <div className="p-6">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-1">Available Jobs</h1>
-          <p className="text-gray-600 text-sm">Discover new opportunities posted by societies</p>
-        </div>
-
-        {/* Stats Cards - EXACTLY like dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">Available Jobs</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.total}</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-lg">
-                <Briefcase className="w-6 h-6 text-slate-600" />
-              </div>
+      {/* Notification */}
+      {notification && (
+        <div className="fixed top-6 right-6 z-50 animate-slide-in max-w-md">
+          <div className={`flex items-start gap-3 px-6 py-4 rounded-xl shadow-2xl ${
+            notification.type === 'success' 
+              ? 'bg-green-500 text-white' 
+              : 'bg-red-500 text-white'
+          }`}>
+            {notification.type === 'success' ? (
+              <CheckCircle size={24} className="flex-shrink-0 mt-0.5" />
+            ) : (
+              <XCircle size={24} className="flex-shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1">
+              <p className="font-semibold text-sm">{notification.message}</p>
             </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">High Priority</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.highPriority}</p>
-              </div>
-              <div className="p-3 bg-red-50 rounded-lg">
-                <AlertCircle className="w-6 h-6 text-red-600" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">Quotation Required</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.quotationRequired}</p>
-              </div>
-              <div className="p-3 bg-amber-50 rounded-lg">
-                <FileText className="w-6 h-6 text-amber-600" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">New Today</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.newToday}</p>
-              </div>
-              <div className="p-3 bg-green-50 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-              </div>
-            </div>
+            <button onClick={() => setNotification(null)} className="hover:bg-white hover:bg-opacity-20 rounded p-1">
+              <X size={18} />
+            </button>
           </div>
         </div>
+      )}
 
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-          {/* Search Bar */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+      {/* Stats Cards Section */}
+
+
+
+      {/* Application Modal */}
+      <ApplicationModal
+        job={selectedJob}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmitApplication}
+      />
+
+      {/* Header */}
+      <div className=" text-black">
+        <div className="container mx-auto px-4 mt-5">
+          <div className="max-w-4xl">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight">
+              Available Jobs
+            </h1>
+            <p className="text-gray-800 text-lg mb-6">
+              Discover opportunities that match your skills and expertise
+            </p>
+            
+            {/* Search Bar */}
+         
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-4 px-5">
+  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
+    <div className="p-3 bg-blue-100 text-blue-600 rounded-full">
+      <Briefcase size={22} />
+    </div>
+    <div>
+      <p className="text-gray-600 text-sm">Total Jobs</p>
+      <h3 className="text-2xl font-bold text-gray-900">{jobs.length}</h3>
+    </div>
+  </div>
+
+  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
+    <div className="p-3 bg-amber-100 text-amber-600 rounded-full">
+      <FileText size={22} />
+    </div>
+    <div>
+      <p className="text-gray-600 text-sm">Quotation Required</p>
+      <h3 className="text-2xl font-bold text-gray-900">
+        {jobs.filter(job => job.quotationRequired).length}
+      </h3>
+    </div>
+  </div>
+
+  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
+    <div className="p-3 bg-green-100 text-green-600 rounded-full">
+      <CheckCircle size={22} />
+    </div>
+    <div>
+      <p className="text-gray-600 text-sm">Completed Jobs</p>
+      <h3 className="text-2xl font-bold text-gray-900">
+        {jobs.filter(job => job.status === "Completed").length}
+      </h3>
+    </div>
+  </div>
+
+  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
+    <div className="p-3 bg-purple-100 text-purple-600 rounded-full">
+      <Clock size={22} />
+    </div>
+    <div>
+      <p className="text-gray-600 text-sm">In Progress</p>
+      <h3 className="text-2xl font-bold text-gray-900">
+        {jobs.filter(job => job.status === "In Progress").length}
+      </h3>
+    </div>
+  </div>
+</div>
+   <div className="relative max-w-2xl px-5">
+              <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Search jobs, societies, or descriptions..."
+                placeholder="Search jobs by title, type, or description..."
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-4 rounded-xl bg-white text-gray-800 border-none placeholder-gray-400 shadow focus:ring-4 focus:ring-blue-300 focus:outline-none"
               />
             </div>
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-colors ${showFilters || activeFiltersCount > 0
-                ? 'bg-blue-50 border-blue-200 text-blue-700'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              <span>Filters</span>
-              {activeFiltersCount > 0 && (
-                <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Filter Options */}
-          {showFilters && (
-            <div className="border-t border-gray-200 pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                {/* Service Filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Service</label>
-                  <div className="relative">
-                    <select
-                      value={selectedService}
-                      onChange={(e) => {
-                        setSelectedService(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-                    >
-                      <option value="">All Services</option>
-                      {services.map(service => (
-                        <option key={service} value={service}>{service}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-
-                {/* Location Filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                  <div className="relative">
-                    <select
-                      value={selectedLocation}
-                      onChange={(e) => {
-                        setSelectedLocation(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-                    >
-                      <option value="">All Locations</option>
-                      {locations.map(location => (
-                        <option key={location} value={location}>{location}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-
-                {/* Urgency Filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Urgency</label>
-                  <div className="relative">
-                    <select
-                      value={selectedUrgency}
-                      onChange={(e) => {
-                        setSelectedUrgency(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-                    >
-                      <option value="">All Urgency</option>
-                      {urgencyLevels.map(level => (
-                        <option key={level} value={level}>{level}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-
-                {/* Quotation Filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Requirements</label>
-                  <label className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={quotationOnly}
-                      onChange={(e) => {
-                        setQuotationOnly(e.target.checked);
-                        setCurrentPage(1);
-                      }}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <span className="text-sm text-gray-700">Quotation Required</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Clear Filters */}
-              {activeFiltersCount > 0 && (
-                <button
-                  onClick={clearFilters}
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
-                >
-                  <X className="w-4 h-4" />
-                  Clear all filters
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* Results count */}
-          <div className="flex items-center justify-between text-sm text-gray-600 mt-4 pt-4 border-t border-gray-200">
-            <span>{filteredJobs.length} jobs found</span>
-            <span>Page {currentPage} of {totalPages}</span>
-          </div>
+      <div className="container mx-auto px-4 py-4">
+        {/* Filter Toggle Button (Mobile) */}
+        <div className="lg:hidden mb-4">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md border border-gray-200 font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            <Filter size={20} />
+            <span>Filters</span>
+            {Object.values(filters).filter(f => f !== 'all').length > 0 && (
+              <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
+                {Object.values(filters).filter(f => f !== 'all').length}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Job Cards */}
-        <div className="space-y-6">
-          {paginatedJobs.length > 0 ? (
-            paginatedJobs.map((job) => (
-              <div key={job.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                  {/* Job Info */}
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                          <div className="flex items-center gap-1">
-                            <Building2 className="w-4 h-4" />
-                            <span>{job.society}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            <span>{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            <span>{job.estimatedDuration}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
-                            {job.service}
-                          </span>
-                          <span className={`px-3 py-1 text-sm rounded-full ${getUrgencyColor(job.urgency)}`}>
-                            {job.urgency} Priority
-                          </span>
-                          {job.quotationRequired && (
-                            <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm rounded-full">
-                              Quotation Required
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+        <div className="flex gap-6">
+          {/* Filters Sidebar */}
+          <div className={`${showFilters ? 'block' : 'hidden'} lg:block lg:w-80 flex-shrink-0`}>
+            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6 space-y-6 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <Filter size={20} className="text-blue-600" />
+                  Filters
+                </h2>
+                {Object.values(filters).some(f => f !== 'all') && (
+                  <button
+                    onClick={() => setFilters({ type: 'all', status: 'all', quotationRequired: 'all', priceRange: 'all' })}
+                    className="text-xs text-blue-600 hover:text-blue-700 font-semibold"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
 
-                    {/* Description */}
-                    <p className="text-gray-700 mb-4 leading-relaxed">{job.description}</p>
+              {/* Job Type Filter */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-3">Job Type</label>
+                <select
+                  value={filters.type}
+                  onChange={(e) => setFilters({...filters, type: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all font-medium"
+                >
+                  {jobTypes.map(type => (
+                    <option key={type} value={type}>
+                      {type === 'all' ? 'All Types' : type}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                    {/* Requirements */}
-                    <div className="mb-4">
-                      <h4 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h4>
-                      <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                        {job.requirements.map((req, index) => (
-                          <li key={index}>{req}</li>
-                        ))}
-                      </ul>
-                    </div>
+              {/* Status Filter */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-3">Status</label>
+                <select
+                  value={filters.status}
+                  onChange={(e) => setFilters({...filters, status: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all font-medium"
+                >
+                  {statuses.map(status => (
+                    <option key={status} value={status}>
+                      {status === 'all' ? 'All Statuses' : status}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                    {/* Job Details */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Posted:</span>
-                        <p className="font-medium text-gray-900">
-                          {new Date(job.postedDate).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Deadline:</span>
-                        <p className="font-medium text-gray-900">
-                          {new Date(job.applicationDeadline).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Contact:</span>
-                        <p className="font-medium text-gray-900">{job.contactPerson}</p>
-                      </div>
-                    </div>
-                  </div>
+              {/* Quotation Required Filter */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-3">Quotation</label>
+                <select
+                  value={filters.quotationRequired}
+                  onChange={(e) => setFilters({...filters, quotationRequired: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all font-medium"
+                >
+                  <option value="all">All Jobs</option>
+                  <option value="required">Quotation Required</option>
+                  <option value="not-required">No Quotation</option>
+                </select>
+              </div>
 
-                  {/* Action Buttons */}
-                  <div className="lg:w-48 flex flex-col gap-3">
-                    <button className="w-full bg-gray-900 text-white px-4 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                      <ExternalLink className="w-4 h-4" />
-                      Apply Now
-                    </button>
-                    <button className="w-full border border-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-                      <Eye className="w-4 h-4" />
-                      View Details
-                    </button>
-                    <button className="w-full border border-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-                      <Star className="w-4 h-4" />
-                      Save Job
-                    </button>
+              {/* Price Range Filter */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-3">Price Range</label>
+                <select
+                  value={filters.priceRange}
+                  onChange={(e) => setFilters({...filters, priceRange: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all font-medium"
+                >
+                  <option value="all">All Prices</option>
+                  <option value="low">Under ₹10,000</option>
+                  <option value="medium">₹10,000 - ₹20,000</option>
+                  <option value="high">Above ₹20,000</option>
+                </select>
+              </div>
+
+              {/* Results Count */}
+              <div className="pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-600">
+                  Showing <span className="font-bold text-gray-800">{filteredJobs.length}</span> of{' '}
+                  <span className="font-bold text-gray-800">{jobs.length}</span> jobs
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Jobs Grid */}
+          <div className="flex-1">
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-20 w-20 border-4 border-blue-200 border-t-blue-600"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Briefcase className="text-blue-600" size={32} />
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No jobs found</h3>
-              <p className="text-gray-600">Try adjusting your search criteria or filters</p>
-            </div>
-          )}
-        </div>
-
-        {/* Pagination - EXACTLY like dashboard */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-8">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              disabled={currentPage === 1}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </button>
-
-            <div className="flex items-center gap-1">
-              {getVisiblePages().map((page, index) => (
+            ) : error ? (
+              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 text-center">
+                <XCircle className="mx-auto mb-4 text-red-500" size={56} />
+                <p className="text-red-800 font-bold text-lg mb-2">Error Loading Jobs</p>
+                <p className="text-red-600 mb-6">{error}</p>
                 <button
-                  key={index}
-                  onClick={() => typeof page === 'number' && setCurrentPage(page)}
-                  disabled={page === '...'}
-                  className={`px-3 py-2 rounded-lg font-medium ${currentPage === page
-                      ? 'bg-gray-900 text-white'
-                      : page === '...'
-                        ? 'cursor-default text-gray-400'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
+                  onClick={fetchJobs}
+                  className="px-8 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl"
                 >
-                  {page}
+                  Try Again
                 </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              disabled={currentPage === totalPages}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
+              </div>
+            ) : filteredJobs.length === 0 ? (
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-12 text-center">
+                <Briefcase className="mx-auto mb-4 text-gray-300" size={72} />
+                <p className="text-gray-800 text-xl font-bold mb-2">No Jobs Found</p>
+                <p className="text-gray-500">Try adjusting your filters or search query</p>
+                {(Object.values(filters).some(f => f !== 'all') || searchQuery) && (
+                  <button
+                    onClick={() => {
+                      setFilters({ type: 'all', status: 'all', quotationRequired: 'all', priceRange: 'all' });
+                      setSearchQuery('');
+                    }}
+                    className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className=" flex flex-wrap gap-6">
+                {filteredJobs.map(job => (
+                  <JobCard
+                    key={job._id}
+                    job={job}
+                    onApply={handleApplyClick}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

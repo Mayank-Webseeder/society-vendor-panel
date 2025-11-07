@@ -4,9 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: jakrata;
+    src: url(../src/assets/PlusJakartaSans-VariableFont_wght.ttf) format("truetype");
+}
+
 
 *{
-    font-family: "Roboto", sans-serif;
+    font-family: "jakrata";
     padding: 0;
     margin: 0;
     box-sizing: border-box;
