@@ -13,7 +13,6 @@ const SignUp = ({ onSwitch }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Phone verification states
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
@@ -22,7 +21,6 @@ const SignUp = ({ onSwitch }) => {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [phoneVerified, setPhoneVerified] = useState(false);
 
-  // Resend cooldown timer
   useEffect(() => {
     if (resendCooldown > 0) {
       const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);

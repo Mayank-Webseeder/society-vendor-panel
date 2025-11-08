@@ -124,7 +124,6 @@ const handleSubmitApplication = async (jobId, formData) => {
           <p className="text-blue-100">{job?.title}</p>
         </div>
 
-        {/* Body */}
         <form onSubmit={handleSubmitApplication} className="p-6 space-y-5">
           {/* Job Summary */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
@@ -150,7 +149,6 @@ const handleSubmitApplication = async (jobId, formData) => {
             </div>
           </div>
 
-          {/* Quotation Section — Only When Required */}
           {job?.quotationRequired && (
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
               <div className="flex items-start gap-3">
@@ -165,7 +163,6 @@ const handleSubmitApplication = async (jobId, formData) => {
                 </div>
               </div>
 
-              {/* File Upload Input */}
               <div className="mt-3">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Upload Quotation PDF <span className="text-red-500">*</span>
@@ -186,7 +183,6 @@ const handleSubmitApplication = async (jobId, formData) => {
             </div>
           )}
 
-          {/* Message */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Cover Message <span className="text-gray-400">(Optional)</span>

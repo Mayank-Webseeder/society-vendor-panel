@@ -21,14 +21,12 @@ const VerifyOtpForgotPassword = () => {
   const [error, setError] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Array of images for the looping animation
   const images = [
     groupMenBlueUniforms,
     authPageImg2,
     authPageImg3
   ];
 
-  // Auto-cycle through images every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -49,11 +47,9 @@ const VerifyOtpForgotPassword = () => {
     setError('');
 
     try {
-      // Call API 4 to validate OTP
       await validateEmail(email, otp);
       console.log('✅ OTP validated successfully');
 
-      // Redirect to reset password page
       navigate('/auth/forgot-password/reset-password', { state: { email, otp } });
     } catch (error) {
       console.error('❌ OTP validation failed:', error);

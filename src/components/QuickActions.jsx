@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Briefcase, Calendar, UserCog } from 'lucide-react';
 
-// Animation variants (consistent stagger pattern)
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.12, delayChildren: 0.15 } }
@@ -13,7 +12,6 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 }
 };
 
-// Action definitions (cleaner accent-based styling)
 const actions = [
   {
     label: 'Apply for New Job',
@@ -116,7 +114,6 @@ const QuickActions = () => {
         </motion.div>
       </div>
 
-      {/* Desktop Design */}
       <motion.div
         className="hidden sm:grid grid-cols-1 gap-2 sm:gap-3"
         variants={containerVariants}
@@ -134,7 +131,6 @@ const QuickActions = () => {
               whileTap={{ scale: 0.95 }}
               onClick={() => handleActionClick(action)}
             >
-              {/* Hover ambient - removed for compact buttons */}
               {/* Icon */}
               <div className="flex-shrink-0 mr-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-white/70 to-white/40 border border-solid backdrop-blur-sm shadow-sm

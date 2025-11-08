@@ -60,7 +60,6 @@ const StatusCard = ({ icon: Icon, title, value, subtitle, isRating = false, grad
           <h3 className="text-base font-semibold text-white/90 truncate flex-1">{title}</h3>
         </div>
         
-        {/* Value Section */}
         <div className="space-y-2">
           {isRating ? (
             <div className="space-y-3">
@@ -83,7 +82,6 @@ const StatusCard = ({ icon: Icon, title, value, subtitle, isRating = false, grad
         </div>
       </div>
 
-      {/* Hover Glow Effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-white rounded-2xl"></div>
     </motion.div>
   );
