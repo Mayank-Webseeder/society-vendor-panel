@@ -561,9 +561,9 @@ const handleSubmitApplication = async (jobId, formData) => {
       <Clock size={22} />
     </div>
     <div>
-      <p className="text-gray-600 text-sm">In Progress</p>
+      <p className="text-gray-600 text-sm">New Jobs</p>
       <h3 className="text-2xl font-bold text-gray-900">
-        {jobs.filter(job => job.status === "In Progress").length}
+        {jobs.filter(job => job.status === "New").length}
       </h3>
     </div>
   </div>

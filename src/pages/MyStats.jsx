@@ -32,7 +32,6 @@ const MyStats = () => {
     navigate('/dashboard');
   };
 
-  // Calculate rating breakdown
   const ratingBreakdown = {
     5: ratingsData?.filter(r => r.rating === 5.0).length || 15,
     4: ratingsData?.filter(r => r.rating === 4.0).length || 8,
@@ -121,7 +120,6 @@ const MyStats = () => {
           </div>
         </div>
 
-        {/* Stats Cards - Same as dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg p-6 border border-gray-200">
             <div className="flex items-center justify-between">
@@ -172,7 +170,6 @@ const MyStats = () => {
           </div>
         </div>
 
-        {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Rating Distribution Bar Chart */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">

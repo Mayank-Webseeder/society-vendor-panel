@@ -4,14 +4,12 @@ import { SUMMARY_API } from './index';
 
 
 
-// API 9: Vendor fetches Jobs in 20km radius
 export const getNearbyJobs = async (latitude, longitude) => {
   const response = await api.get(SUMMARY_API.JOBS.GET_NEARBY_JOBS(latitude, longitude));
   return response.data;
 };
 
 
-// API 10(A): Vendor applies to Job (with Quotation)
 export const applyToJobWithQuotation = async (jobId, quotationDetails) => {
   const response = await api.post(SUMMARY_API.JOBS.APPLY_TO_JOB_WITH_QUOTATION(jobId), quotationDetails);
   return response.data;
@@ -25,7 +23,6 @@ export const showInterestInJob = async (jobId) => {
 }
 
 
-// API 16: Get Job Details by ID
 export const getJobDetailsById = async (jobId) => {
   const response = await api.get(SUMMARY_API.JOBS.GET_JOB_DETAILS(jobId));
   return response.data;
