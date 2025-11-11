@@ -18,6 +18,7 @@ import {
   FileText,
 } from "lucide-react";
 import { LuIndianRupee } from "react-icons/lu"; 
+import { MdCurrencyRupee } from "react-icons/md";
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
@@ -65,45 +66,12 @@ const ApplicationModal = ({ job, isOpen, onClose, onSubmit }) => {
     setFormData({ ...formData, quotationFile: file });
   };
 
-const handleSubmitApplication = async (jobId, formData) => {
-  try {
-    const payload = {
-      message: formData.message || undefined,
-      estimatedDays: formData.estimatedDays ? parseInt(formData.estimatedDays) : undefined,
-    };
-
-    // ✅ Add quotation only when required and provided
-    if (selectedJob?.quotationRequired) {
-      if (!formData.quotation || formData.quotation === "") {
-        showNotification("Please provide quotation value.", "error");
-        return;
-      }
-      payload.quotation = parseFloat(formData.quotation);
-    }
-
-    // ✅ API endpoint based on condition
-    const endpoint = selectedJob?.quotationRequired
-      ? `/api/applications/${jobId}/apply`   // when quotation required
-      : `/api/applications/${jobId}/interest`; // when quotation not required
-
-    const { data } = await api.post(endpoint, payload);
-
-    showNotification(
-      data.message || "Application submitted successfully! The society will review your application.",
-      "success"
-    );
-
-    setShowModal(false);
-    await fetchJobs();
-  } catch (err) {
-    console.error("Error applying for job:", err);
-    showNotification(
-      err.response?.data?.message || "Failed to submit application. Please try again.",
-      "error"
-    );
-  }
-};
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await onSubmit(job._id, formData);
+    setIsSubmitting(false);
+  };
 
   if (!isOpen) return null;
 
@@ -118,13 +86,11 @@ const handleSubmitApplication = async (jobId, formData) => {
           >
             <X size={24} />
           </button>
-          <h2 className="text-2xl font-bold text-white mb-1">
-            Apply for Job
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-1">Apply for Job</h2>
           <p className="text-blue-100">{job?.title}</p>
         </div>
 
-        <form onSubmit={handleSubmitApplication} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {/* Job Summary */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
             <div className="grid grid-cols-2 gap-3 text-sm">
@@ -133,9 +99,9 @@ const handleSubmitApplication = async (jobId, formData) => {
                 <span>{job?.society?.buildingName}</span>
               </div>
               <div className="flex items-center gap-2">
-                <DollarSign className="text-green-600" size={16} />
+                <MdCurrencyRupee className="text-green-600" size={16} />
                 <span className="font-semibold">
-                  ₹{job?.offeredPricing?.toLocaleString("en-IN")}
+                  {job?.offeredPricing?.toLocaleString("en-IN")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -170,7 +136,7 @@ const handleSubmitApplication = async (jobId, formData) => {
                 <input
                   type="file"
                   accept="application/pdf"
-                  required={job?.quotationRequired}
+                  required
                   onChange={handleFileChange}
                   className="block w-full text-sm text-gray-600 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer p-3 hover:border-blue-400 focus:outline-none"
                 />
@@ -194,16 +160,15 @@ const handleSubmitApplication = async (jobId, formData) => {
               }
               rows="4"
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all resize-none"
-              placeholder="Introduce yourself and explain why you're a great fit for this job..."
+              placeholder="Introduce yourself and explain why you're a great fit..."
             />
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-3 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 border-none bg-slate-300 rounded-xl text-red-700 font-semibold  transition-all"
+              className="flex-1 py-3 border-none bg-slate-300 rounded-xl text-red-700 font-semibold transition-all"
             >
               Cancel
             </button>
@@ -224,6 +189,8 @@ const handleSubmitApplication = async (jobId, formData) => {
 
 
 
+
+
 // Job Card Component
 const JobCard = ({ job, onApply }) => {
   const formatDate = (dateString) => {
@@ -239,7 +206,7 @@ const JobCard = ({ job, onApply }) => {
       'New': { bg: 'bg-emerald-100', text: 'text-emerald-700', dot: 'bg-emerald-500' },
       'In Progress': { bg: 'bg-amber-100', text: 'text-amber-700', dot: 'bg-amber-500' },
       'Completed': { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' },
-      'Cancelled': { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' }
+      'Expired': { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' }
     };
     const badge = badges[status] || badges['New'];
     
@@ -283,7 +250,7 @@ const JobCard = ({ job, onApply }) => {
         <LuIndianRupee size={16} />
         <span>Offered</span>
       </div>
-      <p className="text-lg font-bold text-green-800">₹{job.offeredPricing.toLocaleString("en-IN")}</p>
+      <p className="text-lg font-bold text-green-800">{job.offeredPricing.toLocaleString("en-IN")}</p>
     </div>
     <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 flex flex-col space-y-1">
       <div className="flex items-center gap-2 text-indigo-700 font-semibold text-sm">
@@ -342,14 +309,15 @@ const JobCard = ({ job, onApply }) => {
   )}
 
   {/* Posted On & Apply Button */}
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-200">
+  <div className="flex flex-col  sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-200">
     <time className="text-xs text-gray-400">Posted on {job.postedAt}</time>
-    <button
-      onClick={() => onApply(job)}
-      className="bg-gradient-to-r border-none from-blue-600 to-indigo-700 text-white rounded-lg py-3 px-6 font-semibold shadow-md hover:from-blue-700 hover:to-indigo-800 transition-transform transform hover:-translate-y-1"
-    >
-      Apply Now
-    </button>
+<button
+  onClick={() => onApply(job)}
+  className="px-4 py-2 bg-blue-600 border-none text-white rounded-lg hover:bg-blue-700"
+>
+  Apply Now
+</button>
+
   </div>
 </div>
 
@@ -376,48 +344,94 @@ const NewLeads = () => {
     priceRange: 'all'
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [appliedJobIds, setAppliedJobIds] = useState([]);
+
+// Fetch Applied Jobs Once
+useEffect(() => {
+  fetchAppliedJobs();
+}, []);
   // Fetch Jobs from API
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  const fetchJobs = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const { data } = await api.get("/api/jobs/nearby");
-      setJobs(data);
-    } catch (err) {
-      console.error("Error fetching jobs:", err);
-      setError(err.response?.data?.message || "Failed to load jobs. Please try again later.");
-      showNotification(
-        err.response?.data?.message || "Failed to load jobs",
-        "error"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchJobs = async () => {
+  try {
+    setLoading(true);
+    setError(null);
+
+    const { data } = await api.get("/api/jobs/nearby");
+
+    // ✅ Filter: sirf un jobs ko rakhna jinka applicationStatus null hai
+    const filteredJobs = data.filter((job) => job.applicationStatus === null);
+
+    setJobs(filteredJobs);
+  } catch (err) {
+    console.error("Error fetching jobs:", err);
+    setError(err.response?.data?.message || "Failed to load jobs. Please try again later.");
+    showNotification(
+      err.response?.data?.message || "Failed to load jobs",
+      "error"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  const fetchAppliedJobs = async () => {
+  try {
+    const { data } = await api.get("/api/vendor/my-applications"); 
+    // Assuming your backend returns a list of user's applications with jobId
+    const ids = data.map(app => app.jobId?._id || app.jobId);
+    setAppliedJobIds(ids);
+  } catch (err) {
+    console.error("Error fetching applied jobs:", err);
+  }
+};
 
   // Submit job application
 const handleSubmitApplication = async (jobId, formData) => {
   try {
-    const endpoint = selectedJob?.quotationRequired
-      ? `/api/applications/${jobId}/interest`
-      : `/api/applications/${jobId}/apply`;
+    const payload = new FormData();
 
-    const { data } = await api.post(endpoint, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    if (formData.quotationFile)
+      payload.append("quotedpdf", formData.quotationFile); // ✅ fixed field name
+    if (formData.message)
+      payload.append("message", formData.message);
+    if (formData.estimatedDays)
+      payload.append("estimatedDays", formData.estimatedDays);
+
+    const endpoint = selectedJob?.quotationRequired
+      ? `/api/applications/${jobId}/apply`
+      : `/api/applications/${jobId}/interest`;
+
+    const { data } = await api.post(endpoint, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // optional if your API uses auth
+      },
     });
 
-    showNotification(data.message || "Application submitted successfully!", "success");
+    showNotification(
+      data.msg || data.message || "Application submitted successfully!",
+      "success"
+    );
     setShowModal(false);
     await fetchJobs();
   } catch (err) {
     console.error("Error applying for job:", err);
-    showNotification(err.response?.data?.message || "Failed to submit application.", "error");
+    console.log("Backend says:", err.response?.data);
+    showNotification(
+      err.response?.data?.message || err.response?.data?.msg || "Failed to submit application.",
+      "error"
+    );
   }
 };
+
+
+
+
 
 
 
@@ -433,6 +447,8 @@ const handleSubmitApplication = async (jobId, formData) => {
 
   // Filter jobs
   const filteredJobs = jobs.filter(job => {
+
+    if (appliedJobIds.includes(job._id)) return false;
     // Search filter
     if (searchQuery && !job.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !job.type.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -464,7 +480,7 @@ const handleSubmitApplication = async (jobId, formData) => {
   });
 
   const jobTypes = ['all', ...new Set(jobs.map(j => j.type))];
-  const statuses = ['all', 'New', 'In Progress', 'Completed', 'Cancelled'];
+  const statuses = ['all', 'New', 'Completed', 'Expired'];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -521,53 +537,68 @@ const handleSubmitApplication = async (jobId, formData) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-4 px-5">
-  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
-    <div className="p-3 bg-blue-100 text-blue-600 rounded-full">
-      <Briefcase size={22} />
-    </div>
-    <div>
-      <p className="text-gray-600 text-sm">Total Jobs</p>
-      <h3 className="text-2xl font-bold text-gray-900">{jobs.length}</h3>
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-4 px-5">
+
+  {/* Total Jobs */}
+  <div className="bg-white rounded-lg p-6 border border-gray-200">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium text-gray-600 mb-1">Total Jobs</p>
+        <p className="text-2xl font-semibold text-gray-900">{jobs.length}</p>
+      </div>
+      <div className="p-3 bg-blue-50 rounded-lg">
+        <Briefcase className="w-6 h-6 text-blue-600" />
+      </div>
     </div>
   </div>
 
-  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
-    <div className="p-3 bg-amber-100 text-amber-600 rounded-full">
-      <FileText size={22} />
-    </div>
-    <div>
-      <p className="text-gray-600 text-sm">Quotation Required</p>
-      <h3 className="text-2xl font-bold text-gray-900">
-        {jobs.filter(job => job.quotationRequired).length}
-      </h3>
-    </div>
-  </div>
-
-  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
-    <div className="p-3 bg-green-100 text-green-600 rounded-full">
-      <CheckCircle size={22} />
-    </div>
-    <div>
-      <p className="text-gray-600 text-sm">Completed Jobs</p>
-      <h3 className="text-2xl font-bold text-gray-900">
-        {jobs.filter(job => job.status === "Completed").length}
-      </h3>
+  {/* Completed Jobs */}
+  <div className="bg-white rounded-lg p-6 border border-gray-200">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium text-gray-600 mb-1">Completed Jobs</p>
+        <p className="text-2xl font-semibold text-gray-900">
+          {jobs.filter(job => job.status === "Completed").length}
+        </p>
+      </div>
+      <div className="p-3 bg-green-50 rounded-lg">
+        <CheckCircle className="w-6 h-6 text-green-600" />
+      </div>
     </div>
   </div>
 
-  <div className="bg-white shadow-md border border-gray-200 rounded-2xl p-5 flex items-center gap-4">
-    <div className="p-3 bg-purple-100 text-purple-600 rounded-full">
-      <Clock size={22} />
-    </div>
-    <div>
-      <p className="text-gray-600 text-sm">New Jobs</p>
-      <h3 className="text-2xl font-bold text-gray-900">
-        {jobs.filter(job => job.status === "New").length}
-      </h3>
+  {/* New Jobs */}
+  <div className="bg-white rounded-lg p-6 border border-gray-200">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium text-gray-600 mb-1">New Jobs</p>
+        <p className="text-2xl font-semibold text-gray-900">
+          {jobs.filter(job => job.status === "New").length}
+        </p>
+      </div>
+      <div className="p-3 bg-purple-50 rounded-lg">
+        <Clock className="w-6 h-6 text-purple-600" />
+      </div>
     </div>
   </div>
+
+  {/* Quotation Required (optional) */}
+  {/* <div className="bg-white rounded-lg p-6 border border-gray-200">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium text-gray-600 mb-1">Quotation Required</p>
+        <p className="text-2xl font-semibold text-gray-900">
+          {jobs.filter(job => job.quotationRequired).length}
+        </p>
+      </div>
+      <div className="p-3 bg-amber-50 rounded-lg">
+        <FileText className="w-6 h-6 text-amber-600" />
+      </div>
+    </div>
+  </div> */}
+
 </div>
+
    <div className="relative max-w-2xl px-5">
               <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -647,7 +678,7 @@ const handleSubmitApplication = async (jobId, formData) => {
               </div>
 
               {/* Quotation Required Filter */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-bold text-gray-700 mb-3">Quotation</label>
                 <select
                   value={filters.quotationRequired}
@@ -658,7 +689,7 @@ const handleSubmitApplication = async (jobId, formData) => {
                   <option value="required">Quotation Required</option>
                   <option value="not-required">No Quotation</option>
                 </select>
-              </div>
+              </div> */}
 
               {/* Price Range Filter */}
               <div>
@@ -676,12 +707,12 @@ const handleSubmitApplication = async (jobId, formData) => {
               </div>
 
               {/* Results Count */}
-              <div className="pt-4 border-t border-gray-200">
+              {/* <div className="pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
                   Showing <span className="font-bold text-gray-800">{filteredJobs.length}</span> of{' '}
                   <span className="font-bold text-gray-800">{jobs.length}</span> jobs
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
 
