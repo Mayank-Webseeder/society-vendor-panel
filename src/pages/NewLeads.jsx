@@ -391,16 +391,67 @@ useEffect(() => {
 };
 
   // Submit job application
+// const handleSubmitApplication = async (jobId, formData) => {
+//   try {
+//     const payload = new FormData();
+
+//     if (formData.quotationFile)
+//       payload.append("quotedpdf", formData.quotationFile); // ✅ fixed field name
+//     if (formData.message)
+//       payload.append("message", formData.message);
+//     if (formData.estimatedDays)
+//       payload.append("estimatedDays", formData.estimatedDays);
+
+//     const endpoint = selectedJob?.quotationRequired
+//       ? `/api/applications/${jobId}/apply`
+//       : `/api/applications/${jobId}/interest`;
+
+//     const { data } = await api.post(endpoint, payload, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         Authorization: `Bearer ${localStorage.getItem("token")}`, // optional if your API uses auth
+//       },
+//     });
+
+//     showNotification(
+//       data.msg || data.message || "Application submitted successfully!",
+//       "success"
+//     );
+//     setShowModal(false);
+//     await fetchJobs();
+//   } catch (err) {
+//     console.error("Error applying for job:", err);
+//     console.log("Backend says:", err.response?.data);
+//     showNotification(
+//       err.response?.data?.message || err.response?.data?.msg || "Failed to submit application.",
+//       "error"
+//     );
+//   }
+// };
+
+
 const handleSubmitApplication = async (jobId, formData) => {
   try {
-    const payload = new FormData();
+    if (selectedJob?.quotationRequired && !formData.quotationFile) {
+      showNotification("Please upload a quotation PDF before submitting.", "error");
+      return;
+    }
 
-    if (formData.quotationFile)
-      payload.append("quotedpdf", formData.quotationFile); // ✅ fixed field name
-    if (formData.message)
-      payload.append("message", formData.message);
-    if (formData.estimatedDays)
-      payload.append("estimatedDays", formData.estimatedDays);
+    // Convert file to base64
+    let quotedpdf = null;
+    if (formData.quotationFile) {
+      const base64 = await toBase64(formData.quotationFile);
+      quotedpdf = {
+        fileBase64: base64,
+        name: formData.quotationFile.name,
+      };
+    }
+
+    const payload = {
+      quotedpdf,
+      message: formData.message,
+      estimatedDays: formData.estimatedDays,
+    };
 
     const endpoint = selectedJob?.quotationRequired
       ? `/api/applications/${jobId}/apply`
@@ -408,8 +459,7 @@ const handleSubmitApplication = async (jobId, formData) => {
 
     const { data } = await api.post(endpoint, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // optional if your API uses auth
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
 
@@ -421,13 +471,23 @@ const handleSubmitApplication = async (jobId, formData) => {
     await fetchJobs();
   } catch (err) {
     console.error("Error applying for job:", err);
-    console.log("Backend says:", err.response?.data);
     showNotification(
-      err.response?.data?.message || err.response?.data?.msg || "Failed to submit application.",
+      err.response?.data?.message || "Failed to submit application.",
       "error"
     );
   }
 };
+
+// Utility to convert file to base64
+const toBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 
 
 
