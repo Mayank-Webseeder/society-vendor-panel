@@ -114,7 +114,6 @@ function App() {
       <Routes>
         {/* Auth Flow Routes */}
         <Route path="/auth/*" element={<AuthRoutes />} />
-
         {/* Onboarding Routes */}
         <Route path="/auth/onboarding" element={<VendorCreateProfile />} />
         <Route path="/auth/onboarding/steps" element={<OnboardingLayout />}>
