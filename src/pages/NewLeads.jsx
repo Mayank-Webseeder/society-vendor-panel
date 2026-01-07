@@ -189,8 +189,6 @@ const ApplicationModal = ({ job, isOpen, onClose, onSubmit }) => {
 
 
 
-
-
 // Job Card Component
 const JobCard = ({ job, onApply }) => {
   const formatDate = (dateString) => {
