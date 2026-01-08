@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import {
     User,
@@ -46,6 +47,7 @@ const reverseGeocode = async (lat, lng) => {
 };
 
 export default function VendorCreateProfile() {
+     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 4;
@@ -385,7 +387,7 @@ export default function VendorCreateProfile() {
             setSuccessText('Profile created successfully! Redirecting...');
 
             setTimeout(() => {
-                // navigate('/dashboard');
+                navigate('/dashboard');
                 console.log('Navigate to dashboard');
             }, 2000);
 

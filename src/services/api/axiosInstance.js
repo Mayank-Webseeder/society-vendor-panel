@@ -56,11 +56,77 @@
 
 
 
+//old
+// import axios from "axios";
+
+// // Environment variables with fallbacks
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+// const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 30000;
+
+// // Create axios instance
+// const api = axios.create({
+//   baseURL: `${API_BASE_URL}/api`,
+//   timeout: API_TIMEOUT,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
+
+// // Request interceptor - automatically adds token to all requests
+// api.interceptors.request.use(
+//   (config) => {
+//     // Try to get token from localStorage (supports both 'token' and 'authToken' keys)
+//     const token = localStorage.getItem("token") || localStorage.getItem("authToken");
+    
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+    
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+// // Response interceptor - handles errors globally
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     // Handle network errors
+//     if (!error.response) {
+//       console.error("Network error - no response received");
+//       return Promise.reject(new Error("Network error. Please check your connection."));
+//     }
+
+//     const status = error.response.status;
+
+//     // Handle 401 Unauthorized - clear tokens and optionally redirect
+//     if (status === 401) {
+//       localStorage.removeItem("token");
+//       localStorage.removeItem("authToken");
+      
+//       // Uncomment if you want automatic redirect to login
+//       // if (window.location.pathname !== "/login") {
+//       //   window.location.href = "/login";
+//       // }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
+
+// export default api;
+
+
+
+
 
 import axios from "axios";
 
 // Environment variables with fallbacks
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 30000;
 
 // Create axios instance
@@ -72,44 +138,64 @@ const api = axios.create({
   },
 });
 
-// Request interceptor - automatically adds token to all requests
+/**
+ * REQUEST INTERCEPTOR
+ * - Automatically attaches Bearer token (Postman jaisa)
+ * - Logs request in dev for debugging
+ */
 api.interceptors.request.use(
   (config) => {
-    // Try to get token from localStorage (supports both 'token' and 'authToken' keys)
-    const token = localStorage.getItem("token") || localStorage.getItem("authToken");
-    
+    const token =
+      localStorage.getItem("token") ||
+      localStorage.getItem("authToken");
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.warn("⚠️ No auth token found in localStorage");
     }
-    
+
+    // 🔍 Debug (dev only)
+    if (import.meta.env.DEV) {
+      console.log(
+        "➡️ API REQUEST:",
+        config.method?.toUpperCase(),
+        config.url,
+        config.headers.Authorization ? "AUTH OK" : "NO AUTH"
+      );
+    }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor - handles errors globally
+/**
+ * RESPONSE INTERCEPTOR
+ * - Centralized error handling
+ */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle network errors
     if (!error.response) {
-      console.error("Network error - no response received");
-      return Promise.reject(new Error("Network error. Please check your connection."));
+      console.error("❌ Network error - no response");
+      return Promise.reject(
+        new Error("Network error. Please check your connection.")
+      );
     }
 
-    const status = error.response.status;
+    const { status, data } = error.response;
 
-    // Handle 401 Unauthorized - clear tokens and optionally redirect
+    // 🔥 Log backend message (VERY IMPORTANT)
+    console.error("❌ API ERROR:", status, data);
+
+    // Handle Unauthorized
     if (status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("authToken");
-      
-      // Uncomment if you want automatic redirect to login
-      // if (window.location.pathname !== "/login") {
-      //   window.location.href = "/login";
-      // }
+
+      // optional redirect
+      // window.location.href = "/login";
     }
 
     return Promise.reject(error);
