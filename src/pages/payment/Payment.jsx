@@ -46,44 +46,51 @@ const Payment = () => {
 
   const totalAmount = selectedServices.length * pricePerService;
 
-  const handlePayment = async () => {
-    if (selectedServices.length === 0) return;
+ const handlePayment = async () => {
+  if (selectedServices.length === 0) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY,
-        amount: totalAmount * 100,
-        currency: 'INR',
-        name: 'My Society Needs',
-        description: `Service subscription for ${selectedServices.length} services`,
-        handler: function (response) {
-          console.log('Payment successful:', response);
-          handlePaymentSuccess(response);
-        },
-        prefill: {
-          name: 'Vendor Name',
-          email: 'vendor@example.com',
-          contact: '9999999999'
-        },
-        theme: {
-          color: '#1f2937'
-        },
-        modal: {
-          ondismiss: function () {
-            setLoading(false);
-          }
-        }
-      };
+  if (!window.Razorpay) {
+    alert("Razorpay SDK not loaded");
+    setLoading(false);
+    return;
+  }
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error('Payment error:', error);
-      setLoading(false);
-    }
-  };
+  try {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      amount: totalAmount * 100,
+      currency: "INR",
+      name: "My Society Needs",
+      description: `Service subscription for ${selectedServices.length} services`,
+      handler: function (response) {
+        console.log("Payment successful:", response);
+        handlePaymentSuccess(response);
+      },
+      prefill: {
+        name: "Vendor Name",
+        email: "vendor@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#1f2937",
+      },
+      modal: {
+        ondismiss: function () {
+          setLoading(false);
+        },
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  } catch (error) {
+    console.error("Payment error:", error);
+    setLoading(false);
+  }
+};
+
 
   const handlePaymentSuccess = async (paymentResponse) => {
     try {
@@ -284,7 +291,7 @@ const Payment = () => {
                       </div>
                     </div>
                   )}
-                </div>
+                </div> 
               </div>
 
               {/* Payment Security */}

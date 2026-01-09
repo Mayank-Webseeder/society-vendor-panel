@@ -28,7 +28,7 @@ const PersonalInformation = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const data = res.data;
+        const data =  res.data.vendor;
         const profile = {
           id: data._id,
           name: data.name || "",

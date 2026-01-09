@@ -51,6 +51,8 @@ const ApplicationModal = ({ job, isOpen, onClose, onSubmit }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  console.log("Modal formData:", job, formData);
+
   useEffect(() => {
     if (isOpen) {
       setFormData({ quotationFile: null, message: "", estimatedDays: "" });
@@ -96,12 +98,12 @@ const ApplicationModal = ({ job, isOpen, onClose, onSubmit }) => {
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="flex items-center gap-2">
                 <Building className="text-blue-600" size={16} />
-                <span>{job?.society?.buildingName}</span>
+                <span>{job?.society?.societyname}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MdCurrencyRupee className="text-green-600" size={16} />
                 <span className="font-semibold">
-                  {job?.offeredPricing?.toLocaleString("en-IN")}
+                  {job?.offeredPrice?.toLocaleString("en-IN")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
